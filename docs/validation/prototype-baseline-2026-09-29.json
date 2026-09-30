@@ -1,0 +1,42 @@
+{
+  "checks": [
+    {
+      "width": 1440,
+      "page": "home",
+      "body": 1440,
+      "viewport": 1440
+    },
+    {
+      "width": 1440,
+      "page": "studio",
+      "body": 1440,
+      "viewport": 1440
+    },
+    {
+      "width": 1440,
+      "page": "planner",
+      "body": 1440,
+      "viewport": 1440
+    },
+    {
+      "width": 390,
+      "page": "home",
+      "body": 390,
+      "viewport": 390
+    },
+    {
+      "width": 390,
+      "page": "studio",
+      "body": 390,
+      "viewport": 390
+    },
+    {
+      "width": 390,
+      "page": "planner",
+      "body": 390,
+      "viewport": 390
+    }
+  ],
+  "scriptErrors": [],
+  "interactions": "3 audit cases; navigation; group size, total, village income, percentage; budget failure and recovery; reusable material cost and constraint; infeasibility and reset; 2 plans both default feasible; light actual schedule/amounts; light feasible under 90min/100yuan while deep infeasible; JSON export values and authorization notice verified"
+}

@@ -1,0 +1,50 @@
+# Dependencies and local environments
+node_modules/
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+
+# Secrets and local configuration
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+credentials*.json
+
+# Model weights, private data and runtime state
+models/
+data/raw/
+data/private/
+*.gguf
+*.safetensors
+*.pt
+*.pth
+*.db
+*.sqlite
+*.sqlite3
+*.db-*
+*.sqlite-wal
+*.sqlite-shm
+
+# Local outputs; approved documentation assets are versioned separately
+artifacts/
+dist/
+build/
+coverage/
+playwright-report/
+test-results/
+*.log
+*.zip
+*.7z
+*.tar.gz
+
+# Editor and OS state
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.tmp
+*.swp

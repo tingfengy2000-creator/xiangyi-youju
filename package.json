@@ -1,0 +1,13 @@
+{
+  "name": "xiangyi-youju",
+  "version": "0.1.0",
+  "private": true,
+  "description": "乡艺有据：可信非遗体验编排智能体，当前为方案与交互原型",
+  "license": "UNLICENSED",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "test": "node tests/e2e/prototype.spec.cjs",
+    "render:design": "node scripts/render-design.cjs"
+  },
+  "devDependencies": { "playwright": "1.62.1" }
+}
