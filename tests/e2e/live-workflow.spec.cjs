@@ -203,6 +203,9 @@ async function additionalScenarios(page, context, previousId) {
       assert(await page.locator('#exportVisitor').isDisabled());
       checks.push('真实保存记录按历史回放标识，禁止直接确认和导出');
     } else {
+      // This suite preserves the fixed-package regression; module UX has its own real acceptance script.
+      await page.locator('[data-page="planner"]').click();
+      await page.locator('#planningMode').selectOption('packages');
       await page.locator('[data-page="studio"]').click();
       await page.locator('#draft').fill(defaultDraft);
       const created = page.waitForResponse(response => response.url().endsWith('/api/runs') && response.request().method() === 'POST');

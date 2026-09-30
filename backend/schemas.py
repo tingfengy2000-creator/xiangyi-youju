@@ -15,6 +15,11 @@ class Requirements(StrictModel):
     start_time: str = Field(default="09:30", pattern=r"^(?:[01]\d|2[0-3]):[0-5]\d$")
     preferred_plan: Literal["light", "deep"] = "deep"
     note: str = Field(default="", max_length=1000)
+    planning_mode: Literal["packages", "modules"] = "packages"
+    audience: Literal["general", "family"] = "general"
+    tea_preference: Literal["any", "include", "exclude"] = "any"
+    min_craft_minutes: int = Field(default=0, ge=0, le=180, strict=True)
+    teaching_enabled: bool = False
 
 
 class Overrides(StrictModel):
@@ -28,11 +33,13 @@ class RunInput(StrictModel):
     text: str = Field(min_length=1, max_length=1800)
     requirements: Requirements = Field(default_factory=Requirements)
     operating_overrides: Overrides = Field(default_factory=Overrides)
+    constraint_resolution: Literal["ask", "form"] = "ask"
+    previous_run_id: str | None = Field(default=None, pattern=r"^[a-f0-9]{32}$")
 
 
 class Approval(StrictModel):
     confirmed: Literal[True]
-    plan_id: Literal["light", "deep"]
+    plan_id: str = Field(pattern=r"^(light|deep|mod-[a-z0-9-]+)$", max_length=300)
 
 
 class UsageChange(StrictModel):
@@ -51,6 +58,37 @@ class Understanding(StrictModel):
     claims: list[ExtractedClaim] = Field(min_length=1, max_length=12)
 
 
+class Intent(StrictModel):
+    exclude_tags: list[Literal["story", "craft", "tea", "observation", "sharing", "extension"]]
+    require_tags: list[Literal["story", "craft", "tea", "observation", "sharing", "extension"]]
+    min_craft_minutes: int | None = Field(ge=0, le=180)
+    maximize_craft: bool
+    audience: Literal["general", "family"] | None
+    people: int | None = Field(ge=1, le=100)
+    budget_per_person: float | None = Field(ge=0, le=10000, allow_inf_nan=False)
+    available_minutes: int | None = Field(ge=1, le=720)
+    ambiguities: list[str]
+
+
+class NotePreferences(StrictModel):
+    tea_preference: Literal["not_mentioned", "include", "exclude"] = Field(description="文字未谈茶歇为not_mentioned；明确需要为include；明确不要为exclude")
+    min_craft_minutes: int | None = Field(ge=0, le=180, description="只提取明确的手作最低分钟；未提到为null")
+    maximize_craft: bool = Field(description="明确要求更多手作时间才为true")
+    audience: Literal["general", "family"] | None
+    people: int | None = Field(ge=1, le=100)
+    budget_per_person: float | None = Field(ge=0, le=10000, allow_inf_nan=False)
+    available_minutes: int | None = Field(ge=1, le=720)
+    ambiguities: list[str]
+
+
+class ContentUnderstanding(Understanding):
+    claims: list[ExtractedClaim] = Field(min_length=1, max_length=24)
+
+
+class ModuleUnderstanding(ContentUnderstanding):
+    intent: Intent
+
+
 class Judgment(StrictModel):
     claim_id: str
     status: Literal["supported", "contradicted", "conflicting", "insufficient"]
@@ -64,5 +102,5 @@ class Audit(StrictModel):
 
 
 class Choice(StrictModel):
-    plan_id: Literal["light", "deep", "none"]
+    plan_id: str = Field(pattern=r"^(light|deep|none|mod-[a-z0-9-]+)$", max_length=300)
     explanation: str

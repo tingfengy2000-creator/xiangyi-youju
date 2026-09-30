@@ -1,0 +1,29 @@
+{
+  "note": "为初次了解剪纸的游客安排文化讲解与入门手作。讲述清楚工艺特色，留出观察和提问的时间。",
+  "result": {
+    "tea_preference": "not_mentioned",
+    "min_craft_minutes": null,
+    "maximize_craft": false,
+    "audience": "general",
+    "people": null,
+    "budget_per_person": null,
+    "available_minutes": null,
+    "ambiguities": []
+  },
+  "calls": [
+    {
+      "purpose": "提取文字活动偏好",
+      "attempt": 1,
+      "at": "2026-09-30T09:13:36.958377+00:00",
+      "model": "xiangyi-qwen3:14b-q4_k_m",
+      "elapsed_seconds": 0.872,
+      "prompt_tokens": 704,
+      "output_tokens": 67,
+      "total_duration_ns": 838983500,
+      "eval_duration_ns": 487620000,
+      "prompt_eval_duration_ns": 250386000,
+      "raw_output": "{\n  \"ambiguities\": [],\n  \"audience\": \"general\",\n  \"available_minutes\": null,\n  \"budget_per_person\": null,\n  \"maximize_craft\": false,\n  \"min_craft_minutes\": null,\n  \"people\": null,\n  \"tea_preference\": \"not_mentioned\"\n}",
+      "ok": true
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "at": "2026-09-30T09:16:45.965Z",
+  "base": "http://127.0.0.1:8780",
+  "mode": "real-module-ui-workflow",
+  "approvedFinalRunId": "8a8d61a8b4b24b52a8cfad4c14e7571f",
+  "impossibleRunId": "23163bb189874408ae481744727a49ed",
+  "passed": true,
+  "runs": [
+    {
+      "id": "abaac28f111d4e6e94dfa70842dfc77d",
+      "scenario": "01-default"
+    },
+    {
+      "id": "c270f5f10e4c400a972cc33b3f2eb88b",
+      "scenario": "02-note-conflict"
+    },
+    {
+      "id": "2fb2825148b245f6b7ad7ba2364a1dba",
+      "scenario": "03-note-adopted"
+    },
+    {
+      "id": "8a8d61a8b4b24b52a8cfad4c14e7571f",
+      "scenario": "04-material-refresh"
+    },
+    {
+      "id": "23163bb189874408ae481744727a49ed",
+      "scenario": "05-resources-impossible"
+    }
+  ],
+  "checks": [
+    "default: real three-page rendering at 1440/390, no horizontal overflow",
+    "draft: server-rendered visitor/organizer previews at desktop/mobile, draft gating checked",
+    "Default genuine module choices/teaching; user chose feasible 50-minute craft + tea; preview did not approve",
+    "family-revised: real three-page rendering at 1440/390, no horizontal overflow",
+    "family-draft: server-rendered visitor/organizer previews at desktop/mobile, draft gating checked",
+    "family-confirmed: both actual downloads match the confirmed plan and material state",
+    "UI note conflict explicitly adopted; budget110/no-tea/maximize-craft/family constraints change actual modules, teaching and comparison",
+    "withdrawn-draft: server-rendered visitor/organizer previews at desktop/mobile, draft gating checked",
+    "material-refreshed: both actual downloads match the confirmed plan and material state",
+    "Actual material withdrawal invalidates both preview/download; UI refresh preserves teaching and removes SVG in both exports; restored material",
+    "Actual 16 people/8 capacity/one teacher/one room fails closed; no fabricated parallel reception or export",
+    "Opened browser pages/packages request no external HTTP resources; local API was never mocked; not a whole-machine offline test"
+  ],
+  "scriptErrors": [],
+  "externalResourceRequests": [],
+  "testHarnessNotes": [
+    "首次中性偏好任务69898a50a90644799634de60c16df8dc实际成功，但返回候选不含50分钟手作加茶歇，测试基线选择断言停止；这是测试输入约束不足，不是模型失败。保留原成功快照与baseline-selection-harness-failure.json；之后通过真实UI明确选择需要茶歇后完整重验。",
+    "更早的857dfe88c099452eb23e72c1eedb6db2为真实needs_input失败，模型错误要求文字重复已有表单条件，单独保留failed-default-note记录，不与测试断言混淆。"
+  ]
+}

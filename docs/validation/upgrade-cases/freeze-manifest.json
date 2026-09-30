@@ -1,0 +1,16 @@
+{
+  "frozen_at": "2026-09-30T09:17:37.837037+00:00",
+  "base_commit": "4db6bfd",
+  "acceptance_sha256": "1ef11ff553f4388d39b5dac64f0b0fea137b2aade00375a25651d3d187c0ca70",
+  "note": "六条内部验收用例，编写者与实现者是同一助手团队，不属于独立评测；根首次读取前冻结实现与提示，此后不按此集合调参。",
+  "files": {
+    "backend/model.py": "c80132e20269c9dde1eb50e9173bc1c46488b7e36d3942eacde501af2b96c1d7",
+    "backend/workflow.py": "5bd087cff102c4ef4e7699aed5c54bb9a506112f585c60db8ac9752c0c1237f1",
+    "backend/schemas.py": "6382084537cf8092fe448c77849dda99863063e841e9342c95af08b3238eefcc",
+    "backend/constraints.py": "9913d0d2e608af5c06faf9e3fe1dcb20ab0c5fba198a8d0b895a181bca6b2b0c",
+    "backend/planner.py": "806f28d51b54afb24253db239d545015f09574ca2937f804614bcd9d5e6da545",
+    "backend/teaching.py": "d6e79915b852b780046d988fcb5ff9df3d2b5a60cada40abb2600495e7fd37ed",
+    "data/curated/sources.json": "2ce95e8c33ad309e8ad3f4daafb43a5e30f3a59e6483a7182f863728952e85f9",
+    "data/operating/demo-profile.json": "f8eb6aea38cc74e46c4762fe5ae812499c454c328e8d0b1592cdb895fc66ce18"
+  }
+}

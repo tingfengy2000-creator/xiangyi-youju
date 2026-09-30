@@ -12,14 +12,27 @@ from backend.evidence import load_materials, load_profile, load_sources, search_
 class EvidenceTests(unittest.TestCase):
     def test_curated_provenance_and_hashes(self):
         sources = load_sources()
-        self.assertEqual(len(sources), 6)
+        original_ids = {"src-yuxian-region", "src-yuxian-technique", "src-yuxian-color",
+                        "src-fengning-region", "src-fengning-technique", "src-fengning-craft"}
+        original = [s for s in sources if s["document_id"].startswith("ihchina-")]
+        added = [s for s in sources if s["document_id"].startswith("hebei-")]
+        self.assertEqual({s["id"] for s in original}, original_ids)
+        self.assertEqual(len(added), 6)
+        self.assertEqual(len(sources), len(original) + len(added))
         self.assertEqual(len({s["id"] for s in sources}), len(sources))
         for source in sources:
             self.assertEqual(source["source_id"], source["id"])
-            self.assertIsNone(source["published_at"])
             self.assertTrue(source["locator"])
-            self.assertTrue(source["url"].startswith("https://www.ihchina.cn/"))
+            self.assertTrue(source["region"])
+            self.assertTrue(source["use_note"])
             self.assertEqual(source["sha256"], hashlib.sha256(source["quote"].encode()).hexdigest())
+        for source in original:
+            self.assertIsNone(source["published_at"])
+            self.assertTrue(source["url"].startswith("https://www.ihchina.cn/"))
+        for source in added:
+            self.assertEqual(source["region"], "河北省蔚县")
+            self.assertIn(source["published_at"], ("2012-12-21", "2025-09-28"))
+            self.assertTrue(source["url"].startswith("https://whly.hebei.gov.cn/"))
 
     def test_geography_precedes_relevance(self):
         results = search_evidence("阳刻为主，阴刻为辅", "蔚县")

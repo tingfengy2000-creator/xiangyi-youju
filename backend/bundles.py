@@ -8,6 +8,7 @@ from pathlib import Path
 from urllib.parse import urlparse
 
 from .planner import solve_plans
+from .teaching import render_teaching_html, validate_teaching
 
 
 STATUS_LABELS = {
@@ -54,32 +55,36 @@ def _confirmed(approval) -> bool:
     return isinstance(approval, dict) and (approval.get("confirmed") is True or approval.get("status") == "confirmed")
 
 
-def _validate_run(run: dict):
+def _validate_run(run: dict, preview: bool = False):
     if not isinstance(run, dict):
         raise ValueError("导出需要完整运行快照")
     if run.get("status") in ("invalidated", "failed", "running", "blocked", "cancelled"):
         raise ValueError("当前运行已失效、未完成或失败，不能导出；请重新核验并确认")
     if run.get("mode") not in ("live", "replay", "preset"):
         raise ValueError("须明确标识真实运行、历史回放或预设案例")
-    if not _confirmed(run.get("approval")):
+    if preview and (run.get("status") not in ("awaiting_review", "confirmed")
+                    or run.get("validation", {}).get("passed") is not True):
+        raise ValueError("预览仅适用于已通过校验、待人工确认或已确认的运行")
+    if not preview and not _confirmed(run.get("approval")):
         raise ValueError("须先完成负责人确认再导出体验包")
     plan = run.get("plan")
     if not isinstance(plan, dict) or plan.get("feasible") is not True or plan.get("conflicts"):
         raise ValueError("所选方案未通过约束校验，不能导出")
     if plan.get("is_demo") is not True:
         raise ValueError("首版仅支持演示测算体验包")
-    approval = run["approval"]
-    if approval.get("plan_id") and approval["plan_id"] != plan.get("id"):
+    approval = run.get("approval") or {}
+    if not preview and approval.get("plan_id") and approval["plan_id"] != plan.get("id"):
         raise ValueError("负责人确认的方案与当前方案不一致")
-    if "run_version" in approval and "version" in run and approval["run_version"] != run["version"]:
+    if not preview and "run_version" in approval and "version" in run and approval["run_version"] != run["version"]:
         raise ValueError("负责人确认版本已过期，须重新确认")
     planning = run.get("planning", {})
     profile = planning.get("profile_snapshot")
     requirements = planning.get("requirements_snapshot")
     if not isinstance(profile, dict) or not isinstance(requirements, dict):
         raise ValueError("缺少经营配置或需求快照，无法复算体验包")
-    if run.get("requirements") is not None:
-        for key, value in run["requirements"].items():
+    effective_requirements = run.get("effective_requirements", run.get("requirements"))
+    if effective_requirements is not None:
+        for key, value in effective_requirements.items():
             if key in requirements and requirements[key] != value:
                 raise ValueError("运行需求与已校验需求快照不一致")
     recalculated = solve_plans(requirements, profile)
@@ -128,11 +133,19 @@ pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:11px;background:#efeee
 """
 
 
-def render_bundle(run: dict, audience: str) -> str:
-    """导出经人工确认的模拟体验样张；受限素材正文在任何版本均不复制。"""
+def render_bundle(run: dict, audience: str, preview: bool = False) -> str:
+    """排版当前校验快照；预览明确待确认，正式导出必须有对应人工确认。"""
     if audience not in ("visitor", "organizer"):
         raise ValueError("导出对象须为visitor或organizer")
-    plan, req, profile = _validate_run(run)
+    plan, req, profile = _validate_run(run, preview=preview)
+    teaching_html = ""
+    if req.get("planning_mode") == "modules" or req.get("teaching_enabled"):
+        teaching = run.get("teaching")
+        teaching_run = {**run, "requirements": run.get("effective_requirements", run.get("requirements", {}))}
+        check = validate_teaching(teaching, teaching_run)
+        if check.get("passed") is not True:
+            raise ValueError("教学表达未通过全内容事实扫描，不能预览或导出：" + "；".join(check.get("issues", [])))
+        teaching_html = render_teaching_html({**teaching, "check": check}, audience)
     claims = {str(item["id"]): item for item in run.get("claims", []) if isinstance(item, dict) and "id" in item}
     source_versions = _mapping(run.get("source_versions"))
     material_versions = _mapping(run.get("material_versions"))
@@ -196,7 +209,11 @@ def render_bundle(run: dict, audience: str) -> str:
             art = f'<img class="hero-art" alt="原创纸艺装饰图" src="data:image/svg+xml;base64,{data}">'
     mode_label = {"live": "真实本地模型运行", "replay": "历史运行回放", "preset": "预设案例样张"}[run["mode"]]
     title = "模拟体验样张" if audience == "visitor" else "组织者体验包 · 演示测算"
+    if preview:
+        title = "待人工确认预览稿 · " + title
     subtitle = "带着一份有出处的讲解，走近一方乡土。" if audience == "visitor" else "文化依据、资源约束与活动账本，保存在同一份确认快照中。"
+    if preview and audience == "organizer":
+        subtitle = "文化依据、资源约束与活动账本，供负责人核对后确认。"
     region = req.get("region", run.get("region", "地域以来源与讲解卡标注为准"))
     project = req.get("project", run.get("project", "剪纸文化体验"))
     parts = [
@@ -206,6 +223,7 @@ def render_bundle(run: dict, audience: str) -> str:
         f'<title>{_text(title)} · 乡艺有据</title><style>{CSS}</style></head><body><main class="sheet">',
         '<header class="brand"><div class="seal">乡艺<br>有据</div><div><div class="wordmark">乡艺有据</div><div class="submark">可信非遗体验编排智能体</div></div>',
         f'<div class="edition">{_text(title)}<br>{_text(mode_label)}</div></header>',
+        '<div class="notice"><strong>待人工确认预览稿</strong> · 当前内容仅供审阅，不表示负责人已确认本方案；完成确认后才能正式导出。</div>' if preview else '',
         f'<section class="hero">{art}<div class="hero-copy"><div class="eyebrow">{_text(region)} / {_text(project)}</div><h1>{_text(plan["title"])}，有据可循</h1><p>{subtitle}</p>' + ('<p class="art-note">原创装饰图，非传统作品或纹样复制</p>' if art else '') + '</div></section>',
         '<div class="metrics">',
         f'<div class="metric"><small>参与人数</small><strong>{req["people"]}</strong><span> 人</span></div>',
@@ -226,6 +244,8 @@ def render_bundle(run: dict, audience: str) -> str:
         parts.append(f'<article class="card"><h3>{_text(card.get("title", "讲解卡"))}</h3><p>{_text(card.get("text", ""))}</p><div class="card-foot">{refs}<br>{trace}</div></article>')
     if len(usable_cards) < len(cards):
         parts.append('<p class="small">部分内容因证据不足或使用状态变化未纳入本样张。</p>')
+    if teaching_html:
+        parts.append(teaching_html)
 
     parts.append('<h2><span class="number">02</span>在场的每一刻</h2><div class="timeline">')
     for stage in plan["schedule"]:
@@ -276,12 +296,17 @@ def render_bundle(run: dict, audience: str) -> str:
             if not supported_card(card):
                 parts.append(f'<div class="notice">讲解卡 {_text(card.get("id"))} 未纳入游客版：证据或使用条件未满足。未复制受限正文。</div>')
         parts.append('<h2><span class="number">05</span>负责人确认与版本追溯</h2>')
-        approval = run["approval"]
+        approval = run.get("approval") or {}
         parts.append('<div class="columns"><div class="card"><h3>负责人确认</h3><dl>')
-        for label, value in (
-            ("确认状态", "已确认当前模拟体验方案"), ("确认时间", approval.get("at", "未记录")),
-            ("确认方案", plan["title"]), ("确认运行版本", approval.get("run_version", "未记录")),
-        ):
+        approval_rows = (
+            (("确认状态", "待人工确认预览稿"), ("确认时间", "待负责人确认"),
+             ("待核对方案", plan["title"]), ("预览运行版本", run.get("version", "未记录")))
+            if preview else (
+                ("确认状态", "已确认当前模拟体验方案"), ("确认时间", approval.get("at", "未记录")),
+                ("确认方案", plan["title"]), ("确认运行版本", approval.get("run_version", "未记录")),
+            )
+        )
+        for label, value in approval_rows:
             parts.append(f'<dt>{_text(label)}</dt><dd>{_text(value)}</dd>')
         parts.append('</dl></div><div class="card"><h3>运行快照</h3><dl>')
         for label, value in (

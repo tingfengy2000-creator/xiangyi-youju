@@ -1,0 +1,226 @@
+{
+  "type": "small_internal_acceptance_not_independent",
+  "input_sha256": "1ef11ff553f4388d39b5dac64f0b0fea137b2aade00375a25651d3d187c0ca70",
+  "cases": [
+    {
+      "case_id": "UH-01",
+      "run_id": "e0da5b5c130040d4b879f9b5771770e5",
+      "status": "needs_input",
+      "model_calls": 6,
+      "elapsed_seconds": 3.923,
+      "passed": false,
+      "checks": [
+        {
+          "check": "exclude_tags_contains",
+          "passed": true
+        },
+        {
+          "check": "audience",
+          "passed": true
+        },
+        {
+          "check": "maximize_craft",
+          "passed": true
+        },
+        {
+          "check": "完整可行方案与教学通过",
+          "passed": false
+        },
+        {
+          "check": "不包含模块:tea",
+          "passed": true
+        },
+        {
+          "check": "selected_plan_min_craft_minutes",
+          "passed": true
+        },
+        {
+          "check": "人数预算时长不被模型改写",
+          "passed": true
+        },
+        {
+          "check": "未人工确认不能下载",
+          "passed": true
+        },
+        {
+          "check": "所选方案全字段可复算",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "case_id": "UH-02",
+      "run_id": "56585f2c0e9f47d58b4904cf784bc1c4",
+      "status": "needs_input",
+      "model_calls": 2,
+      "elapsed_seconds": 1.995,
+      "passed": false,
+      "checks": [
+        {
+          "check": "复合陈述逐个事实独立定位",
+          "passed": false
+        },
+        {
+          "check": "事实状态:阳刻为主、阴刻为辅",
+          "passed": false
+        },
+        {
+          "check": "事实状态:多色点染彩绘",
+          "passed": false
+        },
+        {
+          "check": "事实状态:本周六一定由国家级传承人亲自授课",
+          "passed": true
+        },
+        {
+          "check": "矛盾修订再次核验",
+          "passed": false
+        },
+        {
+          "check": "未经支持的承诺不进入游客内容",
+          "passed": true
+        },
+        {
+          "check": "未人工确认不能下载",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "case_id": "UH-03",
+      "run_id": "d90ee830221a4a6986dfcf3c51b2ce33",
+      "status": "needs_confirmation",
+      "model_calls": 2,
+      "elapsed_seconds": 1.576,
+      "passed": true,
+      "checks": [
+        {
+          "check": "冲突明确等待确认",
+          "passed": true
+        },
+        {
+          "check": "冲突字段覆盖",
+          "passed": true
+        },
+        {
+          "check": "冲突不替换表单",
+          "passed": true
+        },
+        {
+          "check": "未人工确认不能下载",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "case_id": "UH-04",
+      "run_id": "ab540fbd913f4a6299884331fd59bc74",
+      "status": "needs_input",
+      "model_calls": 3,
+      "elapsed_seconds": 2.075,
+      "passed": true,
+      "checks": [
+        {
+          "check": "套餐不能忽略偏好继续可行",
+          "passed": true
+        },
+        {
+          "check": "提取排除茶歇与七十分钟",
+          "passed": true
+        },
+        {
+          "check": "light套餐价格时长不变",
+          "passed": true
+        },
+        {
+          "check": "deep套餐价格时长不变",
+          "passed": true
+        },
+        {
+          "check": "两套餐仍列出",
+          "passed": true
+        },
+        {
+          "check": "未人工确认不能下载",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "case_id": "UH-05",
+      "run_id": "744a9d1f64c34e3f95b2ec56856033c3",
+      "status": "needs_confirmation",
+      "model_calls": 2,
+      "elapsed_seconds": 1.633,
+      "passed": false,
+      "checks": [
+        {
+          "check": "exclude_tags_contains",
+          "passed": true
+        },
+        {
+          "check": "min_craft_minutes",
+          "passed": true
+        },
+        {
+          "check": "maximize_craft",
+          "passed": true
+        },
+        {
+          "check": "audience",
+          "passed": true
+        },
+        {
+          "check": "完整可行方案与教学通过",
+          "passed": false
+        },
+        {
+          "check": "不包含模块:tea",
+          "passed": false
+        },
+        {
+          "check": "selected_plan_min_craft_minutes",
+          "passed": false
+        },
+        {
+          "check": "selected_plan_max_total_cents",
+          "passed": false
+        },
+        {
+          "check": "selected_plan_max_minutes",
+          "passed": false
+        },
+        {
+          "check": "未人工确认不能下载",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "case_id": "UH-06",
+      "run_id": "c0a20d66a902471ba959420addd1d645",
+      "status": "needs_input",
+      "model_calls": 2,
+      "elapsed_seconds": 1.755,
+      "passed": false,
+      "checks": [
+        {
+          "check": "资源不足明确无解",
+          "passed": true
+        },
+        {
+          "check": "容量与教师冲突有据",
+          "passed": false
+        },
+        {
+          "check": "人数与资源未增加",
+          "passed": true
+        },
+        {
+          "check": "未人工确认不能下载",
+          "passed": true
+        }
+      ]
+    }
+  ]
+}

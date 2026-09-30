@@ -12,13 +12,17 @@
   "reuse": true,
   "venue": "同场地演示工坊",
   "currency": "CNY",
-  "version": 1,
+  "version": 2,
   "use_note": "演示配置，非真实报价与接待授权；本地服务报酬为毛收入测算，不是净利润或真实增收。仅明确同场地故不计转场时间，不含交通、住宿、税费。",
   "usage_note": "讲解、手作教学、茶歇分别计入本地服务报酬；材料与工具和组织费用单列。工具复用为当前演示活动要求。模型无权修改人数、报价、教师、场地或授权。",
   "plans": {
     "light": {
       "title": "轻体验",
-      "stages": [20, 50, 20],
+      "stages": [
+        20,
+        50,
+        20
+      ],
       "lecture_cents": 20000,
       "craft_per_person_cents": 2500,
       "tea_per_person_cents": 1500,
@@ -26,11 +30,25 @@
       "reusable_per_person_cents": 800,
       "disposable_per_person_cents": 1400,
       "operations_cents": 12000,
-      "paper_per_person": 1
+      "paper_per_person": 1,
+      "tags": [
+        "story",
+        "craft",
+        "tea",
+        "family"
+      ],
+      "audiences": [
+        "general",
+        "family"
+      ]
     },
     "deep": {
       "title": "深体验",
-      "stages": [30, 60, 30],
+      "stages": [
+        30,
+        60,
+        30
+      ],
       "lecture_cents": 30000,
       "craft_per_person_cents": 3500,
       "tea_per_person_cents": 2000,
@@ -38,7 +56,303 @@
       "reusable_per_person_cents": 1000,
       "disposable_per_person_cents": 1600,
       "operations_cents": 16000,
-      "paper_per_person": 2
+      "paper_per_person": 2,
+      "tags": [
+        "story",
+        "craft",
+        "tea",
+        "family",
+        "deep"
+      ],
+      "audiences": [
+        "general",
+        "family"
+      ]
     }
-  }
+  },
+  "modules_note": "模块为独立演示经营配置，价格与固定套餐分别管理，不代表真实报价或合作。必要分钟和教师条件不可由模型压缩；客群适用标签仅为本演示课程设定，不构成真实安全认证。",
+  "modules": [
+    {
+      "id": "brief-story",
+      "title": "乡土入门讲解",
+      "tags": [
+        "story",
+        "family"
+      ],
+      "order": 10,
+      "min_duration_minutes": 20,
+      "teacher_needed": 0,
+      "paper_per_person": 0,
+      "exclusive_group": "story",
+      "requires_tags": [],
+      "audiences": [
+        "general",
+        "family"
+      ],
+      "costs": {
+        "local_service": {
+          "fixed_cents": 18000,
+          "per_person_cents": 0,
+          "payee": "在地活动服务者（演示角色）"
+        },
+        "material": {
+          "fixed_cents": 0,
+          "per_person_cents": 0,
+          "payee": "材料工具准备（演示角色）"
+        },
+        "operations": {
+          "fixed_cents": 2000,
+          "per_person_cents": 0,
+          "payee": "活动组织（演示角色）"
+        }
+      }
+    },
+    {
+      "id": "deep-story",
+      "title": "工艺深度讲述",
+      "tags": [
+        "story",
+        "deep"
+      ],
+      "order": 10,
+      "min_duration_minutes": 30,
+      "teacher_needed": 0,
+      "paper_per_person": 0,
+      "exclusive_group": "story",
+      "requires_tags": [],
+      "audiences": [
+        "general"
+      ],
+      "costs": {
+        "local_service": {
+          "fixed_cents": 26000,
+          "per_person_cents": 0,
+          "payee": "在地活动服务者（演示角色）"
+        },
+        "material": {
+          "fixed_cents": 0,
+          "per_person_cents": 0,
+          "payee": "材料工具准备（演示角色）"
+        },
+        "operations": {
+          "fixed_cents": 2500,
+          "per_person_cents": 0,
+          "payee": "活动组织（演示角色）"
+        }
+      }
+    },
+    {
+      "id": "basic-craft",
+      "title": "基础剪纸手作",
+      "tags": [
+        "craft",
+        "family"
+      ],
+      "order": 30,
+      "min_duration_minutes": 50,
+      "teacher_needed": 1,
+      "paper_per_person": 1,
+      "exclusive_group": "craft",
+      "requires_tags": [],
+      "audiences": [
+        "general",
+        "family"
+      ],
+      "costs": {
+        "local_service": {
+          "fixed_cents": 0,
+          "per_person_cents": 2500,
+          "payee": "在地活动服务者（演示角色）"
+        },
+        "material": {
+          "fixed_cents": 7000,
+          "per_person_cents": 800,
+          "payee": "材料工具准备（演示角色）"
+        },
+        "operations": {
+          "fixed_cents": 4000,
+          "per_person_cents": 0,
+          "payee": "活动组织（演示角色）"
+        }
+      }
+    },
+    {
+      "id": "deep-craft",
+      "title": "深度剪纸手作",
+      "tags": [
+        "craft",
+        "deep"
+      ],
+      "order": 30,
+      "min_duration_minutes": 60,
+      "teacher_needed": 1,
+      "paper_per_person": 2,
+      "exclusive_group": "craft",
+      "requires_tags": [],
+      "audiences": [
+        "general",
+        "family"
+      ],
+      "costs": {
+        "local_service": {
+          "fixed_cents": 0,
+          "per_person_cents": 3500,
+          "payee": "在地活动服务者（演示角色）"
+        },
+        "material": {
+          "fixed_cents": 8000,
+          "per_person_cents": 1000,
+          "payee": "材料工具准备（演示角色）"
+        },
+        "operations": {
+          "fixed_cents": 5000,
+          "per_person_cents": 0,
+          "payee": "活动组织（演示角色）"
+        }
+      }
+    },
+    {
+      "id": "craft-extension",
+      "title": "手作延伸练习",
+      "tags": [
+        "craft",
+        "extension",
+        "family"
+      ],
+      "order": 40,
+      "min_duration_minutes": 20,
+      "teacher_needed": 1,
+      "paper_per_person": 1,
+      "exclusive_group": null,
+      "requires_tags": [
+        "craft"
+      ],
+      "audiences": [
+        "general",
+        "family"
+      ],
+      "costs": {
+        "local_service": {
+          "fixed_cents": 0,
+          "per_person_cents": 800,
+          "payee": "在地活动服务者（演示角色）"
+        },
+        "material": {
+          "fixed_cents": 0,
+          "per_person_cents": 400,
+          "payee": "材料工具准备（演示角色）"
+        },
+        "operations": {
+          "fixed_cents": 1000,
+          "per_person_cents": 0,
+          "payee": "活动组织（演示角色）"
+        }
+      }
+    },
+    {
+      "id": "color-observation",
+      "title": "点染色彩观察",
+      "tags": [
+        "observation",
+        "family"
+      ],
+      "order": 20,
+      "min_duration_minutes": 15,
+      "teacher_needed": 0,
+      "paper_per_person": 0,
+      "exclusive_group": null,
+      "requires_tags": [],
+      "audiences": [
+        "general",
+        "family"
+      ],
+      "costs": {
+        "local_service": {
+          "fixed_cents": 6000,
+          "per_person_cents": 0,
+          "payee": "在地活动服务者（演示角色）"
+        },
+        "material": {
+          "fixed_cents": 0,
+          "per_person_cents": 100,
+          "payee": "材料工具准备（演示角色）"
+        },
+        "operations": {
+          "fixed_cents": 1000,
+          "per_person_cents": 0,
+          "payee": "活动组织（演示角色）"
+        }
+      }
+    },
+    {
+      "id": "sharing",
+      "title": "作品交流分享",
+      "tags": [
+        "sharing",
+        "family"
+      ],
+      "order": 50,
+      "min_duration_minutes": 15,
+      "teacher_needed": 0,
+      "paper_per_person": 0,
+      "exclusive_group": null,
+      "requires_tags": [],
+      "audiences": [
+        "general",
+        "family"
+      ],
+      "costs": {
+        "local_service": {
+          "fixed_cents": 4000,
+          "per_person_cents": 0,
+          "payee": "在地活动服务者（演示角色）"
+        },
+        "material": {
+          "fixed_cents": 0,
+          "per_person_cents": 0,
+          "payee": "材料工具准备（演示角色）"
+        },
+        "operations": {
+          "fixed_cents": 1000,
+          "per_person_cents": 0,
+          "payee": "活动组织（演示角色）"
+        }
+      }
+    },
+    {
+      "id": "tea",
+      "title": "乡土茶歇",
+      "tags": [
+        "tea",
+        "family"
+      ],
+      "order": 60,
+      "min_duration_minutes": 20,
+      "teacher_needed": 0,
+      "paper_per_person": 0,
+      "exclusive_group": null,
+      "requires_tags": [],
+      "audiences": [
+        "general",
+        "family"
+      ],
+      "costs": {
+        "local_service": {
+          "fixed_cents": 0,
+          "per_person_cents": 1500,
+          "payee": "在地活动服务者（演示角色）"
+        },
+        "material": {
+          "fixed_cents": 0,
+          "per_person_cents": 200,
+          "payee": "材料工具准备（演示角色）"
+        },
+        "operations": {
+          "fixed_cents": 1000,
+          "per_person_cents": 0,
+          "payee": "活动组织（演示角色）"
+        }
+      }
+    }
+  ]
 }

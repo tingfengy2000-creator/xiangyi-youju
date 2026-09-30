@@ -1,6 +1,6 @@
 {
   "name": "xiangyi-youju",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": true,
   "description": "乡艺有据：本地非遗事实核验与体验编排，保留明示预设与真实运行边界",
   "license": "UNLICENSED",
@@ -10,7 +10,8 @@
   "scripts": {
     "test": "node tests/e2e/prototype.spec.cjs",
     "render:design": "node scripts/render-design.cjs",
-    "test:live": "node tests/e2e/live-workflow.spec.cjs"
+    "test:live": "node tests/e2e/live-workflow.spec.cjs",
+    "test:modules": "node tests/e2e/module-workflow.spec.cjs"
   },
   "devDependencies": {
     "playwright": "1.62.1"

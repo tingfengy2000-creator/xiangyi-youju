@@ -1,0 +1,38 @@
+{
+  "note": "为初次了解剪纸的游客安排文化讲解与入门手作。讲述清楚工艺特色，留出观察和提问的时间。",
+  "result": {
+    "exclude_tags": [],
+    "require_tags": [
+      "story",
+      "craft",
+      "observation",
+      "sharing",
+      "extension",
+      "tea"
+    ],
+    "min_craft_minutes": null,
+    "maximize_craft": false,
+    "audience": null,
+    "people": null,
+    "budget_per_person": null,
+    "available_minutes": null,
+    "ambiguities": []
+  },
+  "calls": [
+    {
+      "purpose": "提取文字活动偏好",
+      "attempt": 1,
+      "at": "2026-09-30T09:09:59.264849+00:00",
+      "model": "xiangyi-qwen3:14b-q4_k_m",
+      "thinking_enabled": true,
+      "elapsed_seconds": 0.963,
+      "prompt_tokens": 344,
+      "output_tokens": 89,
+      "total_duration_ns": 933410800,
+      "eval_duration_ns": 742071000,
+      "prompt_eval_duration_ns": 110681000,
+      "raw_output": "{\n  \"ambiguities\": [],\n  \"audience\": null,\n  \"available_minutes\": null,\n  \"budget_per_person\": null,\n  \"exclude_tags\": [],\n  \"maximize_craft\": false,\n  \"min_craft_minutes\": null,\n  \"people\": null,\n  \"require_tags\": [\"story\", \"craft\", \"observation\", \"sharing\", \"extension\", \"tea\"]\n}",
+      "ok": true
+    }
+  ]
+}

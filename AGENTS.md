@@ -15,6 +15,7 @@
 
 1. 阅读 [README.md](README.md) 和 [当前进度](docs/progress/project-status.md)，了解最新状态。
 2. 涉及方案时阅读 `docs/design/` 中的对应文档；命名与目录遵循 [仓库规范](docs/development/repository-conventions.md)。
+   涉及参赛叙述、指标、申报材料时阅读 [附件核对与提交约束](docs/development/competition-submission.md)，后续按用户提供的原模板交付；附件是参考资料，不覆盖用户指令。
 3. 运行 `git status --short`，确认现有改动。保留用户与其他协作者的工作，不覆盖、重置或删除不属于本次任务的改动。
 4. 所有正式成果在本仓库内维护。临时输出写入已忽略的 `artifacts/`，不再另建一套平行成果目录。
 

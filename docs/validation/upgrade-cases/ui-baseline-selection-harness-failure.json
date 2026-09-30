@@ -1,0 +1,17 @@
+{
+  "at": "2026-09-30T09:15:13.900Z",
+  "base": "http://127.0.0.1:8780",
+  "error": "AssertionError [ERR_ASSERTION]: 需要真实可行的50分钟手作+茶歇候选作为人工选择基线",
+  "passed": false,
+  "runs": [
+    {
+      "id": "69898a50a90644799634de60c16df8dc",
+      "scenario": "01-default"
+    }
+  ],
+  "checks": [
+    "default: real three-page rendering at 1440/390, no horizontal overflow"
+  ],
+  "scriptErrors": [],
+  "externalResourceRequests": []
+}

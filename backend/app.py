@@ -18,6 +18,8 @@ from .schemas import RunInput, Approval, UsageChange
 from .workflow import execute
 from .planner import solve_plans
 from .bundles import render_bundle
+from .constraints import compare_plans
+from .teaching import validate_teaching
 
 EXECUTOR = ThreadPoolExecutor(max_workers=1, thread_name_prefix="local-agent")
 
@@ -68,6 +70,8 @@ def runs():
 
 def _launch_locked(payload, parent_id=None):
     data = payload.model_dump()
+    previous = required_run(data["previous_run_id"]) if data.get("previous_run_id") else None
+    previous_plan = deepcopy(previous.get("plan")) if previous else None
     data["operating_overrides"] = payload.operating_overrides.model_dump(exclude_unset=True)
     profile = load_profile()
     profile.update(data["operating_overrides"])
@@ -81,7 +85,7 @@ def _launch_locked(payload, parent_id=None):
            "source_versions": store.versions(sources), "material_versions": store.versions(materials),
            "claims": [], "cards": [], "planning": None, "plan": None, "approval": None,
            "model_calls": 0, "model_metrics": [], "revision_count": 0, "elapsed_seconds": 0,
-           "parent_id": parent_id, "affected": [], "error": None, "execution_finished": False}
+           "parent_id": parent_id, "previous_plan": previous_plan, "affected": [], "error": None, "execution_finished": False}
     store.save_run(run)
     store.event(run["id"], "accepted", "已保存输入与资料/经营版本，等待本地单并发执行。")
     EXECUTOR.submit(execute, run["id"])
@@ -132,11 +136,17 @@ def approve(run_id: str, payload: Approval):
         run = required_run(run_id)
         if run["status"] not in {"awaiting_review", "confirmed"} or store.stale(run):
             raise HTTPException(409, "结果尚未就绪或版本已变化，请重新执行")
-        current = solve_plans(run["requirements"], run["profile"])
+        effective = run.get("effective_requirements", run["requirements"])
+        current = solve_plans(effective, run["profile"])
         selected = next((p for p in current["candidates"] if p["id"] == payload.plan_id and p["feasible"]), None)
         if selected is None or not any(c["usable"] for c in run["cards"]):
             raise HTTPException(409, "所选方案不可行或没有可用讲解内容")
+        if effective.get("planning_mode") == "modules" or effective.get("teaching_enabled"):
+            check = validate_teaching(run.get("teaching", {}), {**run, "requirements": effective})
+            if not check["passed"]:
+                raise HTTPException(409, "教学内容未通过检查，请重新执行")
         run.update(plan=selected, planning=current, status="confirmed",
+                   comparison=compare_plans(run.get("previous_plan"), selected),
                    approval={"confirmed": True, "plan_id": payload.plan_id, "at": now(), "run_version": run["version"]})
         store.save_run(run)
         store.event(run_id, "confirmed", "用户已确认当前版本的讲解卡和演示体验方案。")
@@ -144,18 +154,30 @@ def approve(run_id: str, payload: Approval):
 
 
 @app.get("/api/runs/{run_id}/export")
-def export(run_id: str, audience: str = "visitor"):
+def export(run_id: str, audience: str = "visitor", preview: bool = False, plan_id: str | None = None):
     if audience not in {"visitor", "organizer"}:
         raise HTTPException(422, "导出用途必须为visitor或organizer")
     with store.LOCK:
         run = required_run(run_id)
-        if run["status"] != "confirmed" or store.stale(run):
+        allowed = {"awaiting_review", "confirmed"} if preview else {"confirmed"}
+        if run["status"] not in allowed or store.stale(run):
             raise HTTPException(409, "必须先确认有效版本；变化后的旧包不能导出")
+        if plan_id and not preview:
+            raise HTTPException(422, "下载使用已确认方案，候选切换仅用于预览")
+        if preview:
+            run = deepcopy(run)
+            current = solve_plans(run.get("effective_requirements", run["requirements"]), run["profile"])
+            selected_id = plan_id or (run.get("plan") or {}).get("id")
+            selected = next((p for p in current["candidates"] if p["id"] == selected_id and p["feasible"]), None)
+            if selected is None:
+                raise HTTPException(409, "预览方案不存在或不可行")
+            run.update(plan=selected, planning=current)
         try:
-            html = render_bundle(run, audience)
+            html = render_bundle(run, audience, preview=preview)
         except ValueError as error:
             raise HTTPException(409, str(error)) from error
-    return HTMLResponse(html, headers={"Content-Disposition": f'attachment; filename="xiangyi-{audience}-{run_id[:8]}.html"'})
+    disposition = "inline" if preview else "attachment"
+    return HTMLResponse(html, headers={"Content-Disposition": f'{disposition}; filename="xiangyi-{audience}-{run_id[:8]}.html"', "Cache-Control": "no-store"})
 
 
 @app.patch("/api/{kind}/{record_id}")
@@ -175,7 +197,9 @@ def refresh(run_id: str):
         raise HTTPException(409, "运行中暂不能重新核验")
     if sum(r["status"] == "running" for r in store.list_runs()) >= 2:
         raise HTTPException(429, "请等待已有任务完成")
-    return launch(RunInput(**{k: old[k] for k in ("text", "requirements", "operating_overrides")}), parent_id=run_id)
+    data = {k: old[k] for k in ("text", "requirements", "operating_overrides")}
+    data.update(constraint_resolution=old.get("constraint_resolution", "ask"), previous_run_id=run_id)
+    return launch(RunInput(**data), parent_id=run_id)
 
 
 app.mount("/", StaticFiles(directory=ROOT / "frontend/prototype", html=True), name="frontend")

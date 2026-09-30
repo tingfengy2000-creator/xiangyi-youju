@@ -1,0 +1,35 @@
+{
+  "prompt": "从note提取明确偏好，只填原文直接支持的字段，不补全。未提到的数值和客群为null、标签为空数组；maximize_craft只有明确想要更多手作时间才为true。没有内部矛盾则ambiguities=[]，缺省不是歧义。活动标签仅代表明确指定的经营环节，普通提问不要求分享模块，不要强行选择所有标签。",
+  "note": "为初次了解剪纸的游客安排文化讲解与入门手作。讲述清楚工艺特色，留出观察和提问的时间。",
+  "result": {
+    "exclude_tags": [],
+    "require_tags": [
+      "craft",
+      "extension",
+      "extension"
+    ],
+    "min_craft_minutes": null,
+    "maximize_craft": false,
+    "audience": null,
+    "people": null,
+    "budget_per_person": null,
+    "available_minutes": null,
+    "ambiguities": []
+  },
+  "calls": [
+    {
+      "purpose": "诊断精简偏好提取",
+      "attempt": 1,
+      "at": "2026-09-30T09:09:32.446699+00:00",
+      "model": "xiangyi-qwen3:14b-q4_k_m",
+      "elapsed_seconds": 1.122,
+      "prompt_tokens": 262,
+      "output_tokens": 88,
+      "total_duration_ns": 1090841200,
+      "eval_duration_ns": 874607000,
+      "prompt_eval_duration_ns": 164676000,
+      "raw_output": "{\n  \"ambiguities\": [],\n  \"audience\": null,\n  \"available_minutes\": null,\n  \"budget_per_person\": null,\n  \"exclude_tags\": [],\n  \"maximize_craft\": false,\n  \"min_craft_minutes\": null,\n  \"people\": null,\n  \"require_tags\": [\"craft\", \"extension\", \"extension\"]\n}",
+      "ok": true
+    }
+  ]
+}

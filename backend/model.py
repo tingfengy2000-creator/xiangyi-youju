@@ -34,18 +34,23 @@ class LocalModel:
         self.calls = []
         self.on_call = on_call or (lambda value: None)
 
-    def ask(self, purpose, data, schema, instruction):
-        for attempt in range(2):
+    def ask(self, purpose, data, schema, instruction, *, max_attempts=2):
+        if max_attempts not in (1, 2):
+            raise ValueError("每阶段最多两次结构化请求")
+        for attempt in range(max_attempts):
             if len(self.calls) >= MAX_MODEL_CALLS:
                 raise ModelFailure("已达到8次本地模型调用上限，请缩短文案或人工处理。")
             started = time.perf_counter()
             record = {"purpose": purpose, "attempt": attempt + 1, "at": now(), "model": MODEL}
             self.calls.append(record)
             self.on_call(record)
+            output_schema = schema.model_json_schema()
+            # format constrains tokens but is not a substitute for showing the contract to the model.
+            contract = "\n输出JSON须满足以下字段定义；Schema中的枚举是允许值，不是需要全部填入的答案：\n" + json.dumps(output_schema, ensure_ascii=False)
             body = {"model": MODEL, "think": False, "stream": False, "keep_alive": "15m",
-                    "format": schema.model_json_schema(),
+                    "format": output_schema,
                     "options": {"temperature": 0, "num_ctx": 8192, "num_predict": 2300, "seed": 42},
-                    "messages": [{"role": "system", "content": SYSTEM + instruction},
+                    "messages": [{"role": "system", "content": SYSTEM + instruction + contract},
                                  {"role": "user", "content": json.dumps(data, ensure_ascii=False)}]}
             try:
                 with httpx.Client(timeout=httpx.Timeout(240, connect=8), trust_env=False) as client:
@@ -62,8 +67,9 @@ class LocalModel:
                 return value.model_dump()
             except (ValidationError, ValueError, KeyError) as error:
                 record.update(ok=False, error=type(error).__name__, elapsed_seconds=round(time.perf_counter() - started, 3))
-                if attempt:
-                    raise ModelFailure("模型连续两次未返回合格结构；保留失败记录，未生成预设答案。") from error
+                if attempt + 1 >= max_attempts:
+                    message = "模型连续两次未返回合格结构" if max_attempts == 2 else "模型未返回合格结构，本阶段不自动重试"
+                    raise ModelFailure(message + "；保留失败记录，未生成预设答案。") from error
                 instruction += "上次结构无效，请严格满足JSON Schema，包含全部必填项，不用Markdown围栏。"
             except httpx.HTTPError as error:
                 record.update(ok=False, error=type(error).__name__, elapsed_seconds=round(time.perf_counter() - started, 3))

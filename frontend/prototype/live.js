@@ -8,9 +8,9 @@
   const all = s => [...document.querySelectorAll(s)];
   const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const money = cents => '¥' + (Number(cents || 0) / 100).toLocaleString('zh-CN', {maximumFractionDigits:2});
-  const statusNames = {running:'本地任务正在执行',queued:'任务等待执行',awaiting_review:'核验完成，等待人工确认',needs_input:'条件需要调整或补充',model_error:'本地模型调用失败',failed:'任务执行失败',invalidated:'资料或素材已变化，结果失效',confirmed:'已人工确认，可导出'};
+  const statusNames = {running:'本地任务正在执行',queued:'任务等待执行',awaiting_review:'核验完成，等待人工确认',needs_confirmation:'文字与表单有冲突，等待您选择',needs_input:'条件需要调整或补充',model_error:'本地模型调用失败',failed:'任务执行失败',invalidated:'资料或素材已变化，结果失效',confirmed:'已人工确认，可导出'};
   const claimNames = {supported:'来源支持',contradicted:'与来源矛盾',conflicting:'资料存在分歧',insufficient:'信息不足'};
-  const terminal = new Set(['awaiting_review','needs_input','model_error','failed','invalidated','confirmed']);
+  const terminal = new Set(['awaiting_review','needs_confirmation','needs_input','model_error','failed','invalidated','confirmed']);
   const samples = {
     confusion:'蔚县剪纸以阳刻为主，阴刻为辅。蔚县剪纸善于多色点染。工坊每天开放并且无需预约。',
     missing:'剪纸以阴刻为主，阳刻为辅。这次体验将介绍地方剪纸的工艺特色。',
@@ -20,6 +20,8 @@
   let selected = 'deep', health = null, catalog = null, eventSource = null, pollTimer = null;
   let watching = null, watchGeneration = 0, activeAction = false;
   let lastImpact = null;
+  let previewAudience = 'visitor';
+  let manuallySelected = false;
   const invalidatedRuns = new Set();
   const healthCheckedFor = new Set();
   const style = document.createElement('link'); style.rel = 'stylesheet'; style.href = 'live.css'; document.head.append(style);
@@ -62,7 +64,7 @@
   function setBanner() {
     if (!q('#runtimeState')) return;
     const label = replay ? '历史回放' : current ? '真实本地运行' : '真实本地服务';
-    const text = current ? statusNames[current.status] || current.status : health?.model_ready ? '模型已就绪，等待输入' : '模型未就绪，运行将如实记录失败';
+    const text = dirty?'输入已变化，等待重新执行':replay&&current?.status==='confirmed'?'已保存确认记录 · 仅回放':current ? statusNames[current.status] || current.status : health?.model_ready ? '模型已就绪，等待输入' : '模型未就绪，运行将如实记录失败';
     q('#runtimeState').textContent = label + ' · ' + text;
     q('#runtimeDetail').textContent = current ? `任务 ${current.id.slice(0,8)} · ${current.model_calls ?? 0} 次模型调用 · ${Number(current.elapsed_seconds || 0).toFixed(1)} 秒${dirty ? ' · 输入已改动，需重新执行' : ''}` : `${health?.model || '本地模型'} · 经营参数为演示测算`;
     q('#runtimeDetail').title = current ? '完整任务编号：'+current.id : '';
@@ -72,7 +74,7 @@
   }
   function setupLive() {
     mode = 'live'; document.body.classList.remove('pending-runtime'); document.body.classList.add('live-runtime');
-    q('.prototype').insertAdjacentHTML('afterend', `<div class="runtime-bar" id="runtimeBar"><div><strong id="runtimeState"></strong><div class="runtime-detail" id="runtimeDetail"></div></div><div class="runtime-tools"><select id="historySelect" aria-label="查看真实历史记录"><option value="">历史记录 · 选择后仅回放</option></select><button class="text-link" id="refreshHealth">检查环境 ↗</button></div></div>`);
+    q('.prototype').insertAdjacentHTML('afterend', `<div class="runtime-bar" id="runtimeBar"><div><strong id="runtimeState"></strong><details class="runtime-information"><summary>查看运行信息</summary><div class="runtime-detail" id="runtimeDetail"></div></details></div><div class="runtime-tools"><button class="text-link" id="presentationMode" aria-pressed="false">投屏大字</button><select id="historySelect" aria-label="查看真实历史记录"><option value="">历史记录 · 选择后仅回放</option></select><button class="text-link" id="refreshHealth">检查环境 ↗</button></div></div>`);
     q('#studio .page-header .chip').textContent = '真实输入 · 逐句关联证据';
     q('#studio .step-strip').innerHTML = '<span>01 理解地域</span>→<span>02 逐句查证</span>→<span>03 编排体验</span>→<span>04 人工确认</span>';
     q('#caseSelect').previousElementSibling.innerHTML = '加载一个展示输入 <span>仅填入文案，不生成结果</span>';
@@ -80,13 +82,13 @@
     q('#draft').readOnly = false; q('#draft').maxLength = 1800; q('#draft').value = samples.confusion;
     q('#draft').previousElementSibling.innerHTML = '待核验文案 <span>可现场修改，重新运行后生效</span>';
     q('#draft').previousElementSibling.insertAdjacentHTML('beforebegin', `<div class="form-pair"><label for="region">讲解地域<input id="region" value="河北省蔚县" maxlength="80"></label><label for="project">非遗项目<input id="project" value="剪纸" maxlength="50"></label></div>`);
-    q('#draft').insertAdjacentHTML('afterend', `<label class="field-label" for="requestNote" style="margin-top:18px">活动需求 <span>具体人数、预算以编排条件为准</span></label><textarea id="requestNote" maxlength="1000">为初次了解剪纸的游客安排讲解、入门手作和茶歇。讲述清楚工艺特色，不夸大掌握程度。</textarea><div class="form-pair"><label for="preferredPlan">体验偏好<select id="preferredPlan"><option value="deep">优先深体验</option><option value="light">优先轻体验</option></select></label><label for="startTime">开始时间<input id="startTime" type="time" value="09:30"></label></div>`);
+    q('#draft').insertAdjacentHTML('afterend', `<label class="field-label" for="requestNote" style="margin-top:18px">这场体验，您有什么想法？ <span>与表单冲突时请您决定</span></label><textarea id="requestNote" maxlength="1000">为初次了解剪纸的游客安排文化讲解与入门手作。讲述清楚工艺特色，留出观察和提问的时间。</textarea><div class="form-pair"><label for="preferredPlan">套餐偏好<select id="preferredPlan"><option value="deep">优先深体验</option><option value="light">优先轻体验</option></select></label><label for="startTime">开始时间<input id="startTime" type="time" value="09:30"></label></div>`);
     q('#auditBtn').innerHTML = '核验并编排体验 <span class="arrow">→</span>';
     q('#auditBtn').nextElementSibling.textContent = '模型负责理解和表达；程序核对预算、日程与资源。每条结论保留原文和出处，无法证实的内容不会被当作错误。';
     q('#auditBadge').textContent = '等待真实运行';
     q('#auditEmpty p').textContent = '填写文案与需求，运行后在这里逐句比较原文、建议表达和来源证据。';
     q('#auditResult').innerHTML = ''; q('#auditResult').hidden = true; q('#auditEmpty').hidden = false;
-    q('#studio .trace').innerHTML = '<div class="event-head"><h3>执行记录 <span class="inline-note">· 仅显示服务端真实事件</span></h3><small id="eventHint">尚无运行记录</small></div><ol class="event-list" id="eventList"></ol>';
+    q('#studio .trace').innerHTML = '<details class="execution-details"><summary><span>查看真实执行记录</span><small id="eventHint">尚无运行记录</small></summary><p class="small-note">以下为服务端实际事件，不展示模型内部思维，不模拟执行进度。</p><ol class="event-list" id="eventList"></ol></details>';
     q('#studio .work-grid').insertAdjacentHTML('beforebegin','<div class="runtime-warning" id="runWarning" role="alert" hidden></div>');
     q('.controls .switch-row').insertAdjacentHTML('beforebegin', `<div class="resource-grid"><label for="teachers">手作教师（人）<input id="teachers" type="number" min="0" max="8" value="1"></label><label for="rooms">可用场地（间）<input id="rooms" type="number" min="0" max="8" value="1"></label></div>`);
     q('#conflictBtn').textContent = '填入「超容量且资源不足」';
@@ -95,7 +97,7 @@
     q('.controls .assumption').textContent = '演示经营配置与文化资料分别存储。报价读取服务端；人数、教师、场地和容量不得由模型擅自增加。单组接待，不假设并行扩容。';
     q('.scheme-help').textContent = '运行后显示服务端计算的候选方案；选择可行方案并人工确认，才可导出。';
     q('#routeCards').insertAdjacentHTML('afterend','<div class="guide-cards" id="guideCards"></div>');
-    q('#planner .banner').outerHTML = `<section class="approval-box"><h3>让一次体验，准备妥当再出发。</h3><p>确认讲解内容、活动日程与费用。演示参数不代表商户真实报价，确认不等于已取得在地经营许可。</p><label class="approval-check"><input type="checkbox" id="approvalCheck"><span>我已核对本次讲解与选中方案，知悉演示经营数据及素材使用边界。</span></label><div class="export-actions"><button class="button" id="approveRun" disabled>确认当前方案 ✓</button><button class="button secondary" id="exportVisitor" disabled>游客版体验包 ↗</button><button class="button secondary" id="exportOrganizer" disabled>组织者版体验包 ↗</button></div><div class="approval-state" id="approvalState">完成真实运行后可人工确认。</div></section><section class="material-panel"><h3>文化使用边界 · 变化可追溯</h3><p>这个示例改变本项目原创视觉素材的可用状态，展示受影响关系。不是对传统文化或社区权利的授权声明。</p><div id="materialList"></div><div class="impact-trail" id="impactTrail">尚未发生素材使用状态变更。</div><button class="text-link" id="refreshRun" disabled>依据最新资料重新核验 ↗</button></section>`;
+    q('#planner .banner').outerHTML = `<section class="approval-box"><div class="eyebrow">READY TO SHARE</div><h3>把一场体验，交到游客手中。</h3><p>先预览，再确认。游客版简洁易读，组织者版保留日程、账目与来源。演示数据不代表真实报价或经营许可。</p><div class="edition-grid"><article class="edition-card"><span class="edition-number">01</span><h4>游客版</h4><p>文化讲解 · 体验日程 · 参与须知</p><div><button class="text-link" id="previewVisitor" disabled>打开精美预览 ↗</button><button class="text-link" id="exportVisitor" disabled>下载 HTML ↓</button></div></article><article class="edition-card"><span class="edition-number">02</span><h4>组织者版</h4><p>完整账目 · 接待资源 · 核验与授权记录</p><div><button class="text-link" id="previewOrganizer" disabled>打开完整预览 ↗</button><button class="text-link" id="exportOrganizer" disabled>下载 HTML ↓</button></div></article></div><label class="approval-check"><input type="checkbox" id="approvalCheck"><span>我已核对本次讲解与选中方案，知悉演示经营数据及素材使用边界。</span></label><div class="export-actions"><button class="button" id="approveRun" disabled>确认当前方案 ✓</button></div><div class="approval-state" id="approvalState">完成真实运行后可预览；确认后才能下载。</div></section><section class="material-panel"><h3>文化使用边界 · 变化可追溯</h3><p>这个示例改变本项目原创视觉素材的可用状态，展示受影响关系。不是对传统文化或社区权利的授权声明。</p><div id="materialList"></div><div class="impact-trail" id="impactTrail">尚未发生素材使用状态变更。</div><button class="text-link" id="refreshRun" disabled>依据最新资料重新核验 ↗</button></section>`;
     q('#ledgerFormula').textContent = '报价均为演示测算；本地服务报酬为毛收入，不等于净利润。未包含交通、住宿和税费。';
     q('.ledger-foot').insertAdjacentHTML('beforebegin','<table class="ledger-table" id="ledgerTable"><thead><tr><th>项目</th><th>服务角色</th><th>金额</th></tr></thead><tbody></tbody></table>');
     q('#historySelect').addEventListener('change', async event => { if (event.target.value) await loadHistory(event.target.value); });
@@ -107,23 +109,86 @@
     q('#approveRun').addEventListener('click', approve);
     q('#exportVisitor').addEventListener('click', () => exportBundle('visitor'));
     q('#exportOrganizer').addEventListener('click', () => exportBundle('organizer'));
+    q('#previewVisitor').addEventListener('click', () => previewBundle('visitor'));
+    q('#previewOrganizer').addEventListener('click', () => previewBundle('organizer'));
     q('#refreshRun').addEventListener('click', refreshRun);
+    setupPresentation();
     clearPlan(); renderMaterials(); setBanner(); updateValues(); updateActions(); loadHistoryList();
     if(!health.model_ready)showWarning('业务服务已连接，但本地模型尚未就绪。请启动 Ollama 并准备模型。此时运行会保留真实失败记录，不会使用预设案例替代。');
+  }
+  function setupPresentation() {
+    q('#presentationMode').addEventListener('click', () => {
+      const enabled=document.body.classList.toggle('presentation-mode');
+      q('#presentationMode').setAttribute('aria-pressed',String(enabled));
+      q('#presentationMode').textContent=enabled?'退出投屏大字':'投屏大字';
+    });
+    q('#requestNote').insertAdjacentHTML('afterend','<div class="note-examples"><span>试着提出：</span><button class="text-link" id="familyNote">亲子互动，不安排茶歇 ↗</button></div>');
+    q('#familyNote').addEventListener('click',()=>{q('#requestNote').value='安排亲子互动，不安排茶歇，手作至少40分钟；讲解浅显易懂，留一个观察任务。';markDirty();notify('只填入了文字需求。运行后若与表单不同，将由您确认。');});
+    q('.controls .panel-body').insertAdjacentHTML('afterbegin',`<div class="control full"><label for="planningMode">编排方式</label><select id="planningMode" class="select"><option value="modules">按需求组合活动模块</option><option value="packages">经典轻 / 深体验套餐</option></select></div><div class="resource-grid experience-fields"><label for="audience">参与客群<select id="audience"><option value="general">普通游客</option><option value="family">亲子家庭</option></select></label><label for="teaPreference">茶歇安排<select id="teaPreference"><option value="any">灵活安排</option><option value="include">需要茶歇</option><option value="exclude">不含茶歇</option></select></label><label class="wide-field" for="minCraftMinutes">手作至少（分钟）<input id="minCraftMinutes" type="number" min="0" max="180" step="1" value="0"><small>0 表示不额外设定最低时长</small></label></div>`);
+    for(const id of ['planningMode','audience','teaPreference','minCraftMinutes'])q('#'+id).addEventListener('input',()=>{syncPlanningMode();markDirty();});
+    syncPlanningMode();
+    q('#runWarning').insertAdjacentHTML('afterend','<section class="requirement-conflicts" id="requirementConflictStudio" hidden></section>');
+    q('#planner .plan-grid').insertAdjacentHTML('beforebegin','<section class="requirement-conflicts" id="requirementConflictPlanner" hidden></section>');
+    q('.scheme-choices').insertAdjacentHTML('beforebegin','<section class="plan-comparison" id="planComparison" hidden></section>');
+    q('.scheme-choices').setAttribute('aria-label','比较已校验的体验候选');
+    q('#planComparison').insertAdjacentHTML('beforebegin','<div class="effective-conditions" id="effectiveConditions" hidden></div>');
+    q('#guideCards').insertAdjacentHTML('beforebegin','<section class="teaching-panel" id="teachingPanel" hidden></section>');
+    const table=q('#ledgerTable'); const ledgerDetails=document.createElement('details'); ledgerDetails.className='ledger-details';ledgerDetails.innerHTML='<summary>查看每笔服务报酬与成本</summary>';table.before(ledgerDetails);ledgerDetails.append(table);
+    const cost=q('#costDetails'); const calculation=document.createElement('details');calculation.className='calculation-details';calculation.innerHTML='<summary>计算口径与经营假设</summary>';cost.before(calculation);calculation.append(cost);
+    document.body.insertAdjacentHTML('beforeend',`<dialog class="bundle-preview" id="bundlePreview"><div class="preview-toolbar"><div><span class="eyebrow">EXPERIENCE BOOKLET</span><h2 id="previewTitle">体验包预览</h2></div><div class="preview-switch"><button data-preview-audience="visitor">游客版</button><button data-preview-audience="organizer">组织者版</button></div><button class="preview-close" id="closePreview" aria-label="关闭预览">×</button></div><div class="preview-notice" id="previewNotice"></div><iframe id="previewFrame" title="体验包真实内容预览" sandbox="allow-same-origin allow-popups allow-popups-to-escape-sandbox"></iframe><div class="preview-footer"><span id="previewFootnote"></span><button class="button" id="previewDownload" disabled>下载当前版本 ↓</button></div></dialog>`);
+    q('#closePreview').addEventListener('click',closePreview);
+    q('#bundlePreview').addEventListener('click',event=>{if(event.target===q('#bundlePreview'))closePreview();});
+    q('#bundlePreview').addEventListener('close',()=>{q('#previewFrame').srcdoc='';});
+    all('[data-preview-audience]').forEach(button=>button.addEventListener('click',()=>previewBundle(button.dataset.previewAudience)));
+    q('#previewDownload').addEventListener('click',()=>exportBundle(previewAudience));
+    document.addEventListener('click',event=>{
+      const resolve=event.target.closest('[data-resolve-requirements]');if(resolve){resolveRequirements(resolve.dataset.resolveRequirements);return;}
+      const source=event.target.closest('[data-reveal-claim]');if(source){window.page('studio');const row=document.getElementById('claim-'+source.dataset.revealClaim);if(row){const evidence=row.querySelector('details');if(evidence)evidence.open=true;row.scrollIntoView({block:'start',behavior:'smooth'});}}
+    });
+  }
+  function syncPlanningMode(){q('#preferredPlan').closest('label').hidden=q('#planningMode').value!=='packages';}
+  function setInputValue(id,value){
+    const input=q('#'+id);
+    if(input.type==='range'){
+      input.min=Math.min(Number(input.min),Number(value));input.max=Math.max(Number(input.max),Number(value));input.step=id==='budget'?'0.01':'1';
+      const ticks=input.parentElement.querySelector('.range-ticks');if(ticks){const prefix=id==='budget'?'¥':'';const suffix=['people','capacity'].includes(id)?' 人':id==='minutes'?' 分钟':'';ticks.children[0].textContent=prefix+input.min+suffix;ticks.children[1].textContent=prefix+input.max+suffix;}
+    }
+    input.value=value;
+  }
+  function closePreview(){if(q('#bundlePreview')?.open)q('#bundlePreview').close();}
+  function renderRequirementConflicts(){
+    const show=current?.status==='needs_confirmation'&&(current.requirement_conflicts||[]).length>0;
+    for(const panel of all('.requirement-conflicts')){
+      panel.hidden=!show;if(!show)continue;
+      panel.innerHTML=`<div class="eyebrow">YOUR CHOICE MATTERS</div><h2>您写下的想法，与表单有一点不同。</h2><p>先确认采用哪组条件，再继续编排。系统不会替您改人数、预算或活动要求。</p><div class="conflict-rows">${current.requirement_conflicts.map(item=>`<div class="conflict-row"><strong>${esc(item.label||item.field)}</strong><span><small>表单条件</small>${esc(conflictValue(item.field,item.form_value))}</span><span><small>文字需求</small>${esc(conflictValue(item.field,item.note_value))}</span><p>${esc(item.reason)}</p></div>`).join('')}</div><div class="conflict-actions"><button class="button secondary" data-resolve-requirements="form" ${busy||activeAction||dirty?'disabled':''}>按表单条件继续</button><button class="button" data-resolve-requirements="note" ${busy||activeAction||dirty?'disabled':''}>采纳文字里的条件 →</button></div><small>${dirty?'输入已变化，请先重新分析需求。':'采纳文字时，只更新上方明确列出的条件；教师、场地与报价保持锁定。'}</small>`;
+    }
+  }
+  function conflictValue(field,value){const labels={general:'普通游客',family:'亲子家庭',any:'灵活安排',include:'需要茶歇',exclude:'不含茶歇'};if(labels[value])return labels[value];return String(value)+(field==='budget_per_person'?' 元 / 人':['available_minutes','min_craft_minutes'].includes(field)?' 分钟':field==='people'?' 人':'');}
+  async function resolveRequirements(resolution){
+    if(busy||activeAction||dirty||current?.status!=='needs_confirmation')return;
+    if(resolution==='form'){await submit('form');return;}
+    const fields={people:['people',1,100],budget_per_person:['budget',0,10000],available_minutes:['minutes',1,720],min_craft_minutes:['minCraftMinutes',0,180],audience:['audience','general','family'],tea_preference:['teaPreference','any','include','exclude']};
+    const updates=[];
+    for(const conflict of current.requirement_conflicts||[]){const rule=fields[conflict.field];if(!rule){showWarning('有无法直接写入表单的冲突，请手动核对。');return;}let value=conflict.note_value;if(typeof rule[1]==='number'){value=Number(value);if(!Number.isFinite(value)||value<rule[1]||value>rule[2]||(conflict.field!=='budget_per_person'&&!Number.isInteger(value))){showWarning('文字中的数值超出允许范围，请手动修正后重新运行。');return;}}else if(!rule.slice(1).includes(value)){showWarning('文字条件不能直接映射到表单，请手动选择。');return;}updates.push([rule[0],value]);}
+    updates.forEach(([id,value])=>setInputValue(id,value));updateValues();await submit('ask');
   }
   function handleOriginal(event, target) {
     if (event.type === 'click' && target.tagName === 'BUTTON') {
       if (target.id === 'auditBtn') submit();
       if (target.id === 'resetPlan') { for (const [id,value] of Object.entries({people:8,budget:160,minutes:150,capacity:12,teachers:1,rooms:1})) q('#'+id).value = value; q('#reuse').checked = true; q('#preferredPlan').value = 'deep'; markDirty(); }
       if (target.id === 'conflictBtn') { q('#people').value = 16; q('#capacity').value = 8; q('#teachers').value = 1; q('#rooms').value = 1; markDirty(); notify('已填入 16 人、单组 8 人、1 位教师与 1 间场地。重新运行后查看真实冲突。'); }
-      if (target.dataset.scheme && current?.planning) { selected = target.dataset.scheme; q('#approvalCheck').checked = false; renderPlan(); updateActions(); }
+      if (target.dataset.scheme && current?.planning) { selected = target.dataset.scheme;manuallySelected=true;closePreview();q('#approvalCheck').checked = false; renderPlan(); updateActions(); }
     }
     if (event.type === 'change' && target.id === 'caseSelect') { q('#draft').value = samples[target.value]; if (target.value === 'missing') q('#region').value = ''; else q('#region').value = '河北省蔚县'; markDirty(); }
     if (event.type === 'input') markDirty();
   }
   function updateValues() { for (const [id,suffix] of [['people',' 人'],['minutes',' 分钟'],['capacity',' 人']]) q('#'+id+'Value').textContent = q('#'+id).value + suffix; q('#budgetValue').textContent = '¥' + q('#budget').value; }
-  function requestData() { return {text:q('#draft').value.trim(), requirements:{region:q('#region').value.trim(),project:q('#project').value.trim(),people:Number(q('#people').value),budget_per_person:Number(q('#budget').value),available_minutes:Number(q('#minutes').value),preferred_plan:q('#preferredPlan').value,start_time:q('#startTime').value,note:q('#requestNote').value.trim()},operating_overrides:{capacity:Number(q('#capacity').value),teachers:Number(q('#teachers').value),rooms:Number(q('#rooms').value),reuse:q('#reuse').checked}}; }
-  function markDirty() { updateValues(); if (current || busy) { dirty = true; q('#approvalCheck').checked = false; showWarning('输入或经营条件已改变。当前结果属于上一次运行，需重新编排后再确认与导出。'); if(current) renderPlan(); } updateActions(); setBanner(); }
+  function requestData(resolution='ask') {
+    const data={text:q('#draft').value.trim(),requirements:{region:q('#region').value.trim(),project:q('#project').value.trim(),people:Number(q('#people').value),budget_per_person:Number(q('#budget').value),available_minutes:Number(q('#minutes').value),preferred_plan:q('#preferredPlan').value,start_time:q('#startTime').value,note:q('#requestNote').value.trim(),planning_mode:q('#planningMode').value,audience:q('#audience').value,tea_preference:q('#teaPreference').value,min_craft_minutes:Number(q('#minCraftMinutes').value),teaching_enabled:true},operating_overrides:{capacity:Number(q('#capacity').value),teachers:Number(q('#teachers').value),rooms:Number(q('#rooms').value),reuse:q('#reuse').checked},constraint_resolution:resolution};
+    const previous=current?.plan?current.id:current?.previous_run_id;if(previous)data.previous_run_id=previous;
+    return data;
+  }
+  function markDirty() { updateValues(); closePreview(); if (current || busy) { dirty = true; q('#approvalCheck').checked = false; showWarning('输入或经营条件已改变。当前结果属于上一次运行，需重新编排后再确认与导出。'); if(current) renderPlan(); } renderRequirementConflicts();updateActions(); setBanner(); }
   function showWarning(text) { q('#runWarning').hidden = !text; q('#runWarning').textContent = text || ''; }
   function clearPlan() {
     q('#planStatus').className = 'plan-status'; q('#planStatus').innerHTML = '<strong>等待真实编排</strong><small>不会预先填入模型结果</small>';
@@ -131,12 +196,15 @@
     for (const id of ['totalCost','localRevenue','localShare','legendLocal','legendMaterial','legendOperations']) q('#'+id).textContent = '—';
     for (const id of ['barLocal','barMaterial','barOperations']) q('#'+id).style.width = '0%';
     q('#constraints').innerHTML = ''; q('#costDetails').textContent = ''; q('#ledgerTable tbody').innerHTML = ''; q('#guideCards').innerHTML = '';
-    all('[data-scheme]').forEach(button => { button.classList.remove('active'); button.setAttribute('aria-pressed','false'); button.querySelector('.scheme-state').textContent = '等待运行'; button.querySelector('.scheme-price').textContent = '金额读取服务端'; button.querySelector('.scheme-income').textContent = '演示配置 · 尚未生成计划'; });
+    q('.scheme-choices').innerHTML='<div class="empty-plan">从真实接待资源中组合候选，运行后比较时间、费用与手作内容。</div>';
+    if(q('#planComparison'))q('#planComparison').hidden=true;if(q('#teachingPanel'))q('#teachingPanel').hidden=true;if(q('#effectiveConditions'))q('#effectiveConditions').hidden=true;
   }
-  async function submit() {
+  async function submit(resolution='ask') {
     if (busy || activeAction) return;
-    const body = requestData(); if (!body.text) { showWarning('请先填写待核验文案。'); return; }
-    busy = true; replay = false; dirty = false; current = null; lastImpact = null;
+    if(typeof resolution!=='string')resolution='ask';
+    const body = requestData(resolution); if (!body.text) { showWarning('请先填写待核验文案。'); return; }
+    busy = true; replay = false; dirty = false; current = null; lastImpact = null;manuallySelected=false;selected='';
+    closePreview();renderRequirementConflicts();
     stopWatch(); showWarning(''); clearPlan(); q('#auditResult').innerHTML = ''; q('#auditResult').hidden = true; q('#auditEmpty').hidden = false;
     q('#auditEmpty p').textContent = '请求已发送。下方执行记录来自真实服务端事件，模型失败时会保留失败原因。'; q('#auditBadge').textContent = '等待模型结果';
     q('#eventList').innerHTML = ''; q('#approvalCheck').checked = false; q('#impactTrail').textContent = '尚未发生素材使用状态变更。'; updateActions();
@@ -181,8 +249,16 @@
     q('#eventHint').textContent = replay ? '已保存的真实执行记录 · 历史回放' : `${events.length} 条真实事件`;
     q('#eventList').innerHTML = events.map(event => { const date = new Date(event.at); const time = Number.isNaN(date.valueOf()) ? String(event.at || '').slice(-8) : date.toLocaleTimeString('zh-CN',{hour12:false}); return `<li><time>${esc(time)}</time><span>${esc(event.message)}</span></li>`; }).join('');
     const stage = [...events].reverse().find(event => event.stage !== 'model_call')?.stage;
-    const index = ['awaiting_review','confirmed'].includes(current?.status) ? 3 : ['model_error','failed','needs_input','invalidated'].includes(current?.status) ? -1 : ['cards_ready','planned','revision','chosen','validated'].includes(stage) ? 2 : ['understood','retrieved','audited'].includes(stage) ? 1 : events.length ? 0 : -1;
+    const index = ['awaiting_review','confirmed'].includes(current?.status) ? 3 : ['model_error','failed','needs_input','needs_confirmation','invalidated'].includes(current?.status) ? -1 : ['cards_ready','planned','revision','chosen','validated','teaching_ready'].includes(stage) ? 2 : ['understood','retrieved','audited'].includes(stage) ? 1 : events.length ? 0 : -1;
     all('#studio .step-strip span').forEach((item,i) => item.classList.toggle('current',i === index));
+  }
+  function highlightRevision(original,revised){
+    if(original===revised)return[esc(original),esc(revised)];
+    const before=Array.from(original),after=Array.from(revised);let start=0,end=0;
+    while(start<before.length&&start<after.length&&before[start]===after[start])start++;
+    while(end<before.length-start&&end<after.length-start&&before[before.length-1-end]===after[after.length-1-end])end++;
+    const render=(letters,className)=>esc(letters.slice(0,start).join(''))+'<mark class="'+className+'">'+esc(letters.slice(start,letters.length-end).join(''))+'</mark>'+esc(end?letters.slice(-end).join(''):'');
+    return[render(before,'diff-removed'),render(after,'diff-added')];
   }
   function renderClaims() {
     const claims = current?.claims || [];
@@ -198,28 +274,42 @@
     if (!claims.length) { if (current?.error) q('#auditEmpty p').textContent = errorMessage(current.error); return; }
     const sourceCount = new Set(claims.filter(audited).flatMap(c => evidenceFor(c).map(e => e.id || e.source_id))).size;
     const insufficient = claims.filter(c => audited(c) && c.status === 'insufficient').length;
-    q('#auditResult').innerHTML = `<div class="result-summary">${claims.length} 项陈述 · ${sourceCount} 条定位证据${insufficient ? ` · ${insufficient} 项信息不足` : ''}${completed < claims.length ? ` · ${claims.length-completed} 项尚待判定` : ''}<br>结论以来源适用地域和原文为依据，不提供虚假的可信百分比。</div>` + claims.map((claim,index) => {
+    q('#auditResult').innerHTML = `<div class="result-summary"><strong>${claims.length} 项陈述 · ${sourceCount} 条定位证据</strong><span>${insufficient ? `${insufficient} 项信息不足 · ` : ''}${completed < claims.length ? `${claims.length-completed} 项尚待判定 · ` : ''}每个修改，都能回到出处。</span></div>` + claims.map((claim,index) => {
       const checked = audited(claim);
       const label = checked ? claimNames[claim.status] || claim.status : '等待逐句判定';
       const revised = !checked ? '尚未形成核验结论，暂不改写。' : ['insufficient','conflicting'].includes(claim.status) ? '保留原文待核，不进入游客讲解；补充资料或核清分歧后再处理。' : claim.suggested_text || (claim.status === 'supported' ? claim.text : '暂未形成有来源的修订，请人工核对。');
       const correction = claim.corrected_status === 'supported' ? ' 修订表达已再次获得来源支持。' : claim.corrected_status ? ' 修订表达尚未获得充分支持，不进入游客讲解。' : '';
-      const evidenceHtml = evidenceFor(claim).map(evidence => `<details class="evidence-block"><summary>${checked ? '' : '检索候选 · '}${esc(evidence.title || evidence.source_id)} · ${esc(evidence.region || '地域待核对')} ↗</summary><blockquote>${esc(evidence.quote)}</blockquote><div class="evidence-meta"><b>原文位置：</b>${esc(evidence.locator || '来源记录内定位')}<br><b>记录编号：</b>${esc(evidence.id || evidence.source_id)}<br><b>采集时间：</b>${esc(evidence.accessed_at || '见来源清单')}<br><b>使用说明：</b>${esc(evidence.use_note || '按来源使用边界引用')}<br><a href="${esc(urlSafe(evidence.url))}" target="_blank" rel="noopener noreferrer">打开原始资料核对 ↗</a></div></details>`).join('');
-      return `<article class="claim-item" id="claim-${esc(claim.id)}"><div class="claim-head"><span class="claim-number">逐句核验 ${String(index+1).padStart(2,'0')} / ${esc(claim.id)}</span><span class="claim-status ${esc(checked ? claim.status : 'insufficient')}">${esc(label)}</span></div><div class="claim-text-pair"><span>原文</span><p>${esc(claim.text)}</p></div><div class="claim-text-pair revision"><span>处理</span><p>${esc(revised)}</p></div><p class="claim-reason">${esc(claim.reason || '陈述已保存，尚未完成证据判定。')}${esc(correction)}</p>${evidenceHtml || '<div class="evidence-empty">当前没有被引用的定位证据。未检索到不等于事实错误。</div>'}</article>`;
+      const evidenceHtml = evidenceFor(claim).map((evidence,evidenceIndex) => `<details class="evidence-block" ${checked&&claim.status==='contradicted'&&evidenceIndex===0?'open':''}><summary>${checked ? '' : '检索候选 · '}${esc(evidence.title || evidence.source_id)} <span>${esc(evidence.region || '地域待核对')}</span></summary><blockquote>${esc(evidence.quote)}</blockquote><div class="evidence-meta"><b>原文位置</b><p>${esc(evidence.locator || '来源记录内定位')}</p><a href="${esc(urlSafe(evidence.url))}" target="_blank" rel="noopener noreferrer">到原始资料核对 ↗</a><details class="source-provenance"><summary>引用时间与使用说明</summary><p>记录编号：${esc(evidence.id || evidence.source_id)}<br>采集时间：${esc(evidence.accessed_at || '见来源清单')}<br>${esc(evidence.use_note || '按来源使用边界引用')}</p></details></div></details>`).join('');
+      const changed=checked&&claim.status==='contradicted'&&!!claim.suggested_text;
+      const [originalHtml,revisedHtml]=changed?highlightRevision(claim.text,revised):[esc(claim.text),esc(revised)];
+      return `<article class="claim-item ${changed?'has-correction':''}" id="claim-${esc(claim.id)}"><div class="claim-head"><span class="claim-number">陈述 ${String(index+1).padStart(2,'0')}</span><span class="claim-status ${esc(checked ? claim.status : 'insufficient')}">${esc(label)}</span></div><div class="claim-comparison"><div class="claim-version before"><label>原文</label><p>${originalHtml}</p></div><div class="claim-version after"><label>${changed?'有据修订':claim.status==='supported'&&checked?'核对后保留':'处理建议'}</label><p>${revisedHtml}</p></div></div><p class="claim-reason">${esc(claim.reason || '陈述已保存，尚未完成证据判定。')}${esc(correction)}</p>${evidenceHtml || '<div class="evidence-empty">当前没有被引用的定位证据。未检索到不等于事实错误。</div>'}</article>`;
     }).join('');
   }
   function candidates() { return current?.planning?.candidates || []; }
   function chosen() { return candidates().find(plan => plan.id === selected) || null; }
+  function teachingReady() { return !(current?.requirements?.teaching_enabled || current?.requirements?.planning_mode==='modules') || current?.teaching?.check?.passed===true; }
+  function previewReady() { return !!current&&!dirty&&!busy&&!activeAction&&['awaiting_review','confirmed'].includes(current.status)&&!!chosen()?.feasible&&teachingReady(); }
+  function downloadReady() { return previewReady()&&!replay&&current.status==='confirmed'&&current.approval?.plan_id===selected; }
+  function renderComparison() {
+    const comparison=current?.comparison,panel=q('#planComparison');panel.hidden=!comparison?.before||!comparison?.after;if(panel.hidden)return;
+    panel.innerHTML=`<div class="eyebrow">WHAT CHANGED</div><h3>需求变了，体验如何调整？</h3><div class="comparison-versions"><div><small>上一次方案</small><strong>${esc(comparison.before.title)}</strong><span>${money(comparison.before.total_cents)} · ${esc(comparison.before.duration_minutes)} 分钟</span></div><span class="comparison-arrow">→</span><div><small>${current.approval?'本次已确认方案':'本次模型选择'}</small><strong>${esc(comparison.after.title)}</strong><span>${money(comparison.after.total_cents)} · ${esc(comparison.after.duration_minutes)} 分钟</span></div></div><ul>${(comparison.changes||[]).map(change=>`<li>${esc(change)}</li>`).join('')}</ul><small>此比较对应模型选中方案；您可在下方比较其他候选。</small>`;
+  }
+  function renderTeaching() {
+    const teaching=current?.teaching,panel=q('#teachingPanel');panel.hidden=!teaching;if(!teaching)return;
+    const refs=item=>(item.claim_ids||[]).map((id,i)=>`<button class="text-link" data-reveal-claim="${esc(id)}">依据 ${i+1} ↗</button>`).join('');
+    panel.innerHTML=`<div class="teaching-heading"><div><div class="eyebrow">CULTURE, MADE APPROACHABLE</div><h3>${teaching.audience==='family'?'让孩子看见剪纸里的巧思。':'让一段讲解，有据，也有趣。'}</h3></div><span class="claim-status ${teaching.check?.passed?'supported':'insufficient'}">${teaching.check?.passed?'讲解引用已校验':'教学内容待核对'}</span></div><div class="teaching-script">${(teaching.short_script||[]).map((item,i)=>`<article><span>${String(i+1).padStart(2,'0')}</span><div><p>${esc(item.text)}</p><div class="teaching-refs">${refs(item)}</div></div></article>`).join('')}</div><div class="teaching-tasks">${[['观察任务',teaching.observation_task],['互动提问',teaching.interaction_question]].filter(([,item])=>item).map(([label,item])=>`<article><span>${label}</span><p>${esc(item.text)}</p>${refs(item)}</article>`).join('')}</div><p class="teaching-label">${esc(teaching.creative_label||'观察任务与互动提问属于教学创意，不作为新增文化事实。')}</p>`;
+    if(dirty||current.status==='invalidated'){
+      const previous=panel.innerHTML.replace('讲解引用已校验','上次运行的核验记录');
+      panel.innerHTML=`<div class="teaching-expired"><strong>${current.status==='invalidated'?'旧版教学包已失效':'输入已变化，教学包等待重编'}</strong><p>以下仅为历史内容，不能用于当前讲解、预览或导出。重新核验后将按最新资料与素材使用边界生成。</p></div><details class="guide-details"><summary>仅查看上一次教学内容</summary>${previous}</details>`;
+    }
+  }
   function renderPlan() {
-    if (!candidates().length) { clearPlan(); if(current?.status === 'needs_input') {q('#planStatus').className='plan-status error';q('#planStatus').innerHTML='<strong>需要补充条件</strong><small>未生成可执行方案</small>';} if(['model_error','failed'].includes(current?.status)){q('#planStatus').className='plan-status error';q('#planStatus').innerHTML='<strong>本次运行失败，未生成方案</strong><small>'+esc(errorMessage(current.error||'请检查本地模型服务后重新运行'))+'</small>';} return; }
+    if (!candidates().length) { clearPlan(); if(['needs_input','needs_confirmation'].includes(current?.status)) {q('#planStatus').className='plan-status error';q('#planStatus').innerHTML=`<strong>${current.status==='needs_confirmation'?'先确认您的真实需求':'需要补充条件'}</strong><small>未生成可执行方案</small>`;} if(['model_error','failed'].includes(current?.status)){q('#planStatus').className='plan-status error';q('#planStatus').innerHTML='<strong>本次运行失败，未生成方案</strong><small>'+esc(errorMessage(current.error||'请检查本地模型服务后重新运行'))+'</small>';} return; }
     if (!candidates().some(plan => plan.id === selected)) selected = current.plan?.id || candidates()[0].id;
-    all('[data-scheme]').forEach(button => {
-      const plan = candidates().find(item => item.id === button.dataset.scheme); if (!plan) {button.disabled = true;return;}
-      button.disabled = busy; button.classList.toggle('active',selected === plan.id); button.setAttribute('aria-pressed',selected === plan.id?'true':'false');
-      const state = button.querySelector('.scheme-state'); state.textContent = plan.feasible ? '条件可行' : '存在约束冲突'; state.className = 'scheme-state'+(plan.feasible?'':' bad');
-      button.querySelector('strong').textContent = plan.title+' · '+plan.duration_minutes+' 分钟';
-      button.querySelector('.scheme-price').textContent = `人均 ${money(plan.per_person_cents)} · 总额 ${money(plan.total_cents)}`;
-      button.querySelector('.scheme-income').textContent = `本地服务毛收入 ${money(plan.local_service_cents)} · 纸材 ${plan.paper_units} 份`;
-    });
+    q('.scheme-choices').innerHTML=candidates().map((plan,index)=>`<button class="scheme-option ${selected===plan.id?'active':''}" data-scheme="${esc(plan.id)}" aria-pressed="${selected===plan.id}" ${busy||activeAction?'disabled':''}><div class="candidate-topline"><span class="scheme-state ${plan.feasible?'':'bad'}">${plan.feasible?'条件可行':'存在约束冲突'}</span><small>${current.approval?.plan_id===plan.id?'已确认':current.plan?.id===plan.id?'模型推荐':'候选 '+String(index+1).padStart(2,'0')}</small></div><strong>${esc(plan.title)} · ${plan.duration_minutes} 分钟</strong><span class="scheme-price">人均 ${money(plan.per_person_cents)} <small> / 总额 ${money(plan.total_cents)}</small></span><span class="module-tags">${(plan.schedule||[]).map(item=>`<span>${esc(item.title)}</span>`).join('')}</span><small class="scheme-income">${typeof plan.craft_minutes==='number'?'手作 '+plan.craft_minutes+' 分钟 · ':''}本地服务毛收入 ${money(plan.local_service_cents)}</small>${!plan.feasible?`<span class="candidate-conflict">${esc((plan.conflicts||[]).map(item=>item.message).join('；'))}</span>`:''}</button>`).join('');
+    renderComparison();renderTeaching();
+    const effective=current.effective_requirements||current.requirements||{};
+    q('#effectiveConditions').hidden=false;q('#effectiveConditions').innerHTML=`<span>本次采用</span><b>${effective.audience==='family'?'亲子家庭':'普通游客'}</b><b>${esc(conflictValue('tea_preference',effective.tea_preference||'any'))}</b>${effective.min_craft_minutes?`<b>手作至少 ${esc(effective.min_craft_minutes)} 分钟</b>`:''}${effective.constraints?.maximize_craft?'<b>尽量多留手作时间</b>':''}<small>含文字需求中明确提出的偏好</small>`;
     const plan = chosen(); if(!plan) return;
     q('.scheme-help').textContent = current.choice_explanation ? '模型取舍：'+current.choice_explanation+' 您仍可比较并选择其他已校验候选。' : '运行后显示服务端计算的候选方案；选择可行方案并人工确认，才可导出。';
     const outdated = dirty || current.status === 'invalidated';
@@ -230,7 +320,7 @@
     q('#planStatus').innerHTML = `<strong>${esc(statusLabel)} · ${esc(plan.title)}</strong><small>${esc(statusDetail)}</small>`;
     const resourceLabel = id => id.replace(/^room-(\d+)$/, '演示场地 $1').replace(/^teacher-(\d+)$/, '手作教师 $1');
     q('#routeCards').innerHTML = (plan.schedule || []).map((item,index) => `<article class="route-card"><div class="step">0${index+1}</div><div class="time">${esc(item.start)}</div><h3>${esc(item.title)}</h3><p>${esc(item.description || item.description_text || '使用本次核验后的讲解与活动内容。')}</p><small>${esc(item.start)}—${esc(item.end)} · ${item.minutes} 分钟<br>资源：${esc((item.resource_ids || []).map(resourceLabel).join('、') || '未指定')}</small></article>`).join('');
-    q('#guideCards').innerHTML = (current.cards || []).map(card => `<article class="guide-card${card.usable ? '' : ' unusable'}"><h4>${esc(card.title)}${card.usable ? '' : ' · 待补证 / 不用于游客版'}</h4><p>${esc(card.text)}</p><small>讲解卡 ${esc(card.id)} · 关联陈述 ${esc((card.claim_ids || []).join('、'))}<br>来源 ${esc((card.source_ids || []).join('、') || '当前无来源支持')} · 素材 ${esc((card.material_ids || []).join('、') || '不使用视觉素材')}</small></article>`).join('');
+    q('#guideCards').innerHTML = `<details class="guide-details" ${current.teaching?'':'open'}><summary>查看已核验的讲解卡与素材关联</summary>${(current.cards || []).map(card => `<article class="guide-card${card.usable ? '' : ' unusable'}"><h4>${esc(card.title)}${card.usable ? '' : ' · 待补证 / 不用于游客版'}</h4><p>${esc(card.text)}</p><details><summary>关联记录</summary><small>讲解卡 ${esc(card.id)} · 关联陈述 ${esc((card.claim_ids || []).join('、'))}<br>来源 ${esc((card.source_ids || []).join('、') || '当前无来源支持')} · 素材 ${esc((card.material_ids || []).join('、') || '不使用视觉素材')}</small></details></article>`).join('')}</details>`;
     const total = plan.total_cents || 1; const share = plan.local_service_cents / total * 100;
     q('#totalCost').textContent = money(plan.total_cents); q('#localRevenue').textContent = money(plan.local_service_cents); q('#localShare').innerHTML = `${share.toFixed(1)}<em>%</em>`;
     q('#barLocal').style.width=share+'%'; q('#barMaterial').style.width=plan.material_cents/total*100+'%'; q('#barOperations').style.width=plan.operations_cents/total*100+'%';
@@ -241,26 +331,51 @@
   }
   function renderRun() {
     if (!current) return;
+    if(!manuallySelected&&current.plan?.id)selected=current.plan.id;
     if (current.plan?.id && !busy && !candidates().some(plan=>plan.id===selected && plan.feasible)) selected=current.plan.id;
-    if (current.status === 'awaiting_review' && current.plan?.id && !replay) selected=current.plan.id;
-    if (current.error) showWarning('真实运行未完成：'+errorMessage(current.error));
+    if (current.status === 'invalidated')closePreview();
+    if (current.status==='needs_confirmation')showWarning('需求分析已完成，等待您明确采用哪组条件。');
+    else if (current.error) showWarning('真实运行未完成：'+errorMessage(current.error));
     else if(current.status==='invalidated') showWarning('关联资料或素材使用状态已变化。此结果已失效，重新核验后才可确认与导出。');
     else if(!dirty) showWarning('');
-    renderEvents();renderClaims();renderPlan();renderImpact();setBanner();updateActions();
+    renderEvents();renderClaims();renderPlan();renderRequirementConflicts();renderImpact();setBanner();updateActions();
   }
   function updateActions() {
     if(mode!=='live')return;
     q('#auditBtn').disabled=busy||activeAction;q('#runPlan').disabled=busy||activeAction;
     q('#auditBtn').innerHTML=busy?'正在执行本地任务…':'核验并编排体验 <span class="arrow">→</span>';
     q('#runPlan').textContent=busy?'正在执行本地任务…':'按当前条件重新编排 →';
-    const valid=!!current&&!dirty&&!busy&&!activeAction&&!replay&&['awaiting_review','confirmed'].includes(current.status)&&!!chosen()?.feasible;
-    const confirmed=valid&&current.status==='confirmed'&&(!current.approval?.plan_id||current.approval.plan_id===selected);
+    const previewable=previewReady(),valid=previewable&&!replay,confirmed=downloadReady();
     q('#approveRun').disabled=!valid||!q('#approvalCheck').checked||confirmed;
     q('#exportVisitor').disabled=!confirmed;q('#exportOrganizer').disabled=!confirmed;
+    q('#previewVisitor').disabled=!previewable;q('#previewOrganizer').disabled=!previewable;q('#previewDownload').disabled=!confirmed;
+    all('[data-preview-audience]').forEach(button=>button.disabled=activeAction||busy);
+    all('[data-resolve-requirements]').forEach(button=>button.disabled=activeAction||busy||dirty);
     q('#refreshRun').disabled=!current||busy||activeAction;
-    q('#approvalState').textContent=replay?'当前为历史回放。依据最新资料重新核验后再确认。':dirty?'条件已改变，旧结果不能确认或导出。':confirmed?'当前方案已确认；导出时仍会检查来源和素材状态。':current?.status==='invalidated'?'关联状态变化，本次确认已失效。':current?.status==='needs_input'?'请先补充信息或调整冲突条件。':valid?'选中可行方案，阅读核验结果并勾选确认。':'完成真实核验与编排后可人工确认。';
+    q('#approvalState').textContent=replay?'当前为历史回放，可查看仍有效的体验包；依据最新资料重新核验后再确认和下载。':dirty?'条件已改变，旧结果不能确认或导出。':confirmed?'当前方案已确认；下载时仍会检查来源和素材状态。':current?.status==='invalidated'?'关联状态变化，本次确认已失效。':current?.status==='needs_confirmation'?'请先选择采用表单还是文字里的条件。':current?.status==='needs_input'?'请先补充信息或调整冲突条件。':!teachingReady()?'教学内容尚未通过引用校验，不能确认或交付。':valid?'先打开双版预览，核对后勾选并确认当前方案。':'完成真实核验与编排后可人工确认。';
     q('#historySelect').disabled=busy||activeAction;
+    all('[data-scheme]').forEach(button=>button.disabled=busy||activeAction);
     all('[data-material-id]').forEach(button=>button.disabled=busy||activeAction);
+  }
+  async function previewBundle(audience) {
+    if(!previewReady()||!['visitor','organizer'].includes(audience))return;
+    const id=current.id,planId=selected;previewAudience=audience;activeAction=true;updateActions();
+    const dialog=q('#bundlePreview'),controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),20000);
+    q('#previewTitle').textContent=audience==='visitor'?'游客版 · 这一程，纸上相逢':'组织者版 · 让每个环节有据可依';
+    q('#previewNotice').textContent='正在读取服务端校验后的真实体验包…';q('#previewFrame').srcdoc='';
+    q('#previewFootnote').textContent='预览不会自动确认或下载。';
+    all('[data-preview-audience]').forEach(button=>button.classList.toggle('active',button.dataset.previewAudience===audience));
+    if(!dialog.open)dialog.showModal();
+    try{
+      const response=await fetch(`/api/runs/${encodeURIComponent(id)}/export?preview=true&audience=${audience}&plan_id=${encodeURIComponent(planId)}`,{signal:controller.signal});
+      if(!response.ok){const detail=await response.json().catch(()=>({}));throw new Error(detail.detail||'体验包预览未通过校验');}
+      const html=await response.text();if(current?.id!==id||selected!==planId||dirty||current.status==='invalidated'||!dialog.open)return;
+      q('#previewFrame').srcdoc=html;
+      const confirmed=current.status==='confirmed'&&current.approval?.plan_id===planId;
+      q('#previewNotice').textContent=(replay?'历史回放 · ':'')+(confirmed?'当前方案已有确认记录；此窗口为审阅预览':'草稿预览 · 尚未人工确认')+' · '+chosen().title+' · '+money(chosen().total_cents)+' / '+chosen().duration_minutes+' 分钟';
+      q('#previewFootnote').textContent=replay?'当前为历史回放，重新核验后才能确认和下载。':confirmed?'此窗口统一展示审阅预览稿；下载将取得已有确认记录的正式版本。':'请核对内容；关闭预览后勾选并人工确认，才可下载。';
+    }catch(error){q('#previewNotice').textContent='预览未完成：'+(error.name==='AbortError'?'本地服务响应超时。':errorMessage(error));showWarning(q('#previewNotice').textContent);try{acceptRun(await api('/api/runs/'+encodeURIComponent(id)));renderRun();}catch{}}
+    finally{clearTimeout(timeout);activeAction=false;updateActions();}
   }
   async function approve() {
     if(q('#approveRun').disabled)return;activeAction=true;updateActions();
@@ -268,7 +383,7 @@
     catch(error){q('#approvalCheck').checked=false;try{acceptRun(await api('/api/runs/'+encodeURIComponent(current.id)));renderRun();}catch{}showWarning('确认未完成：'+errorMessage(error));}finally{activeAction=false;updateActions();}
   }
   async function exportBundle(audience) {
-    if(!current||dirty||replay||busy)return;
+    if(!downloadReady())return;
     const id=current.id;activeAction=true;updateActions();
     try { const response=await fetch(`/api/runs/${encodeURIComponent(id)}/export?audience=${audience}`);if(!response.ok){const detail=await response.json().catch(()=>({}));throw new Error(detail.detail||'导出校验失败');} const blob=await response.blob();const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`xiangyi-youju-${audience}-${id.slice(0,8)}.html`;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);notify(audience==='visitor'?'游客版体验包已生成。':'组织者版体验包已生成，保留依据、账目与核验记录。'); }
     catch(error){showWarning('导出未完成：'+errorMessage(error));try{acceptRun(await api('/api/runs/'+encodeURIComponent(id)));renderRun();}catch{}}finally{activeAction=false;updateActions();}
@@ -276,15 +391,16 @@
   async function loadHistoryList(){try{const list=await api('/api/runs');q('#historySelect').innerHTML='<option value="">历史记录 · 选择后仅回放</option>'+(list.runs||[]).slice(0,30).map(run=>`<option value="${esc(run.id)}">${esc(statusNames[run.status]||run.status)} · ${esc((run.text||'').slice(0,18))}</option>`).join('');}catch{ /* History availability does not fabricate a result or block current input. */ }}
   function restoreInputs(run) {
     q('#draft').value=run.text||'';const req=run.requirements||{};
-    function restoreValue(id,value){const input=q('#'+id);if(input.type==='range'){input.min=Math.min(Number(input.min),Number(value));input.max=Math.max(Number(input.max),Number(value));input.step=id==='budget'?'0.01':'1';const ticks=input.parentElement.querySelector('.range-ticks');if(ticks){const prefix=id==='budget'?'¥':'';const suffix=['people','capacity'].includes(id)?' 人':id==='minutes'?' 分钟':'';ticks.children[0].textContent=prefix+input.min+suffix;ticks.children[1].textContent=prefix+input.max+suffix;}}input.value=value;}
-    for(const [id,key] of Object.entries({region:'region',project:'project',people:'people',budget:'budget_per_person',minutes:'available_minutes',requestNote:'note',startTime:'start_time',preferredPlan:'preferred_plan'}))if(req[key]!==undefined)restoreValue(id,req[key]);
+    for(const [id,key] of Object.entries({region:'region',project:'project',people:'people',budget:'budget_per_person',minutes:'available_minutes',requestNote:'note',startTime:'start_time',preferredPlan:'preferred_plan'}))if(req[key]!==undefined)setInputValue(id,req[key]);
+    for(const [id,value] of Object.entries({planningMode:req.planning_mode||'packages',audience:req.audience||'general',teaPreference:req.tea_preference||'any',minCraftMinutes:req.min_craft_minutes||0}))setInputValue(id,value);
+    syncPlanningMode();
     const profile={...(run.profile||{}),...(run.operating_overrides||{})};
-    for(const id of ['capacity','teachers','rooms'])if(typeof profile[id]==='number')restoreValue(id,profile[id]);
+    for(const id of ['capacity','teachers','rooms'])if(typeof profile[id]==='number')setInputValue(id,profile[id]);
     if(typeof profile.reuse==='boolean')q('#reuse').checked=profile.reuse;updateValues();
   }
   async function loadHistory(id) {
     if(busy)return;activeAction=true;updateActions();
-    try {stopWatch();acceptRun(await api('/api/runs/'+encodeURIComponent(id)));replay=true;dirty=false;lastImpact=null;restoreInputs(current);selected=current.plan?.id||current.requirements?.preferred_plan||'deep';q('#approvalCheck').checked=false;renderRun();window.page('studio');}
+    try {closePreview();stopWatch();acceptRun(await api('/api/runs/'+encodeURIComponent(id)));replay=true;dirty=false;lastImpact=null;restoreInputs(current);selected=current.plan?.id||current.requirements?.preferred_plan||'deep';q('#approvalCheck').checked=false;renderRun();window.page('studio');}
     catch(error){showWarning('读取历史记录失败：'+errorMessage(error));}finally{activeAction=false;updateActions();}
   }
   function renderMaterials() {
@@ -299,15 +415,16 @@
     q('#impactTrail').innerHTML='<strong>已定位受影响的关联内容</strong>'+affected.map(item=>`<p>来源 / 素材：<code>${esc(item.record_id||item.source_id||item.material_id||lastImpact?.record?.id||'使用状态变更')}</code><br>陈述：${esc((item.claim_ids||[]).join('、')||(item.kind==='materials'?'文本事实不受此素材变更影响':'当前尚未关联具体陈述'))}<br>讲解卡：${esc((item.card_ids||[]).join('、')||'见关联记录')} → 体验方案：${esc((item.plan_ids||[]).join('、')||'关联方案需重验')}<br>运行记录：<code>${esc(item.id||item.run_id||current?.id)}</code></p>`).join('');
   }
   async function changeMaterial(id,state) {
-    if(activeAction||busy)return;activeAction=true;updateActions();
+    if(activeAction||busy)return;closePreview();activeAction=true;updateActions();
     try {const result=await api('/api/materials/'+encodeURIComponent(id),{method:'PATCH',body:JSON.stringify({usage_status:state})});lastImpact=result;catalog=await api('/api/catalog');renderMaterials();if(current)acceptRun(await api('/api/runs/'+encodeURIComponent(current.id)));q('#approvalCheck').checked=false;renderRun();renderImpact();notify('素材使用状态已更新；关联结果由服务端重新标记。');}
     catch(error){showWarning('素材状态未更新：'+errorMessage(error));}finally{activeAction=false;updateActions();}
   }
   async function refreshRun() {
     if(!current||busy||activeAction)return;
+    closePreview();
     if(dirty){await submit();return;}
     activeAction=true;updateActions();
-    try {const result=await api(`/api/runs/${encodeURIComponent(current.id)}/refresh`,{method:'POST',body:'{}'});current={id:result.id,status:result.status||'running',events:[],claims:[]};replay=false;dirty=false;busy=true;selected=q('#preferredPlan').value;q('#approvalCheck').checked=false;clearPlan();await startWatch(result.id);}
+    try {const result=await api(`/api/runs/${encodeURIComponent(current.id)}/refresh`,{method:'POST',body:'{}'});current={id:result.id,status:result.status||'running',events:[],claims:[]};replay=false;dirty=false;busy=true;manuallySelected=false;selected='';q('#approvalCheck').checked=false;clearPlan();await startWatch(result.id);}
     catch(error){showWarning('重新核验未启动：'+errorMessage(error));}finally{activeAction=false;updateActions();}
   }
   async function refreshEnvironment(){try{health=await api('/api/health');setBanner();notify(health.model_ready?'本地模型已就绪。':'服务可达，但模型尚未就绪。可运行以记录真实失败。');}catch(error){showWarning('本地服务无法连接：'+errorMessage(error));}}
