@@ -9,7 +9,7 @@ from urllib.parse import unquote, urlsplit
 
 
 ROOT = Path(__file__).resolve().parents[1]
-EXCLUDED = {".git", "node_modules", ".venv", "venv", "__pycache__", "artifacts"}
+EXCLUDED = {".git", "node_modules", ".venv", "venv", "__pycache__", "artifacts", "models", ".pytest_cache"}
 CONVENTIONAL = {
     "README.md", "AGENTS.md", "CONTRIBUTING.md", "CHANGELOG.md",
     "ISSUE_TEMPLATE", "pull_request_template.md",

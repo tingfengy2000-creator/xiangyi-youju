@@ -83,5 +83,6 @@ $$('[data-scheme]').forEach(button=>button.addEventListener('click',()=>{selecte
 function download(name,text){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type:'text/plain;charset=utf-8'}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);toast('文件已生成，保留演示假设和来源说明。')}
 $('#exportPlan').addEventListener('click',()=>download('乡艺有据_体验共益测算.json',JSON.stringify(currentPlan,null,2)));let toastTimer;function toast(t){$('#toast').textContent=t;$('#toast').classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('#toast').classList.remove('show'),3500)}resetAudit();calculate();page(location.hash.slice(1)||'home');
 </script>
+<script src="live.js"></script>
 </body>
 </html>

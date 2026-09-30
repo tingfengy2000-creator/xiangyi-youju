@@ -1,0 +1,818 @@
+{
+  "id": "39db856ddf7e4c408b69c39a29ecacc1",
+  "version": 1,
+  "status": "needs_input",
+  "mode": "live",
+  "created_at": "2026-09-30T04:07:17.578856+00:00",
+  "text": "蔚县剪纸以阴刻为主，阳刻为辅。蔚县剪纸善于多色点染。",
+  "requirements": {
+    "region": "河北省蔚县",
+    "project": "剪纸",
+    "people": 16,
+    "budget_per_person": 160.0,
+    "available_minutes": 150,
+    "start_time": "09:30",
+    "preferred_plan": "deep",
+    "note": "为初次了解剪纸的游客安排有来源的讲解与入门体验，不能改变明确人数和经营报价。"
+  },
+  "operating_overrides": {
+    "capacity": 8,
+    "teachers": 1,
+    "rooms": 1,
+    "reuse": true
+  },
+  "profile": {
+    "id": "demo-yuxian",
+    "title": "蔚县剪纸同场地体验·演示接待资源",
+    "is_demo": true,
+    "status": "active",
+    "region": "河北省蔚县",
+    "project": "剪纸",
+    "capacity": 8,
+    "teachers": 1,
+    "teacher_capacity": 12,
+    "rooms": 1,
+    "reuse": true,
+    "venue": "同场地演示工坊",
+    "currency": "CNY",
+    "version": 1,
+    "use_note": "演示配置，非真实报价与接待授权；本地服务报酬为毛收入测算，不是净利润或真实增收。仅明确同场地故不计转场时间，不含交通、住宿、税费。",
+    "usage_note": "讲解、手作教学、茶歇分别计入本地服务报酬；材料与工具和组织费用单列。工具复用为当前演示活动要求。模型无权修改人数、报价、教师、场地或授权。",
+    "plans": {
+      "light": {
+        "title": "轻体验",
+        "stages": [
+          20,
+          50,
+          20
+        ],
+        "lecture_cents": 20000,
+        "craft_per_person_cents": 2500,
+        "tea_per_person_cents": 1500,
+        "tool_cents": 8000,
+        "reusable_per_person_cents": 800,
+        "disposable_per_person_cents": 1400,
+        "operations_cents": 12000,
+        "paper_per_person": 1
+      },
+      "deep": {
+        "title": "深体验",
+        "stages": [
+          30,
+          60,
+          30
+        ],
+        "lecture_cents": 30000,
+        "craft_per_person_cents": 3500,
+        "tea_per_person_cents": 2000,
+        "tool_cents": 10000,
+        "reusable_per_person_cents": 1000,
+        "disposable_per_person_cents": 1600,
+        "operations_cents": 16000,
+        "paper_per_person": 2
+      }
+    }
+  },
+  "sources_snapshot": [
+    {
+      "id": "src-yuxian-color",
+      "source_id": "src-yuxian-color",
+      "document_id": "ihchina-20184",
+      "title": "剪纸（蔚县剪纸）·点染彩绘",
+      "url": "https://www.ihchina.cn/project_details/20184.html",
+      "publisher": "中国非物质文化遗产网·中国非物质文化遗产数字博物馆",
+      "region": "河北省蔚县",
+      "project": "剪纸",
+      "published_at": null,
+      "accessed_at": "2026-09-30",
+      "locator": "项目介绍正文第3自然段第2句：复用一词之后的技法短语",
+      "quote": "多色点染彩绘",
+      "keywords": [
+        "颜色",
+        "彩色",
+        "点染",
+        "彩绘",
+        "技法"
+      ],
+      "use_note": "官方项目资料的必要短摘录，用于技法讲解和事实核对；不扩展为每件作品必须多色的断言，不包含实际作品图像。",
+      "usage_status": "available",
+      "version": 1,
+      "hash_scope": "quote_utf8",
+      "sha256": "a896c47755bb957c4c2419d50270ed3d28e559dfdf767fbb60b3ff83d3d62fe3"
+    },
+    {
+      "id": "src-yuxian-region",
+      "source_id": "src-yuxian-region",
+      "document_id": "ihchina-20184",
+      "title": "剪纸（蔚县剪纸）·申报地区",
+      "url": "https://www.ihchina.cn/project_details/20184.html",
+      "publisher": "中国非物质文化遗产网·中国非物质文化遗产数字博物馆",
+      "region": "河北省蔚县",
+      "project": "剪纸",
+      "published_at": null,
+      "accessed_at": "2026-09-30",
+      "locator": "项目基本信息：申报地区或单位字段",
+      "quote": "河北省蔚县",
+      "keywords": [
+        "地域",
+        "地点",
+        "申报地区"
+      ],
+      "use_note": "官方项目资料的必要短摘录，用于带出处的事实核对；非网页或图片转载许可。页面未标明发布时间，2006为名录公布年份。",
+      "usage_status": "available",
+      "version": 1,
+      "hash_scope": "quote_utf8",
+      "sha256": "372ae8c21f703c67dc7bf0c61a2bc7a9caab751e431e1a423972e2fcc9dc743f"
+    },
+    {
+      "id": "src-yuxian-technique",
+      "source_id": "src-yuxian-technique",
+      "document_id": "ihchina-20184",
+      "title": "剪纸（蔚县剪纸）·阴刻与阳刻",
+      "url": "https://www.ihchina.cn/project_details/20184.html",
+      "publisher": "中国非物质文化遗产网·中国非物质文化遗产数字博物馆",
+      "region": "河北省蔚县",
+      "project": "剪纸",
+      "published_at": null,
+      "accessed_at": "2026-09-30",
+      "locator": "项目介绍正文第3自然段第2句：以“它以阴刻为主”起始",
+      "quote": "以阴刻为主，阳刻为辅",
+      "keywords": [
+        "技法",
+        "阴刻",
+        "阳刻",
+        "主辅"
+      ],
+      "use_note": "官方项目资料的必要短摘录，仅支持相应地域技法描述；不证明任何经营者的资质或作品授权。不得脱离蔚县地域使用。",
+      "usage_status": "available",
+      "version": 1,
+      "hash_scope": "quote_utf8",
+      "sha256": "9a8d0640428a28f6a5b50e6e640e386b55a9ad71b9be232d1078ed245cb6992a"
+    }
+  ],
+  "materials_snapshot": [
+    {
+      "id": "mat-paper-garden",
+      "title": "纸上庭园·原创界面纹样",
+      "path": "frontend/prototype/assets/paper-garden.svg",
+      "usage_status": "available",
+      "version": 1,
+      "source_type": "original",
+      "use_note": "本项目原创抽象界面纹样，用于项目演示和体验包装饰；不是传统剪纸作品的复制，也不代表传承人授权。使用状态可在演示中撤回，用于验证受影响内容更新。",
+      "rights_scope": "本项目界面与体验包装饰",
+      "is_demo": true
+    }
+  ],
+  "source_versions": {
+    "src-yuxian-color": {
+      "version": 1,
+      "usage_status": "available"
+    },
+    "src-yuxian-region": {
+      "version": 1,
+      "usage_status": "available"
+    },
+    "src-yuxian-technique": {
+      "version": 1,
+      "usage_status": "available"
+    }
+  },
+  "material_versions": {
+    "mat-paper-garden": {
+      "version": 1,
+      "usage_status": "available"
+    }
+  },
+  "claims": [
+    {
+      "id": "c1",
+      "sentence_id": "s1",
+      "text": "蔚县剪纸以阴刻为主，阳刻为辅。",
+      "query": "蔚县剪纸以阴刻为主，阳刻为辅。",
+      "original_sentence": "蔚县剪纸以阴刻为主，阳刻为辅。",
+      "region": "河北省蔚县",
+      "status": "supported",
+      "evidence": [
+        {
+          "id": "src-yuxian-technique",
+          "source_id": "src-yuxian-technique",
+          "document_id": "ihchina-20184",
+          "title": "剪纸（蔚县剪纸）·阴刻与阳刻",
+          "url": "https://www.ihchina.cn/project_details/20184.html",
+          "publisher": "中国非物质文化遗产网·中国非物质文化遗产数字博物馆",
+          "region": "河北省蔚县",
+          "project": "剪纸",
+          "published_at": null,
+          "accessed_at": "2026-09-30",
+          "locator": "项目介绍正文第3自然段第2句：以“它以阴刻为主”起始",
+          "quote": "以阴刻为主，阳刻为辅",
+          "keywords": [
+            "技法",
+            "阴刻",
+            "阳刻",
+            "主辅"
+          ],
+          "use_note": "官方项目资料的必要短摘录，仅支持相应地域技法描述；不证明任何经营者的资质或作品授权。不得脱离蔚县地域使用。",
+          "usage_status": "available",
+          "version": 1,
+          "hash_scope": "quote_utf8",
+          "sha256": "9a8d0640428a28f6a5b50e6e640e386b55a9ad71b9be232d1078ed245cb6992a",
+          "retrieval_score": 16.405221,
+          "trust_boundary": "untrusted_source_data"
+        },
+        {
+          "id": "src-yuxian-region",
+          "source_id": "src-yuxian-region",
+          "document_id": "ihchina-20184",
+          "title": "剪纸（蔚县剪纸）·申报地区",
+          "url": "https://www.ihchina.cn/project_details/20184.html",
+          "publisher": "中国非物质文化遗产网·中国非物质文化遗产数字博物馆",
+          "region": "河北省蔚县",
+          "project": "剪纸",
+          "published_at": null,
+          "accessed_at": "2026-09-30",
+          "locator": "项目基本信息：申报地区或单位字段",
+          "quote": "河北省蔚县",
+          "keywords": [
+            "地域",
+            "地点",
+            "申报地区"
+          ],
+          "use_note": "官方项目资料的必要短摘录，用于带出处的事实核对；非网页或图片转载许可。页面未标明发布时间，2006为名录公布年份。",
+          "usage_status": "available",
+          "version": 1,
+          "hash_scope": "quote_utf8",
+          "sha256": "372ae8c21f703c67dc7bf0c61a2bc7a9caab751e431e1a423972e2fcc9dc743f",
+          "retrieval_score": 8.349623,
+          "trust_boundary": "untrusted_source_data"
+        },
+        {
+          "id": "src-yuxian-color",
+          "source_id": "src-yuxian-color",
+          "document_id": "ihchina-20184",
+          "title": "剪纸（蔚县剪纸）·点染彩绘",
+          "url": "https://www.ihchina.cn/project_details/20184.html",
+          "publisher": "中国非物质文化遗产网·中国非物质文化遗产数字博物馆",
+          "region": "河北省蔚县",
+          "project": "剪纸",
+          "published_at": null,
+          "accessed_at": "2026-09-30",
+          "locator": "项目介绍正文第3自然段第2句：复用一词之后的技法短语",
+          "quote": "多色点染彩绘",
+          "keywords": [
+            "颜色",
+            "彩色",
+            "点染",
+            "彩绘",
+            "技法"
+          ],
+          "use_note": "官方项目资料的必要短摘录，用于技法讲解和事实核对；不扩展为每件作品必须多色的断言，不包含实际作品图像。",
+          "usage_status": "available",
+          "version": 1,
+          "hash_scope": "quote_utf8",
+          "sha256": "a896c47755bb957c4c2419d50270ed3d28e559dfdf767fbb60b3ff83d3d62fe3",
+          "retrieval_score": 8.205492,
+          "trust_boundary": "untrusted_source_data"
+        }
+      ],
+      "evidence_ids": [
+        "src-yuxian-technique"
+      ],
+      "reason": "证据直接支持该说法",
+      "suggested_text": "蔚县剪纸以阴刻为主，阳刻为辅。"
+    },
+    {
+      "id": "c2",
+      "sentence_id": "s2",
+      "text": "蔚县剪纸善于多色点染。",
+      "query": "蔚县剪纸善于多色点染。",
+      "original_sentence": "蔚县剪纸善于多色点染。",
+      "region": "河北省蔚县",
+      "status": "supported",
+      "evidence": [
+        {
+          "id": "src-yuxian-color",
+          "source_id": "src-yuxian-color",
+          "document_id": "ihchina-20184",
+          "title": "剪纸（蔚县剪纸）·点染彩绘",
+          "url": "https://www.ihchina.cn/project_details/20184.html",
+          "publisher": "中国非物质文化遗产网·中国非物质文化遗产数字博物馆",
+          "region": "河北省蔚县",
+          "project": "剪纸",
+          "published_at": null,
+          "accessed_at": "2026-09-30",
+          "locator": "项目介绍正文第3自然段第2句：复用一词之后的技法短语",
+          "quote": "多色点染彩绘",
+          "keywords": [
+            "颜色",
+            "彩色",
+            "点染",
+            "彩绘",
+            "技法"
+          ],
+          "use_note": "官方项目资料的必要短摘录，用于技法讲解和事实核对；不扩展为每件作品必须多色的断言，不包含实际作品图像。",
+          "usage_status": "available",
+          "version": 1,
+          "hash_scope": "quote_utf8",
+          "sha256": "a896c47755bb957c4c2419d50270ed3d28e559dfdf767fbb60b3ff83d3d62fe3",
+          "retrieval_score": 7.743394,
+          "trust_boundary": "untrusted_source_data"
+        },
+        {
+          "id": "src-yuxian-region",
+          "source_id": "src-yuxian-region",
+          "document_id": "ihchina-20184",
+          "title": "剪纸（蔚县剪纸）·申报地区",
+          "url": "https://www.ihchina.cn/project_details/20184.html",
+          "publisher": "中国非物质文化遗产网·中国非物质文化遗产数字博物馆",
+          "region": "河北省蔚县",
+          "project": "剪纸",
+          "published_at": null,
+          "accessed_at": "2026-09-30",
+          "locator": "项目基本信息：申报地区或单位字段",
+          "quote": "河北省蔚县",
+          "keywords": [
+            "地域",
+            "地点",
+            "申报地区"
+          ],
+          "use_note": "官方项目资料的必要短摘录，用于带出处的事实核对；非网页或图片转载许可。页面未标明发布时间，2006为名录公布年份。",
+          "usage_status": "available",
+          "version": 1,
+          "hash_scope": "quote_utf8",
+          "sha256": "372ae8c21f703c67dc7bf0c61a2bc7a9caab751e431e1a423972e2fcc9dc743f",
+          "retrieval_score": 4.19074,
+          "trust_boundary": "untrusted_source_data"
+        },
+        {
+          "id": "src-yuxian-technique",
+          "source_id": "src-yuxian-technique",
+          "document_id": "ihchina-20184",
+          "title": "剪纸（蔚县剪纸）·阴刻与阳刻",
+          "url": "https://www.ihchina.cn/project_details/20184.html",
+          "publisher": "中国非物质文化遗产网·中国非物质文化遗产数字博物馆",
+          "region": "河北省蔚县",
+          "project": "剪纸",
+          "published_at": null,
+          "accessed_at": "2026-09-30",
+          "locator": "项目介绍正文第3自然段第2句：以“它以阴刻为主”起始",
+          "quote": "以阴刻为主，阳刻为辅",
+          "keywords": [
+            "技法",
+            "阴刻",
+            "阳刻",
+            "主辅"
+          ],
+          "use_note": "官方项目资料的必要短摘录，仅支持相应地域技法描述；不证明任何经营者的资质或作品授权。不得脱离蔚县地域使用。",
+          "usage_status": "available",
+          "version": 1,
+          "hash_scope": "quote_utf8",
+          "sha256": "9a8d0640428a28f6a5b50e6e640e386b55a9ad71b9be232d1078ed245cb6992a",
+          "retrieval_score": 4.027068,
+          "trust_boundary": "untrusted_source_data"
+        }
+      ],
+      "evidence_ids": [
+        "src-yuxian-color"
+      ],
+      "reason": "证据直接支持该说法",
+      "suggested_text": "蔚县剪纸善于多色点染。"
+    }
+  ],
+  "cards": [
+    {
+      "id": "card-c1",
+      "title": "有据讲解 · 河北省蔚县",
+      "text": "蔚县剪纸以阴刻为主，阳刻为辅。",
+      "claim_ids": [
+        "c1"
+      ],
+      "source_ids": [
+        "src-yuxian-technique"
+      ],
+      "material_ids": [
+        "mat-paper-garden"
+      ],
+      "usable": true
+    },
+    {
+      "id": "card-c2",
+      "title": "有据讲解 · 河北省蔚县",
+      "text": "蔚县剪纸善于多色点染。",
+      "claim_ids": [
+        "c2"
+      ],
+      "source_ids": [
+        "src-yuxian-color"
+      ],
+      "material_ids": [
+        "mat-paper-garden"
+      ],
+      "usable": true
+    }
+  ],
+  "planning": {
+    "candidates": [
+      {
+        "id": "light",
+        "title": "轻体验",
+        "feasible": false,
+        "conflicts": [
+          {
+            "code": "capacity_exceeded",
+            "message": "人数16超过单组容量8；不能自动拆组或虚构并行接待。"
+          },
+          {
+            "code": "teacher_capacity_exceeded",
+            "message": "人数16超过现有1位教师合计接待上限12。"
+          }
+        ],
+        "duration_minutes": 90,
+        "total_cents": 116800,
+        "per_person_cents": 7300,
+        "local_service_cents": 84000,
+        "material_cents": 20800,
+        "operations_cents": 12000,
+        "paper_units": 16,
+        "schedule": [
+          {
+            "title": "文化讲解",
+            "start": "09:30",
+            "end": "09:50",
+            "minutes": 20,
+            "start_minute": 570,
+            "end_minute": 590,
+            "end_day_offset": 0,
+            "resource_ids": [
+              "room-1"
+            ]
+          },
+          {
+            "title": "剪纸手作",
+            "start": "09:50",
+            "end": "10:40",
+            "minutes": 50,
+            "start_minute": 590,
+            "end_minute": 640,
+            "end_day_offset": 0,
+            "resource_ids": [
+              "room-1",
+              "teacher-1"
+            ]
+          },
+          {
+            "title": "乡土茶歇",
+            "start": "10:40",
+            "end": "11:00",
+            "minutes": 20,
+            "start_minute": 640,
+            "end_minute": 660,
+            "end_day_offset": 0,
+            "resource_ids": [
+              "room-1"
+            ]
+          }
+        ],
+        "ledger": [
+          {
+            "label": "文化讲解服务",
+            "cents": 20000,
+            "payee": "在地讲解人员（演示角色）",
+            "category": "local_service",
+            "unit_cents": 20000,
+            "quantity": 1
+          },
+          {
+            "label": "手作教学服务",
+            "cents": 40000,
+            "payee": "在地手作教师（演示角色）",
+            "category": "local_service",
+            "unit_cents": 2500,
+            "quantity": 16
+          },
+          {
+            "label": "乡土茶歇服务",
+            "cents": 24000,
+            "payee": "在地茶歇服务者（演示角色）",
+            "category": "local_service",
+            "unit_cents": 1500,
+            "quantity": 16
+          },
+          {
+            "label": "工具准备",
+            "cents": 8000,
+            "payee": "材料与工具准备（演示角色）",
+            "category": "material",
+            "unit_cents": 8000,
+            "quantity": 1
+          },
+          {
+            "label": "每人耗材",
+            "cents": 12800,
+            "payee": "耗材采购（演示角色）",
+            "category": "material",
+            "unit_cents": 800,
+            "quantity": 16
+          },
+          {
+            "label": "组织成本",
+            "cents": 12000,
+            "payee": "活动组织（演示角色）",
+            "category": "operations",
+            "unit_cents": 12000,
+            "quantity": 1
+          }
+        ],
+        "is_demo": true,
+        "scope_note": "同一演示场地、一个组顺序活动；不含交通、住宿和税费。价格、角色、纸材份数均为演示配置，非预约或真实合作。"
+      },
+      {
+        "id": "deep",
+        "title": "深体验",
+        "feasible": false,
+        "conflicts": [
+          {
+            "code": "capacity_exceeded",
+            "message": "人数16超过单组容量8；不能自动拆组或虚构并行接待。"
+          },
+          {
+            "code": "teacher_capacity_exceeded",
+            "message": "人数16超过现有1位教师合计接待上限12。"
+          }
+        ],
+        "duration_minutes": 120,
+        "total_cents": 160000,
+        "per_person_cents": 10000,
+        "local_service_cents": 118000,
+        "material_cents": 26000,
+        "operations_cents": 16000,
+        "paper_units": 32,
+        "schedule": [
+          {
+            "title": "文化讲解",
+            "start": "09:30",
+            "end": "10:00",
+            "minutes": 30,
+            "start_minute": 570,
+            "end_minute": 600,
+            "end_day_offset": 0,
+            "resource_ids": [
+              "room-1"
+            ]
+          },
+          {
+            "title": "剪纸手作",
+            "start": "10:00",
+            "end": "11:00",
+            "minutes": 60,
+            "start_minute": 600,
+            "end_minute": 660,
+            "end_day_offset": 0,
+            "resource_ids": [
+              "room-1",
+              "teacher-1"
+            ]
+          },
+          {
+            "title": "乡土茶歇",
+            "start": "11:00",
+            "end": "11:30",
+            "minutes": 30,
+            "start_minute": 660,
+            "end_minute": 690,
+            "end_day_offset": 0,
+            "resource_ids": [
+              "room-1"
+            ]
+          }
+        ],
+        "ledger": [
+          {
+            "label": "文化讲解服务",
+            "cents": 30000,
+            "payee": "在地讲解人员（演示角色）",
+            "category": "local_service",
+            "unit_cents": 30000,
+            "quantity": 1
+          },
+          {
+            "label": "手作教学服务",
+            "cents": 56000,
+            "payee": "在地手作教师（演示角色）",
+            "category": "local_service",
+            "unit_cents": 3500,
+            "quantity": 16
+          },
+          {
+            "label": "乡土茶歇服务",
+            "cents": 32000,
+            "payee": "在地茶歇服务者（演示角色）",
+            "category": "local_service",
+            "unit_cents": 2000,
+            "quantity": 16
+          },
+          {
+            "label": "工具准备",
+            "cents": 10000,
+            "payee": "材料与工具准备（演示角色）",
+            "category": "material",
+            "unit_cents": 10000,
+            "quantity": 1
+          },
+          {
+            "label": "每人耗材",
+            "cents": 16000,
+            "payee": "耗材采购（演示角色）",
+            "category": "material",
+            "unit_cents": 1000,
+            "quantity": 16
+          },
+          {
+            "label": "组织成本",
+            "cents": 16000,
+            "payee": "活动组织（演示角色）",
+            "category": "operations",
+            "unit_cents": 16000,
+            "quantity": 1
+          }
+        ],
+        "is_demo": true,
+        "scope_note": "同一演示场地、一个组顺序活动；不含交通、住宿和税费。价格、角色、纸材份数均为演示配置，非预约或真实合作。"
+      }
+    ],
+    "feasible_ids": [],
+    "profile_snapshot": {
+      "id": "demo-yuxian",
+      "title": "蔚县剪纸同场地体验·演示接待资源",
+      "is_demo": true,
+      "status": "active",
+      "region": "河北省蔚县",
+      "project": "剪纸",
+      "capacity": 8,
+      "teachers": 1,
+      "teacher_capacity": 12,
+      "rooms": 1,
+      "reuse": true,
+      "venue": "同场地演示工坊",
+      "currency": "CNY",
+      "version": 1,
+      "use_note": "演示配置，非真实报价与接待授权；本地服务报酬为毛收入测算，不是净利润或真实增收。仅明确同场地故不计转场时间，不含交通、住宿、税费。",
+      "usage_note": "讲解、手作教学、茶歇分别计入本地服务报酬；材料与工具和组织费用单列。工具复用为当前演示活动要求。模型无权修改人数、报价、教师、场地或授权。",
+      "plans": {
+        "light": {
+          "title": "轻体验",
+          "stages": [
+            20,
+            50,
+            20
+          ],
+          "lecture_cents": 20000,
+          "craft_per_person_cents": 2500,
+          "tea_per_person_cents": 1500,
+          "tool_cents": 8000,
+          "reusable_per_person_cents": 800,
+          "disposable_per_person_cents": 1400,
+          "operations_cents": 12000,
+          "paper_per_person": 1
+        },
+        "deep": {
+          "title": "深体验",
+          "stages": [
+            30,
+            60,
+            30
+          ],
+          "lecture_cents": 30000,
+          "craft_per_person_cents": 3500,
+          "tea_per_person_cents": 2000,
+          "tool_cents": 10000,
+          "reusable_per_person_cents": 1000,
+          "disposable_per_person_cents": 1600,
+          "operations_cents": 16000,
+          "paper_per_person": 2
+        }
+      }
+    },
+    "requirements_snapshot": {
+      "region": "河北省蔚县",
+      "project": "剪纸",
+      "people": 16,
+      "budget_per_person": 160.0,
+      "available_minutes": 150,
+      "start_time": "09:30",
+      "preferred_plan": "deep",
+      "note": "为初次了解剪纸的游客安排有来源的讲解与入门体验，不能改变明确人数和经营报价。"
+    },
+    "budget_per_person_cents": 16000,
+    "planning_policy": "single-group-sequential-v1"
+  },
+  "plan": null,
+  "approval": null,
+  "model_calls": 2,
+  "model_metrics": [
+    {
+      "purpose": "理解需求与拆分陈述",
+      "attempt": 1,
+      "at": "2026-09-30T04:07:17.590746+00:00",
+      "model": "xiangyi-qwen3:14b-q4_k_m",
+      "elapsed_seconds": 1.181,
+      "prompt_tokens": 357,
+      "output_tokens": 149,
+      "total_duration_ns": 1168570400,
+      "eval_duration_ns": 1081809000,
+      "prompt_eval_duration_ns": 25083000,
+      "ok": true
+    },
+    {
+      "purpose": "逐句证据核验",
+      "attempt": 1,
+      "at": "2026-09-30T04:07:18.787538+00:00",
+      "model": "xiangyi-qwen3:14b-q4_k_m",
+      "elapsed_seconds": 0.801,
+      "prompt_tokens": 802,
+      "output_tokens": 94,
+      "total_duration_ns": 769551800,
+      "eval_duration_ns": 691044000,
+      "prompt_eval_duration_ns": 10284000,
+      "ok": true
+    }
+  ],
+  "revision_count": 0,
+  "elapsed_seconds": 2.023,
+  "parent_id": null,
+  "affected": [],
+  "error": "当前资源与条件下没有可行方案。未拆组或虚构并行接待，请明确修改条件后重算。",
+  "execution_finished": true,
+  "analysis": {
+    "summary": "为初次了解剪纸的游客安排有来源的讲解与入门体验，不能改变明确人数和经营报价。",
+    "audience": "初次了解剪纸的游客"
+  },
+  "initial_plan_id": "deep",
+  "initial_conflicts": [
+    {
+      "code": "capacity_exceeded",
+      "message": "人数16超过单组容量8；不能自动拆组或虚构并行接待。"
+    },
+    {
+      "code": "teacher_capacity_exceeded",
+      "message": "人数16超过现有1位教师合计接待上限12。"
+    }
+  ],
+  "ended_at": "2026-09-30T04:07:19.615405+00:00",
+  "events": [
+    {
+      "seq": 1,
+      "stage": "accepted",
+      "message": "已保存输入与资料/经营版本，等待本地单并发执行。",
+      "at": "2026-09-30T04:07:17.582861+00:00"
+    },
+    {
+      "seq": 2,
+      "stage": "model_call",
+      "message": "本地模型调用：理解需求与拆分陈述（第1次）",
+      "at": "2026-09-30T04:07:17.592746+00:00"
+    },
+    {
+      "seq": 3,
+      "stage": "understood",
+      "message": "已拆分2条待核验陈述，保留原文位置。",
+      "at": "2026-09-30T04:07:18.778163+00:00"
+    },
+    {
+      "seq": 4,
+      "stage": "retrieved",
+      "message": "已按地域、项目及使用状态检索本地来源；空结果保留未知。",
+      "at": "2026-09-30T04:07:18.785453+00:00"
+    },
+    {
+      "seq": 5,
+      "stage": "model_call",
+      "message": "本地模型调用：逐句证据核验（第2次）",
+      "at": "2026-09-30T04:07:18.790084+00:00"
+    },
+    {
+      "seq": 6,
+      "stage": "audited",
+      "message": "逐句核验完成：支持、矛盾、资料分歧和信息不足分别记录。",
+      "at": "2026-09-30T04:07:19.593663+00:00"
+    },
+    {
+      "seq": 7,
+      "stage": "cards_ready",
+      "message": "形成2张有来源讲解卡；未支持内容不进入游客讲解。",
+      "at": "2026-09-30T04:07:19.599938+00:00"
+    },
+    {
+      "seq": 8,
+      "stage": "planned",
+      "message": "已读取接待配置并计算两种候选方案，金额与资源占用由程序检查。",
+      "at": "2026-09-30T04:07:19.605197+00:00"
+    },
+    {
+      "seq": 9,
+      "stage": "needs_input",
+      "message": "当前资源与条件下没有可行方案。未拆组或虚构并行接待，请明确修改条件后重算。",
+      "at": "2026-09-30T04:07:19.612405+00:00"
+    }
+  ]
+}

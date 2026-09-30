@@ -1,0 +1,45 @@
+{
+  "at": "20260930T040636Z",
+  "base_url": "http://127.0.0.1:8780",
+  "mode": "real-local-inference",
+  "cases": [
+    {
+      "name": "regional-correction",
+      "id": "3d111e5366f0437c85dd8b9a8b999ee8",
+      "status": "awaiting_review",
+      "model_calls": 4,
+      "elapsed_seconds": 37.745,
+      "revision_count": 0,
+      "error": null
+    },
+    {
+      "name": "budget-110",
+      "id": "adf00ed8e11b4f8eae6c345c2961bbd4",
+      "status": "awaiting_review",
+      "model_calls": 3,
+      "elapsed_seconds": 2.49,
+      "revision_count": 1,
+      "error": null
+    },
+    {
+      "name": "capacity-resource-conflict",
+      "id": "39db856ddf7e4c408b69c39a29ecacc1",
+      "status": "needs_input",
+      "model_calls": 2,
+      "elapsed_seconds": 2.023,
+      "revision_count": 0,
+      "error": "当前资源与条件下没有可行方案。未拆组或虚构并行接待，请明确修改条件后重算。"
+    },
+    {
+      "name": "material-refreshed",
+      "id": "f6798a44fa8140909715f01ffef23332",
+      "status": "awaiting_review",
+      "model_calls": 3,
+      "elapsed_seconds": 2.465,
+      "revision_count": 1,
+      "error": null
+    }
+  ],
+  "passed": true,
+  "material_restored": true
+}

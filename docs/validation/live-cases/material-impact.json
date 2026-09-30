@@ -1,0 +1,61 @@
+{
+  "record": {
+    "id": "mat-paper-garden",
+    "title": "纸上庭园·原创界面纹样",
+    "path": "frontend/prototype/assets/paper-garden.svg",
+    "usage_status": "withdrawn",
+    "version": 2,
+    "source_type": "original",
+    "use_note": "本项目原创抽象界面纹样，用于项目演示和体验包装饰；不是传统剪纸作品的复制，也不代表传承人授权。使用状态可在演示中撤回，用于验证受影响内容更新。",
+    "rights_scope": "本项目界面与体验包装饰",
+    "is_demo": true,
+    "updated_at": "2026-09-30T04:07:20.012228+00:00"
+  },
+  "affected_runs": [
+    {
+      "id": "1239a1d76fb240ea9c9c008b31b887e2",
+      "record_id": "mat-paper-garden",
+      "kind": "materials",
+      "claim_ids": [],
+      "card_ids": [],
+      "plan_ids": []
+    },
+    {
+      "id": "3d111e5366f0437c85dd8b9a8b999ee8",
+      "record_id": "mat-paper-garden",
+      "kind": "materials",
+      "claim_ids": [],
+      "card_ids": [
+        "card-c1",
+        "card-c2"
+      ],
+      "plan_ids": [
+        "deep"
+      ]
+    },
+    {
+      "id": "adf00ed8e11b4f8eae6c345c2961bbd4",
+      "record_id": "mat-paper-garden",
+      "kind": "materials",
+      "claim_ids": [],
+      "card_ids": [
+        "card-c1",
+        "card-c2"
+      ],
+      "plan_ids": [
+        "light"
+      ]
+    },
+    {
+      "id": "39db856ddf7e4c408b69c39a29ecacc1",
+      "record_id": "mat-paper-garden",
+      "kind": "materials",
+      "claim_ids": [],
+      "card_ids": [
+        "card-c1",
+        "card-c2"
+      ],
+      "plan_ids": []
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "run_id": "5753afb808ca417fafbb5946003257b0",
+  "checked_after_api_restart": true,
+  "audiences": [
+    "visitor",
+    "organizer"
+  ],
+  "supported_label_correct": true,
+  "withdrawn_svg_absent": true,
+  "status": "confirmed",
+  "approval": {
+    "confirmed": true,
+    "plan_id": "light",
+    "at": "2026-09-30T04:11:14.023034+00:00",
+    "run_version": 1
+  }
+}

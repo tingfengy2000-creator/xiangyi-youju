@@ -1,0 +1,13 @@
+[
+  {
+    "id": "mat-paper-garden",
+    "title": "纸上庭园·原创界面纹样",
+    "path": "frontend/prototype/assets/paper-garden.svg",
+    "usage_status": "available",
+    "version": 1,
+    "source_type": "original",
+    "use_note": "本项目原创抽象界面纹样，用于项目演示和体验包装饰；不是传统剪纸作品的复制，也不代表传承人授权。使用状态可在演示中撤回，用于验证受影响内容更新。",
+    "rights_scope": "本项目界面与体验包装饰",
+    "is_demo": true
+  }
+]

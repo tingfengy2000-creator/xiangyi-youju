@@ -1,0 +1,13 @@
+{
+  "at": "2026-09-30T04:12:48.367Z",
+  "mode": "existing-real-export-preview",
+  "scope": "仅重新预览已导出的真实 HTML；未访问业务 API、未启动模型任务",
+  "checks": [
+    "material-refreshed-visitor.html 最新真实导出 1440px 预览通过，无横向溢出",
+    "material-refreshed-visitor.html 最新真实导出 390px 预览通过，无横向溢出",
+    "material-refreshed-organizer.html 最新真实导出 1440px 预览通过，无横向溢出",
+    "material-refreshed-organizer.html 最新真实导出 390px 预览通过，无横向溢出"
+  ],
+  "scriptErrors": [],
+  "externalResourceRequests": []
+}

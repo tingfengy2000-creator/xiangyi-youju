@@ -1,0 +1,228 @@
+{
+  "id": "1239a1d76fb240ea9c9c008b31b887e2",
+  "version": 1,
+  "status": "model_error",
+  "mode": "live",
+  "created_at": "2026-09-30T03:17:39.054713+00:00",
+  "text": "蔚县剪纸以阳刻为主，阴刻为辅。蔚县剪纸善于多色点染。工坊每天开放并且无需预约。",
+  "requirements": {
+    "region": "河北省蔚县",
+    "project": "剪纸",
+    "people": 8,
+    "budget_per_person": 160.0,
+    "available_minutes": 150,
+    "start_time": "09:30",
+    "preferred_plan": "deep",
+    "note": "为初次了解剪纸的游客安排讲解、入门手作和茶歇。讲述清楚工艺特色，不夸大掌握程度。"
+  },
+  "operating_overrides": {
+    "capacity": 12,
+    "teachers": 1,
+    "rooms": 1,
+    "reuse": true
+  },
+  "profile": {
+    "id": "demo-yuxian",
+    "title": "蔚县剪纸同场地体验·演示接待资源",
+    "is_demo": true,
+    "status": "active",
+    "region": "河北省蔚县",
+    "project": "剪纸",
+    "capacity": 12,
+    "teachers": 1,
+    "teacher_capacity": 12,
+    "rooms": 1,
+    "reuse": true,
+    "venue": "同场地演示工坊",
+    "currency": "CNY",
+    "version": 1,
+    "use_note": "演示配置，非真实报价与接待授权；本地服务报酬为毛收入测算，不是净利润或真实增收。仅明确同场地故不计转场时间，不含交通、住宿、税费。",
+    "usage_note": "讲解、手作教学、茶歇分别计入本地服务报酬；材料与工具和组织费用单列。工具复用为当前演示活动要求。模型无权修改人数、报价、教师、场地或授权。",
+    "plans": {
+      "light": {
+        "title": "轻体验",
+        "stages": [
+          20,
+          50,
+          20
+        ],
+        "lecture_cents": 20000,
+        "craft_per_person_cents": 2500,
+        "tea_per_person_cents": 1500,
+        "tool_cents": 8000,
+        "reusable_per_person_cents": 800,
+        "disposable_per_person_cents": 1400,
+        "operations_cents": 12000,
+        "paper_per_person": 1
+      },
+      "deep": {
+        "title": "深体验",
+        "stages": [
+          30,
+          60,
+          30
+        ],
+        "lecture_cents": 30000,
+        "craft_per_person_cents": 3500,
+        "tea_per_person_cents": 2000,
+        "tool_cents": 10000,
+        "reusable_per_person_cents": 1000,
+        "disposable_per_person_cents": 1600,
+        "operations_cents": 16000,
+        "paper_per_person": 2
+      }
+    }
+  },
+  "sources_snapshot": [
+    {
+      "id": "src-yuxian-color",
+      "source_id": "src-yuxian-color",
+      "document_id": "ihchina-20184",
+      "title": "剪纸（蔚县剪纸）·点染彩绘",
+      "url": "https://www.ihchina.cn/project_details/20184.html",
+      "publisher": "中国非物质文化遗产网·中国非物质文化遗产数字博物馆",
+      "region": "河北省蔚县",
+      "project": "剪纸",
+      "published_at": null,
+      "accessed_at": "2026-09-30",
+      "locator": "项目介绍正文第3自然段第2句：复用一词之后的技法短语",
+      "quote": "多色点染彩绘",
+      "keywords": [
+        "颜色",
+        "彩色",
+        "点染",
+        "彩绘",
+        "技法"
+      ],
+      "use_note": "官方项目资料的必要短摘录，用于技法讲解和事实核对；不扩展为每件作品必须多色的断言，不包含实际作品图像。",
+      "usage_status": "available",
+      "version": 1,
+      "hash_scope": "quote_utf8",
+      "sha256": "a896c47755bb957c4c2419d50270ed3d28e559dfdf767fbb60b3ff83d3d62fe3"
+    },
+    {
+      "id": "src-yuxian-region",
+      "source_id": "src-yuxian-region",
+      "document_id": "ihchina-20184",
+      "title": "剪纸（蔚县剪纸）·申报地区",
+      "url": "https://www.ihchina.cn/project_details/20184.html",
+      "publisher": "中国非物质文化遗产网·中国非物质文化遗产数字博物馆",
+      "region": "河北省蔚县",
+      "project": "剪纸",
+      "published_at": null,
+      "accessed_at": "2026-09-30",
+      "locator": "项目基本信息：申报地区或单位字段",
+      "quote": "河北省蔚县",
+      "keywords": [
+        "地域",
+        "地点",
+        "申报地区"
+      ],
+      "use_note": "官方项目资料的必要短摘录，用于带出处的事实核对；非网页或图片转载许可。页面未标明发布时间，2006为名录公布年份。",
+      "usage_status": "available",
+      "version": 1,
+      "hash_scope": "quote_utf8",
+      "sha256": "372ae8c21f703c67dc7bf0c61a2bc7a9caab751e431e1a423972e2fcc9dc743f"
+    },
+    {
+      "id": "src-yuxian-technique",
+      "source_id": "src-yuxian-technique",
+      "document_id": "ihchina-20184",
+      "title": "剪纸（蔚县剪纸）·阴刻与阳刻",
+      "url": "https://www.ihchina.cn/project_details/20184.html",
+      "publisher": "中国非物质文化遗产网·中国非物质文化遗产数字博物馆",
+      "region": "河北省蔚县",
+      "project": "剪纸",
+      "published_at": null,
+      "accessed_at": "2026-09-30",
+      "locator": "项目介绍正文第3自然段第2句：以“它以阴刻为主”起始",
+      "quote": "以阴刻为主，阳刻为辅",
+      "keywords": [
+        "技法",
+        "阴刻",
+        "阳刻",
+        "主辅"
+      ],
+      "use_note": "官方项目资料的必要短摘录，仅支持相应地域技法描述；不证明任何经营者的资质或作品授权。不得脱离蔚县地域使用。",
+      "usage_status": "available",
+      "version": 1,
+      "hash_scope": "quote_utf8",
+      "sha256": "9a8d0640428a28f6a5b50e6e640e386b55a9ad71b9be232d1078ed245cb6992a"
+    }
+  ],
+  "materials_snapshot": [
+    {
+      "id": "mat-paper-garden",
+      "title": "纸上庭园·原创界面纹样",
+      "path": "frontend/prototype/assets/paper-garden.svg",
+      "usage_status": "available",
+      "version": 1,
+      "source_type": "original",
+      "use_note": "本项目原创抽象界面纹样，用于项目演示和体验包装饰；不是传统剪纸作品的复制，也不代表传承人授权。使用状态可在演示中撤回，用于验证受影响内容更新。",
+      "rights_scope": "本项目界面与体验包装饰",
+      "is_demo": true
+    }
+  ],
+  "source_versions": {
+    "src-yuxian-color": {
+      "version": 1,
+      "usage_status": "available"
+    },
+    "src-yuxian-region": {
+      "version": 1,
+      "usage_status": "available"
+    },
+    "src-yuxian-technique": {
+      "version": 1,
+      "usage_status": "available"
+    }
+  },
+  "material_versions": {
+    "mat-paper-garden": {
+      "version": 1,
+      "usage_status": "available"
+    }
+  },
+  "claims": [],
+  "cards": [],
+  "planning": null,
+  "plan": null,
+  "approval": null,
+  "model_calls": 1,
+  "model_metrics": [
+    {
+      "purpose": "理解需求与拆分陈述",
+      "attempt": 1,
+      "at": "2026-09-30T03:17:39.080495+00:00",
+      "model": "xiangyi-qwen3:14b-q4_k_m",
+      "ok": false,
+      "error": "ConnectError",
+      "elapsed_seconds": 2.039
+    }
+  ],
+  "revision_count": 0,
+  "elapsed_seconds": 2.052,
+  "parent_id": null,
+  "affected": [],
+  "error": "本地模型不可用或调用超时；请检查Ollama与模型，未切换为预设结果。",
+  "events": [
+    {
+      "seq": 1,
+      "stage": "accepted",
+      "message": "已保存输入与资料/经营版本，等待本地单并发执行。",
+      "at": "2026-09-30T03:17:39.067016+00:00"
+    },
+    {
+      "seq": 2,
+      "stage": "model_call",
+      "message": "本地模型调用：理解需求与拆分陈述（第1次）",
+      "at": "2026-09-30T03:17:39.082890+00:00"
+    },
+    {
+      "seq": 3,
+      "stage": "model_error",
+      "message": "本地模型不可用或调用超时；请检查Ollama与模型，未切换为预设结果。",
+      "at": "2026-09-30T03:17:41.124585+00:00"
+    }
+  ]
+}

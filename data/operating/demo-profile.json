@@ -1,0 +1,44 @@
+{
+  "id": "demo-yuxian",
+  "title": "蔚县剪纸同场地体验·演示接待资源",
+  "is_demo": true,
+  "status": "active",
+  "region": "河北省蔚县",
+  "project": "剪纸",
+  "capacity": 12,
+  "teachers": 1,
+  "teacher_capacity": 12,
+  "rooms": 1,
+  "reuse": true,
+  "venue": "同场地演示工坊",
+  "currency": "CNY",
+  "version": 1,
+  "use_note": "演示配置，非真实报价与接待授权；本地服务报酬为毛收入测算，不是净利润或真实增收。仅明确同场地故不计转场时间，不含交通、住宿、税费。",
+  "usage_note": "讲解、手作教学、茶歇分别计入本地服务报酬；材料与工具和组织费用单列。工具复用为当前演示活动要求。模型无权修改人数、报价、教师、场地或授权。",
+  "plans": {
+    "light": {
+      "title": "轻体验",
+      "stages": [20, 50, 20],
+      "lecture_cents": 20000,
+      "craft_per_person_cents": 2500,
+      "tea_per_person_cents": 1500,
+      "tool_cents": 8000,
+      "reusable_per_person_cents": 800,
+      "disposable_per_person_cents": 1400,
+      "operations_cents": 12000,
+      "paper_per_person": 1
+    },
+    "deep": {
+      "title": "深体验",
+      "stages": [30, 60, 30],
+      "lecture_cents": 30000,
+      "craft_per_person_cents": 3500,
+      "tea_per_person_cents": 2000,
+      "tool_cents": 10000,
+      "reusable_per_person_cents": 1000,
+      "disposable_per_person_cents": 1600,
+      "operations_cents": 16000,
+      "paper_per_person": 2
+    }
+  }
+}

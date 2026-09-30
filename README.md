@@ -2,13 +2,13 @@
 
 **可信非遗体验编排智能体｜智慧文旅与乡村振兴**
 
-代码仓库：[tingfengy2000-creator/xiangyi-youju](https://github.com/tingfengy2000-creator/xiangyi-youju)（私有）。
+代码仓库：[tingfengy2000-creator/xiangyi-youju](https://github.com/tingfengy2000-creator/xiangyi-youju)（当前为公开仓库；本轮仅核对状态，未更改可见性）。
 
 乡艺有据帮助乡村文旅工作人员，把有来源的非遗资料变成讲解准确、时间与预算可行、村民服务报酬可解释的文化体验方案。首个案例为蔚县剪纸，以丰宁满族剪纸作地域知识对照。
 
 项目面向中国研究生智慧城市技术与创意设计大赛，以争取进入全国决赛为目标。前端视觉品质是最高设计要求，技术和案例围绕可展示、可核对的业务闭环展开。
 
-> **当前阶段：方案设计与交互原型。** 事实核验使用明确标注的预设案例；预算、日程和约束由浏览器实际计算。真实 LLM、Agent 后端、正式效果评测和社区合作尚未完成。演示账本不代表实际经营或村民净收入。
+> **当前阶段：最小真实业务闭环已跑通。** 官方 Qwen3-14B Q4_K_M 已在本机通过实际推理，接通地域核验、条件修订、人工确认和双版体验包。四个核心场景验收通过；保留三页视觉和明确的预设/回放模式。所有经营配置仍是演示数据，当前资料规模很小，不能把演示通过当作通用准确率。详见 [实测报告](docs/validation/local-runtime-2026-09-30.md)。
 
 ![乡艺有据首页](docs/assets/screenshots/home-hero.png)
 
@@ -18,13 +18,14 @@
 | --- | --- |
 | 解决什么问题、为何这样设计 | [产品方案](docs/design/product-plan.md) |
 | 做到哪一步、接下来做什么 | [项目进度](docs/progress/project-status.md) |
-| 看看实际界面 | 下载后打开 [交互原型](frontend/prototype/index.html) |
+| 打开真实界面与运行环境 | [本地运行说明](docs/development/local-runtime.md)；本机启动后访问8780端口 |
+| 核对真实案例、速度与失败记录 | [本机实测报告](docs/validation/local-runtime-2026-09-30.md) |
 | LLM 和 Agent 如何发挥价值 | [技术架构与验证方案](docs/design/technical-architecture.md) |
 | 如何安排开发和参赛展示 | [实施与参赛清单](docs/design/delivery-plan.md) |
 | 每次交付增加了什么 | [更新记录](CHANGELOG.md) |
 | 如何参与开发、管理文件 | [开发说明](CONTRIBUTING.md) · [目录与命名规范](docs/development/repository-conventions.md) |
 
-GitHub 网页显示 HTML 源码；操作界面需下载或克隆后在浏览器打开文件。仓库不依赖 GitHub Pages 或其他网站托管服务。
+GitHub 网页显示源码；真实业务在本机启动后访问。直接打开 HTML 只是明确标注的预设模式，不能代替本地模型运行。
 
 ## 三个页面，一条业务流程
 
@@ -32,9 +33,13 @@ GitHub 网页显示 HTML 源码；操作界面需下载或克隆后在浏览器�
 2. **可信内容工坊**：定位讲解问题，查看来源和修改建议。
 3. **体验与共益**：比较轻体验与深体验，调整人数、时间和预算，导出带假设说明的计划。
 
-正式系统计划完成：`需求理解 → 地域与事实查证 → 讲解和活动编排 → 程序校验 → 人工确认 → 体验包`。
+本轮实现的业务流程：`需求理解 → 地域与事实查证 → 讲解和活动编排 → 程序校验 → 人工确认 → 体验包`。
 
 LLM（大语言模型）负责理解、查证和表达；Agent（能按任务调用工具的程序）安排查证与修订步骤；确定性程序负责金额、容量和时间计算；人负责文化判断、授权及对外使用确认。
+
+真实运行截图：[内容工坊](docs/assets/screenshots/live-studio-desktop.png) · [来源定位](docs/assets/screenshots/live-evidence-desktop.png) · [110元预算修订](docs/assets/screenshots/live-planner-desktop.png) · [游客版体验包](docs/assets/screenshots/live-visitor-desktop.png)。这些图片来自已保存的实际本地任务，不是效果合成图。
+
+体验包样张：[游客版](docs/validation/experience-packs/visitor-after-withdrawal.html) · [组织者版](docs/validation/experience-packs/organizer-after-withdrawal.html)（下载后用浏览器打开；实际模型结果的演示快照，不是活动订单）。
 
 ## 当前状态
 
@@ -43,37 +48,38 @@ LLM（大语言模型）负责理解、查证和表达；Agent（能按任务调
 | 内容 | 状态 | 说明 |
 | --- | --- | --- |
 | 产品方案、架构、参赛路线 | 已完成本轮设计 | 随后续实现和需求变化修订 |
-| 三页高保真原型 | 已完成 | 桌面/手机可浏览，核验案例为预设 |
-| 演示账本、两种方案、约束提示、导出 | 已完成原型功能 | 演示参数，不代表真实经营 |
+| 三页高保真业务界面 | 已接通真实后端 | 保留纸白、墨绿、朱红；直接打开HTML仍是明示预设 |
+| 账本、候选方案、资源校验、双版导出 | 已通过最小真实闭环 | 采用整数分复算、人工确认与版本失效检查 |
 | 目录、依赖、中文说明与交付规则 | 已完成整理 | 本仓库作为后续统一交付位置 |
-| 本地 LLM、检索、Agent、业务后端 | 待实现 | 没有真实模型运行效果可报告 |
+| 本地模型、检索、Agent与业务后端 | 已实际运行 | 4个核心短任务、12次真实模型调用；结果见实测报告 |
 | 独立测试集、强基线、真实合作 | 待开展 | 不使用虚构成绩或合作信息 |
 
-## 查看界面：不需要模型和 API 密钥
+## 启动真实业务
 
-最简单的方法：双击 `frontend/prototype/index.html`。
+本机已准备好隔离环境、官方模型与运行器。首次冷启动实测任务约37.7秒，随后三个短任务约2.0—2.5秒；这是本轮少量案例的耗时，不是速度保证。
 
-如果这台电脑还没有项目，先用有仓库访问权限的 GitHub 账号克隆：
+在本仓库已准备好的隔离环境中运行：
+
+```powershell
+.venv\Scripts\python.exe scripts/start_local.py
+```
+
+打开 **http://127.0.0.1:8780/**。无需模型 API 密钥。首次在其他电脑使用时，先按 [本地运行说明](docs/development/local-runtime.md) 安装隔离依赖、下载并校验官方模型；不要使用其他项目的 Python 环境。
 
 ```powershell
 git clone https://github.com/tingfengy2000-creator/xiangyi-youju.git
 cd xiangyi-youju
 ```
 
-也可以在仓库根目录运行，再打开终端打印的网址：
-
-```powershell
-python scripts/serve_preview.py
-```
-
-默认地址为 `http://127.0.0.1:8769/`。端口被占用时加 `--port 8770`；仅本机可访问，按 `Ctrl+C` 停止。
+只想查看历史设计时，可双击 `frontend/prototype/index.html`。该入口明确使用预设案例。HTTP 模式遇到故障会显示失败，不能悄悄回退成预设结果。
 
 ## 开发验证
 
-需要 Python 3.10+、Node.js 20+。仅浏览原型不需要安装开发依赖。
+本轮后端环境为 Python 3.12，浏览器验证需 Node.js 20+。假模型单元测试与实际推理验证分开记录。
 
 ```powershell
-python scripts/check_repository.py
+.venv\Scripts\python.exe scripts/check_repository.py
+.venv\Scripts\python.exe -m pytest tests/backend -q
 npm ci
 npx playwright install chromium
 npm test
@@ -92,7 +98,10 @@ Playwright 是浏览器自动化工具。`npm test` 检查三页、两种屏幕�
 ## 仓库地图
 
 ```text
-frontend/prototype/          当前界面原型及原创视觉素材
+frontend/prototype/          三页界面、真实API接入及明示预设模式
+backend/                     模型、工作流、检索、编排、确认和导出
+data/curated/                文化来源和素材使用信息
+data/operating/              独立的演示经营配置
 docs/design/                 产品方案、技术架构、实施计划
 docs/diagrams/               架构图源文件和展示图片
 docs/assets/screenshots/     已审核的展示截图
@@ -105,11 +114,11 @@ tests/e2e/                  浏览器交互检查
 artifacts/                  本地生成结果，不提交
 ```
 
-后端开始实现后再建立 `backend/`，现在没有空壳服务。目录和文件默认使用英文小写与连字符；Python 文件使用下划线；中文用于页面和说明正文。
+目录和文件默认使用英文小写与连字符，Python 文件采用下划线。`frontend/prototype/` 沿用原有路径，当前同时支持真实业务和明示历史原型；无需为目录改名重写前端。
 
 ## 技术路线与费用边界
 
-计划使用本地 **Qwen3-14B Q4_K_M + Ollama + LangGraph OSS + FastAPI**，无需微调、不接付费模型 API。当前是无需构建的 HTML/CSS/JavaScript 原型，正式前端迁移 React/TypeScript 属于后续工作。
+采用本地 **Qwen3-14B Q4_K_M + Ollama + LangGraph OSS + FastAPI + SQLite**，无需微调、不接付费模型 API。前端保留原生 HTML/CSS/JavaScript 并直接接通业务，没有为实现闭环增加框架迁移。模型调用最多8次，方案修订最多2轮；金额与资源由程序校验。
 
 “免费”指利用已有设备、不新增模型许可和 API 费用；设备、电费和人工维护仍有成本。模型权重、环境、私密数据与密钥不放入 Git。本仓库尚未声明项目整体的开源许可证；第三方模型、资料、框架和素材仍遵循各自许可。
 

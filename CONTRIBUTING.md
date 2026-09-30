@@ -9,7 +9,7 @@
 3. 修改方案前阅读 [产品方案](docs/design/product-plan.md) 与 [技术架构](docs/design/technical-architecture.md)。
 4. 遵循 [协作与交付约定](AGENTS.md) 和 [仓库规范](docs/development/repository-conventions.md)。
 
-当前可运行成果是 `frontend/prototype/` 中的离线交互原型，直接打开 `index.html` 即可查看。事实核验仍为预设案例，不能作为真实 LLM 或 Agent 效果展示。后端、真实推理和正式评测需要后续实现。
+前端仍在 `frontend/prototype/`，通过本地 FastAPI 服务接入 `backend/` 的真实流程；双击文件仅进入明示预设模式。启动与验证见 [本地运行说明](docs/development/local-runtime.md)，实际完成能力以项目进度为准。
 
 ## 开始一次修改
 

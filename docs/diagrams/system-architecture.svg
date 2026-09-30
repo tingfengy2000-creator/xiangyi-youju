@@ -3,12 +3,12 @@
 <defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8" fill="#7b877e"/></marker></defs>
 <g font-family="Microsoft YaHei, Noto Sans CJK SC, sans-serif">
 <text x="65" y="76" font-size="37" fill="#223b33" font-weight="600">乡艺有据｜总体技术架构</text>
-<text x="66" y="116" font-size="19" fill="#69716a">本地模型 + 有状态Agent + 证据检索 + 确定性校验；当前为架构设计，AI后端待实现。</text>
+<text x="66" y="116" font-size="19" fill="#69716a">本地模型 + 有状态Agent + 证据检索 + 确定性校验；实际运行状态与测试范围见项目进度。</text>
 <rect x="65" y="165" width="445" height="115" rx="7" fill="#fffdf7" stroke="#ccd2c4"/>
 <rect x="65" y="165" width="5" height="115" fill="#91a183"/>
 <text x="89" y="202" font-size="23" fill="#223b33" font-weight="600">三页文化体验前端</text>
 <text x="89" y="236" font-size="18" fill="#69716a">乡土发现 / 可信内容工坊 / 体验与共益</text>
-<text x="89" y="264" font-size="18" fill="#69716a">React + TypeScript；当前已有离线原型</text>
+<text x="89" y="264" font-size="18" fill="#69716a">原生三页前端；真实API / 明示预设</text>
 <rect x="585" y="165" width="420" height="115" rx="7" fill="#fffdf7" stroke="#ccd2c4"/>
 <rect x="585" y="165" width="5" height="115" fill="#91a183"/>
 <text x="609" y="202" font-size="23" fill="#223b33" font-weight="600">本地应用接口</text>
@@ -24,25 +24,25 @@
 <rect x="465" y="340" width="730" height="145" rx="7" fill="#fffdf7" stroke="#ccd2c4"/>
 <rect x="465" y="340" width="5" height="145" fill="#91a183"/>
 <text x="489" y="377" font-size="23" fill="#223b33" font-weight="600">LangGraph OSS · 有状态主Agent</text>
-<text x="489" y="411" font-size="18" fill="#69716a">澄清地域 → 选择工具 → 根据缺口补查或修订</text>
-<text x="489" y="439" font-size="18" fill="#69716a">同一模型承担不同任务；预算封顶，未知可停</text>
-<text x="489" y="467" font-size="18" fill="#69716a">过程显示工具结果，不展示虚构思考</text>
+<text x="489" y="411" font-size="18" fill="#69716a">理解 → 检索 → 核验 → 编排与有限修订</text>
+<text x="489" y="439" font-size="18" fill="#69716a">同一模型承担不同任务；调用封顶，未知可停</text>
+<text x="489" y="467" font-size="18" fill="#69716a">过程来自真实事件，不展示虚构思考</text>
 <path d="M1307 280 V411 H1200" fill="none" stroke="#7b877e" stroke-width="2" marker-end="url(#arrow)"/>
 <text x="1240" y="315" font-size="16" fill="#69716a">本地模型调用</text>
 <rect x="65" y="540" width="335" height="310" rx="7" fill="#fffdf7" stroke="#ccd2c4"/>
 <rect x="65" y="540" width="5" height="310" fill="#91a183"/>
 <text x="89" y="577" font-size="23" fill="#223b33" font-weight="600">本地资料与任务存储</text>
-<text x="89" y="611" font-size="18" fill="#69716a">SQLite + 文件 + JSONL</text>
+<text x="89" y="611" font-size="18" fill="#69716a">SQLite + 本地 JSON 配置</text>
 <text x="89" y="639" font-size="18" fill="#69716a">① 官方事实与地域版本</text>
 <text x="89" y="667" font-size="18" fill="#69716a">② 素材来源与使用边界</text>
-<text x="89" y="695" font-size="18" fill="#69716a">③ 演示/真实经营配置分开</text>
-<text x="89" y="723" font-size="18" fill="#69716a">④ 社区意愿与撤回状态</text>
+<text x="89" y="695" font-size="18" fill="#69716a">③ 文化资料与经营配置分开</text>
+<text x="89" y="723" font-size="18" fill="#69716a">④ 使用状态与撤回记录</text>
 <text x="89" y="751" font-size="18" fill="#69716a">⑤ 任务、工具、模型版本记录</text>
 <rect x="465" y="550" width="320" height="130" rx="7" fill="#fffdf7" stroke="#ccd2c4"/>
 <rect x="465" y="550" width="5" height="130" fill="#91a183"/>
 <text x="489" y="587" font-size="23" fill="#223b33" font-weight="600">地域检索与查证</text>
-<text x="489" y="621" font-size="18" fill="#69716a">BM25 + 实体/时间过滤</text>
-<text x="489" y="649" font-size="18" fill="#69716a">来源ID与上下文定位</text>
+<text x="489" y="621" font-size="18" fill="#69716a">BM25 + 地域/使用状态过滤</text>
+<text x="489" y="649" font-size="18" fill="#69716a">来源ID与原文位置定位</text>
 <rect x="825" y="550" width="320" height="130" rx="7" fill="#fffdf7" stroke="#ccd2c4"/>
 <rect x="825" y="550" width="5" height="130" fill="#91a183"/>
 <text x="849" y="587" font-size="23" fill="#223b33" font-weight="600">讲解修订与编排</text>

@@ -1,0 +1,39 @@
+{
+  "scope": "browser-local-model-runs",
+  "runs": [
+    {
+      "id": "67a10d2b1d804f73aca9953e6f909688",
+      "status": "invalidated",
+      "model_calls": 4,
+      "elapsed_seconds": 4.584,
+      "parent_id": null,
+      "revision_count": 0
+    },
+    {
+      "id": "6e830ee26a2e4ecdbbef4209128df933",
+      "status": "invalidated",
+      "model_calls": 4,
+      "elapsed_seconds": 4.643,
+      "parent_id": null,
+      "revision_count": 1
+    },
+    {
+      "id": "1d12abf720c448398445c7163167f3cb",
+      "status": "invalidated",
+      "model_calls": 4,
+      "elapsed_seconds": 4.57,
+      "parent_id": null,
+      "revision_count": 1
+    },
+    {
+      "id": "5753afb808ca417fafbb5946003257b0",
+      "status": "confirmed",
+      "model_calls": 4,
+      "elapsed_seconds": 4.51,
+      "parent_id": "1d12abf720c448398445c7163167f3cb",
+      "revision_count": 1
+    }
+  ],
+  "model_calls": 16,
+  "note": "Current status reflects subsequent material invalidation. One successful budget run stopped its browser test on a price-format assertion; this was not model failure."
+}

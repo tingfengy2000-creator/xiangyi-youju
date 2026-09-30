@@ -1,0 +1,9 @@
+{
+  "captured_at": "2026-09-30T04:09:09.124589+00:00",
+  "python": "3.12.14",
+  "gpu": "NVIDIA GeForce RTX 5090",
+  "gpu_memory_total_mib": 32607,
+  "gpu_memory_used_mib_at_snapshot": 10242,
+  "driver_version": "610.88",
+  "note": "Snapshot during the local inference session, not a peak memory benchmark."
+}
