@@ -39,5 +39,42 @@
       "各24任务总计"
     ]
   ],
-  "notes": "分组符合预期数量，不合并为通用准确率。耗时是全部24任务的中位数，不是只算完整交付题。调用数与算力使用不同。"
+  "notes": "简表五项指标绑定3833ce1冻结版首跑；最终候选版本作用域修复后的已见输入回归另列，不混用两个版本，不称独立评测。",
+  "version_map": {
+    "3833ce1_frozen_first_run": {
+      "source": "../validation/semantic-cases/first-run/summary.json",
+      "agent": [
+        "12/12",
+        "6/6",
+        "5/6"
+      ],
+      "fixed": [
+        "10/12",
+        "5/6",
+        "3/6"
+      ],
+      "calls": [
+        98,
+        78
+      ]
+    },
+    "release_candidate_scope_fix": {
+      "source": "../validation/release-candidate/version-regression/summary.json",
+      "agent": [
+        "11/12",
+        "6/6",
+        "6/6"
+      ],
+      "fixed": [
+        "9/12",
+        "5/6",
+        "4/6"
+      ],
+      "calls": [
+        97,
+        76
+      ],
+      "note": "已见输入版本回归，不是新未见测试"
+    }
+  }
 }

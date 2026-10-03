@@ -1,0 +1,69 @@
+{
+  "case_id": "SH-17",
+  "policy": "agent",
+  "expected_outcome": "confirm",
+  "run_id": "bd9426a19eb54382b256b7652ee1fc66",
+  "status": "needs_confirmation",
+  "model_calls": 3,
+  "elapsed_seconds": 2.327,
+  "wall_seconds": 2.361,
+  "snapshot_sha256": "9bc17b08c3bdd7fcbf8909fee1d46b2af5c91e2aafc132f4d0628fd7550f4bd0",
+  "passed": true,
+  "outcome_reached": true,
+  "failed_checks": [],
+  "checks": [
+    {
+      "check": "真实本地运行标识",
+      "passed": true
+    },
+    {
+      "check": "八次模型与两轮修订上限",
+      "passed": true
+    },
+    {
+      "check": "人工确认前双版禁止正式下载",
+      "passed": true
+    },
+    {
+      "check": "运行初始快照无批准",
+      "passed": true
+    },
+    {
+      "check": "必要确认状态",
+      "passed": true,
+      "detail": "needs_confirmation"
+    },
+    {
+      "check": "明确列出预期冲突字段",
+      "passed": true,
+      "detail": [
+        "min_craft_minutes"
+      ]
+    },
+    {
+      "check": "冲突字段保留两方值:min_craft_minutes",
+      "passed": true
+    },
+    {
+      "check": "等待确认时不覆盖表单:min_craft_minutes",
+      "passed": true
+    },
+    {
+      "check": "冲突确认前不生成或批准执行方案",
+      "passed": true
+    },
+    {
+      "check": "确认前不能批准套餐绕过冲突",
+      "passed": true
+    }
+  ],
+  "delivery": {
+    "before_export": {
+      "visitor": 409,
+      "organizer": 409
+    },
+    "preview": {},
+    "exports": {},
+    "rejected_approval_status": 409
+  }
+}

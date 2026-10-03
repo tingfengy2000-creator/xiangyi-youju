@@ -6,7 +6,7 @@ import re
 _NUMBER = r"[零〇一二两三四五六七八九十百\d]+(?:\.\d+)?"
 _DURATION = re.compile(rf"(?P<number>{_NUMBER}|半)\s*(?P<before_half>个?半)?(?P<unit>个?小时|分钟)(?P<half>半)?")
 _CRAFT = re.compile(r"手作|动手|制作|实操|剪刻|做作品")
-_TOTAL = re.compile(r"总时长|全程|总共|一共|整个活动|整场|总计|活动时间|活动时长|行程|只能待|只留|停留|只有|仅有")
+_TOTAL = re.compile(r"总时长|总时间|全程|总共|一共|整个活动|整场|总计|活动时间|活动时长|行程|只能待|只留|停留|只有|仅有")
 
 
 def chinese_number(value):

@@ -1,144 +1,96 @@
 {
   "status": "draft_supplementary_wps_preview_checked_canonical_render_pending",
   "date": "2026-10-03",
-  "method": "WPS COM read-only PDF export; bundled Poppler PNG rendering; every page visually inspected",
-  "canonical_renderer": "render_docx.py failed: LibreOffice soffice.exe not found on PATH",
+  "method": "WPS COM read-only PDF export after final candidate text update; bundled Poppler PNG rendering; all 14 current pages visually inspected via contact sheet and representative 100% views",
+  "canonical_renderer": "render_docx.py unavailable: bundled LibreOffice soffice.exe not found",
   "canonical_log": "artifacts/submission-preview/canonical-render-failure.log",
   "original_templates_unchanged": true,
-  "original_template_reference_pages_reviewed": {
-    "summary": 4,
-    "description": 2,
-    "business": 1
-  },
   "outputs": [
     {
       "file": "project-summary-draft.docx",
-      "sha256": "d35ab6844a16d5d58c63342a4a937ec774578d6de5a383b0587530a6a3175fc7",
+      "sha256": "9986f3bbd13d4c9142b6677de131a8a793b3825488922142772db693ee08f1f4",
+      "pdf": "artifacts/submission-preview/project-summary-draft-candidate.pdf",
+      "pdf_sha256": "bfb56e74e4f54168e1aeae7a53c0eaaae1daa35a57666e6b2f53993875986647",
       "wps_preview_pages": 3,
       "reviewed_pages": [
-        1,
-        2,
-        3
-      ],
-      "visible_clipping_or_overlap_or_missing_glyphs": false,
-      "pdf_source": {
-        "path": "artifacts/submission-preview/project-summary-draft.pdf",
-        "sha256": "c4c2f58f7a41610a7af55bba63d43222e8ce14d3553f21d937b331d23447d502",
-        "method": "WPS read-only export from the DOCX whose exact SHA-256 is recorded above"
-      },
-      "reviewed_pngs": [
         {
-          "page": 1,
-          "path": "artifacts/submission-preview/project-summary-draft-final-1.png",
-          "sha256": "5ced9c81bda0fb62d7a698f29581db33b86bee2a429535f21ec9181f9a2d227f"
+          "path": "artifacts/submission-preview/project-summary-draft-candidate-1.png",
+          "sha256": "510993add15d9168c7ef18269adcc538d86c9efb5c498c4072dc70a9744be7a8"
         },
         {
-          "page": 2,
-          "path": "artifacts/submission-preview/project-summary-draft-final-2.png",
-          "sha256": "592f090255a408c97a871cbe98eb30dd111f78d29ae3f2bb5cba1a4f55a0d076"
+          "path": "artifacts/submission-preview/project-summary-draft-candidate-2.png",
+          "sha256": "d360fd35cc428ba6c6fd0c765de87b3f3ea8811e0e631e8f3726577cfcceb00a"
         },
         {
-          "page": 3,
-          "path": "artifacts/submission-preview/project-summary-draft-final-3.png",
-          "sha256": "f19ac44908f56e112642ea625b0af80c04bf55bee357864c0fc80944bdcf7c8c"
+          "path": "artifacts/submission-preview/project-summary-draft-candidate-3.png",
+          "sha256": "8ff70f03d1605cd06e491c0ee17377fd621d79dcf2576e0da09a7d6f7195ed75"
         }
-      ]
+      ],
+      "visible_clipping_or_overlap_or_missing_glyphs": false
     },
     {
       "file": "project-description-draft.docx",
-      "sha256": "e4cf008b3a756cb7ad97d5e0c47c5d283fe55bf14609191cdc4d71d8e28c9cff",
+      "sha256": "a87de75b5cf4341386c7442f2adca4f8d5129d5fe9c7a0196f9fe94371613ce7",
+      "pdf": "artifacts/submission-preview/project-description-draft-candidate.pdf",
+      "pdf_sha256": "4d5fa2487e277d29f310b7e78a3b3e25c4232d24c5778e59d0d86c311b96808c",
       "wps_preview_pages": 6,
       "reviewed_pages": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6
-      ],
-      "visible_clipping_or_overlap_or_missing_glyphs": false,
-      "pdf_source": {
-        "path": "artifacts/submission-preview/project-description-draft.pdf",
-        "sha256": "b710ca0a2d1d8fa55d6391c2a48ae810380971c4a48bb0d26dbdc947ce96ae42",
-        "method": "WPS read-only export from the DOCX whose exact SHA-256 is recorded above"
-      },
-      "reviewed_pngs": [
         {
-          "page": 1,
-          "path": "artifacts/submission-preview/project-description-draft-final-1.png",
-          "sha256": "5e37f30f7720063a67fead6a5a01a22bf46fbb41a57212565152df26bdf76972"
+          "path": "artifacts/submission-preview/project-description-draft-candidate-1.png",
+          "sha256": "22302577899ac59c0ba1f93498c9a074270958fe6cca9b6169366cca7a47b402"
         },
         {
-          "page": 2,
-          "path": "artifacts/submission-preview/project-description-draft-final-2.png",
-          "sha256": "4b0af822403b0cdacc91a9e2aabee52dee6c948c2df61ef6c7b46fa82d1a1631"
+          "path": "artifacts/submission-preview/project-description-draft-candidate-2.png",
+          "sha256": "9201523375f0b48406897408e8bdec15d9c6febcfc4aadf8bc545ab3a75baa0a"
         },
         {
-          "page": 3,
-          "path": "artifacts/submission-preview/project-description-draft-final-3.png",
-          "sha256": "845d1f36c95fc5ff0f662622f3a5b9025f5f1e41627ecc29e8e908f22b87fc89"
+          "path": "artifacts/submission-preview/project-description-draft-candidate-3.png",
+          "sha256": "1ec47a9c1364c0986ef10ac0ae8577f5bb64fe92a68f912f26d8745376419af9"
         },
         {
-          "page": 4,
-          "path": "artifacts/submission-preview/project-description-draft-final-4.png",
-          "sha256": "1c23ec1f8b19f8a1a5477b394efe2f527a5fac8cbd9ae065fbc096ab8a702987"
+          "path": "artifacts/submission-preview/project-description-draft-candidate-4.png",
+          "sha256": "9ca3f0b34fe90bc054d7efe3a742688abd2cb77818105dc8deb561fd5e0639ac"
         },
         {
-          "page": 5,
-          "path": "artifacts/submission-preview/project-description-draft-final-5.png",
-          "sha256": "b03d9aed2e0ba868b52c81b41e6432ee0dd59ccac60d424bde5cf542cf33db2e"
+          "path": "artifacts/submission-preview/project-description-draft-candidate-5.png",
+          "sha256": "254df6139fd9f03e08b956ca29200f133b606ab0023b5f972393bae08201ff35"
         },
         {
-          "page": 6,
-          "path": "artifacts/submission-preview/project-description-draft-final-6.png",
-          "sha256": "5cbe5d2cb6a2c936117f9205b4ecfbe0a6cb08db1acb8f00f8ca4114dcaa3e83"
+          "path": "artifacts/submission-preview/project-description-draft-candidate-6.png",
+          "sha256": "e0102b6a99214575de500ad228153ca6353fc5ac090cae8421ca22b49f6122fc"
         }
-      ]
+      ],
+      "visible_clipping_or_overlap_or_missing_glyphs": false
     },
     {
       "file": "business-plan-draft.docx",
-      "sha256": "8299fd0dc45437251028c399f65c487b54315c893b32453eaa1489d33678924f",
+      "sha256": "2349987a9708f51e76a93d5200da72bbd0ab29ec47aa23df6d8cb11628997a33",
+      "pdf": "artifacts/submission-preview/business-plan-draft-candidate.pdf",
+      "pdf_sha256": "9c45449b808bd9d3d10e34a4f9c71b1059009d958fa525825f67c3f81e6b019b",
       "wps_preview_pages": 5,
       "reviewed_pages": [
-        1,
-        2,
-        3,
-        4,
-        5
-      ],
-      "visible_clipping_or_overlap_or_missing_glyphs": false,
-      "pdf_source": {
-        "path": "artifacts/submission-preview/business-plan-draft.pdf",
-        "sha256": "19689cc5a81e64a563204ffc6adf466d8a2ff184467078eb5b3a5d1aa554d1db",
-        "method": "WPS read-only export from the DOCX whose exact SHA-256 is recorded above"
-      },
-      "reviewed_pngs": [
         {
-          "page": 1,
-          "path": "artifacts/submission-preview/business-plan-draft-final-1.png",
-          "sha256": "345f0c58519427f75c9e3e01f11c1712bd7ef3a1275a66abe054869d49cfe3ec"
+          "path": "artifacts/submission-preview/business-plan-draft-candidate-1.png",
+          "sha256": "d62fc873c600a2f863d17a1df4087c872f0c5e15f6ef42b76c8b8bfe54c19bfa"
         },
         {
-          "page": 2,
-          "path": "artifacts/submission-preview/business-plan-draft-final-2.png",
-          "sha256": "c6dd433147603f618f37e8a206cc983a2353a70d77557af16213c941d0ec1dfd"
+          "path": "artifacts/submission-preview/business-plan-draft-candidate-2.png",
+          "sha256": "371e63e2c1ee194f7be4b2b11baf58ae4945a2d3215cb33e668318cea2705121"
         },
         {
-          "page": 3,
-          "path": "artifacts/submission-preview/business-plan-draft-final-3.png",
-          "sha256": "d3bfbb9e088cea47d5537304b8d40688cfee6de8b7b37c21aa270f1195246905"
+          "path": "artifacts/submission-preview/business-plan-draft-candidate-3.png",
+          "sha256": "b91329b889a60e24437b3351ba3926220ab9646f32f9f0d941706e5c5f080357"
         },
         {
-          "page": 4,
-          "path": "artifacts/submission-preview/business-plan-draft-final-4.png",
-          "sha256": "c378554d733dd9b5342f3cbf2280d1e9e028ef82df1e166e2bbc1ffe7b8a2b31"
+          "path": "artifacts/submission-preview/business-plan-draft-candidate-4.png",
+          "sha256": "dfe676ac0b9d5a5d79eb687499b7320fbd69960d8b2c8c6f8e3d5cbd756cdafd"
         },
         {
-          "page": 5,
-          "path": "artifacts/submission-preview/business-plan-draft-final-5.png",
-          "sha256": "0f2e7a8f488abef0480d0728a01bd6da7389d3d37edd6c7e5cdc4e5942ce1250"
+          "path": "artifacts/submission-preview/business-plan-draft-candidate-5.png",
+          "sha256": "0bfc602d136d64f20a5ec54cb89c6611f57f73c604bd9290347ee7dc34cfc757"
         }
-      ]
+      ],
+      "visible_clipping_or_overlap_or_missing_glyphs": false
     }
   ],
   "checks": {
@@ -152,6 +104,5 @@
     "不是正式提交包；团队、合作、市场与收益证据等仍待补。",
     "规范LibreOffice渲染仍待完成；当前为WPS兼容性预览。",
     "公开仓库首次发表与匿名源码提交口径待核实。"
-  ],
-  "preview_selection_note": "Only the explicit -final-N.png files listed per output were used for final supplementary QA. Earlier PNGs without -final- are obsolete draft previews and must not be used to judge the current DOCX."
+  ]
 }

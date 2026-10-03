@@ -1,0 +1,200 @@
+{
+  "case_id": "SH-12",
+  "policy": "agent",
+  "expected_outcome": "deliver",
+  "run_id": "c4d69a50d7ea4d1cbfb71033a34d6503",
+  "status": "awaiting_review",
+  "model_calls": 5,
+  "elapsed_seconds": 5.855,
+  "wall_seconds": 5.959,
+  "snapshot_sha256": "f7aacaac5e0b748be3ab67669c9bf249212df47c2ea1644cf1bf6ddfcd7e9e15",
+  "passed": true,
+  "outcome_reached": true,
+  "failed_checks": [],
+  "checks": [
+    {
+      "check": "提取:available_minutes",
+      "passed": true,
+      "detail": {
+        "expected": 120,
+        "actual": 120
+      }
+    },
+    {
+      "check": "提取:min_craft_minutes",
+      "passed": true,
+      "detail": {
+        "expected": 60,
+        "actual": 60
+      }
+    },
+    {
+      "check": "提取:require_tags_contains",
+      "passed": true,
+      "detail": {
+        "expected": [
+          "tea"
+        ],
+        "actual": [
+          "tea"
+        ]
+      }
+    },
+    {
+      "check": "人数预算总时长保留明确输入",
+      "passed": true
+    },
+    {
+      "check": "真实本地运行标识",
+      "passed": true
+    },
+    {
+      "check": "八次模型与两轮修订上限",
+      "passed": true
+    },
+    {
+      "check": "人工确认前双版禁止正式下载",
+      "passed": true
+    },
+    {
+      "check": "运行初始快照无批准",
+      "passed": true
+    },
+    {
+      "check": "完整交付样本不能以确认或拒绝代替成功",
+      "passed": true,
+      "detail": "awaiting_review"
+    },
+    {
+      "check": "程序方案可行",
+      "passed": true
+    },
+    {
+      "check": "所选方案全字段复算一致",
+      "passed": true
+    },
+    {
+      "check": "程序验证通过",
+      "passed": true
+    },
+    {
+      "check": "逐项教学扫描与内容绑定通过",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "check": "双版草稿预览不偷偷确认",
+      "passed": true
+    },
+    {
+      "check": "显式确认接口成功",
+      "passed": true
+    },
+    {
+      "check": "确认后双版导出完整",
+      "passed": true
+    },
+    {
+      "check": "最终确认方案与已校验方案一致",
+      "passed": true
+    },
+    {
+      "check": "可用讲解卡逐项有可定位来源",
+      "passed": true
+    },
+    {
+      "check": "经营承诺与用户要求不作文化讲解",
+      "passed": true
+    },
+    {
+      "check": "visitor保留演示测算标识",
+      "passed": true
+    },
+    {
+      "check": "visitor同步同一教学:script-1",
+      "passed": true
+    },
+    {
+      "check": "visitor同步同一教学:observation",
+      "passed": true
+    },
+    {
+      "check": "visitor同步同一教学:interaction",
+      "passed": true
+    },
+    {
+      "check": "organizer保留演示测算标识",
+      "passed": true
+    },
+    {
+      "check": "organizer同步同一教学:script-1",
+      "passed": true
+    },
+    {
+      "check": "organizer同步同一教学:observation",
+      "passed": true
+    },
+    {
+      "check": "organizer同步同一教学:interaction",
+      "passed": true
+    },
+    {
+      "check": "方案预期:id",
+      "passed": true,
+      "detail": {
+        "expected": "deep",
+        "actual": "deep"
+      }
+    },
+    {
+      "check": "方案预期:total_cents",
+      "passed": true,
+      "detail": {
+        "expected": 108000,
+        "actual": 108000
+      }
+    },
+    {
+      "check": "方案预期:duration_minutes",
+      "passed": true,
+      "detail": {
+        "expected": 120,
+        "actual": 120
+      }
+    },
+    {
+      "check": "方案预期:craft_minutes",
+      "passed": true,
+      "detail": {
+        "expected": 60,
+        "actual": 60
+      }
+    }
+  ],
+  "delivery": {
+    "before_export": {
+      "visitor": 409,
+      "organizer": 409
+    },
+    "preview": {
+      "visitor": 200,
+      "organizer": 200
+    },
+    "exports": {
+      "visitor": {
+        "status": 200,
+        "path": "artifacts/release-candidate/regression-packs/sh-12-agent-visitor.html",
+        "sha256": "99d80c2845dd8a204c765758a8be83f9cf55431aadc8769fc462f935f70401be",
+        "plain_text": "模拟体验样张 · 乡艺有据 乡艺 有据 乡艺有据 可信非遗体验编排智能体 模拟体验样张 真实本地模型运行 河北省蔚县 / 剪纸 深体验，有据可循 带着一份有出处的讲解，走近一方乡土。 原创装饰图，非传统作品或纹样复制 参与人数 8  人 活动时长 120  分钟 演示人均费用 ¥135.00 开始时间 09:30 本文件为模拟体验样张。所有价格、服务报酬、场地与人员均为演示测算；非预约、非真实合作，不代表已取得文化素材或场地授权，不构成实际增收或净利润证明。 01 认识一方乡土 仅展示具有证据支持、当前使用状态允许的讲解卡。 有据讲解 · 河北省蔚县 蔚县剪纸以阴刻为主、阳刻为辅。 剪纸（蔚县剪纸）·阴刻与阳刻 文化表述可从下方来源核对。 听见工艺，看见细节 蔚县剪纸主要使用阴刻技法，阳刻作为辅助。 观察任务 找一找示例中哪些部分是阴刻，哪些是阳刻。 一起想一想 你更喜欢阴刻还是阳刻的表现方式？ 教学创意（非传统文化事实）；内容中的文化前提已逐项核对，活动形式不宣称为当地传统。 02 在场的每一刻 09:30—10:00 文化讲解 30 分钟 10:00—11:00 剪纸手作 60 分钟 11:00—11:30 乡土茶歇 30 分钟 同一演示场地、一个组顺序活动；不含交通、住宿和税费。价格、角色、纸材份数均为演示配置，非预约或真实合作。 工具复用是本演示活动要求；演示纸材用量为16份，不是实测生态改善。 据 文化来源与使用说明 剪纸（蔚县剪纸）·阴刻与阳刻 ↗ 地域：河北省蔚县 · 原文位置：项目介绍正文第3自然段第2句：以“它以阴刻为主”起始 获取时间：2026-09-30 官方项目资料的必要短摘录，仅支持相应地域技法描述；不证明任何经营者的资质或作品授权。不得脱离蔚县地域使用。 正式活动仍须由负责人落实场地、人员、报价及文化内容使用条件。资料与使用状态发生变化时，应重新核验并确认；此文件仅记录导出时的快照。 乡艺有据 · 让文化有出处，让体验可核对 运行 c4d69a50d7ea4d1cbfb71033a34d6503 · 真实本地模型运行"
+      },
+      "organizer": {
+        "status": 200,
+        "path": "artifacts/release-candidate/regression-packs/sh-12-agent-organizer.html",
+        "sha256": "1d0d3a1510a8755680809ce8ed642160e5a47a43a30a8af1d6698e039ba1c1be",
+        "plain_text": "组织者体验包 · 演示测算 · 乡艺有据 乡艺 有据 乡艺有据 可信非遗体验编排智能体 组织者体验包 · 演示测算 真实本地模型运行 河北省蔚县 / 剪纸 深体验，有据可循 文化依据、资源约束与活动账本，保存在同一份确认快照中。 原创装饰图，非传统作品或纹样复制 参与人数 8  人 活动时长 120  分钟 演示人均费用 ¥135.00 开始时间 09:30 本文件为模拟体验样张。所有价格、服务报酬、场地与人员均为演示测算；非预约、非真实合作，不代表已取得文化素材或场地授权，不构成实际增收或净利润证明。 01 认识一方乡土 仅展示具有证据支持、当前使用状态允许的讲解卡。 有据讲解 · 河北省蔚县 蔚县剪纸以阴刻为主、阳刻为辅。 剪纸（蔚县剪纸）·阴刻与阳刻 讲解卡 card-c1 · 关联陈述 c1 听见工艺，看见细节 蔚县剪纸主要使用阴刻技法，阳刻作为辅助。 观察任务 找一找示例中哪些部分是阴刻，哪些是阳刻。 一起想一想 你更喜欢阴刻还是阳刻的表现方式？ 教学创意（非传统文化事实）；内容中的文化前提已逐项核对，活动形式不宣称为当地传统。 script-1 · 关联来源：src-yuxian-technique observation · 关联来源：src-yuxian-technique interaction · 关联来源：src-yuxian-technique 02 在场的每一刻 09:30—10:00 文化讲解 30 分钟 · 资源：room-1 10:00—11:00 剪纸手作 60 分钟 · 资源：room-1、teacher-1 11:00—11:30 乡土茶歇 30 分钟 · 资源：room-1 同一演示场地、一个组顺序活动；不含交通、住宿和税费。价格、角色、纸材份数均为演示配置，非预约或真实合作。 工具复用是本演示活动要求；演示纸材用量为16份，不是实测生态改善。 03 经营测算与资源边界 账目单位为人民币。按经营配置复算，服务报酬不等于村民净收入。 项目与演示收款角色 单价 × 数量 小计 文化讲解服务 在地讲解人员（演示角色） ¥300.00 × 1 ¥300.00 手作教学服务 在地手作教师（演示角色） ¥35.00 × 8 ¥280.00 乡土茶歇服务 在地茶歇服务者（演示角色） ¥20.00 × 8 ¥160.00 工具准备 材料与工具准备（演示角色） ¥100.00 × 1 ¥100.00 每人耗材 耗材采购（演示角色） ¥10.00 × 8 ¥80.00 组织成本 活动组织（演示角色） ¥160.00 × 1 ¥160.00 演示总支出 ¥1,080.00 本地服务报酬 ¥740.00 讲解、手作教学与茶歇服务费用之和；非利润、非净增收。 当前接待资源 单组容量 12 人 · 教师 1 位 · 场地 1 处 一个组在同一场地顺序活动，不自动拆组或新增并行接待。 人均预算上限 ¥160.00；可用时间 120 分钟。预算按总价精确校验，人均显示四舍五入至分。 04 原文、修订与证据 陈述 c1  来源支持 原文 蔚县剪纸以阴刻为主、阳刻为辅。 核验说明 证据直接支持该声明 原句保留（已有来源支持） 蔚县剪纸以阴刻为主、阳刻为辅。 以阴刻为主，阳刻为辅 src-yuxian-technique · 项目介绍正文第3自然段第2句：以“它以阴刻为主”起始 河北省蔚县 src-yuxian-region · 项目基本信息：申报地区或单位字段 窗花 src-yuxian-window-name · 正文第2自然段第1句：蔚县剪纸的别称 多色点染彩绘 src-yuxian-color · 项目介绍正文第3自然段第2句：复用一词之后的技法短语 关联来源：src-yuxian-technique / src-yuxian-region / src-yuxian-window-name / src-yuxian-color 05 负责人确认与版本追溯 负责人确认 确认状态 已确认当前模拟体验方案 确认时间 2026-10-03T06:37:03.019954+00:00 确认方案 深体验 确认运行版本 1 运行快照 运行编号 c4d69a50d7ea4d1cbfb71033a34d6503 运行方式 真实本地模型运行 经营配置编号 demo-yuxian 经营配置版本 2 资料 / 素材 版本 导出快照中的使用状态 来源 · src-yuxian-carving-tool 1 可用于当前用途 来源 · src-yuxian-color 1 可用于当前用途 来源 · src-yuxian-color-layer 1 可用于当前用途 来源 · src-yuxian-early-floral 1 可用于当前用途 来源 · src-yuxian-region 1 可用于当前用途 来源 · src-yuxian-technique 1 可用于当前用途 来源 · src-yuxian-themes 1 可用于当前用途 来源 · src-yuxian-window-name 1 可用于当前用途 来源 · src-yuxian-xuan-paper 1 可用于当前用途 素材 · mat-paper-garden 1 可用于当前用途 据 文化来源与使用说明 src-yuxian-technique ·  剪纸（蔚县剪纸）·阴刻与阳刻 ↗ 地域：河北省蔚县 · 原文位置：项目介绍正文第3自然段第2句：以“它以阴刻为主”起始 获取时间：2026-09-30 官方项目资料的必要短摘录，仅支持相应地域技法描述；不证明任何经营者的资质或作品授权。不得脱离蔚县地域使用。 src-yuxian-region ·  剪纸（蔚县剪纸）·申报地区 ↗ 地域：河北省蔚县 · 原文位置：项目基本信息：申报地区或单位字段 获取时间：2026-09-30 官方项目资料的必要短摘录，用于带出处的事实核对；非网页或图片转载许可。页面未标明发布时间，2006为名录公布年份。 src-yuxian-window-name ·  蔚县剪纸·窗花别称 ↗ 地域：河北省蔚县 · 原文位置：正文第2自然段第1句：蔚县剪纸的别称 获取时间：2026-09-30 官方页面必要短摘录，仅用于带出处的事实核验与教学表达；不构成作品图像或商业转载许可。别称说明，不将所有地区窗花都认定为蔚县剪纸。 src-yuxian-color ·  剪纸（蔚县剪纸）·点染彩绘 ↗ 地域：河北省蔚县 · 原文位置：项目介绍正文第3自然段第2句：复用一词之后的技法短语 获取时间：2026-09-30 官方项目资料的必要短摘录，用于技法讲解和事实核对；不扩展为每件作品必须多色的断言，不包含实际作品图像。 正式活动仍须由负责人落实场地、人员、报价及文化内容使用条件。资料与使用状态发生变化时，应重新核验并确认；此文件仅记录导出时的快照。 乡艺有据 · 让文化有出处，让体验可核对 运行 c4d69a50d7ea4d1cbfb71033a34d6503 · 真实本地模型运行"
+      }
+    },
+    "approval_after_preview": null,
+    "approval_status": 200
+  }
+}

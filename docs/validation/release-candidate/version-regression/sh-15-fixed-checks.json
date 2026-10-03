@@ -1,0 +1,85 @@
+{
+  "case_id": "SH-15",
+  "policy": "fixed",
+  "expected_outcome": "confirm",
+  "run_id": "98f9eda9d2a04161a8a61396f2c4b8ff",
+  "status": "needs_confirmation",
+  "model_calls": 2,
+  "elapsed_seconds": 1.51,
+  "wall_seconds": 1.546,
+  "snapshot_sha256": "54a5b6f387ae35357fedc49f5c920fa2bcc6c58182320dddc2a63366c5e08f68",
+  "passed": true,
+  "outcome_reached": true,
+  "failed_checks": [],
+  "checks": [
+    {
+      "check": "提取:available_minutes",
+      "passed": true,
+      "detail": {
+        "expected": 100,
+        "actual": 100
+      }
+    },
+    {
+      "check": "提取:min_craft_minutes",
+      "passed": true,
+      "detail": {
+        "expected": 60,
+        "actual": 60
+      }
+    },
+    {
+      "check": "真实本地运行标识",
+      "passed": true
+    },
+    {
+      "check": "八次模型与两轮修订上限",
+      "passed": true
+    },
+    {
+      "check": "人工确认前双版禁止正式下载",
+      "passed": true
+    },
+    {
+      "check": "运行初始快照无批准",
+      "passed": true
+    },
+    {
+      "check": "必要确认状态",
+      "passed": true,
+      "detail": "needs_confirmation"
+    },
+    {
+      "check": "明确列出预期冲突字段",
+      "passed": true,
+      "detail": [
+        "available_minutes"
+      ]
+    },
+    {
+      "check": "冲突字段保留两方值:available_minutes",
+      "passed": true
+    },
+    {
+      "check": "等待确认时不覆盖表单:available_minutes",
+      "passed": true
+    },
+    {
+      "check": "冲突确认前不生成或批准执行方案",
+      "passed": true
+    },
+    {
+      "check": "确认前不能批准套餐绕过冲突",
+      "passed": true
+    }
+  ],
+  "delivery": {
+    "before_export": {
+      "visitor": 409,
+      "organizer": 409
+    },
+    "preview": {},
+    "exports": {},
+    "rejected_approval_status": 409
+  }
+}

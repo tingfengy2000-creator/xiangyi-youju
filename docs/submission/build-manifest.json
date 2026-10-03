@@ -10,7 +10,7 @@
   "outputs": [
     {
       "file": "project-summary-draft.docx",
-      "sha256": "d35ab6844a16d5d58c63342a4a937ec774578d6de5a383b0587530a6a3175fc7",
+      "sha256": "9986f3bbd13d4c9142b6677de131a8a793b3825488922142772db693ee08f1f4",
       "template_sha256": "c1f280161f0037b477528b65372672c003806457f4923be773ef456cd1010697",
       "changed_package_parts": [
         "docProps/app.xml",
@@ -21,7 +21,7 @@
     },
     {
       "file": "project-description-draft.docx",
-      "sha256": "e4cf008b3a756cb7ad97d5e0c47c5d283fe55bf14609191cdc4d71d8e28c9cff",
+      "sha256": "a87de75b5cf4341386c7442f2adca4f8d5129d5fe9c7a0196f9fe94371613ce7",
       "template_sha256": "bf0347f12f93bba3280e2c0ca384727fd7ad2360c64201fb6d1c1cb648f655cf",
       "changed_package_parts": [
         "docProps/app.xml",
@@ -32,7 +32,7 @@
     },
     {
       "file": "business-plan-draft.docx",
-      "sha256": "8299fd0dc45437251028c399f65c487b54315c893b32453eaa1489d33678924f",
+      "sha256": "2349987a9708f51e76a93d5200da72bbd0ab29ec47aa23df6d8cb11628997a33",
       "template_sha256": "777f66a29204f6a9470da43f0b23d1e3c76f08a4891c08718c81c27dfd91e01b",
       "changed_package_parts": [
         "docProps/app.xml",
@@ -46,13 +46,13 @@
     {
       "document": "form",
       "section": "项目背景",
-      "characters": 178,
+      "characters": 138,
       "limit": 300
     },
     {
       "document": "form",
       "section": "立项思路",
-      "characters": 183,
+      "characters": 162,
       "limit": 300
     },
     {
@@ -64,25 +64,25 @@
     {
       "document": "form",
       "section": "商业模式和预期效益",
-      "characters": 177,
+      "characters": 116,
       "limit": 300
     },
     {
       "document": "description",
       "section": "立项依据",
-      "characters": 845,
+      "characters": 860,
       "limit": 2000
     },
     {
       "document": "description",
       "section": "项目创新内容",
-      "characters": 1407,
+      "characters": 1378,
       "limit": 3000
     },
     {
       "document": "description",
       "section": "实施方案",
-      "characters": 1173,
+      "characters": 1180,
       "limit": 3000
     },
     {
@@ -94,7 +94,7 @@
     {
       "document": "business",
       "section": "项目方案概述",
-      "characters": 131,
+      "characters": 144,
       "limit": 200
     },
     {
@@ -106,25 +106,25 @@
     {
       "document": "business",
       "section": "项目产品（服务）化",
-      "characters": 550,
+      "characters": 544,
       "limit": 2000
     },
     {
       "document": "business",
       "section": "项目产品（服务）市场与竞争",
-      "characters": 859,
+      "characters": 919,
       "limit": 2000
     },
     {
       "document": "business",
       "section": "商业模式",
-      "characters": 580,
+      "characters": 581,
       "limit": 2000
     },
     {
       "document": "business",
       "section": "预期经济效益分析",
-      "characters": 285,
+      "characters": 276,
       "limit": 500
     }
   ],

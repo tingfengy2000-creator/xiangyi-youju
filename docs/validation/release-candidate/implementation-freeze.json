@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "frozen_at": "2026-10-03T06:34:25.405218+00:00",
+  "base_commit": "3833ce1e57ca88d18b5e6cee66e2d2cb48ee2d01",
+  "input_sha256": "748b2f337ba6b812015aa96a176842392e64bca8d74ca9dedb54de105dbe5ab6",
+  "files": {
+    "backend/__init__.py": "c35439e93603481fa787a07611296f5cf741f0a73876f9d6eec0e978d01bdf3c",
+    "backend/app.py": "d0dbeafeaadbdc49c34f1463c7fa037ed521edd3e81f2982b0fc805851e21d1b",
+    "backend/bundles.py": "01b7450f6bd3e6300c438985da2c44119079111c6ef3f5e5c87d2de0dff9e4b1",
+    "backend/config.py": "f5576b8db282b422eed46f2e93478a102c4504b8feff9332088a66e041c808e5",
+    "backend/constraints.py": "64429e0a50b22ac9436bbd50448d3a7220fe3caeda5724f9b17391e52d51e5ef",
+    "backend/evidence.py": "92e6e3288602f10b3b79510dfd86a3f6abe865f44f7350089a159189f621fce4",
+    "backend/model.py": "c80132e20269c9dde1eb50e9173bc1c46488b7e36d3942eacde501af2b96c1d7",
+    "backend/planner.py": "e4da4f2b7a1ed1b3fc8074fa6716e85034439ee1c1c191e59913d823b552025f",
+    "backend/schemas.py": "cdbf16fecfbffa4984a0c374e126d06bdd12d295b0892b8c61f94559f46f11fb",
+    "backend/semantics.py": "31ae049504d2a8ba8a7a35d8500e559f0e6d3cb75b3fa936382da66bf5004a32",
+    "backend/store.py": "b916adabf5a22252e988dab139c42627118a646629e79c299d75aa65a43ab8b1",
+    "backend/teaching.py": "b0d334f04cda0c8e2819f0d58063f0982681b106f962a251abe225e26bf9d3e6",
+    "backend/workflow.py": "1c63e7698055ef4f00bc22bb614d46b2656d4a0f6f0b3374a3d2880e3cf70b8a",
+    "data/curated/materials.json": "d7c200bd48ac0f0eded3979631b17c61921999ceafc273d2ba6a20608dc4c8d0",
+    "data/curated/sources.json": "2ce95e8c33ad309e8ad3f4daafb43a5e30f3a59e6483a7182f863728952e85f9",
+    "data/operating/demo-profile.json": "f8eb6aea38cc74e46c4762fe5ae812499c454c328e8d0b1592cdb895fc66ce18",
+    "tests/acceptance/semantic-holdout.json": "748b2f337ba6b812015aa96a176842392e64bca8d74ca9dedb54de105dbe5ab6",
+    "tests/acceptance/run_semantic.py": "52796e465c47f477d9293158db51e5386e25671dba5213d4626c94382aa757e9",
+    "requirements.txt": "7a141db3441c76bfe482203cfa08d36d8b4c282d08b6790cb78c75d7e9cbbe3a",
+    "docs/validation/semantic-cases/comparison-protocol.md": "cdf34b78451b29cb0e15a2b5cde32c1982dde124c310073f2c2c2207ce05fb65",
+    "tests/acceptance/run_release.py": "15a5c928c0d44f736df9256c43ed47b9d64c2da43de50cdb4db9bbf0251733a6",
+    "frontend/prototype/live.js": "d4c336520dcd82bacf4728a9eb9628e987e5b3087706c06e939cca53c0ad8282",
+    "frontend/prototype/live.css": "130c7f6974c9d4721d8deb910fa58da6f960502b278c0a882e4a02e330efc1f2",
+    "frontend/prototype/index.html": "2e1420281f14c100b1f9d87a453e2c84faf15403ad827ff1d879edaa0831d66a"
+  },
+  "model": "xiangyi-qwen3:14b-q4_k_m",
+  "parameters": {
+    "think": false,
+    "temperature": 0,
+    "num_ctx": 8192,
+    "num_predict": 2300,
+    "seed": 42
+  },
+  "policies": [
+    "agent",
+    "fixed"
+  ],
+  "comparison_protocol": "docs/validation/semantic-cases/comparison-protocol.md",
+  "order": "偶数索引agent→fixed，奇数索引fixed→agent；不对首次失败重试整条任务",
+  "approval_note": "测试脚本显式调用负责人确认接口检验门禁；不声称真实经营人员已审核内容。",
+  "evaluation_limit": "原24条已见输入的版本回归，两流程各一次；不是新未见测试或第三方评测。",
+  "evaluation_type": "known_input_version_regression",
+  "historical_release": "3833ce1",
+  "historical_results": "docs/validation/semantic-cases/first-run"
+}

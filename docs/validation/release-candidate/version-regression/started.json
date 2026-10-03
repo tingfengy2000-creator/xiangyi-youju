@@ -1,0 +1,36 @@
+{
+  "started_at": "2026-10-03T06:34:26.192422+00:00",
+  "implementation_freeze_sha256": "e6d494d7aa28a9a4fb00eb7db7d6f5c7b9dbd852736737bd67dfb6ed9195a709",
+  "model": [
+    {
+      "name": "xiangyi-qwen3:14b-q4_k_m",
+      "model": "xiangyi-qwen3:14b-q4_k_m",
+      "modified_at": "2026-09-30T12:05:54.0973716+08:00",
+      "size": 9001753109,
+      "digest": "e835bb820c84d5ca90942815563588f1af11ffbc377d8d050620f6560c684a38",
+      "details": {
+        "parent_model": "Qwen3-14B-Q4_K_M.gguf",
+        "format": "gguf",
+        "family": "qwen3",
+        "families": [
+          "qwen3"
+        ],
+        "parameter_size": "14.8B",
+        "quantization_level": "Q4_K_M",
+        "context_length": 40960,
+        "embedding_length": 5120
+      },
+      "capabilities": [
+        "tools",
+        "thinking",
+        "completion"
+      ]
+    }
+  ],
+  "ollama": {
+    "version": "0.35.0"
+  },
+  "database": "artifacts/runtime/release-regression.sqlite3",
+  "policy_order": "AB/BA交错",
+  "mode": "live"
+}

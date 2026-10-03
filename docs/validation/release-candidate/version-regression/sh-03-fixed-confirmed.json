@@ -1,0 +1,2555 @@
+{
+  "id": "49de44f2768041e6998c729e21331be0",
+  "version": 1,
+  "status": "confirmed",
+  "mode": "live",
+  "created_at": "2026-10-03T06:34:59.700132+00:00",
+  "text": "蔚县剪纸以阴刻为主、阳刻为辅。",
+  "requirements": {
+    "region": "河北省蔚县",
+    "project": "剪纸",
+    "people": 6,
+    "budget_per_person": 130.0,
+    "available_minutes": 90,
+    "start_time": "09:30",
+    "preferred_plan": "deep",
+    "note": "全程90分钟，其中剪纸制作至少50分钟，还要保留茶歇。",
+    "planning_mode": "modules",
+    "audience": "general",
+    "tea_preference": "any",
+    "min_craft_minutes": 0,
+    "teaching_enabled": true
+  },
+  "operating_overrides": {
+    "capacity": 12,
+    "teachers": 1,
+    "rooms": 1,
+    "reuse": true
+  },
+  "constraint_resolution": "ask",
+  "previous_run_id": null,
+  "profile": {
+    "id": "demo-yuxian",
+    "title": "蔚县剪纸同场地体验·演示接待资源",
+    "is_demo": true,
+    "status": "active",
+    "region": "河北省蔚县",
+    "project": "剪纸",
+    "capacity": 12,
+    "teachers": 1,
+    "teacher_capacity": 12,
+    "rooms": 1,
+    "reuse": true,
+    "venue": "同场地演示工坊",
+    "currency": "CNY",
+    "version": 2,
+    "use_note": "演示配置，非真实报价与接待授权；本地服务报酬为毛收入测算，不是净利润或真实增收。仅明确同场地故不计转场时间，不含交通、住宿、税费。",
+    "usage_note": "讲解、手作教学、茶歇分别计入本地服务报酬；材料与工具和组织费用单列。工具复用为当前演示活动要求。模型无权修改人数、报价、教师、场地或授权。",
+    "plans": {
+      "light": {
+        "title": "轻体验",
+        "stages": [
+          20,
+          50,
+          20
+        ],
+        "lecture_cents": 20000,
+        "craft_per_person_cents": 2500,
+        "tea_per_person_cents": 1500,
+        "tool_cents": 8000,
+        "reusable_per_person_cents": 800,
+        "disposable_per_person_cents": 1400,
+        "operations_cents": 12000,
+        "paper_per_person": 1,
+        "tags": [
+          "story",
+          "craft",
+          "tea",
+          "family"
+        ],
+        "audiences": [
+          "general",
+          "family"
+        ]
+      },
+      "deep": {
+        "title": "深体验",
+        "stages": [
+          30,
+          60,
+          30
+        ],
+        "lecture_cents": 30000,
+        "craft_per_person_cents": 3500,
+        "tea_per_person_cents": 2000,
+        "tool_cents": 10000,
+        "reusable_per_person_cents": 1000,
+        "disposable_per_person_cents": 1600,
+        "operations_cents": 16000,
+        "paper_per_person": 2,
+        "tags": [
+          "story",
+          "craft",
+          "tea",
+          "family",
+          "deep"
+        ],
+        "audiences": [
+          "general",
+          "family"
+        ]
+      }
+    },
+    "modules_note": "模块为独立演示经营配置，价格与固定套餐分别管理，不代表真实报价或合作。必要分钟和教师条件不可由模型压缩；客群适用标签仅为本演示课程设定，不构成真实安全认证。",
+    "modules": [
+      {
+        "id": "brief-story",
+        "title": "乡土入门讲解",
+        "tags": [
+          "story",
+          "family"
+        ],
+        "order": 10,
+        "min_duration_minutes": 20,
+        "teacher_needed": 0,
+        "paper_per_person": 0,
+        "exclusive_group": "story",
+        "requires_tags": [],
+        "audiences": [
+          "general",
+          "family"
+        ],
+        "costs": {
+          "local_service": {
+            "fixed_cents": 18000,
+            "per_person_cents": 0,
+            "payee": "在地活动服务者（演示角色）"
+          },
+          "material": {
+            "fixed_cents": 0,
+            "per_person_cents": 0,
+            "payee": "材料工具准备（演示角色）"
+          },
+          "operations": {
+            "fixed_cents": 2000,
+            "per_person_cents": 0,
+            "payee": "活动组织（演示角色）"
+          }
+        }
+      },
+      {
+        "id": "deep-story",
+        "title": "工艺深度讲述",
+        "tags": [
+          "story",
+          "deep"
+        ],
+        "order": 10,
+        "min_duration_minutes": 30,
+        "teacher_needed": 0,
+        "paper_per_person": 0,
+        "exclusive_group": "story",
+        "requires_tags": [],
+        "audiences": [
+          "general"
+        ],
+        "costs": {
+          "local_service": {
+            "fixed_cents": 26000,
+            "per_person_cents": 0,
+            "payee": "在地活动服务者（演示角色）"
+          },
+          "material": {
+            "fixed_cents": 0,
+            "per_person_cents": 0,
+            "payee": "材料工具准备（演示角色）"
+          },
+          "operations": {
+            "fixed_cents": 2500,
+            "per_person_cents": 0,
+            "payee": "活动组织（演示角色）"
+          }
+        }
+      },
+      {
+        "id": "basic-craft",
+        "title": "基础剪纸手作",
+        "tags": [
+          "craft",
+          "family"
+        ],
+        "order": 30,
+        "min_duration_minutes": 50,
+        "teacher_needed": 1,
+        "paper_per_person": 1,
+        "exclusive_group": "craft",
+        "requires_tags": [],
+        "audiences": [
+          "general",
+          "family"
+        ],
+        "costs": {
+          "local_service": {
+            "fixed_cents": 0,
+            "per_person_cents": 2500,
+            "payee": "在地活动服务者（演示角色）"
+          },
+          "material": {
+            "fixed_cents": 7000,
+            "per_person_cents": 800,
+            "payee": "材料工具准备（演示角色）"
+          },
+          "operations": {
+            "fixed_cents": 4000,
+            "per_person_cents": 0,
+            "payee": "活动组织（演示角色）"
+          }
+        }
+      },
+      {
+        "id": "deep-craft",
+        "title": "深度剪纸手作",
+        "tags": [
+          "craft",
+          "deep"
+        ],
+        "order": 30,
+        "min_duration_minutes": 60,
+        "teacher_needed": 1,
+        "paper_per_person": 2,
+        "exclusive_group": "craft",
+        "requires_tags": [],
+        "audiences": [
+          "general",
+          "family"
+        ],
+        "costs": {
+          "local_service": {
+            "fixed_cents": 0,
+            "per_person_cents": 3500,
+            "payee": "在地活动服务者（演示角色）"
+          },
+          "material": {
+            "fixed_cents": 8000,
+            "per_person_cents": 1000,
+            "payee": "材料工具准备（演示角色）"
+          },
+          "operations": {
+            "fixed_cents": 5000,
+            "per_person_cents": 0,
+            "payee": "活动组织（演示角色）"
+          }
+        }
+      },
+      {
+        "id": "craft-extension",
+        "title": "手作延伸练习",
+        "tags": [
+          "craft",
+          "extension",
+          "family"
+        ],
+        "order": 40,
+        "min_duration_minutes": 20,
+        "teacher_needed": 1,
+        "paper_per_person": 1,
+        "exclusive_group": null,
+        "requires_tags": [
+          "craft"
+        ],
+        "audiences": [
+          "general",
+          "family"
+        ],
+        "costs": {
+          "local_service": {
+            "fixed_cents": 0,
+            "per_person_cents": 800,
+            "payee": "在地活动服务者（演示角色）"
+          },
+          "material": {
+            "fixed_cents": 0,
+            "per_person_cents": 400,
+            "payee": "材料工具准备（演示角色）"
+          },
+          "operations": {
+            "fixed_cents": 1000,
+            "per_person_cents": 0,
+            "payee": "活动组织（演示角色）"
+          }
+        }
+      },
+      {
+        "id": "color-observation",
+        "title": "点染色彩观察",
+        "tags": [
+          "observation",
+          "family"
+        ],
+        "order": 20,
+        "min_duration_minutes": 15,
+        "teacher_needed": 0,
+        "paper_per_person": 0,
+        "exclusive_group": null,
+        "requires_tags": [],
+        "audiences": [
+          "general",
+          "family"
+        ],
+        "costs": {
+          "local_service": {
+            "fixed_cents": 6000,
+            "per_person_cents": 0,
+            "payee": "在地活动服务者（演示角色）"
+          },
+          "material": {
+            "fixed_cents": 0,
+            "per_person_cents": 100,
+            "payee": "材料工具准备（演示角色）"
+          },
+          "operations": {
+            "fixed_cents": 1000,
+            "per_person_cents": 0,
+            "payee": "活动组织（演示角色）"
+          }
+        }
+      },
+      {
+        "id": "sharing",
+        "title": "作品交流分享",
+        "tags": [
+          "sharing",
+          "family"
+        ],
+        "order": 50,
+        "min_duration_minutes": 15,
+        "teacher_needed": 0,
+        "paper_per_person": 0,
+        "exclusive_group": null,
+        "requires_tags": [],
+        "audiences": [
+          "general",
+          "family"
+        ],
+        "costs": {
+          "local_service": {
+            "fixed_cents": 4000,
+            "per_person_cents": 0,
+            "payee": "在地活动服务者（演示角色）"
+          },
+          "material": {
+            "fixed_cents": 0,
+            "per_person_cents": 0,
+            "payee": "材料工具准备（演示角色）"
+          },
+          "operations": {
+            "fixed_cents": 1000,
+            "per_person_cents": 0,
+            "payee": "活动组织（演示角色）"
+          }
+        }
+      },
+      {
+        "id": "tea",
+        "title": "乡土茶歇",
+        "tags": [
+          "tea",
+          "family"
+        ],
+        "order": 60,
+        "min_duration_minutes": 20,
+        "teacher_needed": 0,
+        "paper_per_person": 0,
+        "exclusive_group": null,
+        "requires_tags": [],
+        "audiences": [
+          "general",
+          "family"
+        ],
+        "costs": {
+          "local_service": {
+            "fixed_cents": 0,
+            "per_person_cents": 1500,
+            "payee": "在地活动服务者（演示角色）"
+          },
+          "material": {
+            "fixed_cents": 0,
+            "per_person_cents": 200,
+            "payee": "材料工具准备（演示角色）"
+          },
+          "operations": {
+            "fixed_cents": 1000,
+            "per_person_cents": 0,
+            "payee": "活动组织（演示角色）"
+          }
+        }
+      }
+    ]
+  },
+  "sources_snapshot": [
+    {
+      "id": "src-yuxian-carving-tool",
+      "source_id": "src-yuxian-carving-tool",
+      "document_id": "hebei-582739",
+      "title": "蔚县剪纸·刻刀工具",
+      "url": "https://whly.hebei.gov.cn/c/2025-09-28/582739.html",
+      "publisher": "河北省文化和旅游厅",
+      "region": "河北省蔚县",
+      "project": "剪纸",
+      "published_at": "2025-09-28",
+      "accessed_at": "2026-09-30",
+      "locator": "正文名录介绍后、制作工序介绍前的独立段落：工具短语",
+      "quote": "一把刻刀",
+      "keywords": [
+        "工具",
+        "刻刀",
+        "刻制"
+      ],
+      "use_note": "官方页面必要短摘录，仅用于带出处的事实核验与教学表达；不构成作品图像或商业转载许可。文章为河北日报报道的官方转载；只用于文化讲解，不把专业刻刀操作写成已安排的亲子课程或实际资源。",
+      "usage_status": "available",
+      "version": 1,
+      "hash_scope": "quote_utf8",
+      "sha256": "23ccb97774f2a829a7b39e7872f4b5b948218f14aba34eb7e905c6c5fb97b5ab"
+    },
+    {
+      "id": "src-yuxian-color",
+      "source_id": "src-yuxian-color",
+      "document_id": "ihchina-20184",
+      "title": "剪纸（蔚县剪纸）·点染彩绘",
+      "url": "https://www.ihchina.cn/project_details/20184.html",
+      "publisher": "中国非物质文化遗产网·中国非物质文化遗产数字博物馆",
+      "region": "河北省蔚县",
+      "project": "剪纸",
+      "published_at": null,
+      "accessed_at": "2026-09-30",
+      "locator": "项目介绍正文第3自然段第2句：复用一词之后的技法短语",
+      "quote": "多色点染彩绘",
+      "keywords": [
+        "颜色",
+        "彩色",
+        "点染",
+        "彩绘",
+        "技法"
+      ],
+      "use_note": "官方项目资料的必要短摘录，用于技法讲解和事实核对；不扩展为每件作品必须多色的断言，不包含实际作品图像。",
+      "usage_status": "available",
+      "version": 1,
+      "hash_scope": "quote_utf8",
+      "sha256": "a896c47755bb957c4c2419d50270ed3d28e559dfdf767fbb60b3ff83d3d62fe3"
+    },
+    {
+      "id": "src-yuxian-color-layer",
+      "source_id": "src-yuxian-color-layer",
+      "document_id": "hebei-582739",
+      "title": "蔚县剪纸·染色层次",
+      "url": "https://whly.hebei.gov.cn/c/2025-09-28/582739.html",
+      "publisher": "河北省文化和旅游厅",
+      "region": "河北省蔚县",
+      "project": "剪纸",
+      "published_at": "2025-09-28",
+      "accessed_at": "2026-09-30",
+      "locator": "正文刀工细节之后的色彩介绍段第1句",
+      "quote": "染色讲究层次和光影",
+      "keywords": [
+        "色彩",
+        "染色",
+        "层次",
+        "光影"
+      ],
+      "use_note": "官方页面必要短摘录，仅用于带出处的事实核验与教学表达；不构成作品图像或商业转载许可。文章为河北日报报道的官方转载；支持观察染色层次，不推定任何具体未授权图像的颜色、图案或寓意。",
+      "usage_status": "available",
+      "version": 1,
+      "hash_scope": "quote_utf8",
+      "sha256": "5ef088f639843c56c48530892a2c6c2f1b894ed1d5db524ad1150175c4526fd7"
+    },
+    {
+      "id": "src-yuxian-early-floral",
+      "source_id": "src-yuxian-early-floral",
+      "document_id": "hebei-558129",
+      "title": "蔚县剪纸·早期图案",
+      "url": "https://whly.hebei.gov.cn/c/2012-12-21/558129.html",
+      "publisher": "河北省文化和旅游厅",
+      "region": "河北省蔚县",
+      "project": "剪纸",
+      "published_at": "2012-12-21",
+      "accessed_at": "2026-09-30",
+      "locator": "正文第2自然段第2句：早期图案题材",
+      "quote": "初始图案多为花卉",
+      "keywords": [
+        "早期",
+        "图案",
+        "花卉",
+        "题材"
+      ],
+      "use_note": "官方页面必要短摘录，仅用于带出处的事实核验与教学表达；不构成作品图像或商业转载许可。只支持早期图案多为花卉，不把“多为”扩大为全部。",
+      "usage_status": "available",
+      "version": 1,
+      "hash_scope": "quote_utf8",
+      "sha256": "7457d429448618c8a3efa5cb3b4960b5c990bcef9d7b9bd5842b455e813d391a"
+    },
+    {
+      "id": "src-yuxian-region",
+      "source_id": "src-yuxian-region",
+      "document_id": "ihchina-20184",
+      "title": "剪纸（蔚县剪纸）·申报地区",
+      "url": "https://www.ihchina.cn/project_details/20184.html",
+      "publisher": "中国非物质文化遗产网·中国非物质文化遗产数字博物馆",
+      "region": "河北省蔚县",
+      "project": "剪纸",
+      "published_at": null,
+      "accessed_at": "2026-09-30",
+      "locator": "项目基本信息：申报地区或单位字段",
+      "quote": "河北省蔚县",
+      "keywords": [
+        "地域",
+        "地点",
+        "申报地区"
+      ],
+      "use_note": "官方项目资料的必要短摘录，用于带出处的事实核对；非网页或图片转载许可。页面未标明发布时间，2006为名录公布年份。",
+      "usage_status": "available",
+      "version": 1,
+      "hash_scope": "quote_utf8",
+      "sha256": "372ae8c21f703c67dc7bf0c61a2bc7a9caab751e431e1a423972e2fcc9dc743f"
+    },
+    {
+      "id": "src-yuxian-technique",
+      "source_id": "src-yuxian-technique",
+      "document_id": "ihchina-20184",
+      "title": "剪纸（蔚县剪纸）·阴刻与阳刻",
+      "url": "https://www.ihchina.cn/project_details/20184.html",
+      "publisher": "中国非物质文化遗产网·中国非物质文化遗产数字博物馆",
+      "region": "河北省蔚县",
+      "project": "剪纸",
+      "published_at": null,
+      "accessed_at": "2026-09-30",
+      "locator": "项目介绍正文第3自然段第2句：以“它以阴刻为主”起始",
+      "quote": "以阴刻为主，阳刻为辅",
+      "keywords": [
+        "技法",
+        "阴刻",
+        "阳刻",
+        "主辅"
+      ],
+      "use_note": "官方项目资料的必要短摘录，仅支持相应地域技法描述；不证明任何经营者的资质或作品授权。不得脱离蔚县地域使用。",
+      "usage_status": "available",
+      "version": 1,
+      "hash_scope": "quote_utf8",
+      "sha256": "9a8d0640428a28f6a5b50e6e640e386b55a9ad71b9be232d1078ed245cb6992a"
+    },
+    {
+      "id": "src-yuxian-themes",
+      "source_id": "src-yuxian-themes",
+      "document_id": "hebei-558129",
+      "title": "蔚县剪纸·主要题材",
+      "url": "https://whly.hebei.gov.cn/c/2012-12-21/558129.html",
+      "publisher": "河北省文化和旅游厅",
+      "region": "河北省蔚县",
+      "project": "剪纸",
+      "published_at": "2012-12-21",
+      "accessed_at": "2026-09-30",
+      "locator": "正文第4自然段第1句：主要题材列表",
+      "quote": "戏曲人物、花卉、脸谱",
+      "keywords": [
+        "题材",
+        "戏曲人物",
+        "花卉",
+        "脸谱"
+      ],
+      "use_note": "官方页面必要短摘录，仅用于带出处的事实核验与教学表达；不构成作品图像或商业转载许可。列举该地域剪纸常见题材，不表示每件作品均含这些图案，不解释未经资料支持的象征寓意。",
+      "usage_status": "available",
+      "version": 1,
+      "hash_scope": "quote_utf8",
+      "sha256": "0201eac485e8f83a9f409744882d308278eed68b708f36aa4e1481c23b46f080"
+    },
+    {
+      "id": "src-yuxian-window-name",
+      "source_id": "src-yuxian-window-name",
+      "document_id": "hebei-558129",
+      "title": "蔚县剪纸·窗花别称",
+      "url": "https://whly.hebei.gov.cn/c/2012-12-21/558129.html",
+      "publisher": "河北省文化和旅游厅",
+      "region": "河北省蔚县",
+      "project": "剪纸",
+      "published_at": "2012-12-21",
+      "accessed_at": "2026-09-30",
+      "locator": "正文第2自然段第1句：蔚县剪纸的别称",
+      "quote": "窗花",
+      "keywords": [
+        "别称",
+        "名称",
+        "窗花"
+      ],
+      "use_note": "官方页面必要短摘录，仅用于带出处的事实核验与教学表达；不构成作品图像或商业转载许可。别称说明，不将所有地区窗花都认定为蔚县剪纸。",
+      "usage_status": "available",
+      "version": 1,
+      "hash_scope": "quote_utf8",
+      "sha256": "96e6750d8156ddbd3b29ecce920e62be451642029971509bcb57e9bd8ba7e395"
+    },
+    {
+      "id": "src-yuxian-xuan-paper",
+      "source_id": "src-yuxian-xuan-paper",
+      "document_id": "hebei-582739",
+      "title": "蔚县剪纸·宣纸材料",
+      "url": "https://whly.hebei.gov.cn/c/2025-09-28/582739.html",
+      "publisher": "河北省文化和旅游厅",
+      "region": "河北省蔚县",
+      "project": "剪纸",
+      "published_at": "2025-09-28",
+      "accessed_at": "2026-09-30",
+      "locator": "正文名录介绍后、制作工序介绍前的独立段落：材料短语",
+      "quote": "一张宣纸",
+      "keywords": [
+        "材料",
+        "宣纸",
+        "纸张"
+      ],
+      "use_note": "官方页面必要短摘录，仅用于带出处的事实核验与教学表达；不构成作品图像或商业转载许可。文章为河北日报报道的官方转载；用于说明相关工艺材料，不证明演示课程已提供宣纸或实际采购标准。",
+      "usage_status": "available",
+      "version": 1,
+      "hash_scope": "quote_utf8",
+      "sha256": "e699bbe4d65bf7db41a6691549fbfc4eb3faa75a8dd5f46199923b0cdee63698"
+    }
+  ],
+  "materials_snapshot": [
+    {
+      "id": "mat-paper-garden",
+      "title": "纸上庭园·原创界面纹样",
+      "path": "frontend/prototype/assets/paper-garden.svg",
+      "usage_status": "available",
+      "version": 1,
+      "source_type": "original",
+      "use_note": "本项目原创抽象界面纹样，用于项目演示和体验包装饰；不是传统剪纸作品的复制，也不代表传承人授权。使用状态可在演示中撤回，用于验证受影响内容更新。",
+      "rights_scope": "本项目界面与体验包装饰",
+      "is_demo": true
+    }
+  ],
+  "source_versions": {
+    "src-yuxian-carving-tool": {
+      "version": 1,
+      "usage_status": "available"
+    },
+    "src-yuxian-color": {
+      "version": 1,
+      "usage_status": "available"
+    },
+    "src-yuxian-color-layer": {
+      "version": 1,
+      "usage_status": "available"
+    },
+    "src-yuxian-early-floral": {
+      "version": 1,
+      "usage_status": "available"
+    },
+    "src-yuxian-region": {
+      "version": 1,
+      "usage_status": "available"
+    },
+    "src-yuxian-technique": {
+      "version": 1,
+      "usage_status": "available"
+    },
+    "src-yuxian-themes": {
+      "version": 1,
+      "usage_status": "available"
+    },
+    "src-yuxian-window-name": {
+      "version": 1,
+      "usage_status": "available"
+    },
+    "src-yuxian-xuan-paper": {
+      "version": 1,
+      "usage_status": "available"
+    }
+  },
+  "material_versions": {
+    "mat-paper-garden": {
+      "version": 1,
+      "usage_status": "available"
+    }
+  },
+  "claims": [
+    {
+      "id": "c1",
+      "sentence_id": "s1",
+      "text": "蔚县剪纸以阴刻为主、阳刻为辅。",
+      "query": "蔚县剪纸是否以阴刻为主、阳刻为辅？",
+      "kind": "cultural_fact",
+      "original_sentence": "蔚县剪纸以阴刻为主、阳刻为辅。",
+      "original_sentence_id": "sentence-1",
+      "region": "河北省蔚县",
+      "status": "supported",
+      "evidence": [
+        {
+          "id": "src-yuxian-technique",
+          "source_id": "src-yuxian-technique",
+          "document_id": "ihchina-20184",
+          "title": "剪纸（蔚县剪纸）·阴刻与阳刻",
+          "url": "https://www.ihchina.cn/project_details/20184.html",
+          "publisher": "中国非物质文化遗产网·中国非物质文化遗产数字博物馆",
+          "region": "河北省蔚县",
+          "project": "剪纸",
+          "published_at": null,
+          "accessed_at": "2026-09-30",
+          "locator": "项目介绍正文第3自然段第2句：以“它以阴刻为主”起始",
+          "quote": "以阴刻为主，阳刻为辅",
+          "keywords": [
+            "技法",
+            "阴刻",
+            "阳刻",
+            "主辅"
+          ],
+          "use_note": "官方项目资料的必要短摘录，仅支持相应地域技法描述；不证明任何经营者的资质或作品授权。不得脱离蔚县地域使用。",
+          "usage_status": "available",
+          "version": 1,
+          "hash_scope": "quote_utf8",
+          "sha256": "9a8d0640428a28f6a5b50e6e640e386b55a9ad71b9be232d1078ed245cb6992a",
+          "retrieval_score": 24.887786,
+          "trust_boundary": "untrusted_source_data"
+        },
+        {
+          "id": "src-yuxian-region",
+          "source_id": "src-yuxian-region",
+          "document_id": "ihchina-20184",
+          "title": "剪纸（蔚县剪纸）·申报地区",
+          "url": "https://www.ihchina.cn/project_details/20184.html",
+          "publisher": "中国非物质文化遗产网·中国非物质文化遗产数字博物馆",
+          "region": "河北省蔚县",
+          "project": "剪纸",
+          "published_at": null,
+          "accessed_at": "2026-09-30",
+          "locator": "项目基本信息：申报地区或单位字段",
+          "quote": "河北省蔚县",
+          "keywords": [
+            "地域",
+            "地点",
+            "申报地区"
+          ],
+          "use_note": "官方项目资料的必要短摘录，用于带出处的事实核对；非网页或图片转载许可。页面未标明发布时间，2006为名录公布年份。",
+          "usage_status": "available",
+          "version": 1,
+          "hash_scope": "quote_utf8",
+          "sha256": "372ae8c21f703c67dc7bf0c61a2bc7a9caab751e431e1a423972e2fcc9dc743f",
+          "retrieval_score": 12.01909,
+          "trust_boundary": "untrusted_source_data"
+        },
+        {
+          "id": "src-yuxian-window-name",
+          "source_id": "src-yuxian-window-name",
+          "document_id": "hebei-558129",
+          "title": "蔚县剪纸·窗花别称",
+          "url": "https://whly.hebei.gov.cn/c/2012-12-21/558129.html",
+          "publisher": "河北省文化和旅游厅",
+          "region": "河北省蔚县",
+          "project": "剪纸",
+          "published_at": "2012-12-21",
+          "accessed_at": "2026-09-30",
+          "locator": "正文第2自然段第1句：蔚县剪纸的别称",
+          "quote": "窗花",
+          "keywords": [
+            "别称",
+            "名称",
+            "窗花"
+          ],
+          "use_note": "官方页面必要短摘录，仅用于带出处的事实核验与教学表达；不构成作品图像或商业转载许可。别称说明，不将所有地区窗花都认定为蔚县剪纸。",
+          "usage_status": "available",
+          "version": 1,
+          "hash_scope": "quote_utf8",
+          "sha256": "96e6750d8156ddbd3b29ecce920e62be451642029971509bcb57e9bd8ba7e395",
+          "retrieval_score": 11.966511,
+          "trust_boundary": "untrusted_source_data"
+        },
+        {
+          "id": "src-yuxian-color",
+          "source_id": "src-yuxian-color",
+          "document_id": "ihchina-20184",
+          "title": "剪纸（蔚县剪纸）·点染彩绘",
+          "url": "https://www.ihchina.cn/project_details/20184.html",
+          "publisher": "中国非物质文化遗产网·中国非物质文化遗产数字博物馆",
+          "region": "河北省蔚县",
+          "project": "剪纸",
+          "published_at": null,
+          "accessed_at": "2026-09-30",
+          "locator": "项目介绍正文第3自然段第2句：复用一词之后的技法短语",
+          "quote": "多色点染彩绘",
+          "keywords": [
+            "颜色",
+            "彩色",
+            "点染",
+            "彩绘",
+            "技法"
+          ],
+          "use_note": "官方项目资料的必要短摘录，用于技法讲解和事实核对；不扩展为每件作品必须多色的断言，不包含实际作品图像。",
+          "usage_status": "available",
+          "version": 1,
+          "hash_scope": "quote_utf8",
+          "sha256": "a896c47755bb957c4c2419d50270ed3d28e559dfdf767fbb60b3ff83d3d62fe3",
+          "retrieval_score": 11.966189,
+          "trust_boundary": "untrusted_source_data"
+        }
+      ],
+      "evidence_ids": [
+        "src-yuxian-technique"
+      ],
+      "reason": "证据直接支持该声明",
+      "suggested_text": "蔚县剪纸以阴刻为主、阳刻为辅。"
+    }
+  ],
+  "cards": [
+    {
+      "id": "card-c1",
+      "title": "有据讲解 · 河北省蔚县",
+      "text": "蔚县剪纸以阴刻为主、阳刻为辅。",
+      "claim_ids": [
+        "c1"
+      ],
+      "source_ids": [
+        "src-yuxian-technique"
+      ],
+      "material_ids": [
+        "mat-paper-garden"
+      ],
+      "usable": true
+    }
+  ],
+  "planning": {
+    "candidates": [
+      {
+        "id": "mod-brief-story--basic-craft--tea",
+        "title": "基础剪纸手作 · 3环节组合",
+        "feasible": true,
+        "conflicts": [],
+        "duration_minutes": 90,
+        "total_cents": 62000,
+        "per_person_cents": 10333,
+        "local_service_cents": 42000,
+        "material_cents": 13000,
+        "operations_cents": 7000,
+        "paper_units": 6,
+        "schedule": [
+          {
+            "title": "乡土入门讲解",
+            "start": "09:30",
+            "end": "09:50",
+            "minutes": 20,
+            "start_minute": 570,
+            "end_minute": 590,
+            "end_day_offset": 0,
+            "resource_ids": [
+              "room-1"
+            ],
+            "module_id": "brief-story"
+          },
+          {
+            "title": "基础剪纸手作",
+            "start": "09:50",
+            "end": "10:40",
+            "minutes": 50,
+            "start_minute": 590,
+            "end_minute": 640,
+            "end_day_offset": 0,
+            "resource_ids": [
+              "room-1",
+              "teacher-1"
+            ],
+            "module_id": "basic-craft"
+          },
+          {
+            "title": "乡土茶歇",
+            "start": "10:40",
+            "end": "11:00",
+            "minutes": 20,
+            "start_minute": 640,
+            "end_minute": 660,
+            "end_day_offset": 0,
+            "resource_ids": [
+              "room-1"
+            ],
+            "module_id": "tea"
+          }
+        ],
+        "ledger": [
+          {
+            "label": "乡土入门讲解·本地服务（固定）",
+            "cents": 18000,
+            "payee": "在地活动服务者（演示角色）",
+            "category": "local_service",
+            "unit_cents": 18000,
+            "quantity": 1,
+            "module_id": "brief-story"
+          },
+          {
+            "label": "乡土入门讲解·组织费用（固定）",
+            "cents": 2000,
+            "payee": "活动组织（演示角色）",
+            "category": "operations",
+            "unit_cents": 2000,
+            "quantity": 1,
+            "module_id": "brief-story"
+          },
+          {
+            "label": "基础剪纸手作·本地服务（按人数）",
+            "cents": 15000,
+            "payee": "在地活动服务者（演示角色）",
+            "category": "local_service",
+            "unit_cents": 2500,
+            "quantity": 6,
+            "module_id": "basic-craft"
+          },
+          {
+            "label": "基础剪纸手作·材料工具（固定）",
+            "cents": 7000,
+            "payee": "材料工具准备（演示角色）",
+            "category": "material",
+            "unit_cents": 7000,
+            "quantity": 1,
+            "module_id": "basic-craft"
+          },
+          {
+            "label": "基础剪纸手作·材料工具（按人数）",
+            "cents": 4800,
+            "payee": "材料工具准备（演示角色）",
+            "category": "material",
+            "unit_cents": 800,
+            "quantity": 6,
+            "module_id": "basic-craft"
+          },
+          {
+            "label": "基础剪纸手作·组织费用（固定）",
+            "cents": 4000,
+            "payee": "活动组织（演示角色）",
+            "category": "operations",
+            "unit_cents": 4000,
+            "quantity": 1,
+            "module_id": "basic-craft"
+          },
+          {
+            "label": "乡土茶歇·本地服务（按人数）",
+            "cents": 9000,
+            "payee": "在地活动服务者（演示角色）",
+            "category": "local_service",
+            "unit_cents": 1500,
+            "quantity": 6,
+            "module_id": "tea"
+          },
+          {
+            "label": "乡土茶歇·材料工具（按人数）",
+            "cents": 1200,
+            "payee": "材料工具准备（演示角色）",
+            "category": "material",
+            "unit_cents": 200,
+            "quantity": 6,
+            "module_id": "tea"
+          },
+          {
+            "label": "乡土茶歇·组织费用（固定）",
+            "cents": 1000,
+            "payee": "活动组织（演示角色）",
+            "category": "operations",
+            "unit_cents": 1000,
+            "quantity": 1,
+            "module_id": "tea"
+          }
+        ],
+        "is_demo": true,
+        "module_ids": [
+          "brief-story",
+          "basic-craft",
+          "tea"
+        ],
+        "tags": [
+          "craft",
+          "family",
+          "story",
+          "tea"
+        ],
+        "craft_minutes": 50,
+        "score": -62000,
+        "score_basis": "优先低总价，其次总时长",
+        "explanation": "经营配置组合3个模块，总时长90分钟，其中手作50分钟；演示总价620.00元。满足当前已确认约束，按单组顺序使用现有资源。",
+        "scope_note": "独立模块演示报价，不沿用固定套餐价格；同场地单组顺序活动，不自动拆组或并行，不含交通、住宿及税费。客群标签和材料份数均为演示配置，非真实经营或安全认证。"
+      },
+      {
+        "id": "mod-brief-story--basic-craft--craft-extension",
+        "title": "基础剪纸手作 · 3环节组合",
+        "feasible": false,
+        "conflicts": [
+          {
+            "code": "required_tag_missing",
+            "message": "该组合缺少用户明确要求的活动标签：tea。"
+          }
+        ],
+        "duration_minutes": 90,
+        "total_cents": 59000,
+        "per_person_cents": 9833,
+        "local_service_cents": 37800,
+        "material_cents": 14200,
+        "operations_cents": 7000,
+        "paper_units": 12,
+        "schedule": [
+          {
+            "title": "乡土入门讲解",
+            "start": "09:30",
+            "end": "09:50",
+            "minutes": 20,
+            "start_minute": 570,
+            "end_minute": 590,
+            "end_day_offset": 0,
+            "resource_ids": [
+              "room-1"
+            ],
+            "module_id": "brief-story"
+          },
+          {
+            "title": "基础剪纸手作",
+            "start": "09:50",
+            "end": "10:40",
+            "minutes": 50,
+            "start_minute": 590,
+            "end_minute": 640,
+            "end_day_offset": 0,
+            "resource_ids": [
+              "room-1",
+              "teacher-1"
+            ],
+            "module_id": "basic-craft"
+          },
+          {
+            "title": "手作延伸练习",
+            "start": "10:40",
+            "end": "11:00",
+            "minutes": 20,
+            "start_minute": 640,
+            "end_minute": 660,
+            "end_day_offset": 0,
+            "resource_ids": [
+              "room-1",
+              "teacher-1"
+            ],
+            "module_id": "craft-extension"
+          }
+        ],
+        "ledger": [
+          {
+            "label": "乡土入门讲解·本地服务（固定）",
+            "cents": 18000,
+            "payee": "在地活动服务者（演示角色）",
+            "category": "local_service",
+            "unit_cents": 18000,
+            "quantity": 1,
+            "module_id": "brief-story"
+          },
+          {
+            "label": "乡土入门讲解·组织费用（固定）",
+            "cents": 2000,
+            "payee": "活动组织（演示角色）",
+            "category": "operations",
+            "unit_cents": 2000,
+            "quantity": 1,
+            "module_id": "brief-story"
+          },
+          {
+            "label": "基础剪纸手作·本地服务（按人数）",
+            "cents": 15000,
+            "payee": "在地活动服务者（演示角色）",
+            "category": "local_service",
+            "unit_cents": 2500,
+            "quantity": 6,
+            "module_id": "basic-craft"
+          },
+          {
+            "label": "基础剪纸手作·材料工具（固定）",
+            "cents": 7000,
+            "payee": "材料工具准备（演示角色）",
+            "category": "material",
+            "unit_cents": 7000,
+            "quantity": 1,
+            "module_id": "basic-craft"
+          },
+          {
+            "label": "基础剪纸手作·材料工具（按人数）",
+            "cents": 4800,
+            "payee": "材料工具准备（演示角色）",
+            "category": "material",
+            "unit_cents": 800,
+            "quantity": 6,
+            "module_id": "basic-craft"
+          },
+          {
+            "label": "基础剪纸手作·组织费用（固定）",
+            "cents": 4000,
+            "payee": "活动组织（演示角色）",
+            "category": "operations",
+            "unit_cents": 4000,
+            "quantity": 1,
+            "module_id": "basic-craft"
+          },
+          {
+            "label": "手作延伸练习·本地服务（按人数）",
+            "cents": 4800,
+            "payee": "在地活动服务者（演示角色）",
+            "category": "local_service",
+            "unit_cents": 800,
+            "quantity": 6,
+            "module_id": "craft-extension"
+          },
+          {
+            "label": "手作延伸练习·材料工具（按人数）",
+            "cents": 2400,
+            "payee": "材料工具准备（演示角色）",
+            "category": "material",
+            "unit_cents": 400,
+            "quantity": 6,
+            "module_id": "craft-extension"
+          },
+          {
+            "label": "手作延伸练习·组织费用（固定）",
+            "cents": 1000,
+            "payee": "活动组织（演示角色）",
+            "category": "operations",
+            "unit_cents": 1000,
+            "quantity": 1,
+            "module_id": "craft-extension"
+          }
+        ],
+        "is_demo": true,
+        "module_ids": [
+          "brief-story",
+          "basic-craft",
+          "craft-extension"
+        ],
+        "tags": [
+          "craft",
+          "extension",
+          "family",
+          "story"
+        ],
+        "craft_minutes": 70,
+        "score": -59000,
+        "score_basis": "优先低总价，其次总时长",
+        "explanation": "经营配置组合3个模块，总时长90分钟，其中手作70分钟；演示总价590.00元。存在冲突：该组合缺少用户明确要求的活动标签：tea。",
+        "scope_note": "独立模块演示报价，不沿用固定套餐价格；同场地单组顺序活动，不自动拆组或并行，不含交通、住宿及税费。客群标签和材料份数均为演示配置，非真实经营或安全认证。"
+      },
+      {
+        "id": "mod-brief-story--deep-craft",
+        "title": "深度剪纸手作 · 2环节组合",
+        "feasible": false,
+        "conflicts": [
+          {
+            "code": "required_tag_missing",
+            "message": "该组合缺少用户明确要求的活动标签：tea。"
+          }
+        ],
+        "duration_minutes": 80,
+        "total_cents": 60000,
+        "per_person_cents": 10000,
+        "local_service_cents": 39000,
+        "material_cents": 14000,
+        "operations_cents": 7000,
+        "paper_units": 12,
+        "schedule": [
+          {
+            "title": "乡土入门讲解",
+            "start": "09:30",
+            "end": "09:50",
+            "minutes": 20,
+            "start_minute": 570,
+            "end_minute": 590,
+            "end_day_offset": 0,
+            "resource_ids": [
+              "room-1"
+            ],
+            "module_id": "brief-story"
+          },
+          {
+            "title": "深度剪纸手作",
+            "start": "09:50",
+            "end": "10:50",
+            "minutes": 60,
+            "start_minute": 590,
+            "end_minute": 650,
+            "end_day_offset": 0,
+            "resource_ids": [
+              "room-1",
+              "teacher-1"
+            ],
+            "module_id": "deep-craft"
+          }
+        ],
+        "ledger": [
+          {
+            "label": "乡土入门讲解·本地服务（固定）",
+            "cents": 18000,
+            "payee": "在地活动服务者（演示角色）",
+            "category": "local_service",
+            "unit_cents": 18000,
+            "quantity": 1,
+            "module_id": "brief-story"
+          },
+          {
+            "label": "乡土入门讲解·组织费用（固定）",
+            "cents": 2000,
+            "payee": "活动组织（演示角色）",
+            "category": "operations",
+            "unit_cents": 2000,
+            "quantity": 1,
+            "module_id": "brief-story"
+          },
+          {
+            "label": "深度剪纸手作·本地服务（按人数）",
+            "cents": 21000,
+            "payee": "在地活动服务者（演示角色）",
+            "category": "local_service",
+            "unit_cents": 3500,
+            "quantity": 6,
+            "module_id": "deep-craft"
+          },
+          {
+            "label": "深度剪纸手作·材料工具（固定）",
+            "cents": 8000,
+            "payee": "材料工具准备（演示角色）",
+            "category": "material",
+            "unit_cents": 8000,
+            "quantity": 1,
+            "module_id": "deep-craft"
+          },
+          {
+            "label": "深度剪纸手作·材料工具（按人数）",
+            "cents": 6000,
+            "payee": "材料工具准备（演示角色）",
+            "category": "material",
+            "unit_cents": 1000,
+            "quantity": 6,
+            "module_id": "deep-craft"
+          },
+          {
+            "label": "深度剪纸手作·组织费用（固定）",
+            "cents": 5000,
+            "payee": "活动组织（演示角色）",
+            "category": "operations",
+            "unit_cents": 5000,
+            "quantity": 1,
+            "module_id": "deep-craft"
+          }
+        ],
+        "is_demo": true,
+        "module_ids": [
+          "brief-story",
+          "deep-craft"
+        ],
+        "tags": [
+          "craft",
+          "deep",
+          "family",
+          "story"
+        ],
+        "craft_minutes": 60,
+        "score": -60000,
+        "score_basis": "优先低总价，其次总时长",
+        "explanation": "经营配置组合2个模块，总时长80分钟，其中手作60分钟；演示总价600.00元。存在冲突：该组合缺少用户明确要求的活动标签：tea。",
+        "scope_note": "独立模块演示报价，不沿用固定套餐价格；同场地单组顺序活动，不自动拆组或并行，不含交通、住宿及税费。客群标签和材料份数均为演示配置，非真实经营或安全认证。"
+      },
+      {
+        "id": "mod-deep-story--deep-craft",
+        "title": "深度剪纸手作 · 2环节组合",
+        "feasible": false,
+        "conflicts": [
+          {
+            "code": "required_tag_missing",
+            "message": "该组合缺少用户明确要求的活动标签：tea。"
+          }
+        ],
+        "duration_minutes": 90,
+        "total_cents": 68500,
+        "per_person_cents": 11417,
+        "local_service_cents": 47000,
+        "material_cents": 14000,
+        "operations_cents": 7500,
+        "paper_units": 12,
+        "schedule": [
+          {
+            "title": "工艺深度讲述",
+            "start": "09:30",
+            "end": "10:00",
+            "minutes": 30,
+            "start_minute": 570,
+            "end_minute": 600,
+            "end_day_offset": 0,
+            "resource_ids": [
+              "room-1"
+            ],
+            "module_id": "deep-story"
+          },
+          {
+            "title": "深度剪纸手作",
+            "start": "10:00",
+            "end": "11:00",
+            "minutes": 60,
+            "start_minute": 600,
+            "end_minute": 660,
+            "end_day_offset": 0,
+            "resource_ids": [
+              "room-1",
+              "teacher-1"
+            ],
+            "module_id": "deep-craft"
+          }
+        ],
+        "ledger": [
+          {
+            "label": "工艺深度讲述·本地服务（固定）",
+            "cents": 26000,
+            "payee": "在地活动服务者（演示角色）",
+            "category": "local_service",
+            "unit_cents": 26000,
+            "quantity": 1,
+            "module_id": "deep-story"
+          },
+          {
+            "label": "工艺深度讲述·组织费用（固定）",
+            "cents": 2500,
+            "payee": "活动组织（演示角色）",
+            "category": "operations",
+            "unit_cents": 2500,
+            "quantity": 1,
+            "module_id": "deep-story"
+          },
+          {
+            "label": "深度剪纸手作·本地服务（按人数）",
+            "cents": 21000,
+            "payee": "在地活动服务者（演示角色）",
+            "category": "local_service",
+            "unit_cents": 3500,
+            "quantity": 6,
+            "module_id": "deep-craft"
+          },
+          {
+            "label": "深度剪纸手作·材料工具（固定）",
+            "cents": 8000,
+            "payee": "材料工具准备（演示角色）",
+            "category": "material",
+            "unit_cents": 8000,
+            "quantity": 1,
+            "module_id": "deep-craft"
+          },
+          {
+            "label": "深度剪纸手作·材料工具（按人数）",
+            "cents": 6000,
+            "payee": "材料工具准备（演示角色）",
+            "category": "material",
+            "unit_cents": 1000,
+            "quantity": 6,
+            "module_id": "deep-craft"
+          },
+          {
+            "label": "深度剪纸手作·组织费用（固定）",
+            "cents": 5000,
+            "payee": "活动组织（演示角色）",
+            "category": "operations",
+            "unit_cents": 5000,
+            "quantity": 1,
+            "module_id": "deep-craft"
+          }
+        ],
+        "is_demo": true,
+        "module_ids": [
+          "deep-story",
+          "deep-craft"
+        ],
+        "tags": [
+          "craft",
+          "deep",
+          "story"
+        ],
+        "craft_minutes": 60,
+        "score": -68500,
+        "score_basis": "优先低总价，其次总时长",
+        "explanation": "经营配置组合2个模块，总时长90分钟，其中手作60分钟；演示总价685.00元。存在冲突：该组合缺少用户明确要求的活动标签：tea。",
+        "scope_note": "独立模块演示报价，不沿用固定套餐价格；同场地单组顺序活动，不自动拆组或并行，不含交通、住宿及税费。客群标签和材料份数均为演示配置，非真实经营或安全认证。"
+      },
+      {
+        "id": "mod-brief-story--basic-craft",
+        "title": "基础剪纸手作 · 2环节组合",
+        "feasible": false,
+        "conflicts": [
+          {
+            "code": "required_tag_missing",
+            "message": "该组合缺少用户明确要求的活动标签：tea。"
+          }
+        ],
+        "duration_minutes": 70,
+        "total_cents": 50800,
+        "per_person_cents": 8467,
+        "local_service_cents": 33000,
+        "material_cents": 11800,
+        "operations_cents": 6000,
+        "paper_units": 6,
+        "schedule": [
+          {
+            "title": "乡土入门讲解",
+            "start": "09:30",
+            "end": "09:50",
+            "minutes": 20,
+            "start_minute": 570,
+            "end_minute": 590,
+            "end_day_offset": 0,
+            "resource_ids": [
+              "room-1"
+            ],
+            "module_id": "brief-story"
+          },
+          {
+            "title": "基础剪纸手作",
+            "start": "09:50",
+            "end": "10:40",
+            "minutes": 50,
+            "start_minute": 590,
+            "end_minute": 640,
+            "end_day_offset": 0,
+            "resource_ids": [
+              "room-1",
+              "teacher-1"
+            ],
+            "module_id": "basic-craft"
+          }
+        ],
+        "ledger": [
+          {
+            "label": "乡土入门讲解·本地服务（固定）",
+            "cents": 18000,
+            "payee": "在地活动服务者（演示角色）",
+            "category": "local_service",
+            "unit_cents": 18000,
+            "quantity": 1,
+            "module_id": "brief-story"
+          },
+          {
+            "label": "乡土入门讲解·组织费用（固定）",
+            "cents": 2000,
+            "payee": "活动组织（演示角色）",
+            "category": "operations",
+            "unit_cents": 2000,
+            "quantity": 1,
+            "module_id": "brief-story"
+          },
+          {
+            "label": "基础剪纸手作·本地服务（按人数）",
+            "cents": 15000,
+            "payee": "在地活动服务者（演示角色）",
+            "category": "local_service",
+            "unit_cents": 2500,
+            "quantity": 6,
+            "module_id": "basic-craft"
+          },
+          {
+            "label": "基础剪纸手作·材料工具（固定）",
+            "cents": 7000,
+            "payee": "材料工具准备（演示角色）",
+            "category": "material",
+            "unit_cents": 7000,
+            "quantity": 1,
+            "module_id": "basic-craft"
+          },
+          {
+            "label": "基础剪纸手作·材料工具（按人数）",
+            "cents": 4800,
+            "payee": "材料工具准备（演示角色）",
+            "category": "material",
+            "unit_cents": 800,
+            "quantity": 6,
+            "module_id": "basic-craft"
+          },
+          {
+            "label": "基础剪纸手作·组织费用（固定）",
+            "cents": 4000,
+            "payee": "活动组织（演示角色）",
+            "category": "operations",
+            "unit_cents": 4000,
+            "quantity": 1,
+            "module_id": "basic-craft"
+          }
+        ],
+        "is_demo": true,
+        "module_ids": [
+          "brief-story",
+          "basic-craft"
+        ],
+        "tags": [
+          "craft",
+          "family",
+          "story"
+        ],
+        "craft_minutes": 50,
+        "score": -50800,
+        "score_basis": "优先低总价，其次总时长",
+        "explanation": "经营配置组合2个模块，总时长70分钟，其中手作50分钟；演示总价508.00元。存在冲突：该组合缺少用户明确要求的活动标签：tea。",
+        "scope_note": "独立模块演示报价，不沿用固定套餐价格；同场地单组顺序活动，不自动拆组或并行，不含交通、住宿及税费。客群标签和材料份数均为演示配置，非真实经营或安全认证。"
+      },
+      {
+        "id": "mod-brief-story--basic-craft--sharing",
+        "title": "基础剪纸手作 · 3环节组合",
+        "feasible": false,
+        "conflicts": [
+          {
+            "code": "required_tag_missing",
+            "message": "该组合缺少用户明确要求的活动标签：tea。"
+          }
+        ],
+        "duration_minutes": 85,
+        "total_cents": 55800,
+        "per_person_cents": 9300,
+        "local_service_cents": 37000,
+        "material_cents": 11800,
+        "operations_cents": 7000,
+        "paper_units": 6,
+        "schedule": [
+          {
+            "title": "乡土入门讲解",
+            "start": "09:30",
+            "end": "09:50",
+            "minutes": 20,
+            "start_minute": 570,
+            "end_minute": 590,
+            "end_day_offset": 0,
+            "resource_ids": [
+              "room-1"
+            ],
+            "module_id": "brief-story"
+          },
+          {
+            "title": "基础剪纸手作",
+            "start": "09:50",
+            "end": "10:40",
+            "minutes": 50,
+            "start_minute": 590,
+            "end_minute": 640,
+            "end_day_offset": 0,
+            "resource_ids": [
+              "room-1",
+              "teacher-1"
+            ],
+            "module_id": "basic-craft"
+          },
+          {
+            "title": "作品交流分享",
+            "start": "10:40",
+            "end": "10:55",
+            "minutes": 15,
+            "start_minute": 640,
+            "end_minute": 655,
+            "end_day_offset": 0,
+            "resource_ids": [
+              "room-1"
+            ],
+            "module_id": "sharing"
+          }
+        ],
+        "ledger": [
+          {
+            "label": "乡土入门讲解·本地服务（固定）",
+            "cents": 18000,
+            "payee": "在地活动服务者（演示角色）",
+            "category": "local_service",
+            "unit_cents": 18000,
+            "quantity": 1,
+            "module_id": "brief-story"
+          },
+          {
+            "label": "乡土入门讲解·组织费用（固定）",
+            "cents": 2000,
+            "payee": "活动组织（演示角色）",
+            "category": "operations",
+            "unit_cents": 2000,
+            "quantity": 1,
+            "module_id": "brief-story"
+          },
+          {
+            "label": "基础剪纸手作·本地服务（按人数）",
+            "cents": 15000,
+            "payee": "在地活动服务者（演示角色）",
+            "category": "local_service",
+            "unit_cents": 2500,
+            "quantity": 6,
+            "module_id": "basic-craft"
+          },
+          {
+            "label": "基础剪纸手作·材料工具（固定）",
+            "cents": 7000,
+            "payee": "材料工具准备（演示角色）",
+            "category": "material",
+            "unit_cents": 7000,
+            "quantity": 1,
+            "module_id": "basic-craft"
+          },
+          {
+            "label": "基础剪纸手作·材料工具（按人数）",
+            "cents": 4800,
+            "payee": "材料工具准备（演示角色）",
+            "category": "material",
+            "unit_cents": 800,
+            "quantity": 6,
+            "module_id": "basic-craft"
+          },
+          {
+            "label": "基础剪纸手作·组织费用（固定）",
+            "cents": 4000,
+            "payee": "活动组织（演示角色）",
+            "category": "operations",
+            "unit_cents": 4000,
+            "quantity": 1,
+            "module_id": "basic-craft"
+          },
+          {
+            "label": "作品交流分享·本地服务（固定）",
+            "cents": 4000,
+            "payee": "在地活动服务者（演示角色）",
+            "category": "local_service",
+            "unit_cents": 4000,
+            "quantity": 1,
+            "module_id": "sharing"
+          },
+          {
+            "label": "作品交流分享·组织费用（固定）",
+            "cents": 1000,
+            "payee": "活动组织（演示角色）",
+            "category": "operations",
+            "unit_cents": 1000,
+            "quantity": 1,
+            "module_id": "sharing"
+          }
+        ],
+        "is_demo": true,
+        "module_ids": [
+          "brief-story",
+          "basic-craft",
+          "sharing"
+        ],
+        "tags": [
+          "craft",
+          "family",
+          "sharing",
+          "story"
+        ],
+        "craft_minutes": 50,
+        "score": -55800,
+        "score_basis": "优先低总价，其次总时长",
+        "explanation": "经营配置组合3个模块，总时长85分钟，其中手作50分钟；演示总价558.00元。存在冲突：该组合缺少用户明确要求的活动标签：tea。",
+        "scope_note": "独立模块演示报价，不沿用固定套餐价格；同场地单组顺序活动，不自动拆组或并行，不含交通、住宿及税费。客群标签和材料份数均为演示配置，非真实经营或安全认证。"
+      }
+    ],
+    "feasible_ids": [
+      "mod-brief-story--basic-craft--tea"
+    ],
+    "profile_snapshot": {
+      "id": "demo-yuxian",
+      "title": "蔚县剪纸同场地体验·演示接待资源",
+      "is_demo": true,
+      "status": "active",
+      "region": "河北省蔚县",
+      "project": "剪纸",
+      "capacity": 12,
+      "teachers": 1,
+      "teacher_capacity": 12,
+      "rooms": 1,
+      "reuse": true,
+      "venue": "同场地演示工坊",
+      "currency": "CNY",
+      "version": 2,
+      "use_note": "演示配置，非真实报价与接待授权；本地服务报酬为毛收入测算，不是净利润或真实增收。仅明确同场地故不计转场时间，不含交通、住宿、税费。",
+      "usage_note": "讲解、手作教学、茶歇分别计入本地服务报酬；材料与工具和组织费用单列。工具复用为当前演示活动要求。模型无权修改人数、报价、教师、场地或授权。",
+      "plans": {
+        "light": {
+          "title": "轻体验",
+          "stages": [
+            20,
+            50,
+            20
+          ],
+          "lecture_cents": 20000,
+          "craft_per_person_cents": 2500,
+          "tea_per_person_cents": 1500,
+          "tool_cents": 8000,
+          "reusable_per_person_cents": 800,
+          "disposable_per_person_cents": 1400,
+          "operations_cents": 12000,
+          "paper_per_person": 1,
+          "tags": [
+            "story",
+            "craft",
+            "tea",
+            "family"
+          ],
+          "audiences": [
+            "general",
+            "family"
+          ]
+        },
+        "deep": {
+          "title": "深体验",
+          "stages": [
+            30,
+            60,
+            30
+          ],
+          "lecture_cents": 30000,
+          "craft_per_person_cents": 3500,
+          "tea_per_person_cents": 2000,
+          "tool_cents": 10000,
+          "reusable_per_person_cents": 1000,
+          "disposable_per_person_cents": 1600,
+          "operations_cents": 16000,
+          "paper_per_person": 2,
+          "tags": [
+            "story",
+            "craft",
+            "tea",
+            "family",
+            "deep"
+          ],
+          "audiences": [
+            "general",
+            "family"
+          ]
+        }
+      },
+      "modules_note": "模块为独立演示经营配置，价格与固定套餐分别管理，不代表真实报价或合作。必要分钟和教师条件不可由模型压缩；客群适用标签仅为本演示课程设定，不构成真实安全认证。",
+      "modules": [
+        {
+          "id": "brief-story",
+          "title": "乡土入门讲解",
+          "tags": [
+            "story",
+            "family"
+          ],
+          "order": 10,
+          "min_duration_minutes": 20,
+          "teacher_needed": 0,
+          "paper_per_person": 0,
+          "exclusive_group": "story",
+          "requires_tags": [],
+          "audiences": [
+            "general",
+            "family"
+          ],
+          "costs": {
+            "local_service": {
+              "fixed_cents": 18000,
+              "per_person_cents": 0,
+              "payee": "在地活动服务者（演示角色）"
+            },
+            "material": {
+              "fixed_cents": 0,
+              "per_person_cents": 0,
+              "payee": "材料工具准备（演示角色）"
+            },
+            "operations": {
+              "fixed_cents": 2000,
+              "per_person_cents": 0,
+              "payee": "活动组织（演示角色）"
+            }
+          }
+        },
+        {
+          "id": "deep-story",
+          "title": "工艺深度讲述",
+          "tags": [
+            "story",
+            "deep"
+          ],
+          "order": 10,
+          "min_duration_minutes": 30,
+          "teacher_needed": 0,
+          "paper_per_person": 0,
+          "exclusive_group": "story",
+          "requires_tags": [],
+          "audiences": [
+            "general"
+          ],
+          "costs": {
+            "local_service": {
+              "fixed_cents": 26000,
+              "per_person_cents": 0,
+              "payee": "在地活动服务者（演示角色）"
+            },
+            "material": {
+              "fixed_cents": 0,
+              "per_person_cents": 0,
+              "payee": "材料工具准备（演示角色）"
+            },
+            "operations": {
+              "fixed_cents": 2500,
+              "per_person_cents": 0,
+              "payee": "活动组织（演示角色）"
+            }
+          }
+        },
+        {
+          "id": "color-observation",
+          "title": "点染色彩观察",
+          "tags": [
+            "observation",
+            "family"
+          ],
+          "order": 20,
+          "min_duration_minutes": 15,
+          "teacher_needed": 0,
+          "paper_per_person": 0,
+          "exclusive_group": null,
+          "requires_tags": [],
+          "audiences": [
+            "general",
+            "family"
+          ],
+          "costs": {
+            "local_service": {
+              "fixed_cents": 6000,
+              "per_person_cents": 0,
+              "payee": "在地活动服务者（演示角色）"
+            },
+            "material": {
+              "fixed_cents": 0,
+              "per_person_cents": 100,
+              "payee": "材料工具准备（演示角色）"
+            },
+            "operations": {
+              "fixed_cents": 1000,
+              "per_person_cents": 0,
+              "payee": "活动组织（演示角色）"
+            }
+          }
+        },
+        {
+          "id": "basic-craft",
+          "title": "基础剪纸手作",
+          "tags": [
+            "craft",
+            "family"
+          ],
+          "order": 30,
+          "min_duration_minutes": 50,
+          "teacher_needed": 1,
+          "paper_per_person": 1,
+          "exclusive_group": "craft",
+          "requires_tags": [],
+          "audiences": [
+            "general",
+            "family"
+          ],
+          "costs": {
+            "local_service": {
+              "fixed_cents": 0,
+              "per_person_cents": 2500,
+              "payee": "在地活动服务者（演示角色）"
+            },
+            "material": {
+              "fixed_cents": 7000,
+              "per_person_cents": 800,
+              "payee": "材料工具准备（演示角色）"
+            },
+            "operations": {
+              "fixed_cents": 4000,
+              "per_person_cents": 0,
+              "payee": "活动组织（演示角色）"
+            }
+          }
+        },
+        {
+          "id": "deep-craft",
+          "title": "深度剪纸手作",
+          "tags": [
+            "craft",
+            "deep"
+          ],
+          "order": 30,
+          "min_duration_minutes": 60,
+          "teacher_needed": 1,
+          "paper_per_person": 2,
+          "exclusive_group": "craft",
+          "requires_tags": [],
+          "audiences": [
+            "general",
+            "family"
+          ],
+          "costs": {
+            "local_service": {
+              "fixed_cents": 0,
+              "per_person_cents": 3500,
+              "payee": "在地活动服务者（演示角色）"
+            },
+            "material": {
+              "fixed_cents": 8000,
+              "per_person_cents": 1000,
+              "payee": "材料工具准备（演示角色）"
+            },
+            "operations": {
+              "fixed_cents": 5000,
+              "per_person_cents": 0,
+              "payee": "活动组织（演示角色）"
+            }
+          }
+        },
+        {
+          "id": "craft-extension",
+          "title": "手作延伸练习",
+          "tags": [
+            "craft",
+            "extension",
+            "family"
+          ],
+          "order": 40,
+          "min_duration_minutes": 20,
+          "teacher_needed": 1,
+          "paper_per_person": 1,
+          "exclusive_group": null,
+          "requires_tags": [
+            "craft"
+          ],
+          "audiences": [
+            "general",
+            "family"
+          ],
+          "costs": {
+            "local_service": {
+              "fixed_cents": 0,
+              "per_person_cents": 800,
+              "payee": "在地活动服务者（演示角色）"
+            },
+            "material": {
+              "fixed_cents": 0,
+              "per_person_cents": 400,
+              "payee": "材料工具准备（演示角色）"
+            },
+            "operations": {
+              "fixed_cents": 1000,
+              "per_person_cents": 0,
+              "payee": "活动组织（演示角色）"
+            }
+          }
+        },
+        {
+          "id": "sharing",
+          "title": "作品交流分享",
+          "tags": [
+            "sharing",
+            "family"
+          ],
+          "order": 50,
+          "min_duration_minutes": 15,
+          "teacher_needed": 0,
+          "paper_per_person": 0,
+          "exclusive_group": null,
+          "requires_tags": [],
+          "audiences": [
+            "general",
+            "family"
+          ],
+          "costs": {
+            "local_service": {
+              "fixed_cents": 4000,
+              "per_person_cents": 0,
+              "payee": "在地活动服务者（演示角色）"
+            },
+            "material": {
+              "fixed_cents": 0,
+              "per_person_cents": 0,
+              "payee": "材料工具准备（演示角色）"
+            },
+            "operations": {
+              "fixed_cents": 1000,
+              "per_person_cents": 0,
+              "payee": "活动组织（演示角色）"
+            }
+          }
+        },
+        {
+          "id": "tea",
+          "title": "乡土茶歇",
+          "tags": [
+            "tea",
+            "family"
+          ],
+          "order": 60,
+          "min_duration_minutes": 20,
+          "teacher_needed": 0,
+          "paper_per_person": 0,
+          "exclusive_group": null,
+          "requires_tags": [],
+          "audiences": [
+            "general",
+            "family"
+          ],
+          "costs": {
+            "local_service": {
+              "fixed_cents": 0,
+              "per_person_cents": 1500,
+              "payee": "在地活动服务者（演示角色）"
+            },
+            "material": {
+              "fixed_cents": 0,
+              "per_person_cents": 200,
+              "payee": "材料工具准备（演示角色）"
+            },
+            "operations": {
+              "fixed_cents": 1000,
+              "per_person_cents": 0,
+              "payee": "活动组织（演示角色）"
+            }
+          }
+        }
+      ]
+    },
+    "requirements_snapshot": {
+      "region": "河北省蔚县",
+      "project": "剪纸",
+      "people": 6,
+      "budget_per_person": 130.0,
+      "available_minutes": 90,
+      "start_time": "09:30",
+      "preferred_plan": "deep",
+      "note": "全程90分钟，其中剪纸制作至少50分钟，还要保留茶歇。",
+      "planning_mode": "modules",
+      "audience": "general",
+      "tea_preference": "include",
+      "min_craft_minutes": 50,
+      "teaching_enabled": true,
+      "constraints": {
+        "exclude_tags": [],
+        "require_tags": [
+          "tea"
+        ],
+        "min_craft_minutes": 50,
+        "audience": "general",
+        "maximize_craft": false
+      }
+    },
+    "budget_per_person_cents": 13000,
+    "planning_policy": "single-group-modules-v1",
+    "stats": {
+      "enumerated": 64,
+      "feasible_count": 1,
+      "infeasible_count": 63,
+      "returned_count": 6,
+      "considered_subsets": 238
+    },
+    "score_note": "score仅为明确偏好的确定性排序值，不是可信度、质量概率或实际社会效益。"
+  },
+  "plan": {
+    "id": "mod-brief-story--basic-craft--tea",
+    "title": "基础剪纸手作 · 3环节组合",
+    "feasible": true,
+    "conflicts": [],
+    "duration_minutes": 90,
+    "total_cents": 62000,
+    "per_person_cents": 10333,
+    "local_service_cents": 42000,
+    "material_cents": 13000,
+    "operations_cents": 7000,
+    "paper_units": 6,
+    "schedule": [
+      {
+        "title": "乡土入门讲解",
+        "start": "09:30",
+        "end": "09:50",
+        "minutes": 20,
+        "start_minute": 570,
+        "end_minute": 590,
+        "end_day_offset": 0,
+        "resource_ids": [
+          "room-1"
+        ],
+        "module_id": "brief-story"
+      },
+      {
+        "title": "基础剪纸手作",
+        "start": "09:50",
+        "end": "10:40",
+        "minutes": 50,
+        "start_minute": 590,
+        "end_minute": 640,
+        "end_day_offset": 0,
+        "resource_ids": [
+          "room-1",
+          "teacher-1"
+        ],
+        "module_id": "basic-craft"
+      },
+      {
+        "title": "乡土茶歇",
+        "start": "10:40",
+        "end": "11:00",
+        "minutes": 20,
+        "start_minute": 640,
+        "end_minute": 660,
+        "end_day_offset": 0,
+        "resource_ids": [
+          "room-1"
+        ],
+        "module_id": "tea"
+      }
+    ],
+    "ledger": [
+      {
+        "label": "乡土入门讲解·本地服务（固定）",
+        "cents": 18000,
+        "payee": "在地活动服务者（演示角色）",
+        "category": "local_service",
+        "unit_cents": 18000,
+        "quantity": 1,
+        "module_id": "brief-story"
+      },
+      {
+        "label": "乡土入门讲解·组织费用（固定）",
+        "cents": 2000,
+        "payee": "活动组织（演示角色）",
+        "category": "operations",
+        "unit_cents": 2000,
+        "quantity": 1,
+        "module_id": "brief-story"
+      },
+      {
+        "label": "基础剪纸手作·本地服务（按人数）",
+        "cents": 15000,
+        "payee": "在地活动服务者（演示角色）",
+        "category": "local_service",
+        "unit_cents": 2500,
+        "quantity": 6,
+        "module_id": "basic-craft"
+      },
+      {
+        "label": "基础剪纸手作·材料工具（固定）",
+        "cents": 7000,
+        "payee": "材料工具准备（演示角色）",
+        "category": "material",
+        "unit_cents": 7000,
+        "quantity": 1,
+        "module_id": "basic-craft"
+      },
+      {
+        "label": "基础剪纸手作·材料工具（按人数）",
+        "cents": 4800,
+        "payee": "材料工具准备（演示角色）",
+        "category": "material",
+        "unit_cents": 800,
+        "quantity": 6,
+        "module_id": "basic-craft"
+      },
+      {
+        "label": "基础剪纸手作·组织费用（固定）",
+        "cents": 4000,
+        "payee": "活动组织（演示角色）",
+        "category": "operations",
+        "unit_cents": 4000,
+        "quantity": 1,
+        "module_id": "basic-craft"
+      },
+      {
+        "label": "乡土茶歇·本地服务（按人数）",
+        "cents": 9000,
+        "payee": "在地活动服务者（演示角色）",
+        "category": "local_service",
+        "unit_cents": 1500,
+        "quantity": 6,
+        "module_id": "tea"
+      },
+      {
+        "label": "乡土茶歇·材料工具（按人数）",
+        "cents": 1200,
+        "payee": "材料工具准备（演示角色）",
+        "category": "material",
+        "unit_cents": 200,
+        "quantity": 6,
+        "module_id": "tea"
+      },
+      {
+        "label": "乡土茶歇·组织费用（固定）",
+        "cents": 1000,
+        "payee": "活动组织（演示角色）",
+        "category": "operations",
+        "unit_cents": 1000,
+        "quantity": 1,
+        "module_id": "tea"
+      }
+    ],
+    "is_demo": true,
+    "module_ids": [
+      "brief-story",
+      "basic-craft",
+      "tea"
+    ],
+    "tags": [
+      "craft",
+      "family",
+      "story",
+      "tea"
+    ],
+    "craft_minutes": 50,
+    "score": -62000,
+    "score_basis": "优先低总价，其次总时长",
+    "explanation": "经营配置组合3个模块，总时长90分钟，其中手作50分钟；演示总价620.00元。满足当前已确认约束，按单组顺序使用现有资源。",
+    "scope_note": "独立模块演示报价，不沿用固定套餐价格；同场地单组顺序活动，不自动拆组或并行，不含交通、住宿及税费。客群标签和材料份数均为演示配置，非真实经营或安全认证。"
+  },
+  "approval": {
+    "confirmed": true,
+    "plan_id": "mod-brief-story--basic-craft--tea",
+    "at": "2026-10-03T06:35:05.679250+00:00",
+    "run_version": 1
+  },
+  "model_calls": 5,
+  "model_metrics": [
+    {
+      "purpose": "理解需求与拆分陈述",
+      "attempt": 1,
+      "at": "2026-10-03T06:34:59.711132+00:00",
+      "model": "xiangyi-qwen3:14b-q4_k_m",
+      "elapsed_seconds": 0.919,
+      "prompt_tokens": 643,
+      "output_tokens": 110,
+      "total_duration_ns": 907169400,
+      "eval_duration_ns": 788921000,
+      "prompt_eval_duration_ns": 10080000,
+      "raw_output": "{\n  \"audience\": \"游客\",\n  \"claims\": [\n    {\n      \"query\": \"蔚县剪纸是否以阴刻为主、阳刻为辅？\",\n      \"sentence_id\": \"s1\",\n      \"text\": \"蔚县剪纸以阴刻为主、阳刻为辅。\",\n      \"kind\": \"cultural_fact\"\n    }\n  ],\n  \"summary\": \"用户提供的句子描述了蔚县剪纸的技法特点，即以阴刻为主、阳刻为辅。\"\n}",
+      "ok": true
+    },
+    {
+      "purpose": "提取文字活动偏好",
+      "attempt": 1,
+      "at": "2026-10-03T06:35:00.630417+00:00",
+      "model": "xiangyi-qwen3:14b-q4_k_m",
+      "elapsed_seconds": 0.616,
+      "prompt_tokens": 867,
+      "output_tokens": 68,
+      "total_duration_ns": 576932200,
+      "eval_duration_ns": 501841000,
+      "prompt_eval_duration_ns": 10488000,
+      "raw_output": "{\n  \"ambiguities\": [],\n  \"audience\": null,\n  \"available_minutes\": 90,\n  \"budget_per_person\": null,\n  \"maximize_craft\": false,\n  \"min_craft_minutes\": 50,\n  \"people\": null,\n  \"tea_preference\": \"include\"\n}",
+      "ok": true
+    },
+    {
+      "purpose": "逐句证据核验",
+      "attempt": 1,
+      "at": "2026-10-03T06:35:01.268054+00:00",
+      "model": "xiangyi-qwen3:14b-q4_k_m",
+      "elapsed_seconds": 0.583,
+      "prompt_tokens": 891,
+      "output_tokens": 64,
+      "total_duration_ns": 548439600,
+      "eval_duration_ns": 461773000,
+      "prompt_eval_duration_ns": 7554000,
+      "raw_output": "{\n  \"judgments\": [\n    {\n      \"claim_id\": \"c1\",\n      \"evidence_ids\": [\"src-yuxian-technique\"],\n      \"reason\": \"证据直接支持该声明\",\n      \"status\": \"supported\",\n      \"suggested_text\": \"\"\n    }\n  ]\n}",
+      "ok": true
+    },
+    {
+      "purpose": "生成分众教学内容",
+      "attempt": 1,
+      "at": "2026-10-03T06:35:01.903647+00:00",
+      "model": "xiangyi-qwen3:14b-q4_k_m",
+      "elapsed_seconds": 1.265,
+      "prompt_tokens": 976,
+      "output_tokens": 161,
+      "total_duration_ns": 1232367300,
+      "eval_duration_ns": 1148133000,
+      "prompt_eval_duration_ns": 7319000,
+      "raw_output": "{\n  \"interaction_question\": {\n    \"claim_ids\": [\"c1\"],\n    \"source_ids\": [\"src-yuxian-technique\"],\n    \"text\": \"你更喜欢阴刻还是阳刻的表现方式？\"\n  },\n  \"observation_task\": {\n    \"claim_ids\": [\"c1\"],\n    \"source_ids\": [\"src-yuxian-technique\"],\n    \"text\": \"找一找示例中哪些部分是阴刻，哪些是阳刻。\"\n  },\n  \"short_script\": [\n    {\n      \"claim_ids\": [\"c1\"],\n      \"source_ids\": [\"src-yuxian-technique\"],\n      \"text\": \"蔚县剪纸主要使用阴刻技法，阳刻作为辅助。\"\n    }\n  ]\n}",
+      "ok": true
+    },
+    {
+      "purpose": "扫描教学内容全部文化前提",
+      "attempt": 1,
+      "at": "2026-10-03T06:35:03.169007+00:00",
+      "model": "xiangyi-qwen3:14b-q4_k_m",
+      "elapsed_seconds": 2.457,
+      "prompt_tokens": 1600,
+      "output_tokens": 317,
+      "total_duration_ns": 2440966600,
+      "eval_duration_ns": 2323952000,
+      "prompt_eval_duration_ns": 10713000,
+      "raw_output": "{\n  \"items\": [\n    {\n      \"activity_scope_passed\": true,\n      \"checked_text\": \"蔚县剪纸主要使用阴刻技法，阳刻作为辅助。\",\n      \"claim_ids\": [\"c1\"],\n      \"cultural_premises\": [\"蔚县剪纸以阴刻为主、阳刻为辅\"],\n      \"item_id\": \"script-1\",\n      \"reason\": \"该陈述与已验证的声明c1一致，且有来源src-yuxian-technique支持。\",\n      \"source_ids\": [\"src-yuxian-technique\"],\n      \"status\": \"supported\"\n    },\n    {\n      \"activity_scope_passed\": true,\n      \"checked_text\": \"找一找示例中哪些部分是阴刻，哪些是阳刻。\",\n      \"claim_ids\": [],\n      \"cultural_premises\": [],\n      \"item_id\": \"observation\",\n      \"reason\": \"该条目为观察任务，不涉及文化事实前提。\",\n      \"source_ids\": [],\n      \"status\": \"no_new_fact\"\n    },\n    {\n      \"activity_scope_passed\": true,\n      \"checked_text\": \"你更喜欢阴刻还是阳刻的表现方式？\",\n      \"claim_ids\": [],\n      \"cultural_premises\": [],\n      \"item_id\": \"interaction\",\n      \"reason\": \"该条目为互动问题，不涉及文化事实前提。\",\n      \"source_ids\": [],\n      \"status\": \"no_new_fact\"\n    }\n  ]\n}",
+      "ok": true
+    }
+  ],
+  "revision_count": 0,
+  "elapsed_seconds": 5.933,
+  "parent_id": null,
+  "previous_plan": null,
+  "affected": [],
+  "error": null,
+  "execution_finished": true,
+  "execution_policy": "fixed",
+  "analysis": {
+    "summary": "用户提供的句子描述了蔚县剪纸的技法特点，即以阴刻为主、阳刻为辅。",
+    "audience": "游客"
+  },
+  "intent_grounding": {
+    "duration_mentions": [
+      {
+        "text": "全程90分钟",
+        "start": 2,
+        "end": 6,
+        "minutes": 90.0,
+        "scope": "total"
+      },
+      {
+        "text": "其中剪纸制作至少50分钟",
+        "start": 15,
+        "end": 19,
+        "minutes": 50.0,
+        "scope": "craft"
+      }
+    ],
+    "corrections": []
+  },
+  "intent": {
+    "min_craft_minutes": 50,
+    "maximize_craft": false,
+    "audience": null,
+    "people": null,
+    "budget_per_person": null,
+    "available_minutes": 90,
+    "ambiguities": [],
+    "exclude_tags": [],
+    "require_tags": [
+      "tea"
+    ]
+  },
+  "intent_origin": "model_extracted_note",
+  "effective_requirements": {
+    "region": "河北省蔚县",
+    "project": "剪纸",
+    "people": 6,
+    "budget_per_person": 130.0,
+    "available_minutes": 90,
+    "start_time": "09:30",
+    "preferred_plan": "deep",
+    "note": "全程90分钟，其中剪纸制作至少50分钟，还要保留茶歇。",
+    "planning_mode": "modules",
+    "audience": "general",
+    "tea_preference": "include",
+    "min_craft_minutes": 50,
+    "teaching_enabled": true,
+    "constraints": {
+      "exclude_tags": [],
+      "require_tags": [
+        "tea"
+      ],
+      "min_craft_minutes": 50,
+      "audience": "general",
+      "maximize_craft": false
+    }
+  },
+  "requirement_conflicts": [],
+  "initial_plan_id": "mod-brief-story--basic-craft--tea",
+  "choice_attempts": 1,
+  "choice_explanation": "程序选择：先满足全部硬约束，再按演示总价从低到高、总时长从短到长、方案编号排序。选定“基础剪纸手作 · 3环节组合”，手作50分钟，总时长90分钟，演示总价620.00元。",
+  "selection_method": "deterministic_preference_ranking",
+  "plan_valid": true,
+  "validation": {
+    "passed": true,
+    "tool": "recompute_plan",
+    "at": "2026-10-03T06:35:01.895895+00:00"
+  },
+  "comparison": null,
+  "teaching": {
+    "audience": "general",
+    "short_script": [
+      {
+        "text": "蔚县剪纸主要使用阴刻技法，阳刻作为辅助。",
+        "claim_ids": [
+          "c1"
+        ],
+        "source_ids": [
+          "src-yuxian-technique"
+        ],
+        "id": "script-1"
+      }
+    ],
+    "observation_task": {
+      "text": "找一找示例中哪些部分是阴刻，哪些是阳刻。",
+      "claim_ids": [
+        "c1"
+      ],
+      "source_ids": [
+        "src-yuxian-technique"
+      ],
+      "id": "observation"
+    },
+    "interaction_question": {
+      "text": "你更喜欢阴刻还是阳刻的表现方式？",
+      "claim_ids": [
+        "c1"
+      ],
+      "source_ids": [
+        "src-yuxian-technique"
+      ],
+      "id": "interaction"
+    },
+    "creative_label": "教学创意（非传统文化事实）",
+    "generation_mode": "model_generated",
+    "check": {
+      "passed": true,
+      "issues": [],
+      "items": [
+        {
+          "item_id": "script-1",
+          "checked_text": "蔚县剪纸主要使用阴刻技法，阳刻作为辅助。",
+          "status": "supported",
+          "cultural_premises": [
+            "蔚县剪纸以阴刻为主、阳刻为辅"
+          ],
+          "activity_scope_passed": true,
+          "claim_ids": [
+            "c1"
+          ],
+          "source_ids": [
+            "src-yuxian-technique"
+          ],
+          "reason": "该陈述与已验证的声明c1一致，且有来源src-yuxian-technique支持。"
+        },
+        {
+          "item_id": "observation",
+          "checked_text": "找一找示例中哪些部分是阴刻，哪些是阳刻。",
+          "status": "no_new_fact",
+          "cultural_premises": [],
+          "activity_scope_passed": true,
+          "claim_ids": [],
+          "source_ids": [],
+          "reason": "该条目为观察任务，不涉及文化事实前提。"
+        },
+        {
+          "item_id": "interaction",
+          "checked_text": "你更喜欢阴刻还是阳刻的表现方式？",
+          "status": "no_new_fact",
+          "cultural_premises": [],
+          "activity_scope_passed": true,
+          "claim_ids": [],
+          "source_ids": [],
+          "reason": "该条目为互动问题，不涉及文化事实前提。"
+        }
+      ],
+      "model_calls_used": 2,
+      "input_sha256": "c769219572272c8ef23aa76d091f07c9ce0e31eabafcdcc3b2d967464ddbb3ae"
+    }
+  },
+  "model": "xiangyi-qwen3:14b-q4_k_m",
+  "ended_at": "2026-10-03T06:35:05.647608+00:00",
+  "events": [
+    {
+      "seq": 1,
+      "stage": "accepted",
+      "message": "已保存输入与资料/经营版本，等待本地单并发执行。",
+      "at": "2026-10-03T06:34:59.704133+00:00"
+    },
+    {
+      "seq": 2,
+      "stage": "model_call",
+      "message": "本地模型调用：理解需求与拆分陈述（第1次）",
+      "at": "2026-10-03T06:34:59.712134+00:00"
+    },
+    {
+      "seq": 3,
+      "stage": "model_call",
+      "message": "本地模型调用：提取文字活动偏好（第2次）",
+      "at": "2026-10-03T06:35:00.631957+00:00"
+    },
+    {
+      "seq": 4,
+      "stage": "constraints_resolved",
+      "message": "已将文字偏好转为模块约束；表单冲突按显式选择处理。",
+      "at": "2026-10-03T06:35:01.247307+00:00"
+    },
+    {
+      "seq": 5,
+      "stage": "understood",
+      "message": "已拆分1条待核验陈述，保留原文位置。",
+      "at": "2026-10-03T06:35:01.256496+00:00"
+    },
+    {
+      "seq": 6,
+      "stage": "retrieved",
+      "message": "已按地域、项目及使用状态检索本地来源；空结果保留未知。",
+      "at": "2026-10-03T06:35:01.265053+00:00"
+    },
+    {
+      "seq": 7,
+      "stage": "model_call",
+      "message": "本地模型调用：逐句证据核验（第3次）",
+      "at": "2026-10-03T06:35:01.269054+00:00"
+    },
+    {
+      "seq": 8,
+      "stage": "audited",
+      "message": "逐句核验完成：支持、矛盾、资料分歧和信息不足分别记录。",
+      "at": "2026-10-03T06:35:01.858752+00:00"
+    },
+    {
+      "seq": 9,
+      "stage": "cards_ready",
+      "message": "形成1张有来源讲解卡；未支持内容不进入游客讲解。",
+      "at": "2026-10-03T06:35:01.865476+00:00"
+    },
+    {
+      "seq": 10,
+      "stage": "tool_call",
+      "message": "调用活动组合求解工具：锁定报价、必要时长和接待资源。",
+      "at": "2026-10-03T06:35:01.868068+00:00"
+    },
+    {
+      "seq": 11,
+      "stage": "planned",
+      "message": "求解工具返回6个可比较候选，金额、时长与资源均来自经营配置。",
+      "at": "2026-10-03T06:35:01.877890+00:00"
+    },
+    {
+      "seq": 12,
+      "stage": "tool_call",
+      "message": "调用明确偏好排序工具：程序选择：先满足全部硬约束，再按演示总价从低到高、总时长从短到长、方案编号排序。选定“基础剪纸手作 · 3环节组合”，手作50分钟，总时长90分钟，演示总价620.00元。",
+      "at": "2026-10-03T06:35:01.882015+00:00"
+    },
+    {
+      "seq": 13,
+      "stage": "chosen",
+      "message": "已按明确偏好选出程序排名首位的可行方案；正在复算，模型不能改动排序结果。",
+      "at": "2026-10-03T06:35:01.888014+00:00"
+    },
+    {
+      "seq": 14,
+      "stage": "tool_call",
+      "message": "调用独立校验工具：重新求解并核对所选模块、金额、日程与资源。",
+      "at": "2026-10-03T06:35:01.891938+00:00"
+    },
+    {
+      "seq": 15,
+      "stage": "validated",
+      "message": "已复核日程、账目、人数、资源和最终方案一致性。",
+      "at": "2026-10-03T06:35:01.901644+00:00"
+    },
+    {
+      "seq": 16,
+      "stage": "model_call",
+      "message": "本地模型调用：生成分众教学内容（第4次）",
+      "at": "2026-10-03T06:35:01.904648+00:00"
+    },
+    {
+      "seq": 17,
+      "stage": "model_call",
+      "message": "本地模型调用：扫描教学内容全部文化前提（第5次）",
+      "at": "2026-10-03T06:35:03.171567+00:00"
+    },
+    {
+      "seq": 18,
+      "stage": "teaching_checked",
+      "message": "分客群讲解、观察任务与互动提问已生成，并完成逐项文化事实前提检查。",
+      "at": "2026-10-03T06:35:05.635506+00:00"
+    },
+    {
+      "seq": 19,
+      "stage": "awaiting_review",
+      "message": "真实运行结束，等待人工确认。",
+      "at": "2026-10-03T06:35:05.643822+00:00"
+    },
+    {
+      "seq": 20,
+      "stage": "confirmed",
+      "message": "用户已确认当前版本的讲解卡和演示体验方案。",
+      "at": "2026-10-03T06:35:05.683660+00:00"
+    }
+  ]
+}

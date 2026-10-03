@@ -1,0 +1,164 @@
+{
+  "case_id": "SH-06",
+  "policy": "fixed",
+  "expected_outcome": "deliver",
+  "run_id": "63c017f9e72340ad94c7fe355d558330",
+  "status": "needs_input",
+  "model_calls": 2,
+  "elapsed_seconds": 1.765,
+  "wall_seconds": 1.797,
+  "snapshot_sha256": "4d86192a341b5b92ed69a5de06e6b430a150408320fcbe578b74489a6ba558e5",
+  "passed": false,
+  "outcome_reached": false,
+  "failed_checks": [
+    "核验状态:窗花",
+    "核验状态:早期图案多为花卉",
+    "完整交付样本不能以确认或拒绝代替成功",
+    "程序方案可行",
+    "所选方案全字段复算一致",
+    "程序验证通过",
+    "逐项教学扫描与内容绑定通过",
+    "双版草稿预览不偷偷确认",
+    "显式确认接口成功",
+    "确认后双版导出完整",
+    "最终确认方案与已校验方案一致",
+    "可用讲解卡逐项有可定位来源",
+    "visitor保留演示测算标识",
+    "visitor同步同一教学:None",
+    "visitor同步同一教学:None",
+    "organizer保留演示测算标识",
+    "organizer同步同一教学:None",
+    "organizer同步同一教学:None"
+  ],
+  "checks": [
+    {
+      "check": "陈述单独定位:窗花",
+      "passed": true
+    },
+    {
+      "check": "陈述类别:窗花",
+      "passed": true,
+      "detail": "cultural_fact"
+    },
+    {
+      "check": "核验状态:窗花",
+      "passed": false,
+      "detail": "insufficient"
+    },
+    {
+      "check": "陈述单独定位:早期图案多为花卉",
+      "passed": true
+    },
+    {
+      "check": "陈述类别:早期图案多为花卉",
+      "passed": true,
+      "detail": "cultural_fact"
+    },
+    {
+      "check": "核验状态:早期图案多为花卉",
+      "passed": false,
+      "detail": "insufficient"
+    },
+    {
+      "check": "复合陈述保持不同编号",
+      "passed": true
+    },
+    {
+      "check": "真实本地运行标识",
+      "passed": true
+    },
+    {
+      "check": "八次模型与两轮修订上限",
+      "passed": true
+    },
+    {
+      "check": "人工确认前双版禁止正式下载",
+      "passed": true
+    },
+    {
+      "check": "运行初始快照无批准",
+      "passed": true
+    },
+    {
+      "check": "完整交付样本不能以确认或拒绝代替成功",
+      "passed": false,
+      "detail": "needs_input"
+    },
+    {
+      "check": "程序方案可行",
+      "passed": false
+    },
+    {
+      "check": "所选方案全字段复算一致",
+      "passed": false
+    },
+    {
+      "check": "程序验证通过",
+      "passed": false
+    },
+    {
+      "check": "逐项教学扫描与内容绑定通过",
+      "passed": false,
+      "detail": [
+        "缺少教学候选或事实扫描结果"
+      ]
+    },
+    {
+      "check": "双版草稿预览不偷偷确认",
+      "passed": false
+    },
+    {
+      "check": "显式确认接口成功",
+      "passed": false
+    },
+    {
+      "check": "确认后双版导出完整",
+      "passed": false
+    },
+    {
+      "check": "最终确认方案与已校验方案一致",
+      "passed": false
+    },
+    {
+      "check": "可用讲解卡逐项有可定位来源",
+      "passed": false
+    },
+    {
+      "check": "经营承诺与用户要求不作文化讲解",
+      "passed": true
+    },
+    {
+      "check": "visitor保留演示测算标识",
+      "passed": false
+    },
+    {
+      "check": "visitor同步同一教学:None",
+      "passed": false
+    },
+    {
+      "check": "visitor同步同一教学:None",
+      "passed": false
+    },
+    {
+      "check": "organizer保留演示测算标识",
+      "passed": false
+    },
+    {
+      "check": "organizer同步同一教学:None",
+      "passed": false
+    },
+    {
+      "check": "organizer同步同一教学:None",
+      "passed": false
+    }
+  ],
+  "delivery": {
+    "before_export": {
+      "visitor": 409,
+      "organizer": 409
+    },
+    "preview": {},
+    "exports": {},
+    "rejected_approval_status": 409
+  }
+}
