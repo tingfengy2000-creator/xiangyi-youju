@@ -1,0 +1,44 @@
+{
+  "case_id": "jinshan-paper-light",
+  "title": "金山区非遗剪纸小夜灯体验活动招募开启",
+  "publisher": "金山区人民政府",
+  "url": "https://www.shanghai.gov.cn/nw17239/20260806/ab8799763c384e7eb1b254cebf1e0cf5.html",
+  "published_at": "2026-08-06",
+  "accessed_at": "2026-10-03",
+  "region": "上海市金山区",
+  "project": "剪纸",
+  "status": "historical_public_activity_reconstruction",
+  "source_ids": [
+    "src-jinshan-public-schedule",
+    "src-jinshan-public-recruitment",
+    "src-jinshan-cultural-fact",
+    "src-jinshan-public-process"
+  ],
+  "public_facts": {
+    "activity_date": "2026-08-08",
+    "teaching_time": "13:30-14:00",
+    "craft_time": "14:00-15:30",
+    "venue": "金山区非遗保护中心（金山区吕巷镇干溪街258号）",
+    "signup_limit": 15,
+    "fee": "免费",
+    "audience": "6-15岁亲子家庭"
+  },
+  "demo_boundary": {
+    "people": 8,
+    "capacity": 8,
+    "teachers": 1,
+    "teacher_capacity": 8,
+    "rooms": 1,
+    "budget_per_person": 220,
+    "available_minutes": 120,
+    "note": "团队构造演示条件；不代表原公告实际资源或报价"
+  },
+  "pending": [
+    "当前是否可预约",
+    "真实安全容量与疏散要求",
+    "授课人员与授权",
+    "成本、服务报酬和材料数量",
+    "公告第23—29行“非遗时光印记”日期与主活动日期的关系"
+  ],
+  "rights_note": "公开可读不等于可任意再发布；仓库只保存必要短摘录和来源元数据，不保存原文全文、图片或报名二维码。"
+}

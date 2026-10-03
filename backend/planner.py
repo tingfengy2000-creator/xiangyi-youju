@@ -202,7 +202,11 @@ def _module_constraints(raw, modules: list[dict]) -> dict:
         raise ValueError("模块约束含未支持参数，请先明确有效需求")
     values = {"exclude_tags": [], "require_tags": [], "min_craft_minutes": 0,
               "audience": "general", "maximize_craft": False, **deepcopy(raw)}
-    known_tags = {tag for module in modules for tag in module["tags"]}
+    # tea is a valid global preference even when this case deliberately offers
+    # no tea module; absence from the module catalog means the solver excludes
+    # it, not that the user's preference is malformed.
+    known_tags = {"story", "craft", "tea", "observation", "sharing", "extension"}
+    known_tags.update(tag for module in modules for tag in module["tags"])
     for field in ("exclude_tags", "require_tags"):
         tags = values[field]
         if not isinstance(tags, list) or any(not isinstance(tag, str) for tag in tags):
@@ -436,6 +440,8 @@ def solve_plans(requirements: dict, profile: dict) -> dict:
 
     if status not in ("active", "open"):
         add(common, "operating_unavailable", f"经营配置状态为{status}，当前不可接待；需负责人核实并更新状态。")
+    if operating.get("modules_only") and mode != "modules":
+        add(common, "case_modules_required", "公开活动重建只使用对应模块；固定轻/深套餐不适用于此案例。")
     if people > capacity:
         add(common, "capacity_exceeded", f"人数{people}超过单组容量{capacity}；不能自动拆组或虚构并行接待。")
     if mode == "packages" and teachers == 0:

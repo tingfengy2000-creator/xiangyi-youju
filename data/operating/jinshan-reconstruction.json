@@ -1,0 +1,195 @@
+{
+  "id": "demo-jinshan-reconstruction",
+  "case_id": "jinshan-paper-light",
+  "title": "金山区非遗剪纸小夜灯·公开活动案例重建演示配置",
+  "is_demo": true,
+  "modules_only": true,
+  "status": "active",
+  "region": "上海市金山区",
+  "project": "剪纸",
+  "capacity": 8,
+  "teachers": 1,
+  "teacher_capacity": 8,
+  "rooms": 1,
+  "reuse": true,
+  "currency": "CNY",
+  "version": 1,
+  "material_ids": [
+    "mat-paper-garden"
+  ],
+  "public_activity_date": "2026-08-08",
+  "public_signup_limit": 15,
+  "public_fee": "免费（公告条件）",
+  "public_audience": "6-15岁亲子家庭",
+  "public_activity_status": "历史公开活动案例；不可据此预约当前场地",
+  "public_source_ids": [
+    "src-jinshan-public-schedule",
+    "src-jinshan-public-recruitment",
+    "src-jinshan-cultural-fact",
+    "src-jinshan-public-process"
+  ],
+  "use_note": "公开公告只提供活动时段、地点、招募条件和简短活动描述；教师数量、安全容量、成本、分账和当前授权未公开。capacity=8、teachers=1、teacher_capacity=8、rooms=1及全部费用为团队构造的演示配置，必须与真实主办方另行确认。",
+  "usage_note": "仅用于离线案例重建与系统验证，不复制公告全文、图片或报名二维码；不把15人报名名额当安全容量，不把免费活动当零成本，不把历史日期当可预约资源。",
+  "plans": {
+    "light": {
+      "title": "公开案例·紧凑重建",
+      "stages": [
+        20,
+        60,
+        20
+      ],
+      "lecture_cents": 18000,
+      "craft_per_person_cents": 3000,
+      "tea_per_person_cents": 0,
+      "tool_cents": 7000,
+      "reusable_per_person_cents": 700,
+      "disposable_per_person_cents": 1100,
+      "operations_cents": 7000,
+      "paper_per_person": 1,
+      "tags": [
+        "story",
+        "craft",
+        "family"
+      ],
+      "audiences": [
+        "general",
+        "family"
+      ]
+    },
+    "deep": {
+      "title": "公开案例·完整重建",
+      "stages": [
+        30,
+        90,
+        10
+      ],
+      "lecture_cents": 18000,
+      "craft_per_person_cents": 3200,
+      "tea_per_person_cents": 0,
+      "tool_cents": 9000,
+      "reusable_per_person_cents": 800,
+      "disposable_per_person_cents": 1200,
+      "operations_cents": 8000,
+      "paper_per_person": 1,
+      "tags": [
+        "story",
+        "craft",
+        "sharing",
+        "family"
+      ],
+      "audiences": [
+        "general",
+        "family"
+      ]
+    }
+  },
+  "modules": [
+    {
+      "id": "jinshan-briefing",
+      "title": "非遗中心现场教学（公告重建）",
+      "tags": [
+        "story",
+        "family"
+      ],
+      "order": 10,
+      "min_duration_minutes": 30,
+      "teacher_needed": 0,
+      "paper_per_person": 0,
+      "exclusive_group": "story",
+      "requires_tags": [],
+      "audiences": [
+        "general",
+        "family"
+      ],
+      "costs": {
+        "local_service": {
+          "fixed_cents": 18000,
+          "per_person_cents": 0,
+          "payee": "讲解服务（演示角色）"
+        },
+        "material": {
+          "fixed_cents": 0,
+          "per_person_cents": 0,
+          "payee": "团队重建材料配置（演示角色）"
+        },
+        "operations": {
+          "fixed_cents": 2500,
+          "per_person_cents": 0,
+          "payee": "案例编排与组织（演示角色）"
+        }
+      }
+    },
+    {
+      "id": "jinshan-lantern-craft",
+      "title": "剪纸小夜灯手作（团队配置）",
+      "tags": [
+        "craft",
+        "family"
+      ],
+      "order": 30,
+      "min_duration_minutes": 90,
+      "teacher_needed": 1,
+      "paper_per_person": 1,
+      "exclusive_group": "craft",
+      "requires_tags": [],
+      "audiences": [
+        "general",
+        "family"
+      ],
+      "costs": {
+        "local_service": {
+          "fixed_cents": 0,
+          "per_person_cents": 3200,
+          "payee": "手作教学服务（演示角色）"
+        },
+        "material": {
+          "fixed_cents": 9000,
+          "per_person_cents": 1200,
+          "payee": "团队重建材料配置（演示角色）"
+        },
+        "operations": {
+          "fixed_cents": 5500,
+          "per_person_cents": 0,
+          "payee": "案例编排与组织（演示角色）"
+        }
+      }
+    },
+    {
+      "id": "jinshan-reflection",
+      "title": "作品分享与提问（团队配置）",
+      "tags": [
+        "sharing",
+        "family"
+      ],
+      "order": 40,
+      "min_duration_minutes": 10,
+      "teacher_needed": 0,
+      "paper_per_person": 0,
+      "exclusive_group": null,
+      "requires_tags": [
+        "craft"
+      ],
+      "audiences": [
+        "general",
+        "family"
+      ],
+      "costs": {
+        "local_service": {
+          "fixed_cents": 4500,
+          "per_person_cents": 0,
+          "payee": "活动引导服务（演示角色）"
+        },
+        "material": {
+          "fixed_cents": 0,
+          "per_person_cents": 100,
+          "payee": "团队重建材料配置（演示角色）"
+        },
+        "operations": {
+          "fixed_cents": 1800,
+          "per_person_cents": 0,
+          "payee": "案例编排与组织（演示角色）"
+        }
+      }
+    }
+  ]
+}

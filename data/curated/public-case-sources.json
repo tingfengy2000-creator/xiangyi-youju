@@ -1,0 +1,102 @@
+[
+  {
+    "id": "src-jinshan-public-schedule",
+    "title": "金山区非遗剪纸小夜灯·公开活动时段与地点",
+    "url": "https://www.shanghai.gov.cn/nw17239/20260806/ab8799763c384e7eb1b254cebf1e0cf5.html",
+    "publisher": "金山区人民政府",
+    "region": "上海市金山区",
+    "project": "剪纸",
+    "published_at": "2026-08-06",
+    "accessed_at": "2026-10-03",
+    "locator": "正文第8—20行：非遗现场教学与非遗手作体验的时间、地点",
+    "quote": "非遗现场教学：8月8日13:30-14:00；非遗手作体验：8月8日14:00-15:30；地点均为金山区非遗保护中心（金山区吕巷镇干溪街258号）",
+    "keywords": [
+      "公开活动",
+      "现场教学",
+      "手作体验",
+      "时间",
+      "地点"
+    ],
+    "use_note": "政府公告的必要事实摘要，用于历史公开活动案例重建；不代表当前开放预约、场地可用或转载全文/图片授权。",
+    "usage_status": "available",
+    "version": 1,
+    "hash_scope": "quote_utf8",
+    "source_id": "src-jinshan-public-schedule",
+    "sha256": "cbd76a0595ddba6e68f6255d199d8ffea9dc4298a8c240c7cc6eac565c6aab40",
+    "document_id": "shanghai-jinshan-20260806"
+  },
+  {
+    "id": "src-jinshan-public-recruitment",
+    "title": "金山区非遗剪纸小夜灯·招募条件",
+    "url": "https://www.shanghai.gov.cn/nw17239/20260806/ab8799763c384e7eb1b254cebf1e0cf5.html",
+    "publisher": "金山区人民政府",
+    "region": "上海市金山区",
+    "project": "剪纸",
+    "published_at": "2026-08-06",
+    "accessed_at": "2026-10-03",
+    "locator": "正文第31—45行：活动招募信息",
+    "quote": "活动时间：2026年8月8日13:30-15:30；招募人数：15人；活动费用：免费；活动对象：6-15岁亲子家庭",
+    "keywords": [
+      "招募人数",
+      "免费",
+      "亲子家庭",
+      "公开条件"
+    ],
+    "use_note": "公告明确的报名条件；招募人数不等于安全容量，免费不等于运营成本为零，历史日期不等于当前资源。仅作来源核对和案例输入依据。",
+    "usage_status": "available",
+    "version": 1,
+    "hash_scope": "quote_utf8",
+    "source_id": "src-jinshan-public-recruitment",
+    "sha256": "b77a4bb30ec6463bcac2e6333c48be466c7d8240df1574af3cbb45732b605fd5",
+    "document_id": "shanghai-jinshan-20260806"
+  },
+  {
+    "id": "src-jinshan-cultural-fact",
+    "title": "金山区非遗剪纸小夜灯·项目文化表述",
+    "url": "https://www.shanghai.gov.cn/nw17239/20260806/ab8799763c384e7eb1b254cebf1e0cf5.html",
+    "publisher": "金山区人民政府",
+    "region": "上海市金山区",
+    "project": "剪纸",
+    "published_at": "2026-08-06",
+    "accessed_at": "2026-10-03",
+    "locator": "正文第21行：非遗手作体验段第1句",
+    "quote": "剪纸作为金山区级非遗项目，又称为刻纸，是一种镂空艺术",
+    "keywords": [
+      "金山区级非遗项目",
+      "刻纸",
+      "镂空艺术",
+      "文化事实"
+    ],
+    "use_note": "只支持公告中的项目名称与简短文化描述；不扩展为技法、寓意、传承人资质或作品授权。",
+    "usage_status": "available",
+    "version": 1,
+    "hash_scope": "quote_utf8",
+    "source_id": "src-jinshan-cultural-fact",
+    "sha256": "f6edc0bfc0f2f8b99ace6237f9943d21c671de504b9950f7f00ee9153496d7df",
+    "document_id": "shanghai-jinshan-20260806"
+  },
+  {
+    "id": "src-jinshan-public-process",
+    "title": "金山区非遗剪纸小夜灯·公告体验步骤",
+    "url": "https://www.shanghai.gov.cn/nw17239/20260806/ab8799763c384e7eb1b254cebf1e0cf5.html",
+    "publisher": "金山区人民政府",
+    "region": "上海市金山区",
+    "project": "剪纸",
+    "published_at": "2026-08-06",
+    "accessed_at": "2026-10-03",
+    "locator": "正文第21行：手作体验段末句",
+    "quote": "从构思图案到动手操作，充分发挥自己的想象力与创造力，亲手打造出一幅独具个性的非遗作品",
+    "keywords": [
+      "构思图案",
+      "动手操作",
+      "公开活动描述"
+    ],
+    "use_note": "仅作为公告活动描述；不等于团队已经取得图像、模板、教师或材料授权。",
+    "usage_status": "available",
+    "version": 1,
+    "hash_scope": "quote_utf8",
+    "source_id": "src-jinshan-public-process",
+    "sha256": "e9da4f6deadd6b4f1918a4934219511d645724f6cc20038c9de2c7b834cc752e",
+    "document_id": "shanghai-jinshan-20260806"
+  }
+]

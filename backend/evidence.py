@@ -27,6 +27,9 @@ _REGIONS = {
     "丰宁满族自治县": "河北省丰宁满族自治县",
     "河北省丰宁满族自治县": "河北省丰宁满族自治县",
     "河北省承德市丰宁满族自治县": "河北省丰宁满族自治县",
+    "金山": "上海市金山区",
+    "金山区": "上海市金山区",
+    "上海市金山区": "上海市金山区",
 }
 _JIEBA = jieba.Tokenizer()
 _STOPWORDS = {"的", "了", "是", "在", "和", "与", "为", "及", "它", "吗", "呢"}
@@ -39,7 +42,7 @@ def _load(relative_path: str):
 
 def load_sources() -> list:
     """读取精选片段；hash 仅表示保存摘录，不表示保存了整个网页。"""
-    sources = _load("curated/sources.json")
+    sources = _load("curated/sources.json") + _load("curated/public-case-sources.json")
     for source in sources:
         if hashlib.sha256(source["quote"].encode("utf-8")).hexdigest() != source["sha256"]:
             raise ValueError(f"来源摘录哈希不一致：{source['id']}")
@@ -50,7 +53,18 @@ def load_materials() -> list:
     return _load("curated/materials.json")
 
 
-def load_profile() -> dict:
+def load_public_case(case_id: str | None = None) -> dict | None:
+    if case_id is None:
+        return None
+    if case_id != "jinshan-paper-light":
+        raise ValueError("未知公开活动案例")
+    return _load("cases/jinshan-paper-light.json")
+
+
+def load_profile(case_id: str | None = None) -> dict:
+    if case_id:
+        load_public_case(case_id)
+        return _load("operating/jinshan-reconstruction.json")
     return _load("operating/demo-profile.json")
 
 

@@ -169,6 +169,10 @@ def render_bundle(run: dict, audience: str, preview: bool = False) -> str:
         ids = card.get("claim_ids", [])
         if card.get("usable") is not True or blocked_card(card) or not ids:
             return False
+        # 公告日期、招募和免费条件属于历史活动事实，组织者版保留来源核对，
+        # 游客版不把它们排版成当前讲解卡，避免把旧公告误读为当前预约承诺。
+        if audience == "visitor" and any(claims.get(str(key), {}).get("kind") == "public_activity_fact" for key in ids):
+            return False
         if not card.get("source_ids") or any(str(key) not in evidence_sources for key in card["source_ids"]):
             return False
         verified_texts = []
@@ -216,6 +220,16 @@ def render_bundle(run: dict, audience: str, preview: bool = False) -> str:
         subtitle = "文化依据、资源约束与活动账本，供负责人核对后确认。"
     region = req.get("region", run.get("region", "地域以来源与讲解卡标注为准"))
     project = req.get("project", run.get("project", "剪纸文化体验"))
+    public_case = run.get("public_case") if isinstance(run.get("public_case"), dict) else None
+    public_case_notice = ""
+    if public_case:
+        public_case_notice = (
+            '<div class="notice case-notice"><strong>公开活动案例重建</strong> · '
+            f'{_text(public_case.get("title", "公开活动"))} · 来源：{_text(public_case.get("publisher", "原始发布机构"))} · '
+            f'发布 {_text(public_case.get("published_at", "未标注"))} · 访问 {_text(public_case.get("accessed_at", "未标注"))}<br>'
+            '公告条件仅用于历史案例重建，不能据此预约当前场地；教师、安全容量、成本和服务分账采用单独标记的团队演示配置，仍待主办方确认。'
+            '</div>'
+        )
     parts = [
         '<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">',
         '<meta name="viewport" content="width=device-width, initial-scale=1">',
@@ -231,6 +245,7 @@ def render_bundle(run: dict, audience: str, preview: bool = False) -> str:
         f'<div class="metric"><small>演示人均费用</small><strong>{_money(plan["per_person_cents"])}</strong></div>',
         f'<div class="metric"><small>开始时间</small><strong>{_text(req["start_time"])}</strong></div></div>',
         '<div class="notice">本文件为模拟体验样张。所有价格、服务报酬、场地与人员均为演示测算；非预约、非真实合作，不代表已取得文化素材或场地授权，不构成实际增收或净利润证明。</div>',
+        public_case_notice,
         '<h2><span class="number">01</span>认识一方乡土</h2><p class="section-note">仅展示具有证据支持、当前使用状态允许的讲解卡。</p>',
     ]
     if not usable_cards:

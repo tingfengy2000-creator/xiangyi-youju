@@ -1,0 +1,67 @@
+{
+  "case_id": "jinshan-paper-light",
+  "case_title": "金山区非遗剪纸小夜灯体验活动招募开启",
+  "publisher": "金山区人民政府",
+  "url": "https://www.shanghai.gov.cn/nw17239/20260806/ab8799763c384e7eb1b254cebf1e0cf5.html",
+  "published_at": "2026-08-06",
+  "accessed_at": "2026-10-03",
+  "source_ids": [
+    "src-jinshan-public-schedule",
+    "src-jinshan-public-recruitment",
+    "src-jinshan-cultural-fact",
+    "src-jinshan-public-process"
+  ],
+  "runs": [
+    {
+      "label": "first-failure",
+      "id": "f8cac4a4287e4e0d8909d2996f600dfe",
+      "status": "needs_input",
+      "model_calls": 2,
+      "elapsed_seconds": 7.649,
+      "reason": "现场教学30分钟与手作90分钟作用域误判，保留失败"
+    },
+    {
+      "label": "main-confirmed",
+      "id": "bb6c113f76a544cb951d6ff15dd4323c",
+      "status": "confirmed",
+      "model_calls": 7,
+      "elapsed_seconds": 22.756,
+      "people": 8,
+      "available_minutes": 120,
+      "total_cents": 70200,
+      "craft_minutes": 90,
+      "duration_minutes": 120,
+      "local_service_cents": 43600
+    },
+    {
+      "label": "variation-people-6",
+      "id": "ba7f49c58bf6487bb183935b18e34c2c",
+      "status": "awaiting_review",
+      "model_calls": 8,
+      "elapsed_seconds": 24.809,
+      "people": 6,
+      "available_minutes": 120
+    },
+    {
+      "label": "variation-time-110",
+      "id": "9b150f160e4e4e2ab767b11b3d51cf3a",
+      "status": "needs_input",
+      "model_calls": 3,
+      "elapsed_seconds": 10.911,
+      "people": 8,
+      "available_minutes": 110,
+      "reason": "必要模块合计120分钟，不能缩短必要环节"
+    },
+    {
+      "label": "fixed-same-input",
+      "id": "d2d1c8b3e83c4498911341b07d95c05c",
+      "status": "needs_input",
+      "model_calls": 2,
+      "elapsed_seconds": 5.782,
+      "reason": "固定流程未进行阻断复核，在边界说明处等待确认"
+    }
+  ],
+  "boundary": "公开活动资料重建与系统验证，不代表真实工坊落地、合作、预约、收益或安全认证",
+  "model": "xiangyi-qwen3:14b-q4_k_m",
+  "database": "artifacts/runtime/external-case.sqlite3"
+}

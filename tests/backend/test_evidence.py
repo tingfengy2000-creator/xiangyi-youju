@@ -16,9 +16,11 @@ class EvidenceTests(unittest.TestCase):
                         "src-fengning-region", "src-fengning-technique", "src-fengning-craft"}
         original = [s for s in sources if s["document_id"].startswith("ihchina-")]
         added = [s for s in sources if s["document_id"].startswith("hebei-")]
+        external = [s for s in sources if s["document_id"].startswith("shanghai-jinshan-")]
         self.assertEqual({s["id"] for s in original}, original_ids)
         self.assertEqual(len(added), 6)
-        self.assertEqual(len(sources), len(original) + len(added))
+        self.assertEqual(len(external), 4)
+        self.assertEqual(len(sources), len(original) + len(added) + len(external))
         self.assertEqual(len({s["id"] for s in sources}), len(sources))
         for source in sources:
             self.assertEqual(source["source_id"], source["id"])
@@ -33,6 +35,10 @@ class EvidenceTests(unittest.TestCase):
             self.assertEqual(source["region"], "河北省蔚县")
             self.assertIn(source["published_at"], ("2012-12-21", "2025-09-28"))
             self.assertTrue(source["url"].startswith("https://whly.hebei.gov.cn/"))
+        for source in external:
+            self.assertEqual(source["region"], "上海市金山区")
+            self.assertEqual(source["published_at"], "2026-08-06")
+            self.assertTrue(source["url"].startswith("https://www.shanghai.gov.cn/"))
 
     def test_geography_precedes_relevance(self):
         results = search_evidence("阳刻为主，阴刻为辅", "蔚县")
@@ -101,6 +107,14 @@ class EvidenceTests(unittest.TestCase):
         self.assertEqual(profile["plans"]["deep"]["stages"], [30, 60, 30])
         self.assertEqual(load_materials()[0]["id"], "mat-paper-garden")
         self.assertTrue(all("lecture_cents" not in s for s in load_sources()))
+
+    def test_public_case_keeps_announcement_and_demo_boundaries(self):
+        profile = load_profile("jinshan-paper-light")
+        self.assertEqual(profile["region"], "上海市金山区")
+        self.assertTrue(profile["modules_only"])
+        self.assertEqual(profile["public_signup_limit"], 15)
+        self.assertEqual(profile["capacity"], 8)
+        self.assertTrue(all(item["region"] == "上海市金山区" for item in search_evidence("现场教学 手作体验", "金山区")))
 
 
 if __name__ == "__main__":

@@ -12,12 +12,14 @@
   const claimNames = {supported:'来源支持',contradicted:'与来源矛盾',conflicting:'资料存在分歧',insufficient:'信息不足'};
   const terminal = new Set(['awaiting_review','needs_confirmation','needs_input','model_error','failed','invalidated','confirmed']);
   const samples = {
+    external:'金山区人民政府公告写明，2026年8月8日13:30—14:00开展非遗现场教学，14:00—15:30开展手作体验，地点为金山区非遗保护中心。公告称剪纸作为金山区级非遗项目，又称刻纸，是一种镂空艺术；活动公开招募15人、免费、面向6—15岁亲子家庭。',
     confusion:'蔚县剪纸以阳刻为主，阴刻为辅。蔚县剪纸善于多色点染。工坊每天开放并且无需预约。',
     missing:'剪纸以阴刻为主，阳刻为辅。这次体验将介绍地方剪纸的工艺特色。',
     unsupported:'本次蔚县剪纸体验由当地大师亲授，参加一次就能完全掌握传统工艺。工坊每天开放并且无需预约。'
   };
   let mode = 'connecting', current = null, busy = false, dirty = false, replay = false;
   let selected = 'deep', health = null, catalog = null, eventSource = null, pollTimer = null;
+  let activeCaseId = null;
   let watching = null, watchGeneration = 0, activeAction = false;
   let lastImpact = null;
   let previewAudience = 'visitor';
@@ -78,10 +80,11 @@
     q('#studio .page-header .chip').textContent = '真实输入 · 逐句关联证据';
     q('#studio .step-strip').innerHTML = '<span>01 理解地域</span>→<span>02 逐句查证</span>→<span>03 编排体验</span>→<span>04 人工确认</span>';
     q('#caseSelect').previousElementSibling.innerHTML = '加载一个展示输入 <span>仅填入文案，不生成结果</span>';
-    q('#caseSelect').innerHTML = '<option value="confusion">地域事实纠错 · 工艺主次混淆</option><option value="missing">地域待明确 · 检查适用范围</option><option value="unsupported">经营承诺 · 区分资料与运营</option>';
+    q('#caseSelect').innerHTML = '<option value="external">公开活动案例 · 金山区剪纸小夜灯</option><option value="confusion">地域事实纠错 · 工艺主次混淆</option><option value="missing">地域待明确 · 检查适用范围</option><option value="unsupported">经营承诺 · 区分资料与运营</option>';
     q('#draft').readOnly = false; q('#draft').maxLength = 1800; q('#draft').value = samples.confusion;
     q('#draft').previousElementSibling.innerHTML = '待核验文案 <span>可现场修改，重新运行后生效</span>';
     q('#draft').previousElementSibling.insertAdjacentHTML('beforebegin', `<div class="form-pair"><label for="region">讲解地域<input id="region" value="河北省蔚县" maxlength="80"></label><label for="project">非遗项目<input id="project" value="剪纸" maxlength="50"></label></div>`);
+    q('#draft').insertAdjacentHTML('beforebegin', `<section class="public-case-banner" id="publicCaseBanner"><div class="eyebrow">PUBLIC CASE · 公开活动案例</div><h3>金山区剪纸小夜灯 · 公告重建</h3><p>把一则政府活动公告转成可核验的体验方案。公告事实、团队演示配置和当前可预约状态分开标记。</p><div class="public-case-facts"><span>2026-08-08 · 13:30—15:30</span><span>现场教学30′ + 手作90′</span><span>公告招募15人 · 免费</span></div><label class="case-assumption"><input type="checkbox" id="caseAssumptionCheck" checked><span>确认采用团队演示配置继续重建（8人、1位教师、1间场地、演示报价）；这不代表历史活动可预约。</span></label><a class="case-source-link" href="https://www.shanghai.gov.cn/nw17239/20260806/ab8799763c384e7eb1b254cebf1e0cf5.html" target="_blank" rel="noopener noreferrer">查看金山区人民政府原始公告 ↗</a></section>`);
     q('#draft').insertAdjacentHTML('afterend', `<label class="field-label" for="requestNote" style="margin-top:18px">这场体验，您有什么想法？ <span>与表单冲突时请您决定</span></label><textarea id="requestNote" maxlength="1000">为初次了解剪纸的游客安排文化讲解与入门手作。讲述清楚工艺特色，留出观察和提问的时间。</textarea><div class="form-pair"><label for="preferredPlan">套餐偏好<select id="preferredPlan"><option value="deep">优先深体验</option><option value="light">优先轻体验</option></select></label><label for="startTime">开始时间<input id="startTime" type="time" value="09:30"></label></div>`);
     q('#auditBtn').innerHTML = '核验并编排体验 <span class="arrow">→</span>';
     q('#auditBtn').nextElementSibling.textContent = '模型负责理解和表达；程序核对预算、日程与资源。每条结论保留原文和出处，无法证实的内容不会被当作错误。';
@@ -102,7 +105,8 @@
     q('.ledger-foot').insertAdjacentHTML('beforebegin','<table class="ledger-table" id="ledgerTable"><thead><tr><th>项目</th><th>服务角色</th><th>金额</th></tr></thead><tbody></tbody></table>');
     q('#historySelect').addEventListener('change', async event => { if (event.target.value) await loadHistory(event.target.value); });
     q('#refreshHealth').addEventListener('click', refreshEnvironment);
-    for (const id of ['region','project','requestNote','preferredPlan','startTime','teachers','rooms']) q('#'+id).addEventListener('input', markDirty);
+    for (const id of ['region','project','requestNote','preferredPlan','startTime','teachers','rooms','caseAssumptionCheck']) q('#'+id).addEventListener('input', markDirty);
+    q('#caseAssumptionCheck').addEventListener('change', markDirty);
     q('#budgetCase').addEventListener('click', () => { q('#budget').value = 110; markDirty(); notify('已填入人均 ¥110。点击重新编排，获得真实修订结果。'); });
     q('#runPlan').addEventListener('click', submit);
     q('#approvalCheck').addEventListener('change', updateActions);
@@ -179,12 +183,23 @@
       if (target.id === 'conflictBtn') { q('#people').value = 16; q('#capacity').value = 8; q('#teachers').value = 1; q('#rooms').value = 1; markDirty(); notify('已填入 16 人、单组 8 人、1 位教师与 1 间场地。重新运行后查看真实冲突。'); }
       if (target.dataset.scheme && current?.planning) { selected = target.dataset.scheme;manuallySelected=true;closePreview();q('#approvalCheck').checked = false; renderPlan(); updateActions(); }
     }
-    if (event.type === 'change' && target.id === 'caseSelect') { q('#draft').value = samples[target.value]; if (target.value === 'missing') q('#region').value = ''; else q('#region').value = '河北省蔚县'; markDirty(); }
+    if (event.type === 'change' && target.id === 'caseSelect') { applyCasePreset(target.value); markDirty(); }
     if (event.type === 'input') markDirty();
+  }
+  function applyCasePreset(value) {
+    activeCaseId = value === 'external' ? 'jinshan-paper-light' : null;
+    q('#draft').value = samples[value] || samples.confusion;
+    if (value === 'external') {
+      q('#region').value='上海市金山区'; q('#project').value='剪纸'; q('#people').value=8; q('#budget').value=220; q('#minutes').value=120; q('#capacity').value=8; q('#teachers').value=1; q('#rooms').value=1; q('#startTime').value='13:30'; q('#preferredPlan').value='deep'; q('#planningMode').value='modules'; q('#audience').value='family'; q('#teaPreference').value='exclude'; q('#minCraftMinutes').value=90; q('#requestNote').value='按公告重建一场8人亲子体验：保留现场教学30分钟和手作90分钟，不安排茶歇；如果人数改为6人仍保持流程。公告条件、团队演示资源和当前可预约状态请分开标记。'; q('#caseAssumptionCheck').checked=true;
+    } else {
+      q('#region').value = value === 'missing' ? '' : '河北省蔚县'; q('#project').value='剪纸'; q('#caseAssumptionCheck').checked=false;
+    }
+    syncPlanningMode(); updateValues();
+    notify(value === 'external' ? '已载入公开活动案例。运行前请确认演示配置边界。' : '已载入展示输入。');
   }
   function updateValues() { for (const [id,suffix] of [['people',' 人'],['minutes',' 分钟'],['capacity',' 人']]) q('#'+id+'Value').textContent = q('#'+id).value + suffix; q('#budgetValue').textContent = '¥' + q('#budget').value; }
   function requestData(resolution='ask') {
-    const data={text:q('#draft').value.trim(),requirements:{region:q('#region').value.trim(),project:q('#project').value.trim(),people:Number(q('#people').value),budget_per_person:Number(q('#budget').value),available_minutes:Number(q('#minutes').value),preferred_plan:q('#preferredPlan').value,start_time:q('#startTime').value,note:q('#requestNote').value.trim(),planning_mode:q('#planningMode').value,audience:q('#audience').value,tea_preference:q('#teaPreference').value,min_craft_minutes:Number(q('#minCraftMinutes').value),teaching_enabled:true},operating_overrides:{capacity:Number(q('#capacity').value),teachers:Number(q('#teachers').value),rooms:Number(q('#rooms').value),reuse:q('#reuse').checked},constraint_resolution:resolution};
+    const data={case_id:activeCaseId,demo_assumptions_confirmed:activeCaseId==='jinshan-paper-light' && q('#caseAssumptionCheck').checked,text:q('#draft').value.trim(),requirements:{region:q('#region').value.trim(),project:q('#project').value.trim(),people:Number(q('#people').value),budget_per_person:Number(q('#budget').value),available_minutes:Number(q('#minutes').value),preferred_plan:q('#preferredPlan').value,start_time:q('#startTime').value,note:q('#requestNote').value.trim(),planning_mode:q('#planningMode').value,audience:q('#audience').value,tea_preference:q('#teaPreference').value,min_craft_minutes:Number(q('#minCraftMinutes').value),teaching_enabled:true},operating_overrides:{capacity:Number(q('#capacity').value),teachers:Number(q('#teachers').value),rooms:Number(q('#rooms').value),reuse:q('#reuse').checked},constraint_resolution:resolution};
     const previous=current?.plan?current.id:current?.previous_run_id;if(previous)data.previous_run_id=previous;
     return data;
   }
@@ -276,7 +291,7 @@
     const insufficient = claims.filter(c => audited(c) && c.status === 'insufficient').length;
     q('#auditResult').innerHTML = `<div class="result-summary"><strong>${claims.length} 项陈述 · ${sourceCount} 条定位证据</strong><span>${insufficient ? `${insufficient} 项信息不足 · ` : ''}${completed < claims.length ? `${claims.length-completed} 项尚待判定 · ` : ''}每个修改，都能回到出处。</span></div>` + claims.map((claim,index) => {
       const checked = audited(claim);
-      const kindLabel = {cultural_fact:'文化事实',operating_promise:'经营承诺 · 待另核',user_requirement:'用户需求 · 核对条件'}[claim.kind] || '文化事实';
+      const kindLabel = {cultural_fact:'文化事实',public_activity_fact:'公开活动事实 · 历史条件',operating_promise:'经营承诺 · 待另核',user_requirement:'用户需求 · 核对条件'}[claim.kind] || '文化事实';
       const label = checked ? claimNames[claim.status] || claim.status : '等待逐句判定';
       const revised = !checked ? '尚未形成核验结论，暂不改写。' : claim.kind==='operating_promise' ? '经营承诺另行核实；未落实的授课、营业或预约安排，不进入游客版。' : claim.kind==='user_requirement' ? '作为活动需求核对；与表单一致或经您确认后参与编排，不作为文化事实讲述。' : ['insufficient','conflicting'].includes(claim.status) ? '保留原文待核，不进入游客讲解；补充资料或核清分歧后再处理。' : claim.suggested_text || (claim.status === 'supported' ? claim.text : '暂未形成有来源的修订，请人工核对。');
       const correction = claim.corrected_status === 'supported' ? ' 修订表达已再次获得来源支持。' : claim.corrected_status ? ' 修订表达尚未获得充分支持，不进入游客讲解。' : '';
@@ -396,7 +411,7 @@
   }
   async function loadHistoryList(){try{const list=await api('/api/runs');q('#historySelect').innerHTML='<option value="">历史记录 · 选择后仅回放</option>'+(list.runs||[]).slice(0,30).map(run=>`<option value="${esc(run.id)}">${esc(statusNames[run.status]||run.status)} · ${esc((run.text||'').slice(0,18))}</option>`).join('');}catch{ /* History availability does not fabricate a result or block current input. */ }}
   function restoreInputs(run) {
-    q('#draft').value=run.text||'';const req=run.requirements||{};
+    activeCaseId=run.case_id||null; q('#caseSelect').value=activeCaseId?'external':'confusion'; q('#caseAssumptionCheck').checked=!!run.demo_assumptions_confirmed; q('#draft').value=run.text||'';const req=run.requirements||{};
     for(const [id,key] of Object.entries({region:'region',project:'project',people:'people',budget:'budget_per_person',minutes:'available_minutes',requestNote:'note',startTime:'start_time',preferredPlan:'preferred_plan'}))if(req[key]!==undefined)setInputValue(id,req[key]);
     for(const [id,value] of Object.entries({planningMode:req.planning_mode||'packages',audience:req.audience||'general',teaPreference:req.tea_preference||'any',minCraftMinutes:req.min_craft_minutes||0}))setInputValue(id,value);
     syncPlanningMode();

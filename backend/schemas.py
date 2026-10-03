@@ -30,6 +30,8 @@ class Overrides(StrictModel):
 
 
 class RunInput(StrictModel):
+    case_id: Literal["jinshan-paper-light"] | None = None
+    demo_assumptions_confirmed: bool = False
     text: str = Field(min_length=1, max_length=1800)
     requirements: Requirements = Field(default_factory=Requirements)
     operating_overrides: Overrides = Field(default_factory=Overrides)
@@ -50,8 +52,8 @@ class ExtractedClaim(StrictModel):
     sentence_id: str
     text: str
     query: str
-    kind: Literal["cultural_fact", "operating_promise", "user_requirement"] = Field(
-        default="cultural_fact", description="文化事实、营业/授课/收益等经营承诺、游客提出的活动要求分开；不能把经营承诺作为文化事实")
+    kind: Literal["cultural_fact", "public_activity_fact", "operating_promise", "user_requirement"] = Field(
+        default="cultural_fact", description="文化事实、公开活动公告条件、营业/授课/收益等经营承诺、游客提出的活动要求分开；公开活动条件不等于当前资源")
 
 
 class Understanding(StrictModel):

@@ -12,7 +12,7 @@ from fastapi.staticfiles import StaticFiles
 from starlette.middleware.trustedhost import TrustedHostMiddleware
 from .config import ROOT, MODEL, OLLAMA_URL, now
 from . import store
-from .evidence import load_sources, load_materials, load_profile, normalize_region
+from .evidence import load_sources, load_materials, load_profile, load_public_case, normalize_region
 from .model import readiness
 from .schemas import RunInput, Approval, UsageChange
 from .workflow import execute
@@ -60,7 +60,8 @@ def health():
 
 @app.get("/api/catalog")
 def catalog():
-    return {"sources": store.records("sources"), "materials": store.records("materials"), "profile": load_profile()}
+    return {"sources": store.records("sources"), "materials": store.records("materials"), "profile": load_profile(),
+            "public_cases": [{**load_public_case("jinshan-paper-light"), "profile": load_profile("jinshan-paper-light")}]}
 
 
 @app.get("/api/runs")
@@ -71,17 +72,18 @@ def runs():
 def _launch_locked(payload, parent_id=None):
     data = payload.model_dump()
     previous = required_run(data["previous_run_id"]) if data.get("previous_run_id") else None
-    previous_plan = deepcopy(previous.get("plan")) if previous else None
+    previous_plan = deepcopy(previous.get("plan")) if previous and previous.get("case_id") == data.get("case_id") else None
     data["operating_overrides"] = payload.operating_overrides.model_dump(exclude_unset=True)
-    profile = load_profile()
+    profile = load_profile(data.get("case_id"))
     profile.update(data["operating_overrides"])
     if normalize_region(data["requirements"]["region"]) != profile["region"]:
         # Evidence may cover more places than our operating resources.
         profile["region_mismatch"] = True
     sources = [s for s in store.records("sources") if normalize_region(s["region"]) == normalize_region(data["requirements"]["region"]) and s["usage_status"] == "available"]
-    materials = [m for m in store.records("materials") if m["usage_status"] == "available"]
+    material_ids = profile.get("material_ids", ["mat-paper-garden"])
+    materials = [m for m in store.records("materials") if m["usage_status"] == "available" and m["id"] in material_ids]
     run = {"id": uuid.uuid4().hex, "version": 1, "status": "running", "mode": "live", "created_at": now(),
-           **data, "profile": profile, "sources_snapshot": sources, "materials_snapshot": materials,
+           **data, "profile": profile, "public_case": load_public_case(data.get("case_id")), "sources_snapshot": sources, "materials_snapshot": materials,
            "source_versions": store.versions(sources), "material_versions": store.versions(materials),
            "claims": [], "cards": [], "planning": None, "plan": None, "approval": None,
            "model_calls": 0, "model_metrics": [], "revision_count": 0, "elapsed_seconds": 0,
@@ -198,6 +200,7 @@ def refresh(run_id: str):
     if sum(r["status"] == "running" for r in store.list_runs()) >= 2:
         raise HTTPException(429, "请等待已有任务完成")
     data = {k: old[k] for k in ("text", "requirements", "operating_overrides")}
+    data.update(case_id=old.get("case_id"), demo_assumptions_confirmed=old.get("demo_assumptions_confirmed", False))
     data.update(constraint_resolution=old.get("constraint_resolution", "ask"), previous_run_id=run_id)
     return launch(RunInput(**data), parent_id=run_id)
 

@@ -1,0 +1,29 @@
+{
+  "id": "d2d1c8b3e83c4498911341b07d95c05c",
+  "status": "needs_input",
+  "model_calls": 2,
+  "elapsed_seconds": 5.782,
+  "error": "文字需求存在矛盾或超出当前模块能力，请先澄清：公告条件、团队演示资源和当前可预约状态请分开标记。",
+  "plan": null,
+  "teaching_check": null,
+  "claims_count": 8,
+  "cards_count": 0,
+  "events": [
+    [
+      "accepted",
+      "已保存输入与资料/经营版本，等待本地单并发执行。"
+    ],
+    [
+      "model_call",
+      "本地模型调用：理解需求与拆分陈述（第1次）"
+    ],
+    [
+      "model_call",
+      "本地模型调用：提取文字活动偏好（第2次）"
+    ],
+    [
+      "needs_input",
+      "文字需求存在矛盾或超出当前模块能力，请先澄清：公告条件、团队演示资源和当前可预约状态请分开标记。"
+    ]
+  ]
+}

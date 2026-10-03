@@ -4,11 +4,11 @@
 
 代码仓库：[tingfengy2000-creator/xiangyi-youju](https://github.com/tingfengy2000-creator/xiangyi-youju)（当前为公开仓库；本轮仅核对状态，未更改可见性）。
 
-乡艺有据帮助乡村文旅工作人员，把有来源的非遗资料变成讲解准确、时间与预算可行、村民服务报酬可解释的文化体验方案。首个案例为蔚县剪纸，以丰宁满族剪纸作地域知识对照。
+乡艺有据帮助乡村文旅工作人员，把有来源的非遗资料变成讲解准确、时间与预算可行、村民服务报酬可解释的文化体验方案。外部展示案例为金山区人民政府公开的剪纸小夜灯活动；蔚县剪纸与丰宁满族剪纸继续作为既有回归资料。
 
 项目面向中国研究生智慧城市技术与创意设计大赛，以争取进入全国决赛为目标。前端视觉品质是最高设计要求，技术和案例围绕可展示、可核对的业务闭环展开。
 
-> **当前阶段：参赛候选收束与展示交付。** 主线是“让非遗不止被看见，更能被体验”：一条证据链贯穿讲解、活动和双版交付；一句自然语言要求会改变活动组合，并由模型理解、程序求解与校验共同完成。围绕同一场剪纸体验，已固化“纠正讲解→改变预算与偏好→撤回素材后更新体验包”的三段展示。原三页和八模块组合继续保留，文化事实、经营承诺和用户需求分别处理；手作最低时长与全程上限分开，明确偏好由程序排序，资源不足给出具体缺口。旧六例首次失败、新24例首跑及最终候选版本回归均分开记录，见 [候选版本回归](docs/validation/release-candidate/release-report.md)。三个官方模板已有 [申报候选正文](docs/submission/README.md)，待补项不会写成真实成果。
+> **当前阶段：参赛候选收束与展示交付。** 主线是“让非遗不止被看见，更能被体验”：一条证据链贯穿讲解、活动和双版交付；一句自然语言要求会改变活动组合，并由模型理解、程序求解与校验共同完成。围绕同一场剪纸体验，已固化“纠正讲解→改变预算与偏好→撤回素材后更新体验包”的三段展示。原三页和八模块组合继续保留，文化事实、经营承诺和用户需求分别处理；手作最低时长与全程上限分开，明确偏好由程序排序，资源不足给出具体缺口。旧六例首次失败、新24例首跑及最终候选版本回归均分开记录，见 [候选版本回归](docs/validation/release-candidate/release-report.md)。新增[公开活动案例入口](docs/validation/external-case/public-case-selection.md)：公告事实、演示资源和待确认条件分开；三个官方模板已有[申报候选正文](docs/submission/README.md)，待补项不会写成真实成果。
 
 ![乡艺有据首页](docs/assets/screenshots/home-hero.png)
 
@@ -19,11 +19,11 @@
 | 解决什么问题、为何这样设计 | [产品方案](docs/design/product-plan.md) |
 | 做到哪一步、接下来做什么 | [项目进度](docs/progress/project-status.md) |
 | 打开真实界面与运行环境 | [本地运行说明](docs/development/local-runtime.md)；本机启动后访问8780端口 |
-| 核对真实案例、速度与失败记录 | [本轮分组实测与固定流程对照](docs/validation/semantic-reliability-2026-10-03.md) |
+| 核对公开活动案例与真实运行 | [金山区案例记录](docs/validation/external-case/public-case-selection.md) · [本轮分组实测与固定流程对照](docs/validation/semantic-reliability-2026-10-03.md) |
 | LLM 和 Agent 如何发挥价值 | [技术架构与验证方案](docs/design/technical-architecture.md) |
 | 如何安排开发和参赛展示 | [实施与参赛清单](docs/design/delivery-plan.md) |
 | 后续按什么格式提交材料 | [申报正文与原模板草案](docs/submission/README.md) · [附件约束](docs/development/competition-submission.md) |
-| 观看三分钟内部展示 | [演示视频](docs/assets/video/xiangyi-youju-demo-3min.webm) · [逐镜讲稿](docs/demo/three-minute-demo-script.md) |
+| 观看三分钟内部展示 | [原三段演示视频](docs/assets/video/xiangyi-youju-demo-3min.webm) · [公开案例讲稿](docs/demo/external-case-demo-script.md) |
 | 交给工坊或研学组织者试用 | [简短试用说明](docs/trial/field-trial-guide.md) · [反馈模板](docs/trial/trial-feedback-template.md) |
 | 每次交付增加了什么 | [更新记录](CHANGELOG.md) |
 | 如何参与开发、管理文件 | [开发说明](CONTRIBUTING.md) · [目录与命名规范](docs/development/repository-conventions.md) |
@@ -48,6 +48,10 @@ LLM（大语言模型）负责理解、查证和表达；Agent（能按任务调
 
 ![改一句话，手作50分钟变80分钟](docs/assets/screenshots/semantic-comparison.png)
 
+公开案例的双版体验包：[游客版](docs/validation/external-case/jinshan-visitor-bb6c113f.html) · [组织者版](docs/validation/external-case/jinshan-organizer-bb6c113f.html)。
+
+![公开案例内容工坊](docs/assets/screenshots/external-case-studio.png)
+
 实际输入修改后，手作由50变80分钟，全程由90变100分钟，总价由720变796元；全部为演示测算，不是实际订单。5个真实UI任务覆盖三个演示及确认/拒绝分支，完整记录见[浏览器证据](docs/validation/semantic-browser-2026-10-03.json)。
 
 视频为本机真实运行素材编排的约3分钟内部展示目标，脚本逐段标明真实运行、历史回放、精选片段和演示数据；不冒称官方限时或正式现场录制。
@@ -64,7 +68,7 @@ LLM（大语言模型）负责理解、查证和表达；Agent（能按任务调
 | 三页高保真业务界面 | 已接通真实后端 | 保留纸白、墨绿、朱红；直接打开HTML仍是明示预设 |
 | 八模块候选、账本、资源校验与双版预览/导出 | 已实现 | 整数分复算；程序锁定必要时长、报价、教师、场地；人工确认与版本失效保护 |
 | 目录、依赖、中文说明与交付规则 | 已完成整理 | 本仓库作为后续统一交付位置 |
-| 本地模型、地域检索、Agent与教学表达 | 已实际运行 | 12个短片段、4个官方页面；支持/矛盾/分歧/不足分开记录；失败保留 |
+| 本地模型、地域检索、Agent与教学表达 | 已实际运行 | 金山区政府原始公告4条短摘录接入；公告历史事实、演示经营配置和待确认边界分开记录；失败保留 |
 | 旧六例回归、新24例与固定流程对照 | 本轮小规模内部验证 | 3833ce1首跑与最终候选作用域修复后的已见输入回归分开统计；不是第三方评测或通用准确率 |
 | 独立人工评审、真实合作及收益 | 待开展 | 不使用虚构成绩或合作信息 |
 

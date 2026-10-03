@@ -276,11 +276,12 @@ def main():
     documents = [make_form(sources[1], content, metrics), make_description(sources[2], content),
                  make_business(sources[3], content)]
     write_readable(content, counts)
-    manifest = {"status": "draft-awaiting-external-evidence-and-canonical-render", "date": content["version_date"],
+    manifest = {"status": "draft-rebuilt-external-case-canonical-render-pending", "date": content["version_date"],
                 "source_hashes": EXPECTED_HASHES, "outputs": documents, "character_counts": counts,
                 "count_method": "non-whitespace Unicode characters, including punctuation and individual Latin letters",
                 "metrics_source": args.metrics.name if args.metrics else None,
-                "originals_unchanged": all(digest(sources[i]) == EXPECTED_HASHES[i] for i in range(4))}
+                "originals_unchanged": all(digest(sources[i]) == EXPECTED_HASHES[i] for i in range(4)),
+                "notes": "三份官方模板已按公开活动案例正文重建；字数均在官方上限内。规范渲染因本机缺少soffice.exe仍待补，未称正式定稿。"}
     (OUTPUT / "build-manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(json.dumps({"outputs": documents, "counts": counts}, ensure_ascii=False, indent=2))
 
