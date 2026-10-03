@@ -278,7 +278,7 @@ def render_bundle(run: dict, audience: str, preview: bool = False) -> str:
             parts.append(f'<tr><td>{_text(row["label"])}<br><span class="small">{_text(row["payee"])}</span></td><td class="amount">{_money(row["unit_cents"])} × {row["quantity"]}</td><td class="amount">{_money(row["cents"])}</td></tr>')
         parts.extend([
             f'<tr class="total"><td>演示总支出</td><td></td><td class="amount">{_money(plan["total_cents"])}</td></tr></tbody></table>',
-            f'<div class="columns"><div class="card"><h3>本地服务报酬</h3><p>{_money(plan["local_service_cents"])}</p><p class="small">讲解、手作教学与茶歇服务费用之和；非利润、非净增收。</p></div><div class="card"><h3>当前接待资源</h3><p>单组容量 {profile["capacity"]} 人 · 教师 {profile["teachers"]} 位 · 场地 {profile["rooms"]} 处</p><p class="small">一个组在同一场地顺序活动，不自动拆组或新增并行接待。</p></div></div>',
+            f'<div class="columns"><div class="card"><h3>本地服务报酬</h3><p>{_money(plan["local_service_cents"])}</p><p class="small">讲解、手作教学及其他在地服务费用之和；非利润、非净增收。</p></div><div class="card"><h3>当前接待资源</h3><p>单组容量 {profile["capacity"]} 人 · 教师 {profile["teachers"]} 位 · 场地 {profile["rooms"]} 处</p><p class="small">一个组在同一场地顺序活动，不自动拆组或新增并行接待。</p></div></div>',
             f'<div class="notice quiet">人均预算上限 {_money(run["planning"]["budget_per_person_cents"])}；可用时间 {req["available_minutes"]} 分钟。预算按总价精确校验，人均显示四舍五入至分。</div>',
             '<h2><span class="number">04</span>原文、修订与证据</h2>',
         ])

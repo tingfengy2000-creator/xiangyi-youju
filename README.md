@@ -23,7 +23,7 @@
 | LLM 和 Agent 如何发挥价值 | [技术架构与验证方案](docs/design/technical-architecture.md) |
 | 如何安排开发和参赛展示 | [实施与参赛清单](docs/design/delivery-plan.md) |
 | 后续按什么格式提交材料 | [申报正文与原模板草案](docs/submission/README.md) · [附件约束](docs/development/competition-submission.md) |
-| 观看三分钟内部展示 | [原三段演示视频](docs/assets/video/xiangyi-youju-demo-3min.webm) · [公开案例讲稿](docs/demo/external-case-demo-script.md) |
+| 观看三分钟内部展示 | [蔚县主线演示视频](docs/assets/video/xiangyi-youju-demo-3min.webm) · [公开案例补充讲稿](docs/demo/external-case-demo-script.md) |
 | 交给工坊或研学组织者试用 | [简短试用说明](docs/trial/field-trial-guide.md) · [反馈模板](docs/trial/trial-feedback-template.md) |
 | 每次交付增加了什么 | [更新记录](CHANGELOG.md) |
 | 如何参与开发、管理文件 | [开发说明](CONTRIBUTING.md) · [目录与命名规范](docs/development/repository-conventions.md) |
@@ -38,6 +38,8 @@ GitHub 网页显示源码；真实业务在本机启动后访问。直接打开 
 
 本轮实现的业务流程：`原文拆解与文字偏好提取 → 冲突时确认 → 地域证据核验 → 活动模块求解与修订 → 教学生成与逐项扫描 → 双版预览 → 人工确认 → 体验包`。
 
+现场主线固定为同一场**蔚县剪纸**：地域纠错 → 取消茶歇并增加手作时间 → 素材撤回后更新游客版和组织者版。金山区政府公开剪纸小夜灯活动是独立标识的补充案例，只证明外部资料可以沿用同一闭环，不与蔚县拼成一场活动。
+
 文字可表达“不安排茶歇”“多留手作时间”“手作至少60分钟”、客群及人数/预算/时长；与表单不同会停止并请使用者选择。其它模块可比较程序提供的候选；文字硬性指定其它模块增删、跨场地或新增服务时需澄清，不宣称能理解任意旅游需求。
 
 明确偏好先满足硬约束，再按手作分钟、总价、总时长稳定排序；同一输入不会让模型反复挑错候选。
@@ -48,7 +50,7 @@ LLM（大语言模型）负责理解、查证和表达；Agent（能按任务调
 
 ![改一句话，手作50分钟变80分钟](docs/assets/screenshots/semantic-comparison.png)
 
-公开案例的双版体验包：[游客版](docs/validation/external-case/jinshan-visitor-bb6c113f.html) · [组织者版](docs/validation/external-case/jinshan-organizer-bb6c113f.html)。
+公开案例的双版体验包（补充证据）：[游客版](docs/validation/external-case/jinshan-visitor-bb6c113f.html) · [组织者版](docs/validation/external-case/jinshan-organizer-bb6c113f.html)。
 
 ![公开案例内容工坊](docs/assets/screenshots/external-case-studio.png)
 

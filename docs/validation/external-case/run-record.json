@@ -63,5 +63,7 @@
   ],
   "boundary": "公开活动资料重建与系统验证，不代表真实工坊落地、合作、预约、收益或安全认证",
   "model": "xiangyi-qwen3:14b-q4_k_m",
-  "database": "artifacts/runtime/external-case.sqlite3"
+  "database": "artifacts/runtime/external-case.sqlite3",
+  "main_story_note": "本案例是蔚县剪纸主线之外的补充外部资料接入证据；不与蔚县拼成一场真实活动。30分钟现场教学与90分钟手作是公告历史安排，90分钟不是已证明的工艺最低时间。702元为组织支出演示测算，不是历史免费活动收费、收入或净增收。",
+  "comparison_boundary": "fixed记录只描述本次流程差异，文字输入与Agent主运行不完全相同，不包装为严格同输入或通用规划优势。"
 }

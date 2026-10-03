@@ -330,7 +330,7 @@ def _solve_modules(req, operating, common, people, budget_cents, available, star
                 "craft_minutes": craft_minutes, "score": craft_minutes if constraints["maximize_craft"] else -total,
                 "score_basis": "优先手作分钟，其次总价" if constraints["maximize_craft"] else "优先低总价，其次总时长",
                 "explanation": explanation,
-                "scope_note": "独立模块演示报价，不沿用固定套餐价格；同场地单组顺序活动，不自动拆组或并行，不含交通、住宿及税费。客群标签和材料份数均为演示配置，非真实经营或安全认证。",
+                "scope_note": operating.get("schedule_basis_note", "独立模块演示报价，不沿用固定套餐价格；同场地单组顺序活动，不自动拆组或并行，不含交通、住宿及税费。客群标签和材料份数均为演示配置，非真实经营或安全认证。"),
             })
     if not rows:
         raise ValueError("经营模块无法组成必需的讲解与手作，请负责人检查配置")

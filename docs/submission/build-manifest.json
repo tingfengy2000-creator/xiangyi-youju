@@ -1,5 +1,5 @@
 {
-  "status": "draft-rebuilt-external-case-canonical-render-pending",
+  "status": "draft_rebuilt_wps_all_pages_checked_canonical_render_pending",
   "date": "2026-10-03",
   "source_hashes": {
     "0": "56e3a668957664bf11a0790055b8003fa1dcf7e04a110ae8902558c8cfed0766",
@@ -10,126 +10,111 @@
   "outputs": [
     {
       "file": "project-summary-draft.docx",
-      "sha256": "ab97ded468469a979f2f5656e3f8666ee6bb70f53a1c85be4d1a6c42ca65b2bc",
+      "sha256": "c25116bdaea49160771f2670140d4013228ca1d8641467852480024e067c8ed9",
       "template_sha256": "c1f280161f0037b477528b65372672c003806457f4923be773ef456cd1010697",
-      "changed_package_parts": [
-        "docProps/app.xml",
-        "docProps/core.xml",
-        "word/document.xml"
-      ],
-      "preserved_package_parts": 24
+      "current_visual_status": "wps_all_pages_inspected"
     },
     {
       "file": "project-description-draft.docx",
-      "sha256": "178258f2e07b9901ff5272014bd1d0e5e1aafa1230f5606adbcba8a929033cca",
+      "sha256": "a9c875c09a4846a07d1d0b7d451b81dcafa0743ae1ce86f406720ec8b083e804",
       "template_sha256": "bf0347f12f93bba3280e2c0ca384727fd7ad2360c64201fb6d1c1cb648f655cf",
-      "changed_package_parts": [
-        "docProps/app.xml",
-        "docProps/core.xml",
-        "word/document.xml"
-      ],
-      "preserved_package_parts": 23
+      "current_visual_status": "wps_all_pages_inspected"
     },
     {
       "file": "business-plan-draft.docx",
-      "sha256": "b65c4c98ac1a24160bf8591346b70cd105510ff2f8b7268b6a5f07704e0686ec",
+      "sha256": "4f808986a3cb5e279af010997c9fd63078f99ce21f48fa5e06ed7b51e88d82ce",
       "template_sha256": "777f66a29204f6a9470da43f0b23d1e3c76f08a4891c08718c81c27dfd91e01b",
-      "changed_package_parts": [
-        "docProps/app.xml",
-        "docProps/core.xml",
-        "word/document.xml"
-      ],
-      "preserved_package_parts": 23
+      "current_visual_status": "wps_all_pages_inspected"
     }
   ],
   "character_counts": [
     {
       "document": "form",
       "section": "项目背景",
-      "characters": 144,
+      "characters": 171,
       "limit": 300
     },
     {
       "document": "form",
       "section": "立项思路",
-      "characters": 159,
+      "characters": 161,
       "limit": 300
     },
     {
       "document": "form",
       "section": "解决方案",
-      "characters": 409,
+      "characters": 368,
       "limit": 600
     },
     {
       "document": "form",
       "section": "商业模式和预期效益",
-      "characters": 138,
+      "characters": 169,
       "limit": 300
     },
     {
       "document": "description",
       "section": "立项依据",
-      "characters": 990,
+      "characters": 1387,
       "limit": 2000
     },
     {
       "document": "description",
       "section": "项目创新内容",
-      "characters": 1548,
+      "characters": 1052,
       "limit": 3000
     },
     {
       "document": "description",
       "section": "实施方案",
-      "characters": 1186,
+      "characters": 1046,
       "limit": 3000
     },
     {
       "document": "description",
       "section": "应用前景分析",
-      "characters": 256,
+      "characters": 215,
       "limit": 500
     },
     {
       "document": "business",
       "section": "项目方案概述",
-      "characters": 181,
+      "characters": 156,
       "limit": 200
     },
     {
       "document": "business",
       "section": "项目团队",
-      "characters": 120,
+      "characters": 114,
       "limit": 200
     },
     {
       "document": "business",
       "section": "项目产品（服务）化",
-      "characters": 570,
+      "characters": 462,
       "limit": 2000
     },
     {
       "document": "business",
       "section": "项目产品（服务）市场与竞争",
-      "characters": 919,
+      "characters": 758,
       "limit": 2000
     },
     {
       "document": "business",
       "section": "商业模式",
-      "characters": 591,
+      "characters": 926,
       "limit": 2000
     },
     {
       "document": "business",
       "section": "预期经济效益分析",
-      "characters": 276,
+      "characters": 311,
       "limit": 500
     }
   ],
   "count_method": "non-whitespace Unicode characters, including punctuation and individual Latin letters",
   "metrics_source": "validated-metrics.json",
   "originals_unchanged": true,
-  "notes": "三份官方模板已按公开活动案例正文重建；字数均在官方上限内。规范渲染因本机缺少soffice.exe仍待补，未称正式定稿。"
+  "notes": "三份官方模板按更新正文重建；14个限字栏目通过，当前WPS导出后的14页已逐页检查。规范render_docx.py因本机缺少soffice.exe仍待补，故保持候选草案状态。"
 }

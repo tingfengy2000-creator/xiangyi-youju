@@ -80,11 +80,11 @@
     q('#studio .page-header .chip').textContent = '真实输入 · 逐句关联证据';
     q('#studio .step-strip').innerHTML = '<span>01 理解地域</span>→<span>02 逐句查证</span>→<span>03 编排体验</span>→<span>04 人工确认</span>';
     q('#caseSelect').previousElementSibling.innerHTML = '加载一个展示输入 <span>仅填入文案，不生成结果</span>';
-    q('#caseSelect').innerHTML = '<option value="external">公开活动案例 · 金山区剪纸小夜灯</option><option value="confusion">地域事实纠错 · 工艺主次混淆</option><option value="missing">地域待明确 · 检查适用范围</option><option value="unsupported">经营承诺 · 区分资料与运营</option>';
+    q('#caseSelect').innerHTML = '<option value="confusion">主线案例 · 蔚县剪纸地域纠错</option><option value="external">补充案例 · 金山区公开活动重建</option><option value="missing">地域待明确 · 检查适用范围</option><option value="unsupported">经营承诺 · 区分资料与运营</option>';
     q('#draft').readOnly = false; q('#draft').maxLength = 1800; q('#draft').value = samples.confusion;
     q('#draft').previousElementSibling.innerHTML = '待核验文案 <span>可现场修改，重新运行后生效</span>';
     q('#draft').previousElementSibling.insertAdjacentHTML('beforebegin', `<div class="form-pair"><label for="region">讲解地域<input id="region" value="河北省蔚县" maxlength="80"></label><label for="project">非遗项目<input id="project" value="剪纸" maxlength="50"></label></div>`);
-    q('#draft').insertAdjacentHTML('beforebegin', `<section class="public-case-banner" id="publicCaseBanner"><div class="eyebrow">PUBLIC CASE · 公开活动案例</div><h3>金山区剪纸小夜灯 · 公告重建</h3><p>把一则政府活动公告转成可核验的体验方案。公告事实、团队演示配置和当前可预约状态分开标记。</p><div class="public-case-facts"><span>2026-08-08 · 13:30—15:30</span><span>现场教学30′ + 手作90′</span><span>公告招募15人 · 免费</span></div><label class="case-assumption"><input type="checkbox" id="caseAssumptionCheck" checked><span>确认采用团队演示配置继续重建（8人、1位教师、1间场地、演示报价）；这不代表历史活动可预约。</span></label><a class="case-source-link" href="https://www.shanghai.gov.cn/nw17239/20260806/ab8799763c384e7eb1b254cebf1e0cf5.html" target="_blank" rel="noopener noreferrer">查看金山区人民政府原始公告 ↗</a></section>`);
+    q('#draft').insertAdjacentHTML('beforebegin', `<section class="public-case-banner" id="publicCaseBanner" hidden><div class="eyebrow">PUBLIC CASE · 公开活动案例</div><h3>金山区剪纸小夜灯 · 公告重建</h3><p>把一则政府活动公告转成可核验的体验方案。公告事实、团队演示配置和当前可预约状态分开标记。</p><div class="public-case-facts"><span>公告历史安排：2026-08-08 · 13:30—15:30</span><span>现场教学30′ + 手作90′</span><span>招募15人 · 免费（公告条件）</span></div><label class="case-assumption"><input type="checkbox" id="caseAssumptionCheck"><span>确认采用团队演示配置继续重建（8人、1位教师、1间场地、演示报价）；这不代表历史活动可预约，也不把90分钟解释为工艺最低时间。</span></label><a class="case-source-link" href="https://www.shanghai.gov.cn/nw17239/20260806/ab8799763c384e7eb1b254cebf1e0cf5.html" target="_blank" rel="noopener noreferrer">查看金山区人民政府原始公告 ↗</a></section>`);
     q('#draft').insertAdjacentHTML('afterend', `<label class="field-label" for="requestNote" style="margin-top:18px">这场体验，您有什么想法？ <span>与表单冲突时请您决定</span></label><textarea id="requestNote" maxlength="1000">为初次了解剪纸的游客安排文化讲解与入门手作。讲述清楚工艺特色，留出观察和提问的时间。</textarea><div class="form-pair"><label for="preferredPlan">套餐偏好<select id="preferredPlan"><option value="deep">优先深体验</option><option value="light">优先轻体验</option></select></label><label for="startTime">开始时间<input id="startTime" type="time" value="09:30"></label></div>`);
     q('#auditBtn').innerHTML = '核验并编排体验 <span class="arrow">→</span>';
     q('#auditBtn').nextElementSibling.textContent = '模型负责理解和表达；程序核对预算、日程与资源。每条结论保留原文和出处，无法证实的内容不会被当作错误。';
@@ -117,6 +117,10 @@
     q('#previewOrganizer').addEventListener('click', () => previewBundle('organizer'));
     q('#refreshRun').addEventListener('click', refreshRun);
     setupPresentation();
+    // The main display is the existing Yuxian case. The public Jinshan case is
+    // an explicit supplemental entry, so the select, text, region, resources,
+    // and banner always describe the same case on first paint.
+    applyCasePreset('confusion');
     clearPlan(); renderMaterials(); setBanner(); updateValues(); updateActions(); loadHistoryList();
     if(!health.model_ready)showWarning('业务服务已连接，但本地模型尚未就绪。请启动 Ollama 并准备模型。此时运行会保留真实失败记录，不会使用预设案例替代。');
   }
@@ -189,11 +193,16 @@
   function applyCasePreset(value) {
     activeCaseId = value === 'external' ? 'jinshan-paper-light' : null;
     q('#draft').value = samples[value] || samples.confusion;
-    if (value === 'external') {
-      q('#region').value='上海市金山区'; q('#project').value='剪纸'; q('#people').value=8; q('#budget').value=220; q('#minutes').value=120; q('#capacity').value=8; q('#teachers').value=1; q('#rooms').value=1; q('#startTime').value='13:30'; q('#preferredPlan').value='deep'; q('#planningMode').value='modules'; q('#audience').value='family'; q('#teaPreference').value='exclude'; q('#minCraftMinutes').value=90; q('#requestNote').value='按公告重建一场8人亲子体验：保留现场教学30分钟和手作90分钟，不安排茶歇；如果人数改为6人仍保持流程。公告条件、团队演示资源和当前可预约状态请分开标记。'; q('#caseAssumptionCheck').checked=true;
-    } else {
-      q('#region').value = value === 'missing' ? '' : '河北省蔚县'; q('#project').value='剪纸'; q('#caseAssumptionCheck').checked=false;
-    }
+    const presets = {
+      confusion: {region:'河北省蔚县', project:'剪纸', people:8, budget:160, minutes:150, capacity:12, teachers:1, rooms:1, start:'09:30', plan:'deep', mode:'modules', audience:'general', tea:'any', craft:0, note:'为初次了解剪纸的游客安排文化讲解与入门手作。讲述清楚工艺特色，留出观察和提问的时间。'},
+      missing: {region:'', project:'剪纸', people:8, budget:160, minutes:150, capacity:12, teachers:1, rooms:1, start:'09:30', plan:'deep', mode:'modules', audience:'general', tea:'any', craft:0, note:'为初次了解剪纸的游客安排文化讲解与入门手作。'},
+      unsupported: {region:'河北省蔚县', project:'剪纸', people:8, budget:160, minutes:150, capacity:12, teachers:1, rooms:1, start:'09:30', plan:'deep', mode:'modules', audience:'general', tea:'any', craft:0, note:'请区分来源支持的文化事实与需要接待方确认的经营承诺。'},
+      external: {region:'上海市金山区', project:'剪纸', people:8, budget:220, minutes:120, capacity:8, teachers:1, rooms:1, start:'13:30', plan:'deep', mode:'modules', audience:'family', tea:'exclude', craft:90, note:'按公告重建一场8人亲子体验：保留现场教学30分钟和手作90分钟，不安排茶歇；如果人数改为6人仍保持流程。公告条件、团队演示资源和当前可预约状态请分开标记。'}
+    };
+    const preset = presets[value] || presets.confusion;
+    q('#region').value=preset.region; q('#project').value=preset.project; q('#people').value=preset.people; q('#budget').value=preset.budget; q('#minutes').value=preset.minutes; q('#capacity').value=preset.capacity; q('#teachers').value=preset.teachers; q('#rooms').value=preset.rooms; q('#startTime').value=preset.start; q('#preferredPlan').value=preset.plan; q('#planningMode').value=preset.mode; q('#audience').value=preset.audience; q('#teaPreference').value=preset.tea; q('#minCraftMinutes').value=preset.craft; q('#requestNote').value=preset.note;
+    q('#publicCaseBanner').hidden = value !== 'external';
+    q('#caseAssumptionCheck').checked = value === 'external' ? q('#caseAssumptionCheck').checked : false;
     syncPlanningMode(); updateValues();
     notify(value === 'external' ? '已载入公开活动案例。运行前请确认演示配置边界。' : '已载入展示输入。');
   }
@@ -411,7 +420,7 @@
   }
   async function loadHistoryList(){try{const list=await api('/api/runs');q('#historySelect').innerHTML='<option value="">历史记录 · 选择后仅回放</option>'+(list.runs||[]).slice(0,30).map(run=>`<option value="${esc(run.id)}">${esc(statusNames[run.status]||run.status)} · ${esc((run.text||'').slice(0,18))}</option>`).join('');}catch{ /* History availability does not fabricate a result or block current input. */ }}
   function restoreInputs(run) {
-    activeCaseId=run.case_id||null; q('#caseSelect').value=activeCaseId?'external':'confusion'; q('#caseAssumptionCheck').checked=!!run.demo_assumptions_confirmed; q('#draft').value=run.text||'';const req=run.requirements||{};
+    activeCaseId=run.case_id||null; q('#caseSelect').value=activeCaseId?'external':'confusion'; q('#publicCaseBanner').hidden=!activeCaseId; q('#caseAssumptionCheck').checked=!!run.demo_assumptions_confirmed; q('#draft').value=run.text||'';const req=run.requirements||{};
     for(const [id,key] of Object.entries({region:'region',project:'project',people:'people',budget:'budget_per_person',minutes:'available_minutes',requestNote:'note',startTime:'start_time',preferredPlan:'preferred_plan'}))if(req[key]!==undefined)setInputValue(id,req[key]);
     for(const [id,value] of Object.entries({planningMode:req.planning_mode||'packages',audience:req.audience||'general',teaPreference:req.tea_preference||'any',minCraftMinutes:req.min_craft_minutes||0}))setInputValue(id,value);
     syncPlanningMode();

@@ -1,28 +1,36 @@
 {
-  "status": "draft_rebuilt_canonical_render_pending",
+  "status": "wps_compatibility_checked_canonical_render_pending",
   "date": "2026-10-03",
-  "method": "三份官方模板已按更新正文重新构建；当前版本完成字数、模板部件、源码路径与文档结构检查。上轮WPS补充预览对应上一版正文，不能冒充本轮视觉签核。",
-  "canonical_renderer": "render_docx.py unavailable: bundled LibreOffice soffice.exe not found",
+  "method": "本轮三份候选Word在正文重建后由本机WPS只读导出当前PDF，再用Poppler转PNG；项目简表3页、项目说明书6页、商业计划书5页共14页已逐页检查。检查内容包括页数、页眉页脚、表格边界、段落截断、孤置标题、缺字和重叠；当前版本没有发现上述问题。",
+  "canonical_renderer": "render_docx.py attempted; bundled LibreOffice soffice.exe unavailable. WPS is available locally and the current-page check is recorded as compatibility QA, not a canonical LibreOffice pass.",
   "canonical_log": "artifacts/submission-preview/canonical-render-failure.log",
+  "compatibility_renderer": "WPS kwps.Application -> PDF -> bundled Poppler PNG",
+  "page_counts": {
+    "project-summary-draft.docx": 3,
+    "project-description-draft.docx": 6,
+    "business-plan-draft.docx": 5,
+    "total": 14
+  },
+  "current_render_evidence": "artifacts/submission-preview/current-render (ignored local QA; generated from current PDFs)",
   "original_templates_unchanged": true,
   "outputs": [
     {
       "file": "project-summary-draft.docx",
-      "sha256": "ab97ded468469a979f2f5656e3f8666ee6bb70f53a1c85be4d1a6c42ca65b2bc",
+      "sha256": "c25116bdaea49160771f2670140d4013228ca1d8641467852480024e067c8ed9",
       "template_sha256": "c1f280161f0037b477528b65372672c003806457f4923be773ef456cd1010697",
-      "current_visual_status": "canonical_render_pending"
+      "current_visual_status": "wps_all_pages_inspected"
     },
     {
       "file": "project-description-draft.docx",
-      "sha256": "178258f2e07b9901ff5272014bd1d0e5e1aafa1230f5606adbcba8a929033cca",
+      "sha256": "a9c875c09a4846a07d1d0b7d451b81dcafa0743ae1ce86f406720ec8b083e804",
       "template_sha256": "bf0347f12f93bba3280e2c0ca384727fd7ad2360c64201fb6d1c1cb648f655cf",
-      "current_visual_status": "canonical_render_pending"
+      "current_visual_status": "wps_all_pages_inspected"
     },
     {
       "file": "business-plan-draft.docx",
-      "sha256": "b65c4c98ac1a24160bf8591346b70cd105510ff2f8b7268b6a5f07704e0686ec",
+      "sha256": "4f808986a3cb5e279af010997c9fd63078f99ce21f48fa5e06ed7b51e88d82ce",
       "template_sha256": "777f66a29204f6a9470da43f0b23d1e3c76f08a4891c08718c81c27dfd91e01b",
-      "current_visual_status": "canonical_render_pending"
+      "current_visual_status": "wps_all_pages_inspected"
     }
   ],
   "checks": {
@@ -34,8 +42,7 @@
     "current_docx_hashes_bound_to": "docs/submission/build-manifest.json"
   },
   "limitations": [
-    "本轮外部案例正文已生成，但当前Word版本尚未完成规范渲染；不能称正式定稿。",
-    "团队、合作、市场与收益证据等仍待补。",
-    "公开仓库首次发表与匿名源码提交口径待核实。"
+    "规范render_docx.py仍受本机缺少LibreOffice限制；WPS当前页检查不能替代规范渲染。",
+    "团队、合作、市场与收益证据及公开仓库首次发表口径仍待核实。"
   ]
 }
