@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "created_at": "2026-10-03T05:44:22.783917+00:00",
+  "kind": "post_freeze_rejected_content_guard",
+  "reason": "只读审计发现重新生成可能原样重发明确失败原句，再次扫描改变结论；增加扫描前确定性门禁。",
+  "current_differs_from_evaluated": true,
+  "evaluated_implementation_freeze_sha256": "c61060c677a89f45b2ec8be8e42cec6cf36899d12f6504eb7d7fa10f33fb31d7",
+  "input_sha256": "748b2f337ba6b812015aa96a176842392e64bca8d74ca9dedb54de105dbe5ab6",
+  "first_run_summary_sha256": "277e776a1605c3a334f6c282bcefd504997ce4583d08aea478fabf77c9f8b746",
+  "implementation_changes": [
+    {
+      "path": "backend/teaching.py",
+      "before_sha256": "de0bde0bcca69263e6239dddac95159a10c7e42aa811a973f8375814fcdaf0df",
+      "after_sha256": "b0d334f04cda0c8e2819f0d58063f0982681b106f962a251abe225e26bf9d3e6",
+      "evaluated_snapshot": "docs/validation/post-freeze-guard/frozen_teaching.py",
+      "change": "仅增加规范化后的失败原文跨单元/包含匹配门禁；不修改提示词、资料、排序、经营数据、模型或调用预算。"
+    }
+  ],
+  "additional_files": {
+    "tests/backend/test_teaching.py": "a7be7c3f28196799ef9a2a07b2614ca142064b1bd2941b9376aaf7ccf81696fd",
+    "scripts/verify_acceptance.py": "aa39b59955994a73118a1a87089bd4ada3a25fb54edd322b6d8d0b250d29fb3d",
+    "docs/validation/post-freeze-guard/README.md": "a32735a6aded19275609cb535dce1daa4bdc92ca40c5a1c2cea22b40512d33e2",
+    "docs/validation/post-freeze-guard/test-results.json": "af0ac88ef2383d77ddc5bd19257527a793175060a8f376baa84a4136c6d4eda1",
+    "docs/validation/semantic-regression/audit-regression/summary.json": "f5a32d2da16f254afce0884338a2083e607daa66c3b038db01d5acd8f5b1684e"
+  },
+  "evidence_boundary": "24条首跑保留为原冻结实现结果，不冒充补丁版真实验收；本补丁通过210项程序契约检查及旧六例真实回归6/6，新24例未复跑。",
+  "real_regression": {
+    "path": "docs/validation/semantic-regression/audit-regression/summary.json",
+    "sha256": "f5a32d2da16f254afce0884338a2083e607daa66c3b038db01d5acd8f5b1684e",
+    "cases": 6,
+    "passed": 6,
+    "model_calls": 26,
+    "elapsed_seconds_min": 1.615,
+    "elapsed_seconds_max": 11.822,
+    "scope": "补丁版真实旧六例开发回归，非新24例验收；三交付双版、一确认、两拒绝。"
+  }
+}

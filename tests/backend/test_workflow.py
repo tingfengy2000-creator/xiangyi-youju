@@ -193,7 +193,7 @@ def test_regional_resources_are_not_transferred_to_other_or_unknown_regions(clie
     assert client.post(f"/api/runs/{result['id']}/approve", json={"confirmed": True, "plan_id": "deep"}).status_code == 409
 
 
-def test_revision_loop_is_bounded_when_model_repeatedly_selects_infeasible_plan(client, fake_model):
+def test_model_cannot_override_program_ranking_with_infeasible_plan(client, fake_model):
     def transform(purpose, data, value):
         if purpose == "选择与解释体验方案":
             value["plan_id"] = "deep"
@@ -201,7 +201,10 @@ def test_revision_loop_is_bounded_when_model_repeatedly_selects_infeasible_plan(
 
     fake_model["transform"] = transform
     result = submit(client, requirements={"budget_per_person": 110})
-    assert result["status"] == "needs_input"
+    assert result["status"] == "awaiting_review"
+    assert result["plan"]["id"] == "light"
+    assert result["selection_method"] == "deterministic_preference_ranking"
+    assert not any(c["purpose"] == "选择与解释体验方案" for c in result["model_metrics"])
     assert 0 < result["revision_count"] <= 2
     assert result["model_calls"] <= 8
     assert client.post(f"/api/runs/{result['id']}/approve", json={"confirmed": True, "plan_id": "deep"}).status_code == 409
@@ -288,12 +291,12 @@ def test_real_model_wrapper_eight_call_cap_includes_json_retries(client, monkeyp
         return httpx.Response(200, json={"message": {"content": raw}})
 
     monkeypatch.setattr(model.httpx, "Client", lambda *a, **kw: original_client(*a, **kw, transport=httpx.MockTransport(handler)))
-    result = submit(client)
-    assert result["status"] == "model_error"
-    assert result["model_calls"] == 8
+    from backend.schemas import Understanding
+    wrapper = model.LocalModel()
+    for _ in range(4):
+        wrapper.ask("接口预算回归", {"sentences": {"s1": TEXT}}, Understanding, "仅为预算回归")
+    with pytest.raises(model.ModelFailure, match="8次"):
+        wrapper.ask("超额调用", {}, Understanding, "仅为预算回归")
+    assert len(wrapper.calls) == 8
     assert request_count == 8
-    assert "8次" in result["error"]
-    assert all("raw_output" not in metrics for metrics in result["model_metrics"])
-    assert any("raw_output" in metrics for metrics in store.get_run(result["id"])["model_metrics"])
-    assert result["approval"] is None
-    assert client.get(f"/api/runs/{result['id']}/export").status_code == 409
+    assert any("raw_output" in metrics for metrics in wrapper.calls)

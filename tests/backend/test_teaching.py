@@ -9,6 +9,7 @@ from backend.evidence import load_profile, load_sources
 from backend.model import ModelFailure
 from backend.planner import solve_plans
 from backend.teaching import CREATIVE_LABEL, generate_teaching, render_teaching_html, validate_teaching
+from backend.teaching import can_recheck_scan, recheck_teaching_scan
 
 
 def make_run(audience="general"):
@@ -75,6 +76,121 @@ def test_corrected_supported_card_is_allowed():
                              suggested_text=run["cards"][0]["text"], corrected_status="supported",
                              corrected_evidence_ids=["src-yuxian-technique"])
     assert generate_teaching(FakeLLM(), run)["check"]["passed"]
+
+
+def test_scan_contract_repair_is_once_and_preserves_content_and_evidence():
+    def inconsistent(value):
+        value["items"][1]["cultural_premises"] = ["扫描字段自相矛盾的模拟项"]
+        return value
+    llm, run = FakeLLM(scan_change=inconsistent), make_run()
+    first = generate_teaching(llm, run)
+    assert not first["check"]["passed"] and can_recheck_scan(first, run)
+    llm.scan_change = lambda value: value
+    revised = recheck_teaching_scan(llm, first, run)
+    assert revised["check"]["passed"] and revised["check"]["model_calls_used"] == 3
+    assert revised["short_script"] == first["short_script"]
+    assert revised["check"]["input_sha256"] == first["check"]["input_sha256"]
+    assert len(llm.calls) == 3 and not can_recheck_scan(revised, run)
+    with pytest.raises(ValueError):
+        recheck_teaching_scan(llm, revised, run)
+
+
+def test_unsupported_scan_cannot_be_rejudged_until_it_passes():
+    def unsupported(value):
+        value["items"][0]["status"] = "insufficient"
+        return value
+    llm, run = FakeLLM(scan_change=unsupported), make_run()
+    first = generate_teaching(llm, run)
+    assert not first["check"]["passed"] and not can_recheck_scan(first, run)
+    with pytest.raises(ValueError):
+        recheck_teaching_scan(llm, first, run)
+
+
+def failed_teaching_candidate(status="unsupported", scope=True):
+    """真实扫描流程的假模型失败候选，不跳过结构或来源绑定。"""
+    def verdict(value):
+        value["items"][0].update(status=status, activity_scope_passed=scope)
+        return value
+    return generate_teaching(FakeLLM(scan_change=verdict), make_run())
+
+
+@pytest.mark.parametrize("status,scope", [("unsupported", True), ("insufficient", True), ("supported", False)])
+def test_regeneration_cannot_rescan_identical_rejected_text(status, scope):
+    failed = failed_teaching_candidate(status, scope)
+    assert not failed["check"]["passed"]
+    # 默认假扫描若被调用就会改判支持；门禁必须在扫描前阻断。
+    llm = FakeLLM()
+    result = generate_teaching(llm, make_run(), feedback=failed)
+    assert not result["check"]["passed"]
+    assert len(llm.calls) == result["check"]["model_calls_used"] == 1
+    assert result["check"]["rejected_content_reuse"][0]["previous_item_id"] == "script-1"
+    assert result["short_script"] == failed["short_script"]
+    assert not can_recheck_scan(result, make_run())
+    with pytest.raises(ValueError):
+        render_teaching_html(result, "visitor")
+
+
+def test_changing_another_unit_does_not_release_rejected_sentence():
+    failed = failed_teaching_candidate()
+    def change_other(value):
+        value["interaction_question"]["text"] = "你更喜欢哪一处细节？"
+        return value
+    llm = FakeLLM(draft_change=change_other)
+    result = generate_teaching(llm, make_run(), feedback=failed)
+    assert len(llm.calls) == 1 and not result["check"]["passed"]
+    assert result["check"]["rejected_content_reuse"]
+
+
+@pytest.mark.parametrize("text", [
+    "蔚 县 剪 纸 以 阴 刻 为 主，阳 刻 为 辅！",
+    "蔚县剪纸以阴刻为主,阳刻为辅!",
+    "蔚县剪纸以阴刻为主\u200b、阳刻为辅？",
+    "这里仍要讲蔚县剪纸以阴刻为主、阳刻为辅这一点。",
+])
+def test_moved_or_formatted_rejected_text_is_still_blocked(text):
+    failed = failed_teaching_candidate()
+    def move_and_reformat(value):
+        value["short_script"][0]["text"] = "蔚县剪纸的主要技法为阴刻。"
+        value["observation_task"]["text"] = text
+        return value
+    llm = FakeLLM(draft_change=move_and_reformat)
+    result = generate_teaching(llm, make_run(), feedback=failed)
+    assert len(llm.calls) == 1 and not result["check"]["passed"]
+    assert any(row["item_id"] == "observation" for row in result["check"]["rejected_content_reuse"])
+
+
+@pytest.mark.parametrize("text", ["蔚县剪纸的主要技法为阴刻。", "蔚县剪纸以阴刻为主要技法、阳刻为辅助技法。"])
+def test_genuinely_changed_candidate_still_requires_full_scan(text):
+    failed = failed_teaching_candidate()
+    def repair(value):
+        value["short_script"][0]["text"] = text
+        return value
+    llm = FakeLLM(draft_change=repair)
+    result = generate_teaching(llm, make_run(), feedback=failed)
+    assert len(llm.calls) == 2 and result["check"]["passed"]
+    assert llm.requests[1]["items"][0]["text"] == text
+    # 文字有实质变化只允许重新扫描，不直接授予支持状态。
+    def still_unsupported(value):
+        value["items"][0]["status"] = "unsupported"
+        return value
+    rejected = generate_teaching(FakeLLM(draft_change=repair, scan_change=still_unsupported), make_run(), feedback=failed)
+    assert not rejected["check"]["passed"]
+    assert not can_recheck_scan(rejected, make_run())
+
+
+def test_removing_a_rejected_observation_allows_checked_replacement():
+    def unsafe_draft(value):
+        value["observation_task"]["text"] = "请马上使用专业刻刀制作。"
+        return value
+    def denied_scope(value):
+        value["items"][1]["activity_scope_passed"] = False
+        return value
+    failed = generate_teaching(FakeLLM(draft_change=unsafe_draft, scan_change=denied_scope), make_run())
+    assert not failed["check"]["passed"]
+    llm = FakeLLM()
+    result = generate_teaching(llm, make_run(), feedback=failed)
+    assert len(llm.calls) == 2 and result["check"]["passed"]
+    assert "专业刻刀" not in result["observation_task"]["text"]
 
 
 @pytest.mark.parametrize("field", ["observation_task", "interaction_question"])

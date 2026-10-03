@@ -1,0 +1,216 @@
+{
+  "schema_version": 1,
+  "frozen_at": "2026-10-03T05:17:35.226444+00:00",
+  "input_path": "tests/acceptance/semantic-holdout.json",
+  "input_sha256": "748b2f337ba6b812015aa96a176842392e64bca8d74ca9dedb54de105dbe5ab6",
+  "base_commit": "358a2421b8fb523514753c993c5f926f38e77ccd",
+  "count": 24,
+  "outcome_counts": {
+    "deliver": 12,
+    "confirm": 6,
+    "refuse": 6
+  },
+  "case_categories": [
+    {
+      "id": "SH-01",
+      "expected_outcome": "deliver",
+      "coverage": [
+        "paraphrase",
+        "maximize-craft",
+        "family"
+      ]
+    },
+    {
+      "id": "SH-02",
+      "expected_outcome": "deliver",
+      "coverage": [
+        "duration-scope",
+        "chinese-numbers"
+      ]
+    },
+    {
+      "id": "SH-03",
+      "expected_outcome": "deliver",
+      "coverage": [
+        "duration-scope",
+        "tea-inclusion"
+      ]
+    },
+    {
+      "id": "SH-04",
+      "expected_outcome": "deliver",
+      "coverage": [
+        "compound",
+        "regional-correction",
+        "operating-promise"
+      ]
+    },
+    {
+      "id": "SH-05",
+      "expected_outcome": "deliver",
+      "coverage": [
+        "content-role",
+        "user-requirement"
+      ]
+    },
+    {
+      "id": "SH-06",
+      "expected_outcome": "deliver",
+      "coverage": [
+        "compound",
+        "supported-facts"
+      ]
+    },
+    {
+      "id": "SH-07",
+      "expected_outcome": "deliver",
+      "coverage": [
+        "paraphrase",
+        "duration-limited-objective"
+      ]
+    },
+    {
+      "id": "SH-08",
+      "expected_outcome": "deliver",
+      "coverage": [
+        "capacity-boundary",
+        "maximize-craft"
+      ]
+    },
+    {
+      "id": "SH-09",
+      "expected_outcome": "deliver",
+      "coverage": [
+        "duration-scope",
+        "minimum-craft"
+      ]
+    },
+    {
+      "id": "SH-10",
+      "expected_outcome": "deliver",
+      "coverage": [
+        "budget-limited-objective",
+        "explicit-equal-form"
+      ]
+    },
+    {
+      "id": "SH-11",
+      "expected_outcome": "deliver",
+      "coverage": [
+        "legacy-light",
+        "duration-scope"
+      ]
+    },
+    {
+      "id": "SH-12",
+      "expected_outcome": "deliver",
+      "coverage": [
+        "legacy-deep",
+        "duration-scope"
+      ]
+    },
+    {
+      "id": "SH-13",
+      "expected_outcome": "confirm",
+      "coverage": [
+        "people-conflict"
+      ]
+    },
+    {
+      "id": "SH-14",
+      "expected_outcome": "confirm",
+      "coverage": [
+        "budget-conflict"
+      ]
+    },
+    {
+      "id": "SH-15",
+      "expected_outcome": "confirm",
+      "coverage": [
+        "duration-conflict",
+        "duration-scope"
+      ]
+    },
+    {
+      "id": "SH-16",
+      "expected_outcome": "confirm",
+      "coverage": [
+        "tea-conflict"
+      ]
+    },
+    {
+      "id": "SH-17",
+      "expected_outcome": "confirm",
+      "coverage": [
+        "craft-conflict"
+      ]
+    },
+    {
+      "id": "SH-18",
+      "expected_outcome": "confirm",
+      "coverage": [
+        "compound-conflict",
+        "family"
+      ]
+    },
+    {
+      "id": "SH-19",
+      "expected_outcome": "refuse",
+      "coverage": [
+        "capacity",
+        "teacher-capacity"
+      ]
+    },
+    {
+      "id": "SH-20",
+      "expected_outcome": "refuse",
+      "coverage": [
+        "teacher-unavailable"
+      ]
+    },
+    {
+      "id": "SH-21",
+      "expected_outcome": "refuse",
+      "coverage": [
+        "room-unavailable"
+      ]
+    },
+    {
+      "id": "SH-22",
+      "expected_outcome": "refuse",
+      "coverage": [
+        "craft-upper-bound"
+      ]
+    },
+    {
+      "id": "SH-23",
+      "expected_outcome": "refuse",
+      "coverage": [
+        "budget-impossible"
+      ]
+    },
+    {
+      "id": "SH-24",
+      "expected_outcome": "refuse",
+      "coverage": [
+        "required-duration-boundary"
+      ]
+    }
+  ],
+  "data_sha256": {
+    "data/curated/sources.json": "2ce95e8c33ad309e8ad3f4daafb43a5e30f3a59e6483a7182f863728952e85f9",
+    "data/curated/materials.json": "d7c200bd48ac0f0eded3979631b17c61921999ceafc273d2ba6a20608dc4c8d0",
+    "data/operating/demo-profile.json": "f8eb6aea38cc74e46c4762fe5ae812499c454c328e8d0b1592cdb895fc66ce18",
+    "tests/acceptance/upgrade-holdout.json": "1ef11ff553f4388d39b5dac64f0b0fea137b2aade00375a25651d3d187c0ca70"
+  },
+  "implementation_frozen": false,
+  "authoring_note": "输入编写代理读取了旧六例以避免重复并覆盖已知问题类型；没有运行新输入，不向实现代理披露具体输入，待实现稳定后进行一次新验收。",
+  "comparison_predeclaration": {
+    "shared": "同版本解析/检索/求解/核验/教学/导出工具、同本地Qwen3模型参数与资料/经营快照",
+    "agent": "现有有界LangGraph：结构失败最多重试1次、方案失败最多修订2次、总模型调用最多8次",
+    "fixed": "相同共享阶段固定顺序各执行一次，无结构重试及失败回路，保留全部安全门",
+    "order": "逐对交错AB/BA，A=agent，B=fixed；每条每策略首次一次，不为成功重跑",
+    "interpretation": "小范围一次执行策略消融，不用旧版本制造优势；相同结果如实报告，不能证明Agent普遍更强",
+    "reporting": "完整交付、必要确认、正确拒绝分别统计；完整交付样本上的过度确认/拒绝列为失败，不能用拒绝率替代交付率"
+  }
+}

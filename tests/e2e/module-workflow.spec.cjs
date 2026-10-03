@@ -12,12 +12,17 @@ const fs = require('fs');
 const path = require('path');
 const { pathToFileURL } = require('url');
 const root = path.resolve(__dirname, '../..');
-const output = path.join(root, 'artifacts', 'module-browser-check');
+const checkName = process.env.MODULE_CHECK_NAME || '';
+assert(!checkName || /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(checkName), 'MODULE_CHECK_NAME 使用小写英文、数字和连字符');
+const output = path.join(root, 'artifacts', 'module-browser-check', checkName);
 const base = process.env.LIVE_BASE_URL || 'http://127.0.0.1:8780';
 const checks = [], errors = [], externalResourceRequests = [], runs = [];
 fs.mkdirSync(output, { recursive: true });
 const save = (name, value) => fs.writeFileSync(path.join(output, name), JSON.stringify(value, null, 2));
-const waitToast = page => page.waitForFunction(() => !document.querySelector('#toast')?.classList.contains('show'));
+const waitToast = page => page.waitForFunction(() => {
+  const toast = document.querySelector('#toast');
+  return !toast || (!toast.classList.contains('show') && Number(getComputedStyle(toast).opacity) === 0);
+});
 
 (async () => {
   const browser = await chromium.launch({ headless: true, channel: process.env.BROWSER_CHANNEL || 'msedge' });
@@ -156,7 +161,9 @@ const waitToast = page => page.waitForFunction(() => !document.querySelector('#t
       assert(baseline.teaching.check.passed);
       assert(baseline.planning.candidates.length > 2);
       assert(baseline.claims.some(claim => claim.status === 'contradicted' && claim.corrected_status === 'supported'));
-      assert(baseline.claims.some(claim => claim.status === 'insufficient'));
+      assert(baseline.claims.some(claim => claim.kind === 'operating_promise' && claim.status === 'insufficient'));
+      assert((await page.locator('#auditResult').textContent()).includes('文化事实'));
+      assert((await page.locator('#auditResult').textContent()).includes('经营承诺 · 待另核'));
       await capturePages('default');
       await page.locator('[data-page="studio"]').click();
       await page.locator('#presentationMode').click();
@@ -193,13 +200,22 @@ const waitToast = page => page.waitForFunction(() => !document.querySelector('#t
       assert(revised.plan.craft_minutes >= 40 && revised.plan.per_person_cents <= 11000);
       assert(!revised.plan.module_ids.includes('tea'));
       assert.equal(revised.plan.craft_minutes, Math.max(...revised.planning.candidates.filter(plan => plan.feasible).map(plan => plan.craft_minutes)));
+      const ranked = revised.planning.candidates.filter(plan => plan.feasible).sort((a,b) => b.craft_minutes-a.craft_minutes || a.total_cents-b.total_cents || a.duration_minutes-b.duration_minutes || a.id.localeCompare(b.id));
+      assert.equal(revised.plan.id, ranked[0].id, '明确偏好由程序排序，同手作时选择较低总价，再比较总时长');
+      assert.equal(revised.selection_method, 'deterministic_preference_ranking');
       assert.equal(revised.comparison.before.craft_minutes, 50);
       assert(revised.comparison.after.craft_minutes > 50);
       assert(revised.teaching.check.passed && revised.teaching.audience === 'family');
       assert(revised.teaching.short_script.every(item => item.claim_ids.length && item.source_ids.length));
       await capturePages('family-revised');
       await page.locator('[data-page="planner"]').click();
+      assert((await page.locator('#planComparison').textContent()).includes('改一句话，方案真变化'));
+      assert.equal(await page.locator('[data-craft-before]').textContent(), String(revised.comparison.before.craft_minutes));
+      assert.equal(await page.locator('[data-craft-after]').textContent(), String(revised.comparison.after.craft_minutes));
+      assert((await page.locator('#effectiveConditions').textContent()).includes('手作最低时长与全程上限分别校验'));
       await page.locator('#planComparison').screenshot({ path: path.join(output, 'comparison.png') });
+      await page.evaluate(() => window.scrollTo(0, document.querySelector('#planComparison').getBoundingClientRect().top + window.scrollY - 30));
+      await page.screenshot({ path: path.join(output, 'comparison-with-candidates.png'), animations: 'disabled' });
       await page.locator('#teachingPanel').screenshot({ path: path.join(output, 'family-teaching.png') });
       await page.locator('#teachingPanel [data-reveal-claim]').first().click();
       assert(await page.locator('#studio').evaluate(element => element.classList.contains('active')));
@@ -218,6 +234,7 @@ const waitToast = page => page.waitForFunction(() => !document.querySelector('#t
         assert.equal((await page.request.get(`${base}/api/runs/${revised.id}/export?audience=${audience}`)).status(), 409);
         assert.equal((await page.request.get(`${base}/api/runs/${revised.id}/export?preview=true&audience=${audience}`)).status(), 409);
       }
+      await page.waitForFunction(() => !document.querySelector('#auditBtn').disabled);
       await waitToast(page);
       await page.locator('#impactTrail').screenshot({ path: path.join(output, 'withdrawal-impact.png') });
       const refreshed = await execute(() => page.locator('#refreshRun').click(), '04-material-refresh', 'awaiting_review', `/api/runs/${revised.id}/refresh`);
@@ -239,6 +256,13 @@ const waitToast = page => page.waitForFunction(() => !document.querySelector('#t
       assert(!impossible.plan);
       assert.equal(impossible.requirements.people, 16);
       assert(impossible.planning.candidates.every(plan => !plan.feasible));
+      assert(impossible.blocking_conflicts.some(item => item.code === 'capacity_exceeded'));
+      assert(impossible.blocking_conflicts.some(item => item.code === 'teacher_capacity_exceeded'));
+      const refusalText = await page.locator('#planStatus').textContent();
+      assert(refusalText.includes('条件已核算，当前无法接待'));
+      assert(refusalText.includes('人数16超过单组容量8'));
+      assert(refusalText.includes('需至少2位教师') && refusalText.includes('现有1位'));
+      assert(!refusalText.includes('运行未完成') && !refusalText.includes('运行失败'));
       for (const id of ['approveRun', 'previewVisitor', 'previewOrganizer', 'exportVisitor', 'exportOrganizer']) assert(await page.locator('#' + id).isDisabled());
       assert.equal((await page.request.get(`${base}/api/runs/${impossible.id}/export?audience=visitor`)).status(), 409);
       await waitToast(page);
@@ -259,7 +283,7 @@ const waitToast = page => page.waitForFunction(() => !document.querySelector('#t
       const response = await page.request.patch(`${base}/api/materials/mat-paper-garden`, { data: { usage_status: 'available' } });
       result.materialRestoredAfterFailure = response.ok();
     }
-    const report = { at: new Date().toISOString(), base, ...result, runs, checks, scriptErrors: errors, externalResourceRequests };
+    const report = { at: new Date().toISOString(), base, output, ...result, runs, checks, scriptErrors: errors, externalResourceRequests };
     save(process.env.MODULE_EXPORT_PREVIEW_ONLY === '1' ? 'export-preview-verification.json' : process.env.MODULE_REPLAY_ID ? 'history-verification.json' : 'verification.json', report);
     console.log(JSON.stringify(report, null, 2));
     await browser.close();

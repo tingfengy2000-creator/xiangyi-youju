@@ -1,0 +1,96 @@
+{
+  "case_id": "SH-22",
+  "policy": "fixed",
+  "expected_outcome": "refuse",
+  "run_id": "58830a2fab37406bbd58d508baa4eac5",
+  "status": "needs_input",
+  "model_calls": 2,
+  "elapsed_seconds": 1.643,
+  "wall_seconds": 1.697,
+  "snapshot_sha256": "c6d78e631842e7e32af46ef1ede9f38bc9078eace1f9d42a04cf8b04a6be600d",
+  "passed": false,
+  "outcome_reached": false,
+  "failed_checks": [
+    "提取:available_minutes",
+    "求解明确无可行候选",
+    "具体冲突代码覆盖",
+    "具体冲突有可读说明"
+  ],
+  "checks": [
+    {
+      "check": "提取:min_craft_minutes",
+      "passed": true,
+      "detail": {
+        "expected": 90,
+        "actual": 90
+      }
+    },
+    {
+      "check": "提取:available_minutes",
+      "passed": false,
+      "detail": {
+        "expected": 120,
+        "actual": null
+      }
+    },
+    {
+      "check": "人数预算总时长保留明确输入",
+      "passed": true
+    },
+    {
+      "check": "接待资源未虚增",
+      "passed": true
+    },
+    {
+      "check": "真实本地运行标识",
+      "passed": true
+    },
+    {
+      "check": "八次模型与两轮修订上限",
+      "passed": true
+    },
+    {
+      "check": "人工确认前双版禁止正式下载",
+      "passed": true
+    },
+    {
+      "check": "运行初始快照无批准",
+      "passed": true
+    },
+    {
+      "check": "正确拒绝状态",
+      "passed": true,
+      "detail": "needs_input"
+    },
+    {
+      "check": "求解明确无可行候选",
+      "passed": false
+    },
+    {
+      "check": "具体冲突代码覆盖",
+      "passed": false,
+      "detail": []
+    },
+    {
+      "check": "具体冲突有可读说明",
+      "passed": false
+    },
+    {
+      "check": "无解不生成或批准方案",
+      "passed": true
+    },
+    {
+      "check": "不可批准不可行套餐",
+      "passed": true
+    }
+  ],
+  "delivery": {
+    "before_export": {
+      "visitor": 409,
+      "organizer": 409
+    },
+    "preview": {},
+    "exports": {},
+    "rejected_approval_status": 409
+  }
+}

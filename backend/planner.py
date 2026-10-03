@@ -28,6 +28,80 @@ DEFAULT_PLANS = {
 }
 
 
+def plan_craft_minutes(plan: dict, planning: dict | None = None) -> int:
+    """读取已求解手作分钟，兼容旧套餐快照；不增加或修改任何环节。"""
+    if "craft_minutes" in plan:
+        return plan["craft_minutes"]
+    specification = (planning or {}).get("profile_snapshot", {}).get("plans", {}).get(plan["id"])
+    if specification:
+        return specification["stages"][1]
+    return sum(stage["minutes"] for stage in plan.get("schedule", []) if stage["title"] == "剪纸手作")
+
+
+def _feasible_candidates(planning: dict) -> list[dict]:
+    """候选自身与求解结果须同时可行，不以文字解释替代校验结论。"""
+    feasible_ids = set(planning.get("feasible_ids", []))
+    return [plan for plan in planning.get("candidates", [])
+            if plan.get("feasible") is True and not plan.get("conflicts") and plan["id"] in feasible_ids]
+
+
+def select_ranked_plan(planning: dict, requirements: dict) -> dict | None:
+    """按明确、可复算的偏好选择已有候选；模型不参与数值排序。
+
+    返回原 candidates 中的对象，不添加说明字段或更改需求/经营快照。
+    硬约束先由求解器检查。最大手作以分钟降序、总价/总时长/ID升序；
+    普通模块按总价/总时长/ID升序，固定套餐先尊重已确认且可行的套餐偏好。
+    """
+    feasible = _feasible_candidates(planning)
+    if not feasible:
+        return None
+    maximize_craft = requirements.get("constraints", {}).get("maximize_craft", False)
+    if not maximize_craft and requirements.get("planning_mode", "packages") == "packages":
+        preferred = next((plan for plan in feasible if plan["id"] == requirements.get("preferred_plan", "deep")), None)
+        if preferred is not None:
+            return preferred
+
+    def preference(plan):
+        numeric = (plan["total_cents"], plan["duration_minutes"], plan["id"])
+        return (-plan_craft_minutes(plan, planning), *numeric) if maximize_craft else numeric
+
+    return min(feasible, key=preference)
+
+
+def ranking_reason(planning: dict, requirements: dict) -> str:
+    """独立保存排序解释，保证候选快照仍能与求解工具严格复算比较。"""
+    selected = select_ranked_plan(planning, requirements)
+    if selected is None:
+        return "程序检查后没有同时满足已确认条件的方案，不能自动放宽人数、报价、时长或资源。"
+    if requirements.get("constraints", {}).get("maximize_craft", False):
+        basis = "先满足全部硬约束，再按手作时长从多到少、演示总价从低到高、总时长从短到长、方案编号排序"
+    elif requirements.get("planning_mode", "packages") == "packages" and selected["id"] == requirements.get("preferred_plan", "deep"):
+        basis = "已确认偏好的固定套餐通过全部硬约束，保留该套餐"
+    else:
+        basis = "先满足全部硬约束，再按演示总价从低到高、总时长从短到长、方案编号排序"
+    return (f"程序选择：{basis}。选定“{selected['title']}”，手作{plan_craft_minutes(selected, planning)}分钟，"
+            f"总时长{selected['duration_minutes']}分钟，演示总价{selected['total_cents'] / 100:.2f}元。")
+
+
+def summarize_conflicts(planning: dict) -> list[dict]:
+    """无解时提取原求解冲突，保留具体数值；有解时不误报对照方案失败。"""
+    if _feasible_candidates(planning):
+        return []
+    priority = {
+        "operating_unavailable": 0, "capacity_exceeded": 1, "teacher_unavailable": 2,
+        "teacher_count_insufficient": 3, "teacher_capacity_exceeded": 4, "room_unavailable": 5,
+        "region_mismatch": 6, "reuse_required": 7,
+    }
+    seen, conflicts = set(), []
+    for candidate in planning.get("candidates", []):
+        for conflict in candidate.get("conflicts", []):
+            identity = (conflict["code"], conflict["message"])
+            if identity not in seen:
+                seen.add(identity)
+                conflicts.append({"code": identity[0], "message": identity[1]})
+    return sorted(conflicts, key=lambda conflict: priority.get(conflict["code"], 8))
+
+
 def _integer(value, field: str, minimum: int = 0, maximum: int = 1000000) -> int:
     if isinstance(value, bool) or not isinstance(value, int):
         raise ValueError(f"{field}必须是整数")
@@ -202,12 +276,13 @@ def _solve_modules(req, operating, common, people, budget_cents, available, star
                 add("audience_mismatch", "经营配置未将以下模块列为该客群适用项目：" + "、".join(unsuitable) + "。")
             minimum_teachers = max(module["teacher_needed"] for module in selected)
             if minimum_teachers:
+                teachers_needed = max(minimum_teachers, (people + teacher_capacity - 1) // teacher_capacity)
                 if operating["teachers"] == 0:
-                    add("teacher_unavailable", "该组合的手作模块没有可用教师，不能虚构教师或并行接待。")
+                    add("teacher_unavailable", f"{people}人手作需至少{teachers_needed}位教师（每位接待上限{teacher_capacity}人，模块最低{minimum_teachers}位），现有0位；不能虚构教师或并行接待。")
                 elif operating["teachers"] < minimum_teachers:
                     add("teacher_count_insufficient", f"模块至少需要{minimum_teachers}位教师，现有{operating['teachers']}位；需人工落实资源。")
                 if operating["teachers"] and people > teacher_capacity * operating["teachers"]:
-                    add("teacher_capacity_exceeded", f"人数{people}超过现有教师合计接待上限{teacher_capacity * operating['teachers']}；不自动拆组。")
+                    add("teacher_capacity_exceeded", f"{people}人手作需至少{teachers_needed}位教师；现有{operating['teachers']}位、每位上限{teacher_capacity}人，合计可接待{teacher_capacity * operating['teachers']}人；不自动拆组或增加教师。")
             totals = dict.fromkeys(categories, 0)
             ledger, schedule, cursor = [], [], start_minutes
             for module in selected:
@@ -360,15 +435,15 @@ def solve_plans(requirements: dict, profile: dict) -> dict:
         target.append({"code": code, "message": message})
 
     if status not in ("active", "open"):
-        add(common, "operating_unavailable", "经营配置当前不可接待，需负责人更新状态。")
+        add(common, "operating_unavailable", f"经营配置状态为{status}，当前不可接待；需负责人核实并更新状态。")
     if people > capacity:
         add(common, "capacity_exceeded", f"人数{people}超过单组容量{capacity}；不能自动拆组或虚构并行接待。")
     if mode == "packages" and teachers == 0:
-        add(common, "teacher_unavailable", "手作环节没有可用教师，需人工确认真实人员资源。")
+        add(common, "teacher_unavailable", f"{people}人手作需至少{(people + teacher_capacity - 1) // teacher_capacity}位教师（每位接待上限{teacher_capacity}人），现有0位；不能虚构教师或自动拆组。")
     elif mode == "packages" and people > teacher_capacity * teachers:
-        add(common, "teacher_capacity_exceeded", f"人数{people}超过现有{teachers}位教师合计接待上限{teacher_capacity * teachers}。")
+        add(common, "teacher_capacity_exceeded", f"{people}人手作需至少{(people + teacher_capacity - 1) // teacher_capacity}位教师；现有{teachers}位、每位上限{teacher_capacity}人，合计可接待{teacher_capacity * teachers}人；不自动拆组或增加教师。")
     if rooms == 0:
-        add(common, "room_unavailable", "没有可用场地，不能生成可执行日程。")
+        add(common, "room_unavailable", "同场地顺序活动至少需要1间场地，现有0间；不能生成可执行日程。")
     if not operating["reuse"]:
         add(common, "reuse_required", "未满足演示活动的工具复用要求；这是经营配置要求，不是法律规定。")
 

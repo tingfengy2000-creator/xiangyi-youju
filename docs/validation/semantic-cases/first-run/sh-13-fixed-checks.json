@@ -1,0 +1,69 @@
+{
+  "case_id": "SH-13",
+  "policy": "fixed",
+  "expected_outcome": "confirm",
+  "run_id": "1dd0162c2e8345bbac4765b59b35a7e2",
+  "status": "needs_confirmation",
+  "model_calls": 2,
+  "elapsed_seconds": 2.244,
+  "wall_seconds": 4.041,
+  "snapshot_sha256": "cfc1b18f705e8d31d822d88015ab8980be750a338a4f45b1ca764d65e0ac6c51",
+  "passed": true,
+  "outcome_reached": true,
+  "failed_checks": [],
+  "checks": [
+    {
+      "check": "真实本地运行标识",
+      "passed": true
+    },
+    {
+      "check": "八次模型与两轮修订上限",
+      "passed": true
+    },
+    {
+      "check": "人工确认前双版禁止正式下载",
+      "passed": true
+    },
+    {
+      "check": "运行初始快照无批准",
+      "passed": true
+    },
+    {
+      "check": "必要确认状态",
+      "passed": true,
+      "detail": "needs_confirmation"
+    },
+    {
+      "check": "明确列出预期冲突字段",
+      "passed": true,
+      "detail": [
+        "people"
+      ]
+    },
+    {
+      "check": "冲突字段保留两方值:people",
+      "passed": true
+    },
+    {
+      "check": "等待确认时不覆盖表单:people",
+      "passed": true
+    },
+    {
+      "check": "冲突确认前不生成或批准执行方案",
+      "passed": true
+    },
+    {
+      "check": "确认前不能批准套餐绕过冲突",
+      "passed": true
+    }
+  ],
+  "delivery": {
+    "before_export": {
+      "visitor": 409,
+      "organizer": 409
+    },
+    "preview": {},
+    "exports": {},
+    "rejected_approval_status": 409
+  }
+}

@@ -1,0 +1,191 @@
+{
+  "case_id": "SH-04",
+  "policy": "fixed",
+  "expected_outcome": "deliver",
+  "run_id": "36f5e7c9a52f4e15b7e23c0461450d89",
+  "status": "needs_input",
+  "model_calls": 2,
+  "elapsed_seconds": 2.412,
+  "wall_seconds": 2.447,
+  "snapshot_sha256": "ddabe877615ab178358bf16403de11eda4786e3d487727b524aaeab611c34f50",
+  "passed": false,
+  "outcome_reached": false,
+  "failed_checks": [
+    "核验状态:阳刻为主",
+    "核验状态:多色点染彩绘",
+    "修订文字再次核验通过",
+    "完整交付样本不能以确认或拒绝代替成功",
+    "程序方案可行",
+    "所选方案全字段复算一致",
+    "程序验证通过",
+    "逐项教学扫描与内容绑定通过",
+    "双版草稿预览不偷偷确认",
+    "显式确认接口成功",
+    "确认后双版导出完整",
+    "最终确认方案与已校验方案一致",
+    "可用讲解卡逐项有可定位来源",
+    "visitor保留演示测算标识",
+    "visitor同步同一教学:None",
+    "visitor同步同一教学:None",
+    "organizer保留演示测算标识",
+    "organizer同步同一教学:None",
+    "organizer同步同一教学:None"
+  ],
+  "checks": [
+    {
+      "check": "陈述单独定位:阳刻为主",
+      "passed": true
+    },
+    {
+      "check": "陈述类别:阳刻为主",
+      "passed": true,
+      "detail": "cultural_fact"
+    },
+    {
+      "check": "核验状态:阳刻为主",
+      "passed": false,
+      "detail": "insufficient"
+    },
+    {
+      "check": "陈述单独定位:多色点染彩绘",
+      "passed": true
+    },
+    {
+      "check": "陈述类别:多色点染彩绘",
+      "passed": true,
+      "detail": "cultural_fact"
+    },
+    {
+      "check": "核验状态:多色点染彩绘",
+      "passed": false,
+      "detail": "insufficient"
+    },
+    {
+      "check": "陈述单独定位:免费接送",
+      "passed": true
+    },
+    {
+      "check": "陈述类别:免费接送",
+      "passed": true,
+      "detail": "operating_promise"
+    },
+    {
+      "check": "核验状态:免费接送",
+      "passed": true,
+      "detail": "insufficient"
+    },
+    {
+      "check": "复合陈述保持不同编号",
+      "passed": true
+    },
+    {
+      "check": "修订文字再次核验通过",
+      "passed": false
+    },
+    {
+      "check": "真实本地运行标识",
+      "passed": true
+    },
+    {
+      "check": "八次模型与两轮修订上限",
+      "passed": true
+    },
+    {
+      "check": "人工确认前双版禁止正式下载",
+      "passed": true
+    },
+    {
+      "check": "运行初始快照无批准",
+      "passed": true
+    },
+    {
+      "check": "完整交付样本不能以确认或拒绝代替成功",
+      "passed": false,
+      "detail": "needs_input"
+    },
+    {
+      "check": "程序方案可行",
+      "passed": false
+    },
+    {
+      "check": "所选方案全字段复算一致",
+      "passed": false
+    },
+    {
+      "check": "程序验证通过",
+      "passed": false
+    },
+    {
+      "check": "逐项教学扫描与内容绑定通过",
+      "passed": false,
+      "detail": [
+        "缺少教学候选或事实扫描结果"
+      ]
+    },
+    {
+      "check": "双版草稿预览不偷偷确认",
+      "passed": false
+    },
+    {
+      "check": "显式确认接口成功",
+      "passed": false
+    },
+    {
+      "check": "确认后双版导出完整",
+      "passed": false
+    },
+    {
+      "check": "最终确认方案与已校验方案一致",
+      "passed": false
+    },
+    {
+      "check": "可用讲解卡逐项有可定位来源",
+      "passed": false
+    },
+    {
+      "check": "经营承诺与用户要求不作文化讲解",
+      "passed": true
+    },
+    {
+      "check": "visitor保留演示测算标识",
+      "passed": false
+    },
+    {
+      "check": "visitor同步同一教学:None",
+      "passed": false
+    },
+    {
+      "check": "visitor同步同一教学:None",
+      "passed": false
+    },
+    {
+      "check": "organizer保留演示测算标识",
+      "passed": false
+    },
+    {
+      "check": "organizer同步同一教学:None",
+      "passed": false
+    },
+    {
+      "check": "organizer同步同一教学:None",
+      "passed": false
+    },
+    {
+      "check": "游客版不携带未支持内容:免费接送",
+      "passed": true
+    },
+    {
+      "check": "游客版不携带未支持内容:保证每位游客",
+      "passed": true
+    }
+  ],
+  "delivery": {
+    "before_export": {
+      "visitor": 409,
+      "organizer": 409
+    },
+    "preview": {},
+    "exports": {},
+    "rejected_approval_status": 409
+  }
+}

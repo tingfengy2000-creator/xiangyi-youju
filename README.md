@@ -8,7 +8,7 @@
 
 项目面向中国研究生智慧城市技术与创意设计大赛，以争取进入全国决赛为目标。前端视觉品质是最高设计要求，技术和案例围绕可展示、可核对的业务闭环展开。
 
-> **当前阶段：从两套餐升级为八模块活动编排。** 原三页已增加投屏纠错对照、来源定位、偏好冲突确认、方案前后比较和双版体验包预览。本地模型生成短讲解、观察任务与互动提问，再检查文化事实和活动边界。所有经营数据仍为演示测算；实际成功、失败和小规模内部验收见 [本轮实测](docs/validation/module-upgrade-2026-09-30.md)，不作为通用准确率或独立评测结论。
+> **当前阶段：修复自然语言条件与交付可靠性。** 保留原三页和八模块组合，文化事实、经营承诺和用户需求分别处理；手作最低时长与全程上限分开，明确偏好由程序排序，资源不足给出具体缺口。旧六例已转回归并保留首次失败；本轮新输入验收、固定流程对照和可修改输入的演示见 [本轮实测](docs/validation/semantic-reliability-2026-10-03.md)。三个官方模板已有 [申报草案](docs/submission/README.md)，待补项不会写成真实成果。
 
 ![乡艺有据首页](docs/assets/screenshots/home-hero.png)
 
@@ -19,10 +19,10 @@
 | 解决什么问题、为何这样设计 | [产品方案](docs/design/product-plan.md) |
 | 做到哪一步、接下来做什么 | [项目进度](docs/progress/project-status.md) |
 | 打开真实界面与运行环境 | [本地运行说明](docs/development/local-runtime.md)；本机启动后访问8780端口 |
-| 核对真实案例、速度与失败记录 | [本机实测报告](docs/validation/local-runtime-2026-09-30.md) |
+| 核对真实案例、速度与失败记录 | [本轮分组实测与固定流程对照](docs/validation/semantic-reliability-2026-10-03.md) |
 | LLM 和 Agent 如何发挥价值 | [技术架构与验证方案](docs/design/technical-architecture.md) |
 | 如何安排开发和参赛展示 | [实施与参赛清单](docs/design/delivery-plan.md) |
-| 后续按什么格式提交材料 | [用户附件核对与提交约束](docs/development/competition-submission.md) |
+| 后续按什么格式提交材料 | [申报正文与原模板草案](docs/submission/README.md) · [附件约束](docs/development/competition-submission.md) |
 | 每次交付增加了什么 | [更新记录](CHANGELOG.md) |
 | 如何参与开发、管理文件 | [开发说明](CONTRIBUTING.md) · [目录与命名规范](docs/development/repository-conventions.md) |
 
@@ -38,15 +38,21 @@ GitHub 网页显示源码；真实业务在本机启动后访问。直接打开 
 
 文字可表达“不安排茶歇”“多留手作时间”“手作至少60分钟”、客群及人数/预算/时长；与表单不同会停止并请使用者选择。其它模块可比较程序提供的候选；文字硬性指定其它模块增删、跨场地或新增服务时需澄清，不宣称能理解任意旅游需求。
 
+明确偏好先满足硬约束，再按手作分钟、总价、总时长稳定排序；同一输入不会让模型反复挑错候选。
+
 LLM（大语言模型）负责理解、查证和表达；Agent（能按任务调用工具的程序）安排查证与修订步骤；确定性程序负责金额、容量和时间计算；人负责文化判断、授权及对外使用确认。
 
-本轮真实运行截图：[投屏纠错与证据](docs/assets/screenshots/upgrade-studio.png) · [偏好与预算重排](docs/assets/screenshots/upgrade-planner.png) · [亲子教学](docs/assets/screenshots/upgrade-teaching.png) · [精美双版预览](docs/assets/screenshots/upgrade-preview.png)。这些图片来自已保存的实际本地任务，不是效果合成图。
+本轮真实运行截图：[投屏纠错与证据](docs/assets/screenshots/semantic-studio.png) · [一句话改变方案](docs/assets/screenshots/semantic-comparison.png) · [具体资源冲突](docs/assets/screenshots/semantic-resource-refusal.png) · [双版预览](docs/assets/screenshots/semantic-preview.png)。这些图片来自已保存的实际本地任务，不是效果合成图。
 
-体验包样张：[游客版](docs/validation/experience-packs/module-visitor.html) · [组织者版](docs/validation/experience-packs/module-organizer.html)（下载后用浏览器打开；素材撤回后实际模型生成并重新确认的演示快照，不是活动订单）。
+![改一句话，手作50分钟变80分钟](docs/assets/screenshots/semantic-comparison.png)
+
+实际输入修改后，手作由50变80分钟，全程由90变100分钟，总价由720变796元；全部为演示测算，不是实际订单。5个真实UI任务覆盖三个演示及确认/拒绝分支，完整记录见[浏览器证据](docs/validation/semantic-browser-2026-10-03.json)。
+
+体验包样张：[游客版](docs/validation/experience-packs/semantic-visitor.html) · [组织者版](docs/validation/experience-packs/semantic-organizer.html)（下载后用浏览器打开；素材撤回后实际模型生成并重新确认的演示快照，不是活动订单）。
 
 ## 当前状态
 
-更新日期：**2026-09-30**。详细状态以 [项目进度](docs/progress/project-status.md) 为准。
+更新日期：**2026-10-03**。详细状态以 [项目进度](docs/progress/project-status.md) 为准。
 
 | 内容 | 状态 | 说明 |
 | --- | --- | --- |
@@ -55,11 +61,12 @@ LLM（大语言模型）负责理解、查证和表达；Agent（能按任务调
 | 八模块候选、账本、资源校验与双版预览/导出 | 已实现 | 整数分复算；程序锁定必要时长、报价、教师、场地；人工确认与版本失效保护 |
 | 目录、依赖、中文说明与交付规则 | 已完成整理 | 本仓库作为后续统一交付位置 |
 | 本地模型、地域检索、Agent与教学表达 | 已实际运行 | 12个短片段、4个官方页面；支持/矛盾/分歧/不足分开记录；失败保留 |
-| 独立测试集、强基线、真实合作 | 待开展 | 不使用虚构成绩或合作信息 |
+| 旧六例回归、新24例与固定流程对照 | 本轮小规模内部验证 | 分类统计完整交付、必要确认、正确拒绝；不是第三方评测或通用准确率 |
+| 独立人工评审、真实合作及收益 | 待开展 | 不使用虚构成绩或合作信息 |
 
 ## 启动真实业务
 
-本机已准备好隔离环境、官方模型与运行器。新增教学与偏好提取会增加调用及耗时，当前速度以 [本轮实测](docs/validation/module-upgrade-2026-09-30.md) 为准。旧版2—3秒短任务不代表新版完整任务速度。
+本机已准备好隔离环境、官方模型与运行器。新增教学与偏好提取会增加调用及耗时，当前速度以 [本轮实测](docs/validation/semantic-reliability-2026-10-03.md) 为准。旧版2—3秒短任务不代表新版完整任务速度。
 
 在本仓库已准备好的隔离环境中运行：
 
@@ -110,6 +117,7 @@ docs/diagrams/               架构图源文件和展示图片
 docs/assets/screenshots/     已审核的展示截图
 docs/progress/               当前进度和阶段交付记录
 docs/validation/             留存的验证证据及适用范围
+docs/submission/             官方原模板草案、申报正文与待补项
 docs/development/            开发与命名规范
 scripts/                    预览、仓库检查、图示维护工具
 tests/e2e/                  浏览器交互检查

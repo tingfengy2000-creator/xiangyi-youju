@@ -1,0 +1,134 @@
+{
+  "status": "draft-awaiting-external-evidence-and-canonical-render",
+  "date": "2026-10-03",
+  "source_hashes": {
+    "0": "56e3a668957664bf11a0790055b8003fa1dcf7e04a110ae8902558c8cfed0766",
+    "1": "c1f280161f0037b477528b65372672c003806457f4923be773ef456cd1010697",
+    "2": "bf0347f12f93bba3280e2c0ca384727fd7ad2360c64201fb6d1c1cb648f655cf",
+    "3": "777f66a29204f6a9470da43f0b23d1e3c76f08a4891c08718c81c27dfd91e01b"
+  },
+  "outputs": [
+    {
+      "file": "project-summary-draft.docx",
+      "sha256": "d35ab6844a16d5d58c63342a4a937ec774578d6de5a383b0587530a6a3175fc7",
+      "template_sha256": "c1f280161f0037b477528b65372672c003806457f4923be773ef456cd1010697",
+      "changed_package_parts": [
+        "docProps/app.xml",
+        "docProps/core.xml",
+        "word/document.xml"
+      ],
+      "preserved_package_parts": 24
+    },
+    {
+      "file": "project-description-draft.docx",
+      "sha256": "e4cf008b3a756cb7ad97d5e0c47c5d283fe55bf14609191cdc4d71d8e28c9cff",
+      "template_sha256": "bf0347f12f93bba3280e2c0ca384727fd7ad2360c64201fb6d1c1cb648f655cf",
+      "changed_package_parts": [
+        "docProps/app.xml",
+        "docProps/core.xml",
+        "word/document.xml"
+      ],
+      "preserved_package_parts": 23
+    },
+    {
+      "file": "business-plan-draft.docx",
+      "sha256": "8299fd0dc45437251028c399f65c487b54315c893b32453eaa1489d33678924f",
+      "template_sha256": "777f66a29204f6a9470da43f0b23d1e3c76f08a4891c08718c81c27dfd91e01b",
+      "changed_package_parts": [
+        "docProps/app.xml",
+        "docProps/core.xml",
+        "word/document.xml"
+      ],
+      "preserved_package_parts": 23
+    }
+  ],
+  "character_counts": [
+    {
+      "document": "form",
+      "section": "项目背景",
+      "characters": 178,
+      "limit": 300
+    },
+    {
+      "document": "form",
+      "section": "立项思路",
+      "characters": 183,
+      "limit": 300
+    },
+    {
+      "document": "form",
+      "section": "解决方案",
+      "characters": 377,
+      "limit": 600
+    },
+    {
+      "document": "form",
+      "section": "商业模式和预期效益",
+      "characters": 177,
+      "limit": 300
+    },
+    {
+      "document": "description",
+      "section": "立项依据",
+      "characters": 845,
+      "limit": 2000
+    },
+    {
+      "document": "description",
+      "section": "项目创新内容",
+      "characters": 1407,
+      "limit": 3000
+    },
+    {
+      "document": "description",
+      "section": "实施方案",
+      "characters": 1173,
+      "limit": 3000
+    },
+    {
+      "document": "description",
+      "section": "应用前景分析",
+      "characters": 256,
+      "limit": 500
+    },
+    {
+      "document": "business",
+      "section": "项目方案概述",
+      "characters": 131,
+      "limit": 200
+    },
+    {
+      "document": "business",
+      "section": "项目团队",
+      "characters": 120,
+      "limit": 200
+    },
+    {
+      "document": "business",
+      "section": "项目产品（服务）化",
+      "characters": 550,
+      "limit": 2000
+    },
+    {
+      "document": "business",
+      "section": "项目产品（服务）市场与竞争",
+      "characters": 859,
+      "limit": 2000
+    },
+    {
+      "document": "business",
+      "section": "商业模式",
+      "characters": 580,
+      "limit": 2000
+    },
+    {
+      "document": "business",
+      "section": "预期经济效益分析",
+      "characters": 285,
+      "limit": 500
+    }
+  ],
+  "count_method": "non-whitespace Unicode characters, including punctuation and individual Latin letters",
+  "metrics_source": "validated-metrics.json",
+  "originals_unchanged": true
+}

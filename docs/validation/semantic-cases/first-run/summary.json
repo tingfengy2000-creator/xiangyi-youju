@@ -1,0 +1,320 @@
+{
+  "type": "small_internal_acceptance_not_independent",
+  "case_count": 24,
+  "input_sha256": "748b2f337ba6b812015aa96a176842392e64bca8d74ca9dedb54de105dbe5ab6",
+  "first_run_started_at": "2026-10-03T05:26:28.678663+00:00",
+  "policies": {
+    "agent": {
+      "categories": {
+        "deliver": {
+          "count": 12,
+          "passed": 12,
+          "outcome_reached": 12,
+          "failed": [],
+          "statuses": {
+            "awaiting_review": 12
+          }
+        },
+        "confirm": {
+          "count": 6,
+          "passed": 6,
+          "outcome_reached": 6,
+          "failed": [],
+          "statuses": {
+            "needs_confirmation": 6
+          }
+        },
+        "refuse": {
+          "count": 6,
+          "passed": 5,
+          "outcome_reached": 5,
+          "failed": [
+            "SH-22"
+          ],
+          "statuses": {
+            "needs_input": 6
+          }
+        }
+      },
+      "total_calls": 98,
+      "elapsed_seconds_total": 115.295,
+      "elapsed_seconds_median": 4.5225,
+      "over_confirmation_on_deliver": 0,
+      "over_refusal_on_deliver": 0,
+      "model_or_execution_failures": 0,
+      "unexpected_ready_on_confirm_or_refuse": 0,
+      "outcome_reached_but_full_checks_failed": []
+    },
+    "fixed": {
+      "categories": {
+        "deliver": {
+          "count": 12,
+          "passed": 10,
+          "outcome_reached": 10,
+          "failed": [
+            "SH-04",
+            "SH-05"
+          ],
+          "statuses": {
+            "awaiting_review": 10,
+            "needs_input": 2
+          }
+        },
+        "confirm": {
+          "count": 6,
+          "passed": 5,
+          "outcome_reached": 5,
+          "failed": [
+            "SH-17"
+          ],
+          "statuses": {
+            "needs_confirmation": 5,
+            "needs_input": 1
+          }
+        },
+        "refuse": {
+          "count": 6,
+          "passed": 3,
+          "outcome_reached": 3,
+          "failed": [
+            "SH-22",
+            "SH-23",
+            "SH-24"
+          ],
+          "statuses": {
+            "needs_input": 6
+          }
+        }
+      },
+      "total_calls": 78,
+      "elapsed_seconds_total": 89.495,
+      "elapsed_seconds_median": 2.209,
+      "over_confirmation_on_deliver": 0,
+      "over_refusal_on_deliver": 2,
+      "model_or_execution_failures": 0,
+      "unexpected_ready_on_confirm_or_refuse": 0,
+      "outcome_reached_but_full_checks_failed": []
+    }
+  },
+  "paired": [
+    {
+      "case_id": "SH-01",
+      "expected_outcome": "deliver",
+      "agent_passed": true,
+      "fixed_passed": true,
+      "same_input_snapshot": true,
+      "call_difference": 0,
+      "elapsed_difference_seconds": 0.444
+    },
+    {
+      "case_id": "SH-02",
+      "expected_outcome": "deliver",
+      "agent_passed": true,
+      "fixed_passed": true,
+      "same_input_snapshot": true,
+      "call_difference": 0,
+      "elapsed_difference_seconds": -0.113
+    },
+    {
+      "case_id": "SH-03",
+      "expected_outcome": "deliver",
+      "agent_passed": true,
+      "fixed_passed": true,
+      "same_input_snapshot": true,
+      "call_difference": 0,
+      "elapsed_difference_seconds": 0.278
+    },
+    {
+      "case_id": "SH-04",
+      "expected_outcome": "deliver",
+      "agent_passed": true,
+      "fixed_passed": false,
+      "same_input_snapshot": true,
+      "call_difference": 5,
+      "elapsed_difference_seconds": 9.544
+    },
+    {
+      "case_id": "SH-05",
+      "expected_outcome": "deliver",
+      "agent_passed": true,
+      "fixed_passed": false,
+      "same_input_snapshot": true,
+      "call_difference": 4,
+      "elapsed_difference_seconds": 5.973
+    },
+    {
+      "case_id": "SH-06",
+      "expected_outcome": "deliver",
+      "agent_passed": true,
+      "fixed_passed": true,
+      "same_input_snapshot": true,
+      "call_difference": 0,
+      "elapsed_difference_seconds": -0.063
+    },
+    {
+      "case_id": "SH-07",
+      "expected_outcome": "deliver",
+      "agent_passed": true,
+      "fixed_passed": true,
+      "same_input_snapshot": true,
+      "call_difference": 0,
+      "elapsed_difference_seconds": 0.009
+    },
+    {
+      "case_id": "SH-08",
+      "expected_outcome": "deliver",
+      "agent_passed": true,
+      "fixed_passed": true,
+      "same_input_snapshot": true,
+      "call_difference": 0,
+      "elapsed_difference_seconds": -0.175
+    },
+    {
+      "case_id": "SH-09",
+      "expected_outcome": "deliver",
+      "agent_passed": true,
+      "fixed_passed": true,
+      "same_input_snapshot": true,
+      "call_difference": 0,
+      "elapsed_difference_seconds": -0.06
+    },
+    {
+      "case_id": "SH-10",
+      "expected_outcome": "deliver",
+      "agent_passed": true,
+      "fixed_passed": true,
+      "same_input_snapshot": true,
+      "call_difference": 0,
+      "elapsed_difference_seconds": -0.055
+    },
+    {
+      "case_id": "SH-11",
+      "expected_outcome": "deliver",
+      "agent_passed": true,
+      "fixed_passed": true,
+      "same_input_snapshot": true,
+      "call_difference": 0,
+      "elapsed_difference_seconds": -0.041
+    },
+    {
+      "case_id": "SH-12",
+      "expected_outcome": "deliver",
+      "agent_passed": true,
+      "fixed_passed": true,
+      "same_input_snapshot": true,
+      "call_difference": 0,
+      "elapsed_difference_seconds": 2.998
+    },
+    {
+      "case_id": "SH-13",
+      "expected_outcome": "confirm",
+      "agent_passed": true,
+      "fixed_passed": true,
+      "same_input_snapshot": true,
+      "call_difference": 0,
+      "elapsed_difference_seconds": 0.09
+    },
+    {
+      "case_id": "SH-14",
+      "expected_outcome": "confirm",
+      "agent_passed": true,
+      "fixed_passed": true,
+      "same_input_snapshot": true,
+      "call_difference": 0,
+      "elapsed_difference_seconds": -0.713
+    },
+    {
+      "case_id": "SH-15",
+      "expected_outcome": "confirm",
+      "agent_passed": true,
+      "fixed_passed": true,
+      "same_input_snapshot": true,
+      "call_difference": 0,
+      "elapsed_difference_seconds": -0.032
+    },
+    {
+      "case_id": "SH-16",
+      "expected_outcome": "confirm",
+      "agent_passed": true,
+      "fixed_passed": true,
+      "same_input_snapshot": true,
+      "call_difference": 0,
+      "elapsed_difference_seconds": 0.024
+    },
+    {
+      "case_id": "SH-17",
+      "expected_outcome": "confirm",
+      "agent_passed": true,
+      "fixed_passed": false,
+      "same_input_snapshot": true,
+      "call_difference": 1,
+      "elapsed_difference_seconds": 1.005
+    },
+    {
+      "case_id": "SH-18",
+      "expected_outcome": "confirm",
+      "agent_passed": true,
+      "fixed_passed": true,
+      "same_input_snapshot": true,
+      "call_difference": 0,
+      "elapsed_difference_seconds": -0.035
+    },
+    {
+      "case_id": "SH-19",
+      "expected_outcome": "refuse",
+      "agent_passed": true,
+      "fixed_passed": true,
+      "same_input_snapshot": true,
+      "call_difference": 2,
+      "elapsed_difference_seconds": 1.521
+    },
+    {
+      "case_id": "SH-20",
+      "expected_outcome": "refuse",
+      "agent_passed": true,
+      "fixed_passed": true,
+      "same_input_snapshot": true,
+      "call_difference": 2,
+      "elapsed_difference_seconds": 1.241
+    },
+    {
+      "case_id": "SH-21",
+      "expected_outcome": "refuse",
+      "agent_passed": true,
+      "fixed_passed": true,
+      "same_input_snapshot": true,
+      "call_difference": 2,
+      "elapsed_difference_seconds": 1.249
+    },
+    {
+      "case_id": "SH-22",
+      "expected_outcome": "refuse",
+      "agent_passed": false,
+      "fixed_passed": false,
+      "same_input_snapshot": true,
+      "call_difference": 0,
+      "elapsed_difference_seconds": -0.01
+    },
+    {
+      "case_id": "SH-23",
+      "expected_outcome": "refuse",
+      "agent_passed": true,
+      "fixed_passed": false,
+      "same_input_snapshot": true,
+      "call_difference": 2,
+      "elapsed_difference_seconds": 1.367
+    },
+    {
+      "case_id": "SH-24",
+      "expected_outcome": "refuse",
+      "agent_passed": true,
+      "fixed_passed": false,
+      "same_input_snapshot": true,
+      "call_difference": 2,
+      "elapsed_difference_seconds": 1.354
+    }
+  ],
+  "completed_at": "2026-10-03T05:30:12.173079+00:00",
+  "complete": true,
+  "interpretation": "三类分别计分；48次真实首跑中的模型扫描不是独立人工复核，时延受本机缓存/负载影响；相同通过结果不构成Agent更强证据。"
+}

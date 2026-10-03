@@ -1,0 +1,90 @@
+{
+  "case_id": "SH-19",
+  "policy": "agent",
+  "expected_outcome": "refuse",
+  "run_id": "39ac706be66c438ea91e12cc838504d6",
+  "status": "needs_input",
+  "model_calls": 4,
+  "elapsed_seconds": 3.282,
+  "wall_seconds": 3.344,
+  "snapshot_sha256": "7ccd24b69b7a904ce8eeef50b2dd84bca07e3a40b57b4cc3edcec6dd3334b537",
+  "passed": true,
+  "outcome_reached": true,
+  "failed_checks": [],
+  "checks": [
+    {
+      "check": "人数预算总时长保留明确输入",
+      "passed": true
+    },
+    {
+      "check": "接待资源未虚增",
+      "passed": true
+    },
+    {
+      "check": "真实本地运行标识",
+      "passed": true
+    },
+    {
+      "check": "八次模型与两轮修订上限",
+      "passed": true
+    },
+    {
+      "check": "人工确认前双版禁止正式下载",
+      "passed": true
+    },
+    {
+      "check": "运行初始快照无批准",
+      "passed": true
+    },
+    {
+      "check": "正确拒绝状态",
+      "passed": true,
+      "detail": "needs_input"
+    },
+    {
+      "check": "求解明确无可行候选",
+      "passed": true
+    },
+    {
+      "check": "具体冲突代码覆盖",
+      "passed": true,
+      "detail": [
+        "capacity_exceeded",
+        "teacher_capacity_exceeded"
+      ]
+    },
+    {
+      "check": "具体冲突有可读说明",
+      "passed": true
+    },
+    {
+      "check": "资源冲突显示数量:14",
+      "passed": true
+    },
+    {
+      "check": "资源冲突显示数量:8",
+      "passed": true
+    },
+    {
+      "check": "资源冲突显示数量:12",
+      "passed": true
+    },
+    {
+      "check": "无解不生成或批准方案",
+      "passed": true
+    },
+    {
+      "check": "不可批准不可行套餐",
+      "passed": true
+    }
+  ],
+  "delivery": {
+    "before_export": {
+      "visitor": 409,
+      "organizer": 409
+    },
+    "preview": {},
+    "exports": {},
+    "rejected_approval_status": 409
+  }
+}

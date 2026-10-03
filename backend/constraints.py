@@ -51,7 +51,9 @@ def split_input(text, compound=False):
     sentences = [s.strip() for s in re.findall(r"[^。！？!?\n]+[。！？!?]?", text) if s.strip()]
     rows = []
     for number, sentence in enumerate(sentences, 1):
-        parts = re.split(r"(?<=[；;])|(?<=[，,])(?=且|而且|并且|同时|另外|此外)", sentence) if compound else [sentence]
+        # Keep the paired carving comparison together, but separate other independent
+        # comma clauses. Original punctuation and parent sentence remain traceable.
+        parts = re.split(r"(?<=[；;])|(?<=[，,])(?![阴阳]刻为[主辅])", sentence) if compound else [sentence]
         for part in parts:
             if part.strip():
                 rows.append({"id": f"s{len(rows)+1}", "text": part.strip(), "original_sentence": sentence,

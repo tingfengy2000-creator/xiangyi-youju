@@ -70,6 +70,9 @@ def harness(monkeypatch):
                 if "tea" in excluded and "tea" in required:
                     value["tea_preference"] = "not_mentioned"
                     value["ambiguities"].append("文字同时要求保留茶歇和取消茶歇，请澄清")
+            elif name == "NoteIssueReview":
+                value = {"items": [{"index": int(index), "text": text, "category": "needs_clarification",
+                                    "reason": "假模型保留真实冲突，不能绕过文字自相矛盾"} for index, text in data["flagged"].items()]}
             elif name == "Audit":
                 value = {"judgments": [{"claim_id": claim["id"], "status": "supported" if claim["evidence"] else "insufficient",
                                         "evidence_ids": [claim["evidence"][0]["id"]] if claim["evidence"] else [],
@@ -84,7 +87,7 @@ def harness(monkeypatch):
                 value = {"short_script": [unit],
                          "observation_task": {**unit, "text": "请观察负责人提供且允许使用的剪纸示例。"},
                          "interaction_question": {**unit, "text": "哪一处细节引起了你的兴趣？"}}
-            elif name == "TeachingScan":
+            elif name in {"TeachingScan", "ConstrainedTeachingScan"}:
                 value = {"items": [{"item_id": unit["item_id"], "checked_text": unit["text"],
                                     "activity_scope_passed": True,
                                     "status": "supported" if unit["item_id"].startswith("script-") else "no_new_fact",
@@ -192,7 +195,9 @@ def test_previous_run_comparison_uses_saved_snapshot_not_rewritten_old_plan(harn
     assert approved.status_code == 200, approved.text
     old_snapshot = client.get(f"/api/runs/{before['id']}").json()
     controls["intent"] = neutral_intent(exclude_tags=["tea"], min_craft_minutes=70, maximize_craft=True)
-    after = submit(client, payload(previous_run_id=before["id"]))
+    changed = payload(previous_run_id=before["id"])
+    changed["requirements"]["note"] = "不要茶歇，手作至少70分钟，多留手作时间。"
+    after = submit(client, changed)
     assert after["status"] == "awaiting_review", after["error"]
     assert after["comparison"]["before"]["id"] == old_snapshot["plan"]["id"]
     assert after["comparison"]["after"]["id"] == after["plan"]["id"]
@@ -249,7 +254,7 @@ def test_internal_note_contradiction_never_becomes_form_override(harness):
     run = submit(client, payload(constraint_resolution="form"))
     assert run["status"] == "needs_input"
     assert run["planning"] is None
-    assert run["model_calls"] == 2
+    assert run["model_calls"] == 3
     assert client.get(f"/api/runs/{run['id']}/export", params={"preview": True}).status_code == 409
 
 

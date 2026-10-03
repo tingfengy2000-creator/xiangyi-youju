@@ -1,0 +1,16 @@
+{
+  "created_at": "2026-10-03T05:44:22.783917+00:00",
+  "type": "program_contract_tests_not_model_evaluation",
+  "command": ".venv/Scripts/python.exe -m pytest tests/backend -q",
+  "exit_code": 0,
+  "passed": 210,
+  "elapsed_seconds": 4.55,
+  "raw_summary": "210 passed in 4.55s",
+  "new_guard_checks": 11,
+  "real_model_calls": 0,
+  "tested_files_sha256": {
+    "backend/teaching.py": "b0d334f04cda0c8e2819f0d58063f0982681b106f962a251abe225e26bf9d3e6",
+    "tests/backend/test_teaching.py": "a7be7c3f28196799ef9a2a07b2614ca142064b1bd2941b9376aaf7ccf81696fd"
+  },
+  "scope": "最小教学再生成保护补丁；未重跑24条新输入，不修改SH-22或其他流程。"
+}

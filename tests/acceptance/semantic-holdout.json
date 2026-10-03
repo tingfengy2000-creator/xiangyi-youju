@@ -1,0 +1,1148 @@
+{
+  "schema_version": 1,
+  "created_at": "2026-10-03T05:17:35.226444+00:00",
+  "purpose": "本轮语义与闭环修复后的24条新输入验收，输入作者只读现有功能/资料/旧六例，未运行或用于调试本轮实现。",
+  "interpretation_limit": "同一协作团队编写的小规模内部验收，不是独立第三方评测，不证明泛化准确率或真实收益。",
+  "first_run_policy": "输入冻结后不可更改；实现冻结后成对首跑，失败原样保留；任何后续复测用新目录，不覆盖首次结果。",
+  "outcome_counts": {
+    "deliver": 12,
+    "confirm": 6,
+    "refuse": 6
+  },
+  "common_checks": {
+    "deliver": [
+      "最终状态awaiting_review",
+      "教学校验通过",
+      "来源可定位且引用为当前可用版本",
+      "方案全字段复算一致",
+      "人工确认前正式下载拒绝",
+      "仅确认程序可行方案",
+      "人工确认后游客版与组织者版均可下载并与确认方案一致",
+      "游客正文不含无依据的经营保证或未核验文化断言",
+      "所有经营数据保持演示标识"
+    ],
+    "confirm": [
+      "状态needs_confirmation",
+      "明确列出预声明冲突字段",
+      "表单值未被模型改写",
+      "没有可执行方案",
+      "确认前无法下载"
+    ],
+    "refuse": [
+      "状态needs_input",
+      "求解结果无可行候选",
+      "存在预声明具体冲突代码与说明",
+      "无计划与批准",
+      "无法下载",
+      "保留人数与资源边界"
+    ]
+  },
+  "cases": [
+    {
+      "id": "SH-01",
+      "expected_outcome": "deliver",
+      "coverage": [
+        "paraphrase",
+        "maximize-craft",
+        "family"
+      ],
+      "input": {
+        "text": "蔚县剪纸以阴刻为主、阳刻为辅。",
+        "requirements": {
+          "region": "河北省蔚县",
+          "project": "剪纸",
+          "people": 8,
+          "budget_per_person": 110,
+          "available_minutes": 105,
+          "start_time": "09:30",
+          "preferred_plan": "deep",
+          "planning_mode": "modules",
+          "audience": "family",
+          "tea_preference": "any",
+          "min_craft_minutes": 0,
+          "teaching_enabled": true,
+          "note": "家长带孩子来，茶水环节不必安排，把省下来的时间优先交给剪纸练习。"
+        },
+        "operating_overrides": {
+          "capacity": 12,
+          "teachers": 1,
+          "rooms": 1,
+          "reuse": true
+        },
+        "constraint_resolution": "ask"
+      },
+      "expected": {
+        "intent": {
+          "audience": "family",
+          "maximize_craft": true,
+          "exclude_tags_contains": [
+            "tea"
+          ]
+        },
+        "selected": {
+          "craft_minutes": 80,
+          "excluded_modules": [
+            "tea"
+          ]
+        },
+        "keep_form_numbers": true
+      }
+    },
+    {
+      "id": "SH-02",
+      "expected_outcome": "deliver",
+      "coverage": [
+        "duration-scope",
+        "chinese-numbers"
+      ],
+      "input": {
+        "text": "蔚县剪纸善于多色点染彩绘。",
+        "requirements": {
+          "region": "河北省蔚县",
+          "project": "剪纸",
+          "people": 10,
+          "budget_per_person": 100,
+          "available_minutes": 105,
+          "start_time": "09:30",
+          "preferred_plan": "deep",
+          "planning_mode": "modules",
+          "audience": "general",
+          "tea_preference": "any",
+          "min_craft_minutes": 0,
+          "teaching_enabled": true,
+          "note": "制作课给足六十分钟，整场体验只占一百零五分钟，不喝茶。"
+        },
+        "operating_overrides": {
+          "capacity": 12,
+          "teachers": 1,
+          "rooms": 1,
+          "reuse": true
+        },
+        "constraint_resolution": "ask"
+      },
+      "expected": {
+        "intent": {
+          "min_craft_minutes": 60,
+          "available_minutes": 105,
+          "exclude_tags_contains": [
+            "tea"
+          ]
+        },
+        "selected": {
+          "min_craft_minutes": 60,
+          "max_minutes": 105,
+          "excluded_modules": [
+            "tea"
+          ]
+        },
+        "keep_form_numbers": true
+      }
+    },
+    {
+      "id": "SH-03",
+      "expected_outcome": "deliver",
+      "coverage": [
+        "duration-scope",
+        "tea-inclusion"
+      ],
+      "input": {
+        "text": "蔚县剪纸以阴刻为主、阳刻为辅。",
+        "requirements": {
+          "region": "河北省蔚县",
+          "project": "剪纸",
+          "people": 6,
+          "budget_per_person": 130,
+          "available_minutes": 90,
+          "start_time": "09:30",
+          "preferred_plan": "deep",
+          "planning_mode": "modules",
+          "audience": "general",
+          "tea_preference": "any",
+          "min_craft_minutes": 0,
+          "teaching_enabled": true,
+          "note": "全程90分钟，其中剪纸制作至少50分钟，还要保留茶歇。"
+        },
+        "operating_overrides": {
+          "capacity": 12,
+          "teachers": 1,
+          "rooms": 1,
+          "reuse": true
+        },
+        "constraint_resolution": "ask"
+      },
+      "expected": {
+        "intent": {
+          "min_craft_minutes": 50,
+          "available_minutes": 90,
+          "require_tags_contains": [
+            "tea"
+          ]
+        },
+        "selected": {
+          "craft_minutes": 50,
+          "max_minutes": 90,
+          "included_modules": [
+            "tea"
+          ]
+        },
+        "keep_form_numbers": true
+      }
+    },
+    {
+      "id": "SH-04",
+      "expected_outcome": "deliver",
+      "coverage": [
+        "compound",
+        "regional-correction",
+        "operating-promise"
+      ],
+      "input": {
+        "text": "蔚县剪纸阳刻为主、阴刻为辅，善用多色点染彩绘，工坊保证每位游客都有专车免费接送。",
+        "requirements": {
+          "region": "河北省蔚县",
+          "project": "剪纸",
+          "people": 8,
+          "budget_per_person": 160,
+          "available_minutes": 150,
+          "start_time": "09:30",
+          "preferred_plan": "deep",
+          "planning_mode": "modules",
+          "audience": "general",
+          "tea_preference": "any",
+          "min_craft_minutes": 0,
+          "teaching_enabled": true,
+          "note": "给初访游客准备讲解。没有经营凭据的服务保证只列为待确认，不放进游客包。"
+        },
+        "operating_overrides": {
+          "capacity": 12,
+          "teachers": 1,
+          "rooms": 1,
+          "reuse": true
+        },
+        "constraint_resolution": "ask"
+      },
+      "expected": {
+        "fragments": [
+          {
+            "contains": "阳刻为主",
+            "status": "contradicted",
+            "kind": "cultural_fact"
+          },
+          {
+            "contains": "多色点染彩绘",
+            "status": "supported",
+            "kind": "cultural_fact"
+          },
+          {
+            "contains": "免费接送",
+            "status": "insufficient",
+            "kind": "operating_promise"
+          }
+        ],
+        "corrections_reverified": true,
+        "visitor_must_not_assert": [
+          "免费接送",
+          "保证每位游客"
+        ]
+      }
+    },
+    {
+      "id": "SH-05",
+      "expected_outcome": "deliver",
+      "coverage": [
+        "content-role",
+        "user-requirement"
+      ],
+      "input": {
+        "text": "蔚县剪纸早期图案多为花卉；请把讲解写得简短一些。",
+        "requirements": {
+          "region": "河北省蔚县",
+          "project": "剪纸",
+          "people": 8,
+          "budget_per_person": 160,
+          "available_minutes": 150,
+          "start_time": "09:30",
+          "preferred_plan": "deep",
+          "planning_mode": "modules",
+          "audience": "general",
+          "tea_preference": "any",
+          "min_craft_minutes": 0,
+          "teaching_enabled": true,
+          "note": "采用适合初次到访者的表达。"
+        },
+        "operating_overrides": {
+          "capacity": 12,
+          "teachers": 1,
+          "rooms": 1,
+          "reuse": true
+        },
+        "constraint_resolution": "ask"
+      },
+      "expected": {
+        "fragments": [
+          {
+            "contains": "早期图案多为花卉",
+            "status": "supported",
+            "kind": "cultural_fact"
+          },
+          {
+            "contains": "请把讲解写得简短一些",
+            "kind": "user_requirement"
+          }
+        ],
+        "visitor_must_not_assert": [
+          "请把讲解写得简短一些"
+        ]
+      }
+    },
+    {
+      "id": "SH-06",
+      "expected_outcome": "deliver",
+      "coverage": [
+        "compound",
+        "supported-facts"
+      ],
+      "input": {
+        "text": "蔚县剪纸有窗花这一别称，早期图案多为花卉。",
+        "requirements": {
+          "region": "河北省蔚县",
+          "project": "剪纸",
+          "people": 8,
+          "budget_per_person": 160,
+          "available_minutes": 150,
+          "start_time": "09:30",
+          "preferred_plan": "deep",
+          "planning_mode": "modules",
+          "audience": "general",
+          "tea_preference": "any",
+          "min_craft_minutes": 0,
+          "teaching_enabled": true,
+          "note": "介绍名称和图案，观察任务只使用已核验的内容。"
+        },
+        "operating_overrides": {
+          "capacity": 12,
+          "teachers": 1,
+          "rooms": 1,
+          "reuse": true
+        },
+        "constraint_resolution": "ask"
+      },
+      "expected": {
+        "fragments": [
+          {
+            "contains": "窗花",
+            "status": "supported",
+            "kind": "cultural_fact"
+          },
+          {
+            "contains": "早期图案多为花卉",
+            "status": "supported",
+            "kind": "cultural_fact"
+          }
+        ]
+      }
+    },
+    {
+      "id": "SH-07",
+      "expected_outcome": "deliver",
+      "coverage": [
+        "paraphrase",
+        "duration-limited-objective"
+      ],
+      "input": {
+        "text": "蔚县剪纸的染色讲究层次和光影。",
+        "requirements": {
+          "region": "河北省蔚县",
+          "project": "剪纸",
+          "people": 6,
+          "budget_per_person": 130,
+          "available_minutes": 90,
+          "start_time": "09:30",
+          "preferred_plan": "deep",
+          "planning_mode": "modules",
+          "audience": "family",
+          "tea_preference": "any",
+          "min_craft_minutes": 0,
+          "teaching_enabled": true,
+          "note": "这组是亲子游客，取消喝茶休息，把动手练习拉到可安排的最长时间。"
+        },
+        "operating_overrides": {
+          "capacity": 12,
+          "teachers": 1,
+          "rooms": 1,
+          "reuse": true
+        },
+        "constraint_resolution": "ask"
+      },
+      "expected": {
+        "intent": {
+          "audience": "family",
+          "maximize_craft": true,
+          "exclude_tags_contains": [
+            "tea"
+          ]
+        },
+        "selected": {
+          "craft_minutes": 70,
+          "max_minutes": 90,
+          "excluded_modules": [
+            "tea"
+          ]
+        },
+        "keep_form_numbers": true
+      }
+    },
+    {
+      "id": "SH-08",
+      "expected_outcome": "deliver",
+      "coverage": [
+        "capacity-boundary",
+        "maximize-craft"
+      ],
+      "input": {
+        "text": "蔚县剪纸以阴刻为主、阳刻为辅。",
+        "requirements": {
+          "region": "河北省蔚县",
+          "project": "剪纸",
+          "people": 12,
+          "budget_per_person": 95,
+          "available_minutes": 100,
+          "start_time": "09:30",
+          "preferred_plan": "deep",
+          "planning_mode": "modules",
+          "audience": "general",
+          "tea_preference": "any",
+          "min_craft_minutes": 0,
+          "teaching_enabled": true,
+          "note": "十二位成人一起体验，不用茶歇；剪纸制作的时间能多留就多留。"
+        },
+        "operating_overrides": {
+          "capacity": 12,
+          "teachers": 1,
+          "rooms": 1,
+          "reuse": true
+        },
+        "constraint_resolution": "ask"
+      },
+      "expected": {
+        "intent": {
+          "people": 12,
+          "maximize_craft": true,
+          "exclude_tags_contains": [
+            "tea"
+          ]
+        },
+        "selected": {
+          "craft_minutes": 80,
+          "max_minutes": 100,
+          "excluded_modules": [
+            "tea"
+          ]
+        },
+        "keep_form_numbers": true
+      }
+    },
+    {
+      "id": "SH-09",
+      "expected_outcome": "deliver",
+      "coverage": [
+        "duration-scope",
+        "minimum-craft"
+      ],
+      "input": {
+        "text": "蔚县剪纸以阴刻为主、阳刻为辅。",
+        "requirements": {
+          "region": "河北省蔚县",
+          "project": "剪纸",
+          "people": 8,
+          "budget_per_person": 100,
+          "available_minutes": 90,
+          "start_time": "09:30",
+          "preferred_plan": "deep",
+          "planning_mode": "modules",
+          "audience": "general",
+          "tea_preference": "any",
+          "min_craft_minutes": 0,
+          "teaching_enabled": true,
+          "note": "九十分钟内结束全程，手工制作不少于七十分钟，茶歇去掉。"
+        },
+        "operating_overrides": {
+          "capacity": 12,
+          "teachers": 1,
+          "rooms": 1,
+          "reuse": true
+        },
+        "constraint_resolution": "ask"
+      },
+      "expected": {
+        "intent": {
+          "available_minutes": 90,
+          "min_craft_minutes": 70,
+          "exclude_tags_contains": [
+            "tea"
+          ]
+        },
+        "selected": {
+          "craft_minutes": 70,
+          "max_minutes": 90,
+          "excluded_modules": [
+            "tea"
+          ]
+        },
+        "keep_form_numbers": true
+      }
+    },
+    {
+      "id": "SH-10",
+      "expected_outcome": "deliver",
+      "coverage": [
+        "budget-limited-objective",
+        "explicit-equal-form"
+      ],
+      "input": {
+        "text": "蔚县剪纸以阴刻为主、阳刻为辅。",
+        "requirements": {
+          "region": "河北省蔚县",
+          "project": "剪纸",
+          "people": 8,
+          "budget_per_person": 90,
+          "available_minutes": 110,
+          "start_time": "09:30",
+          "preferred_plan": "deep",
+          "planning_mode": "modules",
+          "audience": "general",
+          "tea_preference": "any",
+          "min_craft_minutes": 0,
+          "teaching_enabled": true,
+          "note": "每位最多90元，不用茶点。预算内优先给制作环节更多分钟。"
+        },
+        "operating_overrides": {
+          "capacity": 12,
+          "teachers": 1,
+          "rooms": 1,
+          "reuse": true
+        },
+        "constraint_resolution": "ask"
+      },
+      "expected": {
+        "intent": {
+          "budget_per_person": 90,
+          "maximize_craft": true,
+          "exclude_tags_contains": [
+            "tea"
+          ]
+        },
+        "selected": {
+          "craft_minutes": 70,
+          "max_total_cents": 72000,
+          "excluded_modules": [
+            "tea"
+          ]
+        },
+        "keep_form_numbers": true
+      }
+    },
+    {
+      "id": "SH-11",
+      "expected_outcome": "deliver",
+      "coverage": [
+        "legacy-light",
+        "duration-scope"
+      ],
+      "input": {
+        "text": "蔚县剪纸以阴刻为主、阳刻为辅。",
+        "requirements": {
+          "region": "河北省蔚县",
+          "project": "剪纸",
+          "people": 8,
+          "budget_per_person": 110,
+          "available_minutes": 90,
+          "start_time": "09:30",
+          "preferred_plan": "deep",
+          "planning_mode": "packages",
+          "audience": "general",
+          "tea_preference": "any",
+          "min_craft_minutes": 0,
+          "teaching_enabled": true,
+          "note": "整场最多90分钟，手作部分不少于50分钟，茶歇照套餐保留。"
+        },
+        "operating_overrides": {
+          "capacity": 12,
+          "teachers": 1,
+          "rooms": 1,
+          "reuse": true
+        },
+        "constraint_resolution": "ask"
+      },
+      "expected": {
+        "intent": {
+          "available_minutes": 90,
+          "min_craft_minutes": 50,
+          "require_tags_contains": [
+            "tea"
+          ]
+        },
+        "selected": {
+          "id": "light",
+          "total_cents": 78400,
+          "duration_minutes": 90,
+          "craft_minutes": 50
+        },
+        "keep_form_numbers": true
+      }
+    },
+    {
+      "id": "SH-12",
+      "expected_outcome": "deliver",
+      "coverage": [
+        "legacy-deep",
+        "duration-scope"
+      ],
+      "input": {
+        "text": "蔚县剪纸以阴刻为主、阳刻为辅。",
+        "requirements": {
+          "region": "河北省蔚县",
+          "project": "剪纸",
+          "people": 8,
+          "budget_per_person": 160,
+          "available_minutes": 120,
+          "start_time": "09:30",
+          "preferred_plan": "deep",
+          "planning_mode": "packages",
+          "audience": "general",
+          "tea_preference": "any",
+          "min_craft_minutes": 0,
+          "teaching_enabled": true,
+          "note": "手作部分需要60分钟，整场留120分钟；茶歇也保留。"
+        },
+        "operating_overrides": {
+          "capacity": 12,
+          "teachers": 1,
+          "rooms": 1,
+          "reuse": true
+        },
+        "constraint_resolution": "ask"
+      },
+      "expected": {
+        "intent": {
+          "available_minutes": 120,
+          "min_craft_minutes": 60,
+          "require_tags_contains": [
+            "tea"
+          ]
+        },
+        "selected": {
+          "id": "deep",
+          "total_cents": 108000,
+          "duration_minutes": 120,
+          "craft_minutes": 60
+        },
+        "keep_form_numbers": true
+      }
+    },
+    {
+      "id": "SH-13",
+      "expected_outcome": "confirm",
+      "coverage": [
+        "people-conflict"
+      ],
+      "input": {
+        "text": "蔚县剪纸以阴刻为主、阳刻为辅。",
+        "requirements": {
+          "region": "河北省蔚县",
+          "project": "剪纸",
+          "people": 6,
+          "budget_per_person": 160,
+          "available_minutes": 150,
+          "start_time": "09:30",
+          "preferred_plan": "deep",
+          "planning_mode": "modules",
+          "audience": "general",
+          "tea_preference": "any",
+          "min_craft_minutes": 0,
+          "teaching_enabled": true,
+          "note": "报名最终是七名游客，请按七个人排活动。"
+        },
+        "operating_overrides": {
+          "capacity": 12,
+          "teachers": 1,
+          "rooms": 1,
+          "reuse": true
+        },
+        "constraint_resolution": "ask"
+      },
+      "expected": {
+        "conflict_fields": [
+          "people"
+        ],
+        "note_values": {
+          "people": 7
+        }
+      }
+    },
+    {
+      "id": "SH-14",
+      "expected_outcome": "confirm",
+      "coverage": [
+        "budget-conflict"
+      ],
+      "input": {
+        "text": "蔚县剪纸以阴刻为主、阳刻为辅。",
+        "requirements": {
+          "region": "河北省蔚县",
+          "project": "剪纸",
+          "people": 8,
+          "budget_per_person": 120,
+          "available_minutes": 150,
+          "start_time": "09:30",
+          "preferred_plan": "deep",
+          "planning_mode": "modules",
+          "audience": "general",
+          "tea_preference": "any",
+          "min_craft_minutes": 0,
+          "teaching_enabled": true,
+          "note": "经费重新定了，每位只可花八十五元。"
+        },
+        "operating_overrides": {
+          "capacity": 12,
+          "teachers": 1,
+          "rooms": 1,
+          "reuse": true
+        },
+        "constraint_resolution": "ask"
+      },
+      "expected": {
+        "conflict_fields": [
+          "budget_per_person"
+        ],
+        "note_values": {
+          "budget_per_person": 85
+        }
+      }
+    },
+    {
+      "id": "SH-15",
+      "expected_outcome": "confirm",
+      "coverage": [
+        "duration-conflict",
+        "duration-scope"
+      ],
+      "input": {
+        "text": "蔚县剪纸以阴刻为主、阳刻为辅。",
+        "requirements": {
+          "region": "河北省蔚县",
+          "project": "剪纸",
+          "people": 8,
+          "budget_per_person": 160,
+          "available_minutes": 120,
+          "start_time": "09:30",
+          "preferred_plan": "deep",
+          "planning_mode": "modules",
+          "audience": "general",
+          "tea_preference": "any",
+          "min_craft_minutes": 0,
+          "teaching_enabled": true,
+          "note": "整场一百分钟就得离开，制作环节至少六十分钟。"
+        },
+        "operating_overrides": {
+          "capacity": 12,
+          "teachers": 1,
+          "rooms": 1,
+          "reuse": true
+        },
+        "constraint_resolution": "ask"
+      },
+      "expected": {
+        "conflict_fields": [
+          "available_minutes"
+        ],
+        "note_values": {
+          "available_minutes": 100
+        },
+        "intent": {
+          "available_minutes": 100,
+          "min_craft_minutes": 60
+        }
+      }
+    },
+    {
+      "id": "SH-16",
+      "expected_outcome": "confirm",
+      "coverage": [
+        "tea-conflict"
+      ],
+      "input": {
+        "text": "蔚县剪纸以阴刻为主、阳刻为辅。",
+        "requirements": {
+          "region": "河北省蔚县",
+          "project": "剪纸",
+          "people": 8,
+          "budget_per_person": 160,
+          "available_minutes": 150,
+          "start_time": "09:30",
+          "preferred_plan": "deep",
+          "planning_mode": "modules",
+          "audience": "general",
+          "tea_preference": "include",
+          "min_craft_minutes": 0,
+          "teaching_enabled": true,
+          "note": "现场不需要茶水休息，茶歇这一项取消。"
+        },
+        "operating_overrides": {
+          "capacity": 12,
+          "teachers": 1,
+          "rooms": 1,
+          "reuse": true
+        },
+        "constraint_resolution": "ask"
+      },
+      "expected": {
+        "conflict_fields": [
+          "tea_preference"
+        ],
+        "note_values": {
+          "tea_preference": "exclude"
+        }
+      }
+    },
+    {
+      "id": "SH-17",
+      "expected_outcome": "confirm",
+      "coverage": [
+        "craft-conflict"
+      ],
+      "input": {
+        "text": "蔚县剪纸以阴刻为主、阳刻为辅。",
+        "requirements": {
+          "region": "河北省蔚县",
+          "project": "剪纸",
+          "people": 8,
+          "budget_per_person": 160,
+          "available_minutes": 150,
+          "start_time": "09:30",
+          "preferred_plan": "deep",
+          "planning_mode": "modules",
+          "audience": "general",
+          "tea_preference": "any",
+          "min_craft_minutes": 50,
+          "teaching_enabled": true,
+          "note": "制作练习的最低时长改成七十分钟。"
+        },
+        "operating_overrides": {
+          "capacity": 12,
+          "teachers": 1,
+          "rooms": 1,
+          "reuse": true
+        },
+        "constraint_resolution": "ask"
+      },
+      "expected": {
+        "conflict_fields": [
+          "min_craft_minutes"
+        ],
+        "note_values": {
+          "min_craft_minutes": 70
+        }
+      }
+    },
+    {
+      "id": "SH-18",
+      "expected_outcome": "confirm",
+      "coverage": [
+        "compound-conflict",
+        "family"
+      ],
+      "input": {
+        "text": "蔚县剪纸以阴刻为主、阳刻为辅。",
+        "requirements": {
+          "region": "河北省蔚县",
+          "project": "剪纸",
+          "people": 8,
+          "budget_per_person": 160,
+          "available_minutes": 150,
+          "start_time": "09:30",
+          "preferred_plan": "deep",
+          "planning_mode": "modules",
+          "audience": "general",
+          "tea_preference": "any",
+          "min_craft_minutes": 0,
+          "teaching_enabled": true,
+          "note": "十人亲子团，每人上限120元，整个活动控制在100分钟。"
+        },
+        "operating_overrides": {
+          "capacity": 12,
+          "teachers": 1,
+          "rooms": 1,
+          "reuse": true
+        },
+        "constraint_resolution": "ask"
+      },
+      "expected": {
+        "conflict_fields": [
+          "people",
+          "budget_per_person",
+          "available_minutes",
+          "audience"
+        ],
+        "note_values": {
+          "people": 10,
+          "budget_per_person": 120,
+          "available_minutes": 100,
+          "audience": "family"
+        }
+      }
+    },
+    {
+      "id": "SH-19",
+      "expected_outcome": "refuse",
+      "coverage": [
+        "capacity",
+        "teacher-capacity"
+      ],
+      "input": {
+        "text": "蔚县剪纸以阴刻为主、阳刻为辅。",
+        "requirements": {
+          "region": "河北省蔚县",
+          "project": "剪纸",
+          "people": 14,
+          "budget_per_person": 160,
+          "available_minutes": 180,
+          "start_time": "09:30",
+          "preferred_plan": "deep",
+          "planning_mode": "modules",
+          "audience": "general",
+          "tea_preference": "any",
+          "min_craft_minutes": 0,
+          "teaching_enabled": true,
+          "note": "十四人要一起动手，只有当前这一位教师和这一间教室，不能拆成先后两场。"
+        },
+        "operating_overrides": {
+          "capacity": 8,
+          "teachers": 1,
+          "rooms": 1,
+          "reuse": true
+        },
+        "constraint_resolution": "ask"
+      },
+      "expected": {
+        "conflict_codes": [
+          "capacity_exceeded",
+          "teacher_capacity_exceeded"
+        ],
+        "conflict_message_numbers": [
+          "14",
+          "8",
+          "12"
+        ],
+        "keep_form_numbers": true,
+        "keep_resources": true
+      }
+    },
+    {
+      "id": "SH-20",
+      "expected_outcome": "refuse",
+      "coverage": [
+        "teacher-unavailable"
+      ],
+      "input": {
+        "text": "蔚县剪纸以阴刻为主、阳刻为辅。",
+        "requirements": {
+          "region": "河北省蔚县",
+          "project": "剪纸",
+          "people": 6,
+          "budget_per_person": 160,
+          "available_minutes": 150,
+          "start_time": "09:30",
+          "preferred_plan": "deep",
+          "planning_mode": "modules",
+          "audience": "general",
+          "tea_preference": "any",
+          "min_craft_minutes": 0,
+          "teaching_enabled": true,
+          "note": "六名游客来学剪纸，这一场暂时没有老师到岗，请按现有资源判断能不能接待。"
+        },
+        "operating_overrides": {
+          "capacity": 12,
+          "teachers": 0,
+          "rooms": 1,
+          "reuse": true
+        },
+        "constraint_resolution": "ask"
+      },
+      "expected": {
+        "conflict_codes": [
+          "teacher_unavailable"
+        ],
+        "keep_form_numbers": true,
+        "keep_resources": true
+      }
+    },
+    {
+      "id": "SH-21",
+      "expected_outcome": "refuse",
+      "coverage": [
+        "room-unavailable"
+      ],
+      "input": {
+        "text": "蔚县剪纸以阴刻为主、阳刻为辅。",
+        "requirements": {
+          "region": "河北省蔚县",
+          "project": "剪纸",
+          "people": 8,
+          "budget_per_person": 160,
+          "available_minutes": 150,
+          "start_time": "09:30",
+          "preferred_plan": "deep",
+          "planning_mode": "modules",
+          "audience": "general",
+          "tea_preference": "any",
+          "min_craft_minutes": 0,
+          "teaching_enabled": true,
+          "note": "活动室都无法使用，没有其它场地可借，请检查当前条件。"
+        },
+        "operating_overrides": {
+          "capacity": 12,
+          "teachers": 1,
+          "rooms": 0,
+          "reuse": true
+        },
+        "constraint_resolution": "ask"
+      },
+      "expected": {
+        "conflict_codes": [
+          "room_unavailable"
+        ],
+        "keep_form_numbers": true,
+        "keep_resources": true
+      }
+    },
+    {
+      "id": "SH-22",
+      "expected_outcome": "refuse",
+      "coverage": [
+        "craft-upper-bound"
+      ],
+      "input": {
+        "text": "蔚县剪纸以阴刻为主、阳刻为辅。",
+        "requirements": {
+          "region": "河北省蔚县",
+          "project": "剪纸",
+          "people": 8,
+          "budget_per_person": 160,
+          "available_minutes": 120,
+          "start_time": "09:30",
+          "preferred_plan": "deep",
+          "planning_mode": "modules",
+          "audience": "general",
+          "tea_preference": "any",
+          "min_craft_minutes": 0,
+          "teaching_enabled": true,
+          "note": "手作练习至少九十分钟，总时间两小时，不要用延长文字介绍来凑制作时长。"
+        },
+        "operating_overrides": {
+          "capacity": 12,
+          "teachers": 1,
+          "rooms": 1,
+          "reuse": true
+        },
+        "constraint_resolution": "ask"
+      },
+      "expected": {
+        "intent": {
+          "min_craft_minutes": 90,
+          "available_minutes": 120
+        },
+        "conflict_codes": [
+          "craft_minutes_insufficient"
+        ],
+        "keep_form_numbers": true,
+        "keep_resources": true
+      }
+    },
+    {
+      "id": "SH-23",
+      "expected_outcome": "refuse",
+      "coverage": [
+        "budget-impossible"
+      ],
+      "input": {
+        "text": "蔚县剪纸以阴刻为主、阳刻为辅。",
+        "requirements": {
+          "region": "河北省蔚县",
+          "project": "剪纸",
+          "people": 8,
+          "budget_per_person": 10,
+          "available_minutes": 150,
+          "start_time": "09:30",
+          "preferred_plan": "deep",
+          "planning_mode": "modules",
+          "audience": "general",
+          "tea_preference": "any",
+          "min_craft_minutes": 0,
+          "teaching_enabled": true,
+          "note": "八个人每人只能出十元，请按这笔预算检查，不要临时捏造免费课程。"
+        },
+        "operating_overrides": {
+          "capacity": 12,
+          "teachers": 1,
+          "rooms": 1,
+          "reuse": true
+        },
+        "constraint_resolution": "ask"
+      },
+      "expected": {
+        "intent": {
+          "people": 8,
+          "budget_per_person": 10
+        },
+        "conflict_codes": [
+          "budget_exceeded"
+        ],
+        "keep_form_numbers": true,
+        "keep_resources": true
+      }
+    },
+    {
+      "id": "SH-24",
+      "expected_outcome": "refuse",
+      "coverage": [
+        "required-duration-boundary"
+      ],
+      "input": {
+        "text": "蔚县剪纸以阴刻为主、阳刻为辅。",
+        "requirements": {
+          "region": "河北省蔚县",
+          "project": "剪纸",
+          "people": 8,
+          "budget_per_person": 160,
+          "available_minutes": 65,
+          "start_time": "09:30",
+          "preferred_plan": "deep",
+          "planning_mode": "modules",
+          "audience": "general",
+          "tea_preference": "any",
+          "min_craft_minutes": 0,
+          "teaching_enabled": true,
+          "note": "全程只给65分钟，讲解和手作都保留，不能把必要的上课时间缩短。"
+        },
+        "operating_overrides": {
+          "capacity": 12,
+          "teachers": 1,
+          "rooms": 1,
+          "reuse": true
+        },
+        "constraint_resolution": "ask"
+      },
+      "expected": {
+        "intent": {
+          "available_minutes": 65
+        },
+        "conflict_codes": [
+          "time_exceeded"
+        ],
+        "keep_form_numbers": true,
+        "keep_resources": true
+      }
+    }
+  ]
+}

@@ -1,0 +1,157 @@
+{
+  "status": "draft_supplementary_wps_preview_checked_canonical_render_pending",
+  "date": "2026-10-03",
+  "method": "WPS COM read-only PDF export; bundled Poppler PNG rendering; every page visually inspected",
+  "canonical_renderer": "render_docx.py failed: LibreOffice soffice.exe not found on PATH",
+  "canonical_log": "artifacts/submission-preview/canonical-render-failure.log",
+  "original_templates_unchanged": true,
+  "original_template_reference_pages_reviewed": {
+    "summary": 4,
+    "description": 2,
+    "business": 1
+  },
+  "outputs": [
+    {
+      "file": "project-summary-draft.docx",
+      "sha256": "d35ab6844a16d5d58c63342a4a937ec774578d6de5a383b0587530a6a3175fc7",
+      "wps_preview_pages": 3,
+      "reviewed_pages": [
+        1,
+        2,
+        3
+      ],
+      "visible_clipping_or_overlap_or_missing_glyphs": false,
+      "pdf_source": {
+        "path": "artifacts/submission-preview/project-summary-draft.pdf",
+        "sha256": "c4c2f58f7a41610a7af55bba63d43222e8ce14d3553f21d937b331d23447d502",
+        "method": "WPS read-only export from the DOCX whose exact SHA-256 is recorded above"
+      },
+      "reviewed_pngs": [
+        {
+          "page": 1,
+          "path": "artifacts/submission-preview/project-summary-draft-final-1.png",
+          "sha256": "5ced9c81bda0fb62d7a698f29581db33b86bee2a429535f21ec9181f9a2d227f"
+        },
+        {
+          "page": 2,
+          "path": "artifacts/submission-preview/project-summary-draft-final-2.png",
+          "sha256": "592f090255a408c97a871cbe98eb30dd111f78d29ae3f2bb5cba1a4f55a0d076"
+        },
+        {
+          "page": 3,
+          "path": "artifacts/submission-preview/project-summary-draft-final-3.png",
+          "sha256": "f19ac44908f56e112642ea625b0af80c04bf55bee357864c0fc80944bdcf7c8c"
+        }
+      ]
+    },
+    {
+      "file": "project-description-draft.docx",
+      "sha256": "e4cf008b3a756cb7ad97d5e0c47c5d283fe55bf14609191cdc4d71d8e28c9cff",
+      "wps_preview_pages": 6,
+      "reviewed_pages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "visible_clipping_or_overlap_or_missing_glyphs": false,
+      "pdf_source": {
+        "path": "artifacts/submission-preview/project-description-draft.pdf",
+        "sha256": "b710ca0a2d1d8fa55d6391c2a48ae810380971c4a48bb0d26dbdc947ce96ae42",
+        "method": "WPS read-only export from the DOCX whose exact SHA-256 is recorded above"
+      },
+      "reviewed_pngs": [
+        {
+          "page": 1,
+          "path": "artifacts/submission-preview/project-description-draft-final-1.png",
+          "sha256": "5e37f30f7720063a67fead6a5a01a22bf46fbb41a57212565152df26bdf76972"
+        },
+        {
+          "page": 2,
+          "path": "artifacts/submission-preview/project-description-draft-final-2.png",
+          "sha256": "4b0af822403b0cdacc91a9e2aabee52dee6c948c2df61ef6c7b46fa82d1a1631"
+        },
+        {
+          "page": 3,
+          "path": "artifacts/submission-preview/project-description-draft-final-3.png",
+          "sha256": "845d1f36c95fc5ff0f662622f3a5b9025f5f1e41627ecc29e8e908f22b87fc89"
+        },
+        {
+          "page": 4,
+          "path": "artifacts/submission-preview/project-description-draft-final-4.png",
+          "sha256": "1c23ec1f8b19f8a1a5477b394efe2f527a5fac8cbd9ae065fbc096ab8a702987"
+        },
+        {
+          "page": 5,
+          "path": "artifacts/submission-preview/project-description-draft-final-5.png",
+          "sha256": "b03d9aed2e0ba868b52c81b41e6432ee0dd59ccac60d424bde5cf542cf33db2e"
+        },
+        {
+          "page": 6,
+          "path": "artifacts/submission-preview/project-description-draft-final-6.png",
+          "sha256": "5cbe5d2cb6a2c936117f9205b4ecfbe0a6cb08db1acb8f00f8ca4114dcaa3e83"
+        }
+      ]
+    },
+    {
+      "file": "business-plan-draft.docx",
+      "sha256": "8299fd0dc45437251028c399f65c487b54315c893b32453eaa1489d33678924f",
+      "wps_preview_pages": 5,
+      "reviewed_pages": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "visible_clipping_or_overlap_or_missing_glyphs": false,
+      "pdf_source": {
+        "path": "artifacts/submission-preview/business-plan-draft.pdf",
+        "sha256": "19689cc5a81e64a563204ffc6adf466d8a2ff184467078eb5b3a5d1aa554d1db",
+        "method": "WPS read-only export from the DOCX whose exact SHA-256 is recorded above"
+      },
+      "reviewed_pngs": [
+        {
+          "page": 1,
+          "path": "artifacts/submission-preview/business-plan-draft-final-1.png",
+          "sha256": "345f0c58519427f75c9e3e01f11c1712bd7ef3a1275a66abe054869d49cfe3ec"
+        },
+        {
+          "page": 2,
+          "path": "artifacts/submission-preview/business-plan-draft-final-2.png",
+          "sha256": "c6dd433147603f618f37e8a206cc983a2353a70d77557af16213c941d0ec1dfd"
+        },
+        {
+          "page": 3,
+          "path": "artifacts/submission-preview/business-plan-draft-final-3.png",
+          "sha256": "d3bfbb9e088cea47d5537304b8d40688cfee6de8b7b37c21aa270f1195246905"
+        },
+        {
+          "page": 4,
+          "path": "artifacts/submission-preview/business-plan-draft-final-4.png",
+          "sha256": "c378554d733dd9b5342f3cbf2280d1e9e028ef82df1e166e2bbc1ffe7b8a2b31"
+        },
+        {
+          "page": 5,
+          "path": "artifacts/submission-preview/business-plan-draft-final-5.png",
+          "sha256": "0f2e7a8f488abef0480d0728a01bd6da7389d3d37edd6c7e5cdc4e5942ce1250"
+        }
+      ]
+    }
+  ],
+  "checks": {
+    "official_hashes": 4,
+    "section_word_limits": 14,
+    "metric_rows": 5,
+    "personal_fields": "待补/按平台口径填写",
+    "original_author_company_metadata": "cleared"
+  },
+  "limitations": [
+    "不是正式提交包；团队、合作、市场与收益证据等仍待补。",
+    "规范LibreOffice渲染仍待完成；当前为WPS兼容性预览。",
+    "公开仓库首次发表与匿名源码提交口径待核实。"
+  ],
+  "preview_selection_note": "Only the explicit -final-N.png files listed per output were used for final supplementary QA. Earlier PNGs without -final- are obsolete draft previews and must not be used to judge the current DOCX."
+}

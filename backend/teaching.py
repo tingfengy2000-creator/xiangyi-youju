@@ -7,6 +7,7 @@ import hashlib
 from html import escape
 import json
 import re
+import unicodedata
 from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, ValidationError
@@ -46,6 +47,24 @@ class ScannedItem(Strict):
 
 class TeachingScan(Strict):
     items: list[ScannedItem] = Field(min_length=1, max_length=5)
+
+
+class FactualScan(ScannedItem):
+    status: Literal["supported", "unsupported", "insufficient"]
+    cultural_premises: list[str] = Field(min_length=1, max_length=8)
+
+
+class OpenQuestionScan(ScannedItem):
+    status: Literal["no_new_fact"]
+    cultural_premises: list[str] = Field(max_length=0)
+    claim_ids: list[str] = Field(max_length=0)
+    source_ids: list[str] = Field(max_length=0)
+
+
+class ConstrainedTeachingScan(Strict):
+    # Encode the mutually exclusive field contracts in the actual Ollama grammar,
+    # while still checking every returned statement semantically and structurally.
+    items: list[FactualScan | OpenQuestionScan] = Field(min_length=1, max_length=5)
 
 
 def _units(teaching):
@@ -185,8 +204,9 @@ def validate_teaching(teaching: dict, run: dict) -> dict:
             issues.extend(_references(row, context))
         if not set(row["claim_ids"]).issubset(unit.get("claim_ids", [])) or not set(row["source_ids"]).issubset(unit.get("source_ids", [])):
             issues.append("扫描引用越过该教学条目的证据边界")
-    if check.get("model_calls_used") != 2:
-        issues.append("教学生成和扫描必须各完成一次模型调用")
+    scan_attempts = check.get("scan_attempts", 1)
+    if scan_attempts not in (1, 2) or check.get("model_calls_used") != 1 + scan_attempts:
+        issues.append("教学生成须一次；扫描仅允许一次及最多一次契约修复，并如实计数")
     # 错误不会因再次验证而被清空，包括未得到完整扫描的模型故障。
     if check.get("error"):
         issues.append(check["error"])
@@ -196,10 +216,10 @@ def validate_teaching(teaching: dict, run: dict) -> dict:
 
 GENERATION = """基于给定已核验cards生成中文教学内容，仅输出schema。
 general使用自然清晰的成年游客表达；family面向亲子共同观察，短句易懂，家长陪伴讨论。所有客群均不安排专业刻刀或其他具体工具操作。
-short_script为1至3句短讲解，observation_task为1句可观察任务，interaction_question为1句开放讨论问题。
+short_script严格使用script_count指定的句数，每张卡片最多改写一句，不为凑三句添加技法定义或功能解释。observation_task为1句可观察任务，interaction_question为1句开放讨论问题。
 观察任务必须结合卡片中的一个有据文化点给出具体观察维度，使用“是否/有哪些/找一找”等开放表达，不预设示例必有某一特征，避免仅说“观察示例”的空泛任务。
 互动问题围绕该文化点邀请比较、表达或个人联想，避免只问“想了解哪个细节”；个人联想必须明确属于游客个人想法，不能说成传统寓意。
-每个条目恰好一句，必须给claim_ids/source_ids，只能用该已验证卡片的引用；不新增文化知识、图案寓意、历史、经营条件、授课人员或授权。
+每个条目恰好一句，末尾只有一个句号或问号，不在问句后再加“为什么？”等第二句。必须给claim_ids/source_ids，只能用该已验证卡片的引用；不新增文化知识、图案寓意、历史、经营条件、授课人员或授权。卡片只说明技法主次时，不能自行解释阴刻阳刻的定义、效果或用途。
 观察和问题也不能暗藏未经证实的文化前提，例如没有证据不得问某颜色为何避邪。
 没有真实作品图像时只建议观察负责人提供且允许使用的示例，不声称眼前已有特定纹样。
 观察任务和互动问题优先采用不预设作品特征的开放表达，例如“请观察负责人提供且允许使用的示例。”“你最想了解哪一个细节？”。
@@ -223,7 +243,42 @@ reason必须与cultural_premises和status一致，不能一边列出文化前提
 讲解句必须有受支持文化内容，不能用no_new_fact绕过核验。每项reason简短说明判断，不提供可信百分比。"""
 
 
-def generate_teaching(llm, run: dict) -> dict:
+def _normalized_repair_text(text):
+    """忽略空白、标点及零宽格式差异；不把形式变化当成事实修订。"""
+    text = unicodedata.normalize("NFKC", str(text)).casefold()
+    return "".join(character for character in text if not character.isspace()
+                   and not unicodedata.category(character).startswith(("P", "Z"))
+                   and unicodedata.category(character) != "Cf")
+
+
+def _rejected_content_reuse(teaching, feedback):
+    """旧扫描明确否定的原文若仍存在，禁止用新扫描对同一内容重新投票。"""
+    if not feedback:
+        return []
+    prior_units = {unit.get("id"): unit for unit in _units(feedback)}
+    rejected, seen = [], set()
+    for row in feedback.get("check", {}).get("items", []):
+        if row.get("status") not in {"unsupported", "insufficient"} and row.get("activity_scope_passed") is not False:
+            continue
+        # 同时保护实际候选与扫描原文，扫描错配不能让原候选脱离门禁。
+        for text in (prior_units.get(row.get("item_id"), {}).get("text"), row.get("checked_text")):
+            normalized = _normalized_repair_text(text or "")
+            if not normalized or normalized in seen:
+                continue
+            seen.add(normalized)
+            rejected.append((normalized, text, row))
+    matches = []
+    for unit in _units(teaching):
+        current = _normalized_repair_text(unit.get("text", ""))
+        for previous, text, row in rejected:
+            if previous in current:
+                matches.append({"previous_item_id": row.get("item_id"), "item_id": unit.get("id"),
+                                "previous_status": row.get("status"), "previous_text": text,
+                                "text": unit.get("text"), "previous_reason": row.get("reason", "")})
+    return matches
+
+
+def generate_teaching(llm, run: dict, feedback: dict | None = None) -> dict:
     """最多两个真实模型请求；失败保留候选与原因，无模板成功回退。"""
     start_calls = len(llm.calls)
     teaching = {"audience": run.get("requirements", {}).get("audience", "general"),
@@ -238,7 +293,10 @@ def generate_teaching(llm, run: dict) -> dict:
         teaching["check"]["issues"] = ["剩余调用预算不足以同时生成并扫描教学内容"]
         return teaching
     try:
-        payload = llm.ask("生成分众教学内容", {"audience": teaching["audience"], "cards": context["cards"]},
+        data = {"audience": teaching["audience"], "cards": context["cards"], "script_count": min(3, len(context["cards"]))}
+        if feedback:
+            data["failed_candidate"] = {k: feedback.get(k) for k in ("short_script", "observation_task", "interaction_question", "check")}
+        payload = llm.ask("生成分众教学内容", data,
                           TeachingDraft, GENERATION, max_attempts=1)
         draft = TeachingDraft.model_validate(payload).model_dump()
         for i, item in enumerate(draft["short_script"]):
@@ -246,6 +304,13 @@ def generate_teaching(llm, run: dict) -> dict:
         draft["observation_task"]["id"] = "observation"
         draft["interaction_question"]["id"] = "interaction"
         teaching.update(draft, generation_mode="model_generated")
+        retained = _rejected_content_reuse(teaching, feedback)
+        if retained:
+            teaching["check"].update(
+                issues=["重新生成仍含已被明确否定或越界的原文，不能通过再次扫描洗成支持："
+                        + f"{item['previous_item_id']} → {item['item_id']}：{item['previous_text']}" for item in retained],
+                rejected_content_reuse=retained, model_calls_used=len(llm.calls) - start_calls)
+            return teaching
         issues = _structure(teaching, run, context)
         if issues:
             teaching["check"].update(issues=issues, model_calls_used=len(llm.calls) - start_calls)
@@ -255,7 +320,7 @@ def generate_teaching(llm, run: dict) -> dict:
         scan = llm.ask("扫描教学内容全部文化前提",
                        {"items": [{"item_id": item["id"], **{k: item[k] for k in ("text", "claim_ids", "source_ids")}} for item in _units(teaching)],
                         "verified_claims": list(context["claims"].values()), "sources": list(context["sources"].values())},
-                       TeachingScan, SCAN, max_attempts=1)
+                       ConstrainedTeachingScan, SCAN, max_attempts=1)
         teaching["check"].update(items=TeachingScan.model_validate(scan).model_dump()["items"],
                                  model_calls_used=len(llm.calls) - start_calls, input_sha256=_digest(teaching, context))
         teaching["check"] = validate_teaching(teaching, run)
@@ -263,6 +328,36 @@ def generate_teaching(llm, run: dict) -> dict:
         teaching["check"].update(passed=False, error=f"教学阶段未完成：{error}", error_kind=type(error).__name__,
                                  issues=[f"教学阶段未完成：{error}"], model_calls_used=len(llm.calls) - start_calls)
     return teaching
+
+
+def can_recheck_scan(teaching, run):
+    """Repair an internally inconsistent scan, never vote away an unsupported fact."""
+    check = teaching.get("check", {})
+    rows = check.get("items", [])
+    return bool(not check.get("passed") and not _structure(teaching, run, _context(run))
+                and rows and check.get("model_calls_used") == 2 and check.get("scan_attempts", 1) == 1
+                and all(row.get("status") in {"supported", "no_new_fact"} and row.get("activity_scope_passed") is True for row in rows)
+                and check.get("input_sha256") == _digest(teaching, _context(run)))
+
+
+def recheck_teaching_scan(llm, teaching, run):
+    if not can_recheck_scan(teaching, run):
+        raise ValueError("只允许对内容未变且扫描契约不一致的结果修复一次")
+    result = deepcopy(teaching)
+    context = _context(run)
+    try:
+        scan = llm.ask("修复教学扫描契约", {
+            "items": [{"item_id": item["id"], **{k: item[k] for k in ("text", "claim_ids", "source_ids")}} for item in _units(teaching)],
+            "verified_claims": list(context["claims"].values()), "sources": list(context["sources"].values()),
+            "contract_errors": teaching["check"]["issues"]},
+            ConstrainedTeachingScan, SCAN + "\n上次扫描字段自相矛盾，本次按原文全文重核一次，不默认支持。no_new_fact必须没有文化前提、claim_ids/source_ids也为空；若确有前提，逐项核证后选择supported或insufficient，不能强行清除文化前提。", max_attempts=1)
+        result["check"] = {"items": TeachingScan.model_validate(scan).model_dump()["items"], "model_calls_used": 3,
+                           "scan_attempts": 2, "input_sha256": _digest(result, context)}
+        result["check"] = validate_teaching(result, run)
+    except Exception as error:
+        result["check"].update(passed=False, error=f"教学扫描修复失败：{error}", error_kind=type(error).__name__,
+                               model_calls_used=3, scan_attempts=2)
+    return result
 
 
 def render_teaching_html(teaching: dict, audience: str) -> str:

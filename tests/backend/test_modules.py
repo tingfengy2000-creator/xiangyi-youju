@@ -7,7 +7,7 @@ import re
 
 import pytest
 
-from backend.planner import solve_plans
+from backend.planner import plan_craft_minutes, ranking_reason, select_ranked_plan, solve_plans, summarize_conflicts
 
 
 @pytest.fixture
@@ -183,3 +183,101 @@ def test_packages_cannot_invent_missing_activity(req, profile):
     result = solve_plans(req, profile)
     assert not result["feasible_ids"]
     assert all("required_tag_missing" in {c["code"] for c in p["conflicts"]} for p in result["candidates"])
+
+
+def test_program_selects_maximum_craft_without_changing_candidates(req, profile):
+    req.update(budget_per_person=110, available_minutes=110,
+               constraints={"exclude_tags": ["tea"], "maximize_craft": True, "audience": "family"})
+    result = solve_plans(req, profile)
+    before = deepcopy((result, req))
+    selected = select_ranked_plan(result, req)
+    assert selected is next(plan for plan in result["candidates"] if plan["id"] == selected["id"])
+    assert selected["craft_minutes"] == 80
+    assert selected["total_cents"] == 79600
+    assert selected["duration_minutes"] == 100
+    assert set(selected["module_ids"]) == {"brief-story", "deep-craft", "craft-extension"}
+    assert "手作80分钟，总时长100分钟" in ranking_reason(result, req)
+    assert (result, req) == before
+    assert solve_plans(result["requirements_snapshot"], result["profile_snapshot"]) == result
+
+
+def test_program_does_not_confuse_one_hour_craft_with_total_window(req, profile):
+    req.update(people=10, budget_per_person=100, available_minutes=100,
+               constraints={"exclude_tags": ["tea"], "min_craft_minutes": 60,
+                            "maximize_craft": True, "audience": "family"})
+    result = solve_plans(req, profile)
+    selected = select_ranked_plan(result, req)
+    assert (selected["craft_minutes"], selected["duration_minutes"], selected["total_cents"]) == (80, 100, 91000)
+    assert req["available_minutes"] == 100
+    assert req["constraints"]["min_craft_minutes"] == 60
+
+
+def test_ordinary_modules_choose_lowest_actual_cost(req, profile):
+    result = solve_plans(req, profile)
+    selected = select_ranked_plan(result, req)
+    assert selected["total_cents"] == 57400
+    assert selected["duration_minutes"] == 70
+    assert selected["craft_minutes"] == 50
+    assert "演示总价从低到高" in ranking_reason(result, req)
+    # 对照候选不可行不等于任务无解。
+    assert any(not plan["feasible"] for plan in result["candidates"])
+    assert summarize_conflicts(result) == []
+
+
+def test_package_ranking_preserves_preference_and_revises_only_if_needed(req, profile):
+    req.update(planning_mode="packages", preferred_plan="deep")
+    result = solve_plans(req, profile)
+    assert select_ranked_plan(result, req)["id"] == "deep"
+    assert "保留该套餐" in ranking_reason(result, req)
+    req["budget_per_person"] = 110
+    result = solve_plans(req, profile)
+    selected = select_ranked_plan(result, req)
+    assert selected["id"] == "light"
+    assert (selected["total_cents"], selected["duration_minutes"]) == (78400, 90)
+    assert plan_craft_minutes(selected, result) == plan_craft_minutes(selected) == 50
+
+
+def test_package_explicit_maximum_craft_has_priority_over_soft_plan_preference(req, profile):
+    req.update(planning_mode="packages", preferred_plan="light", constraints={"maximize_craft": True})
+    result = solve_plans(req, profile)
+    selected = select_ranked_plan(result, req)
+    assert selected["id"] == "deep"
+    assert plan_craft_minutes(selected, result) == 60
+    assert "手作60分钟，总时长120分钟" in ranking_reason(result, req)
+
+
+def test_resource_refusal_explains_required_and_available_resources(req, profile):
+    req.update(people=16, budget_per_person=160, available_minutes=180)
+    profile.update(capacity=8, teachers=1, rooms=1)
+    result = solve_plans(req, profile)
+    before = deepcopy(result)
+    assert select_ranked_plan(result, req) is None
+    conflicts = summarize_conflicts(result)
+    assert [item["code"] for item in conflicts[:2]] == ["capacity_exceeded", "teacher_capacity_exceeded"]
+    messages = {item["code"]: item["message"] for item in conflicts}
+    assert "人数16超过单组容量8" in messages["capacity_exceeded"]
+    assert "需至少2位教师" in messages["teacher_capacity_exceeded"]
+    assert "现有1位、每位上限12人，合计可接待12人" in messages["teacher_capacity_exceeded"]
+    assert len(conflicts) == len({(item["code"], item["message"]) for item in conflicts})
+    assert result == before
+    assert "没有同时满足已确认条件" in ranking_reason(result, req)
+
+
+@pytest.mark.parametrize("mode", ["packages", "modules"])
+def test_missing_resources_summary_is_concrete_in_both_modes(req, profile, mode):
+    req["planning_mode"] = mode
+    profile.update(teachers=0, rooms=0)
+    result = solve_plans(req, profile)
+    messages = {item["code"]: item["message"] for item in summarize_conflicts(result)}
+    assert "8人手作需至少1位教师" in messages["teacher_unavailable"]
+    assert "现有0位" in messages["teacher_unavailable"]
+    assert "至少需要1间场地，现有0间" in messages["room_unavailable"]
+    assert select_ranked_plan(result, req) is None
+
+
+def test_no_selection_when_fixed_packages_cannot_meet_explicit_preference(req, profile):
+    req.update(planning_mode="packages", constraints={"exclude_tags": ["tea"], "min_craft_minutes": 70})
+    result = solve_plans(req, profile)
+    assert select_ranked_plan(result, req) is None
+    assert {item["code"] for item in summarize_conflicts(result)} == {"excluded_tag", "craft_minutes_insufficient"}
+    assert [(plan["total_cents"], plan["duration_minutes"]) for plan in result["candidates"]] == [(78400, 90), (108000, 120)]

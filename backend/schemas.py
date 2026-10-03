@@ -50,6 +50,8 @@ class ExtractedClaim(StrictModel):
     sentence_id: str
     text: str
     query: str
+    kind: Literal["cultural_fact", "operating_promise", "user_requirement"] = Field(
+        default="cultural_fact", description="文化事实、营业/授课/收益等经营承诺、游客提出的活动要求分开；不能把经营承诺作为文化事实")
 
 
 class Understanding(StrictModel):
@@ -78,7 +80,18 @@ class NotePreferences(StrictModel):
     people: int | None = Field(ge=1, le=100)
     budget_per_person: float | None = Field(ge=0, le=10000, allow_inf_nan=False)
     available_minutes: int | None = Field(ge=1, le=720)
-    ambiguities: list[str]
+    ambiguities: list[str] = Field(description="仅填写真正相互矛盾或需要新增未配置服务的活动要求；编辑说明与已有资源不足均不属于歧义")
+
+
+class NoteIssue(StrictModel):
+    index: int = Field(ge=0)
+    text: str
+    category: Literal["editorial_note", "configured_resource_check", "needs_clarification"]
+    reason: str
+
+
+class NoteIssueReview(StrictModel):
+    items: list[NoteIssue]
 
 
 class ContentUnderstanding(Understanding):
