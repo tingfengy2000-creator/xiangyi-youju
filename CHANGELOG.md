@@ -1,5 +1,12 @@
 # 更新记录
 
+## 2026-10-05 · 5060首次复核（候选分支）
+
+- 5060开发端在Linux隔离环境完成仓库检查、后端检查、三页浏览器检查和无模型失败路径检查；5090记录中的1080元/120分钟方案由程序独立复算一致，三条核验结论与来源原文对应。
+- 发现5090记录的`data_versions`有3项是Windows CRLF工作区字节哈希，`jinshan-reconstruction.json`与被测提交不符；按“记录/环境问题”报告，原记录不改写，请5090说明。
+- 新增`scripts/record_data_versions.py`按Git对象记录和核对资料版本，新增3项后端检查（共216项）；浏览器脚本统一支持`BROWSER_EXECUTABLE`，原`BROWSER_CHANNEL`用法不变。
+- 该复核没有在5060 Windows原生环境重跑，也不是真实模型验证；详见[复核记录](docs/validation/two-machine/handoff-review-5060-cf7ff41.json)。
+
 ## 2026-10-05 · 双机开发交接
 
 - 新增[双机开发交接入口](docs/development/two-machine-handoff.md)，明确5060开发、5090真实验证与5090唯一集成的分支流程、隔离worktree、证据字段和可复制启动提示词。

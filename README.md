@@ -114,6 +114,8 @@ $env:BROWSER_CHANNEL = "msedge"
 npm test
 ```
 
+没有 Edge 的系统可设 `BROWSER_EXECUTABLE` 指向本机已有的 Chromium（路径只放环境变量）。双机记录的资料版本用 `scripts/record_data_versions.py` 按 Git 对象计算。
+
 Playwright 是浏览器自动化工具。`npm test` 检查三页、两种屏幕尺寸、活动方案、金额与约束、导出说明；结果写入不纳入 Git 的 `artifacts/test-results/`，不覆盖已审核的文档截图。
 
 ## 仓库地图

@@ -7,6 +7,7 @@
  * adopted note, withdrawn-material refresh, and impossible resources.
  */
 const { chromium } = require('playwright');
+const { browserOptions } = require('../../scripts/browser-options.cjs');
 const assert = require('assert/strict');
 const fs = require('fs');
 const path = require('path');
@@ -25,7 +26,7 @@ const waitToast = page => page.waitForFunction(() => {
 });
 
 (async () => {
-  const browser = await chromium.launch({ headless: true, channel: process.env.BROWSER_CHANNEL || 'msedge' });
+  const browser = await chromium.launch(browserOptions('msedge'));
   const context = await browser.newContext({ viewport: { width: 1440, height: 1000 }, serviceWorkers: 'block' });
   await context.route(/^https?:\/\//, async route => {
     const url = new URL(route.request().url());
