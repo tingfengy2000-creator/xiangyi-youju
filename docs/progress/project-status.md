@@ -27,7 +27,8 @@
 | M5 | 双机交接演练 | 5090隔离worktree已验证；5060首次复核已提交候选 | 5090在基线SHA独立worktree完成结构检查、213项后端检查、独立数据库API启动和1次真实本地模型运行；5060在Linux隔离环境完成无模型检查并复算方案账目一致，发现data_versions中3项为CRLF字节哈希、1项与提交不符，[复核记录](../validation/two-machine/handoff-review-5060-cf7ff41.json)待5090确认 |
 | M6 | 运行时修复与可读性集成 | 已验证并合入main（`cfa516b`） | 5090在被测代码`57cfa4e`上真实验证：主流程784/90与1080/120、5场景模块流程、英语讲解程序保留阻断、“不需要翻译”未误拦、三页与导出中文不小于12px，见[验证记录](../validation/two-machine/handoff-rehearsal-5090-integration-57cfa4e.json)；5060复核与收紧见[复核说明](../validation/two-machine/task-5060-runtime-recovery-review.md)和[硬性要求阻断](../validation/two-machine/task-5060-hard-blockers.md) |
 | M7 | 首页故事化 | 5090已验证，合入main `b0a4f0c` | 首页三幕故事条、为谁而做、意义带；见[任务说明](../validation/two-machine/task-5060-home-story.md) |
-| M8 | 三幕演示引导 | 5060候选，待5090真实模型验证 | 真实API模式下“三幕演示”引导条：填入主线案例、填入“不要茶歇，多留手作时间”、定位素材撤回；只填入与定位，三个✓只按真实运行状态出现；见[任务说明](../validation/two-machine/task-5060-demo-guide.md)与[访谈操作卡](../demo/interview-demo-runbook.md) |
+| M8 | 三幕演示引导 | 5090真实运行业务结果符合预期（`00ad6b9`），验收未闭合，待M9复验 | 真实API模式下“三幕演示”引导条：填入主线案例、填入“不要茶歇，多留手作时间”、定位素材撤回；只填入与定位，三个✓只按真实运行状态出现；见[任务说明](../validation/two-machine/task-5060-demo-guide.md)与[访谈操作卡](../demo/interview-demo-runbook.md) |
+| M9 | 验收脚本与中文字号兜底 | 5060候选，待5090真实模型验证 | 修复首页“河北 · 蔚县剪纸专题”10px等2处中文小字；统一中文字号检查进入`npm test`与无模型live路径；新增`npm run test:demo-guide`一次跑完三幕、阻断检查、24组可读性矩阵与首页截图；见[任务说明](../validation/two-machine/task-5060-acceptance-guard.md) |
 
 “已完成”仅适用于该行所列范围，不表示产品全面实现。
 

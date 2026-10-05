@@ -10,6 +10,7 @@
  */
 const { chromium } = require('playwright');
 const { browserOptions } = require('../../scripts/browser-options.cjs');
+const { smallChinese } = require('./legibility.cjs');
 const fs = require('fs');
 const path = require('path');
 const { pathToFileURL } = require('url');
@@ -285,12 +286,18 @@ async function additionalScenarios(page, context, previousId) {
       checks.push('操作者自行点击重新编排后真实失败：仍为 model_error，三步均无 ✓，引导提示失败不替代结果');
       for (const width of [1440, 390]) {
         await page.setViewportSize({ width, height: width === 390 ? 844 : 1100 });
-        for (const id of ['home', 'studio', 'planner']) {
-          await page.locator(`[data-page="${id}"]`).click();
-          assert(await page.evaluate(() => document.body.scrollWidth <= innerWidth), `${width}/${id} 横向溢出`);
-          await page.screenshot({ path: path.join(output, `model-error-${id}-${width === 390 ? 'mobile' : 'desktop'}.png`), fullPage: true, animations: 'disabled' });
-          checks.push(`${width}px ${id} 真实故障界面无溢出`);
+        for (const presentation of [false, true]) {
+          if (await page.evaluate(() => document.body.classList.contains('presentation-mode')) !== presentation) await page.locator('#presentationMode').click();
+          for (const id of ['home', 'studio', 'planner']) {
+            await page.locator(`[data-page="${id}"]`).click();
+            assert(await page.evaluate(() => document.body.scrollWidth <= innerWidth), `${width}/${id}/投屏${presentation ? '开' : '关'} 横向溢出`);
+            const tiny = await smallChinese(page);
+            assert.equal(tiny.length, 0, `${width}/${id}/投屏${presentation ? '开' : '关'} 中文小于12px：${JSON.stringify(tiny)}`);
+            if (!presentation) await page.screenshot({ path: path.join(output, `model-error-${id}-${width === 390 ? 'mobile' : 'desktop'}.png`), fullPage: true, animations: 'disabled' });
+          }
         }
+        if (await page.evaluate(() => document.body.classList.contains('presentation-mode'))) await page.locator('#presentationMode').click();
+        checks.push(`${width}px 三页 × 投屏开/关（三幕引导开启）：真实故障界面无横向溢出，中文不小于12px`);
       }
       await page.locator('#historySelect').selectOption(runId);
       await page.waitForFunction(() => document.querySelector('#runtimeState')?.textContent.includes('历史回放'));

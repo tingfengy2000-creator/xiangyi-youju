@@ -6,6 +6,7 @@ const root = path.resolve(__dirname, '../..');
 const output = path.join(root, 'artifacts', 'test-results');
 fs.mkdirSync(output, { recursive: true });
 const { browserOptions } = require('../../scripts/browser-options.cjs');
+const { smallChinese } = require('./legibility.cjs');
 const options = browserOptions();
 (async()=>{
  const browser=await chromium.launch(options);
@@ -22,6 +23,8 @@ const options = browserOptions();
    const overflow=await page.evaluate(()=>({body:document.body.scrollWidth,viewport:innerWidth}));
    results.push({width,page:id,...overflow});
    if(overflow.body>width)throw Error('Horizontal overflow: '+JSON.stringify(results.at(-1)));
+   const tiny=await smallChinese(page);
+   if(tiny.length)throw Error(`Chinese text below 12px at ${width}/${id}: `+JSON.stringify(tiny));
    if(id==='studio'){
     for(const value of ['confusion','missing','unsupported']){
      await page.locator('#caseSelect').selectOption(value);await page.locator('#auditBtn').click();
