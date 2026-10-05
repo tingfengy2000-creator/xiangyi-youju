@@ -139,24 +139,39 @@ def _references(unit, context):
     return issues
 
 
+_OPEN_QUESTION_ASSERTIONS = re.compile(
+    r"为什么|为何|因为|由于|所以|起源|始于|发源|历史上|传说|相传|最早|千年|年历史|"
+    r"只用|只有|都是|一定|必然|必须|总是|从不|为主|为辅|找出|指出|说出|证明"
+)
+_OBSERVATION_TEMPLATE = re.compile(
+    r"请观察负责人提供且允许使用的(?:剪纸)?示例[，,]\s*(?:找一找|看一看|看看|留意)?"
+    r"(?:是否有|有没有|有无)[^。！？!?；;，,：:]{1,30}[。？?]?"
+)
+_OBSERVATION_QUESTION = re.compile(r"[^。！？!?；;，,：:]{0,12}(?:是否有|有没有|有无)[^。！？!?；;，,：:]{1,30}[？?]")
+_INTERACTION_QUESTION = re.compile(
+    r"(?:(?:你|您)(?:更喜欢|喜欢|最想了解|会联想到)[^。！？!?；;，,：:]{1,30}"
+    r"|哪一处[^。！？!?；;，,：:]{0,20}(?:引起了?(?:你|您)的兴趣|让(?:你|您)感兴趣|(?:你|您)最感兴趣)[^。！？!?；;，,：:]{0,6})[？?]"
+)
+
+
 def _open_question_kind(item_id, text):
-    """Return the safe open-question contract for a narrowly bounded sentence.
+    """Return True only for one non-assertive open question in a fixed form.
 
     The model sometimes describes an open observation or preference question as
     an ``unsupported`` cultural premise while its reason simultaneously says
-    that no premise is present.  Only these explicit, non-assertive forms are
-    eligible for deterministic normalization; factual commands such as
-    ``找出示例的彩色部分`` remain rejected and must be rewritten.
+    that no premise is present.  Only a single clause that matches one of the
+    fixed forms below, with no declarative or presupposing wording, is eligible.
+    Anything else keeps the model's status and fails closed, for example
+    ``请观察……示例，找出示例的彩色部分`` or a question that presupposes a fact
+    (``为什么……以阳刻为主``).
     """
-    text = str(text or "")
-    if item_id == "observation":
-        if "请观察负责人提供且允许使用的示例" in text:
-            return True
-        if re.search(r"是否有|有没有|有无", text) and "找出" not in text:
-            return True
+    text = str(text or "").strip()
+    if not text or _OPEN_QUESTION_ASSERTIONS.search(text):
         return False
+    if item_id == "observation":
+        return bool(_OBSERVATION_TEMPLATE.fullmatch(text) or _OBSERVATION_QUESTION.fullmatch(text))
     if item_id == "interaction":
-        return bool(re.search(r"你更喜欢|你喜欢|哪一处.*兴趣|最想了解|你觉得|你会联想到", text))
+        return bool(_INTERACTION_QUESTION.fullmatch(text))
     return False
 
 
@@ -172,9 +187,12 @@ def normalize_open_question_scan(rows, teaching):
                 and item.get("activity_scope_passed") is True
                 and item.get("checked_text") == unit.get("text")
                 and _open_question_kind(item["item_id"], item.get("checked_text"))):
+            changes.append({"item_id": item["item_id"], "reason": "open_question_contract",
+                            "original_status": item.get("status"),
+                            "original_cultural_premises": list(item.get("cultural_premises") or []),
+                            "original_reason": item.get("reason", "")})
             item.update(status="no_new_fact", cultural_premises=[], claim_ids=[], source_ids=[],
                         reason="程序按开放观察/个人偏好契约归类；该句没有断言示例必有某文化特征。")
-            changes.append({"item_id": item["item_id"], "reason": "open_question_contract"})
         normalized.append(item)
     return normalized, changes
 

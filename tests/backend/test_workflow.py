@@ -310,3 +310,26 @@ def test_real_model_wrapper_eight_call_cap_includes_json_retries(client, monkeyp
     assert len(wrapper.calls) == 8
     assert request_count == 8
     assert any("raw_output" in metrics for metrics in wrapper.calls)
+
+
+def test_omission_wording_in_reason_never_downgrades_a_real_blocker():
+    blockers = [
+        ("需要安排英语讲解", "活动资源未说明是否有英语讲解员，属于未配置服务"),
+        ("下午转到暖泉古镇再做一场", "未明确跨场地交通与第二场地资源"),
+        ("不要讲解，只做手作", "缺少必需的文化讲解环节"),
+        ("请增加一位教师", "未给出第二位教师的资源配置"),
+        ("未明确是否需要额外的摄影服务", "未明确"),
+        ("未明确茶歇，但要求转到另一场地", "未明确"),
+    ]
+    rows = workflow.normalize_note_issue_review([
+        {"index": i, "text": text, "category": "needs_clarification", "reason": reason}
+        for i, (text, reason) in enumerate(blockers)])
+    assert [row["category"] for row in rows] == ["needs_clarification"] * len(blockers)
+
+    neutral = workflow.normalize_note_issue_review([
+        {"index": 0, "text": "未明确客群、人数、预算和总时长", "category": "needs_clarification", "reason": "需要补充"},
+        {"index": 1, "text": "原文未提及茶歇服务", "category": "needs_clarification", "reason": "未提及"},
+        {"index": 2, "text": "未说明手作最低分钟", "category": "configured_resource_check", "reason": "未说明"},
+    ])
+    assert [row["category"] for row in neutral] == ["editorial_note", "editorial_note", "configured_resource_check"]
+    assert neutral[0]["original_category"] == "needs_clarification" and neutral[0]["original_reason"] == "需要补充"

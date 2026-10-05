@@ -2,6 +2,7 @@
 
 import time
 from copy import deepcopy
+import re
 from typing import TypedDict
 from .config import MAX_REVISIONS, now, MODEL
 from . import store
@@ -18,32 +19,45 @@ class State(TypedDict):
     run: dict
 
 
-_MISSING_NOTE_MARKERS = ("未提及", "未明确", "未说明", "未给出", "没有说明", "缺少")
+_MISSING_NOTE_MARKERS = ("未提及", "未明确", "未说明", "未给出", "没有说明", "没有提及", "未指定")
 _CONFLICT_NOTE_MARKERS = ("冲突", "矛盾", "同时要求", "既要求", "又要求")
+_OPTIONAL_NOTE_FIELDS = re.compile(r"茶歇(?:服务|安排|需求)?|手作(?:最低)?(?:时长|分钟|时间)|最低手作|客群|受众|人数|预算|总时长|活动时长|可用时长|开始时间")
+_BLOCKING_NOTE_TERMS = re.compile(
+    r"讲解员|翻译|英语|外语|跨场地|转到|转场|另一|第二|场地|教师|老师|增加|新增|追加|取消|不要|删除|去掉|"
+    r"交通|住宿|餐|接送|讲解环节|手作环节|服务|授权|规则"
+)
+
+
+def _is_optional_omission(text):
+    text = str(text or "")
+    return (any(marker in text for marker in _MISSING_NOTE_MARKERS)
+            and bool(_OPTIONAL_NOTE_FIELDS.search(text))
+            and not _BLOCKING_NOTE_TERMS.search(_OPTIONAL_NOTE_FIELDS.sub("", text))
+            and not any(marker in text for marker in _CONFLICT_NOTE_MARKERS))
 
 
 def normalize_note_issue_review(items):
-    """Keep optional omissions neutral; only explicit conflicts should block.
+    """Keep omitted optional preferences neutral; everything else still blocks.
 
-    The local model is asked to distinguish an actual contradiction from a field
-    that was simply not mentioned.  A model can still over-report omissions as
-    ``needs_clarification`` (for example, saying that tea or a minimum craft
-    duration was not mentioned even though the form already supplies the
-    remaining conditions).  Missing optional preferences are intentionally
-    represented by ``any``/``None`` and must be handed to the deterministic
-    planner, not turned into a blocking question.  We keep explicit conflict
-    wording as a blocker and preserve every original item for the audit trail.
+    The local model can over-report a field that was simply not mentioned (for
+    example tea or a minimum craft duration) as ``needs_clarification``.
+    Missing optional preferences are represented by ``any``/``None`` and must
+    go to the deterministic planner.  Only the flagged text itself decides:
+    it must state an omission of a listed optional field and contain no added
+    service, cross-site, resource change, cancelled required step or conflict.
+    The model's reason never downgrades a blocker.  Original category and
+    reason are kept for the audit trail.
     """
     normalized = []
     for row in items:
         item = deepcopy(row)
-        combined = f"{item.get('text', '')} {item.get('reason', '')}"
+        reason = str(item.get("reason", ""))
         if (item.get("category") == "needs_clarification"
-                and any(marker in combined for marker in _MISSING_NOTE_MARKERS)
-                and not any(marker in combined for marker in _CONFLICT_NOTE_MARKERS)):
-            item["category"] = "editorial_note"
-            item["reason"] = ("原文只是未提及或未明确该可选偏好；按约定保持表单/默认值，"
-                              "不把缺省当作矛盾。")
+                and _is_optional_omission(item.get("text", ""))
+                and not any(marker in reason for marker in _CONFLICT_NOTE_MARKERS)):
+            item.update(original_category=item["category"], original_reason=reason,
+                        category="editorial_note",
+                        reason="原文只是未提及或未明确该可选偏好；按约定保持表单/默认值，不把缺省当作矛盾。")
         normalized.append(item)
     return normalized
 
