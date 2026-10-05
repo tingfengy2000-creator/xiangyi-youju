@@ -9,6 +9,7 @@
  * without accessing the API or starting model inference.
  */
 const { chromium } = require('playwright');
+const { browserOptions } = require('../../scripts/browser-options.cjs');
 const fs = require('fs');
 const path = require('path');
 const { pathToFileURL } = require('url');
@@ -145,7 +146,7 @@ async function additionalScenarios(page, context, previousId) {
 }
 
 (async () => {
-  const browser = await chromium.launch({ headless: true, ...(process.env.BROWSER_CHANNEL ? { channel: process.env.BROWSER_CHANNEL } : {}) });
+  const browser = await chromium.launch(browserOptions());
   const context = await browser.newContext({ viewport: { width: 1440, height: 1100 }, deviceScaleFactor: 1, serviceWorkers: 'block' });
   // This checks browser resources only, not whole-machine network isolation.
   // Local API traffic remains real and is never replaced or mocked.

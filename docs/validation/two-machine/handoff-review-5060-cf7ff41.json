@@ -1,0 +1,58 @@
+{
+  "task_id": "5060-handoff-review",
+  "goal": "5060开发端首次环境检查、无模型开发检查，并复核5090交接演练记录handoff-rehearsal-cf7ff41",
+  "review_date": "2026-10-05",
+  "machine_role": "5060-development",
+  "baseline_sha": "c9cd87e5744fa9f00bf1b05c801cb997f4fceea1",
+  "reviewed_record": "docs/validation/two-machine/handoff-rehearsal-cf7ff41.json",
+  "reviewed_tested_code_sha": "cf7ff418e42d40ab646d0db94826194247963234",
+  "execution_environment": {
+    "where": "5060开发端由Claude在隔离Linux容器执行代码与检查；5060的Windows主机已连接，但本轮未在Windows原生环境运行测试",
+    "os": "Linux x86_64",
+    "python": "3.12.3（uv创建的隔离.venv，requirements-lock.txt安装）",
+    "node": "v22.22.0",
+    "browser": "Playwright Chromium 1194（经BROWSER_EXECUTABLE指定；package-lock锁定的playwright 1.62.1默认期望Chromium 1234，本环境未下载）",
+    "gpu": "未读取：容器与Cowork虚拟机看不到Windows显卡，任务管理器在本轮无法操作；不推断显卡型号",
+    "model": "未运行；本端不下载14B模型"
+  },
+  "checks": [
+    {"command": "scripts/check_repository.py", "sha": "cf7ff418e42d40ab646d0db94826194247963234", "result": "passed: 539 maintenance files, 207 local links", "matches_5090_record": true},
+    {"command": "scripts/check_repository.py", "sha": "c9cd87e5744fa9f00bf1b05c801cb997f4fceea1", "result": "passed: 542 maintenance files, 221 local links", "note": "5090聊天摘要中的542/221对应c9cd87e，不是cf7ff41；以记录JSON的539/207为准"},
+    {"command": "python -m pytest tests/backend -q", "sha": "c9cd87e5744fa9f00bf1b05c801cb997f4fceea1", "result": "213 passed"},
+    {"command": "npm test", "sha": "c9cd87e5744fa9f00bf1b05c801cb997f4fceea1", "result": "passed: 3 pages x 1440/390, 0 script errors", "note": "首次因Chromium 1234不存在而无法启动；用本机Chromium 1194重跑通过"},
+    {"command": "start_local.py --api-only --port 8790 + POST /api/runs（5090原始输入）", "sha": "cf7ff418e42d40ab646d0db94826194247963234", "result": "health=model_unavailable；运行状态model_error，plan=null，未回退预设结果", "scope": "无模型失败路径，不是真实模型运行"},
+    {"command": "LIVE_EXPECT_MODEL_ERROR=1 node tests/e2e/live-workflow.spec.cjs", "sha": "cf7ff418e42d40ab646d0db94826194247963234", "result": "passed: 10 checks, 0 script errors, 0 external resource requests", "scope": "真实API、无模型；确认与导出保持禁用"}
+  ],
+  "review_of_5090_result": {
+    "plan_recomputed": {
+      "method": "backend.planner.solve_plans，输入为记录中的requirements与operating_overrides，不调用模型",
+      "deep": {"total_cents": 108000, "per_person_cents": 13500, "duration_minutes": 120, "local_service_cents": 74000, "material_cents": 18000, "operations_cents": 16000, "paper_units": 16, "schedule_minutes": [30, 60, 30]},
+      "arithmetic": "本地服务30000+3500×8+2000×8=74000；材料10000+1000×8（reuse=true取可复用单价）=18000；组织16000；合计108000=8×13500；120≤150分钟；108000≤160元×8",
+      "matches_record": true
+    },
+    "claims_plausible_against_sources": {
+      "阳刻为主，阴刻为辅": "contradicted合理：蔚县来源原文为“以阴刻为主，阳刻为辅”，相反说法属于丰宁来源，正是地域纠错",
+      "多色点染": "supported合理：蔚县来源原文“多色点染彩绘”",
+      "工坊每天开放并且无需预约": "insufficient合理：经营承诺不在文化资料中，不能由模型推断"
+    },
+    "not_reviewable_here": "原始run.json、SQLite与双版HTML留在5090忽略目录，本端未取得；模型digest、调用次数与耗时只能按记录引用，不能复算",
+    "data_versions": {
+      "tool": "scripts/record_data_versions.py --check docs/validation/two-machine/handoff-rehearsal-cf7ff41.json",
+      "match_git_blob": ["data/curated/sources.json", "data/curated/materials.json", "data/operating/demo-profile.json"],
+      "match_after_lf_to_crlf": ["data/curated/public-case-sources.json", "requirements-lock.txt", "package-lock.json"],
+      "no_match": ["data/operating/jinshan-reconstruction.json"],
+      "interpretation": "三项为Windows工作区CRLF字节哈希，内容与Git一致；jinshan-reconstruction.json的记录值与cf7ff41及历史版本（LF/CRLF）均不一致，可能是5090计算时读取了非隔离目录或含未提交修改的文件。本次蔚县运行不读取该文件，因此不影响上述方案复算，但记录的数据版本需5090说明。",
+      "classification": "记录/环境问题，不是业务缺陷"
+    }
+  },
+  "requests_to_5090": [
+    "在5090隔离worktree运行 scripts/record_data_versions.py --sha cf7ff418e42d40ab646d0db94826194247963234 --worktree，并在演示目录同样运行一次，说明jinshan-reconstruction.json哈希来源",
+    "不改写handoff-rehearsal-cf7ff41.json原值；以新文件或追加说明记录更正后的Git对象哈希",
+    "后续双机记录统一用record_data_versions.py生成data_versions"
+  ],
+  "evidence_paths": [
+    "docs/validation/two-machine/handoff-review-5060-cf7ff41.json",
+    "docs/validation/two-machine/task-5060-handoff-review.md"
+  ],
+  "scope": "5060开发端复核，不是独立第三方评测，不是真实模型验证，也不是跨硬件比较"
+}

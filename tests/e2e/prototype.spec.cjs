@@ -5,8 +5,8 @@ const { pathToFileURL } = require('url');
 const root = path.resolve(__dirname, '../..');
 const output = path.join(root, 'artifacts', 'test-results');
 fs.mkdirSync(output, { recursive: true });
-const options = { headless: true };
-if (process.env.BROWSER_CHANNEL) options.channel = process.env.BROWSER_CHANNEL;
+const { browserOptions } = require('../../scripts/browser-options.cjs');
+const options = browserOptions();
 (async()=>{
  const browser=await chromium.launch(options);
  const page=await browser.newPage({viewport:{width:1440,height:1100},deviceScaleFactor:1});

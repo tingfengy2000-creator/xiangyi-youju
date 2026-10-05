@@ -40,7 +40,7 @@
 5090: 双方对同一候选版本完成检查后，唯一合入并推送 main
 ```
 
-不得强推、重写共享历史、合并无关分支或新增后台轮询服务。5090 若修改业务代码，须使用独立分支交 5060 复核。任务字段、命令和启动提示词见本页第 6 节及 [`two-machine-result.schema.json`](../validation/two-machine/two-machine-result.schema.json)；本次演练的精简记录见 [`handoff-rehearsal-cf7ff41.json`](../validation/two-machine/handoff-rehearsal-cf7ff41.json)。
+不得强推、重写共享历史、合并无关分支或新增后台轮询服务。5090 若修改业务代码，须使用独立分支交 5060 复核。任务字段、命令和启动提示词见本页第 6 节及 [`two-machine-result.schema.json`](../validation/two-machine/two-machine-result.schema.json)；本次演练的精简记录见 [`handoff-rehearsal-cf7ff41.json`](../validation/two-machine/handoff-rehearsal-cf7ff41.json)，其数据版本来源更正见 [`handoff-rehearsal-cf7ff41-data-correction.json`](../validation/two-machine/handoff-rehearsal-cf7ff41-data-correction.json)。
 
 ## 3. 代码、资料和交付物入口
 
@@ -100,6 +100,8 @@ $env:BROWSER_CHANNEL = "msedge"   # 已有 Edge 时使用；没有则按 README 
 npm test
 ```
 
+非 Windows 或没有 Edge 的开发环境可设 `BROWSER_EXECUTABLE` 指向本机已有的 Chromium；路径只放在环境变量，不写入仓库。`BROWSER_EXECUTABLE` 优先于 `BROWSER_CHANNEL`；`test:modules` 未设置两者时仍默认 `msedge`。
+
 5060 可使用明确标记的 mock、历史运行和静态体验包检查页面，但它们不能计入真实模型验证。不要执行 `scripts/setup_local.py`，除非确实要在 5060 上单独运行模型；不要提交 `.venv`、`node_modules`、模型权重或 `artifacts/`。
 
 ### B. 5090 真实本地运行模式
@@ -155,6 +157,15 @@ Pop-Location
 3. 撤回展示素材，检查旧确认和导出失效，重新核验后游客版去掉受限素材，组织者版保留边界说明。
 4. 金山补充案例检查历史 30+90 安排、702 元组织支出演示测算、公开来源和待确认资源边界。
 
+`data_versions` 统一用被测提交的 Git 对象计算，不用工作区字节（Windows 检出可能是 CRLF，或混入本地未提交修改）：
+
+```powershell
+.venv\Scripts\python.exe scripts/record_data_versions.py --sha <候选完整SHA> --worktree
+.venv\Scripts\python.exe scripts/record_data_versions.py --check docs/validation/two-machine/<结果记录>.json
+```
+
+`--worktree` 只用于排查工作区与 Git 是否一致；5060 复核时用 `--check` 核对记录，失败项写明是换行差异还是资料不一致。
+
 每次验证保留首次失败和后续修复；不反复运行到满分，不把旧 24 例成绩改绑到新 SHA。5060 复核不能只看 `PASS`：至少复算人数、时长、费用；确认自然语言偏好进入活动组合；检查讲解与来源对应；比较游客版和组织者版使用同一方案；检查撤回后的确认/导出失效；确认演示条件没有被写成真实承诺。
 
 这叫双机开发与交叉复核，不称独立第三方评测，也不据此宣称跨硬件算法优势。环境问题、模型波动和业务缺陷要分别记录。
@@ -193,4 +204,4 @@ Pop-Location
 - DOCX：当前版本已有 WPS 兼容性逐页检查及哈希；正文修改后必须重新生成并检查对应页面。LibreOffice 是补充兼容性检查，不是交接前置条件。
 - 公开仓库不是匿名参赛源码包；不要把 Git 作者、用户路径、数据库、私密联系方式或未获授权素材打入正式材料。
 
-本交接入口不宣称 5060 已验收；5060 首个任务是完成环境检查、开发模式检查，并复核一份带 `tested_code_sha` 的 5090 实际结果。
+本交接入口不宣称 5060 已验收。5060 首次环境检查、开发模式检查和对 5090 演练记录的复核见 [5060 复核结果](../validation/two-machine/handoff-review-5060-cf7ff41.json) 与 [任务说明](../validation/two-machine/task-5060-handoff-review.md)；该复核在 Linux 隔离环境执行，尚未在 5060 Windows 原生环境重跑。
