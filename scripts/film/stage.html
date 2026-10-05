@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>一刀之差 · 渲染舞台</title>
+<style>
+  :root {
+    --paper: #f6f3eb; --ink: #223932; --red: #b94633; --cream: #eee9dd; --green: #476852;
+    --serif: "Noto Serif CJK SC", "Source Han Serif SC", serif;
+    --sans: "Noto Sans CJK SC", "Source Han Sans SC", sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1920px; height: 1080px; overflow: hidden; background: #0d1512; }
+  #frame { position: absolute; inset: 0; overflow: hidden; background: #0d1512; }
+  #scenes { position: absolute; inset: 0; z-index: 0; }
+  #grain, #warm, #vignette, #transition, #note, #tag, #sub { z-index: 10; }
+  .scene { position: absolute; inset: 0; overflow: hidden; display: none; }
+  .layer { position: absolute; inset: 0; }
+  .abs { position: absolute; }
+  .serif { font-family: var(--serif); }
+  .sans { font-family: var(--sans); }
+  .fill-img { position: absolute; left: 0; top: 0; transform-origin: 0 0; }
+  #grain { position: absolute; inset: 0; width: 1920px; height: 1080px; pointer-events: none; opacity: .024; mix-blend-mode: overlay; }
+  #vignette { position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(ellipse 75% 70% at 50% 48%, rgba(0,0,0,0) 55%, rgba(10,16,13,.30) 82%, rgba(6,10,8,.55) 100%); }
+  #warm { position: absolute; inset: 0; pointer-events: none; background: #c89a63; mix-blend-mode: soft-light; opacity: .07; }
+  #tag { position: absolute; right: 44px; top: 36px; font: 400 22px/1 var(--sans); letter-spacing: 2px;
+    color: rgba(246,243,235,.9); background: rgba(34,57,50,.42); padding: 9px 16px 10px; border-radius: 3px; display: none; }
+  #note { position: absolute; left: 44px; bottom: 150px; font: 400 22px/1 var(--sans); letter-spacing: 2px;
+    color: rgba(246,243,235,.92); background: rgba(34,57,50,.5); padding: 9px 16px 10px; border-radius: 3px; display: none; }
+  #sub { position: absolute; left: 0; right: 0; top: 942px; text-align: center; display: none; }
+  #sub span { display: inline-block; font: 400 44px/1.25 var(--sans); letter-spacing: 3px; color: #fff;
+    background: rgba(34,57,50,.4); padding: 7px 26px 9px; border-radius: 2px; text-shadow: 0 1px 2px rgba(0,0,0,.25); }
+  #transition { position: absolute; inset: 0; pointer-events: none; }
+</style>
+</head>
+<body>
+<div id="frame">
+  <div id="scenes"></div>
+  <canvas id="grain" width="640" height="360"></canvas>
+  <div id="warm"></div>
+  <div id="vignette"></div>
+  <svg id="transition" width="1920" height="1080" viewBox="0 0 1920 1080"></svg>
+  <div id="note"></div>
+  <div id="tag"></div>
+  <div id="sub"><span></span></div>
+</div>
+<script src="stage.js"></script>
+<script src="stage-scenes.js"></script>
+</body>
+</html>

@@ -29,7 +29,7 @@
 | M7 | 首页故事化 | 5090已验证，合入main `b0a4f0c` | 首页三幕故事条、为谁而做、意义带；见[任务说明](../validation/two-machine/task-5060-home-story.md) |
 | M8 | 三幕演示引导 | 5090已验证，随M9合入main `b9ff4e5` | 真实API模式下“三幕演示”引导条：填入主线案例、填入“不要茶歇，多留手作时间”、定位素材撤回；只填入与定位，三个✓只按真实运行状态出现；见[任务说明](../validation/two-machine/task-5060-demo-guide.md)与[访谈操作卡](../demo/interview-demo-runbook.md) |
 | M9 | 验收脚本与中文字号兜底 | 5090已验证并合入main `b9ff4e5`（[验证记录](../validation/two-machine/handoff-rehearsal-5090-acceptance-guard-8e6c439.json)） | 修复首页“河北 · 蔚县剪纸专题”10px等2处中文小字；统一中文字号检查进入`npm test`与无模型live路径；新增`npm run test:demo-guide`一次跑完三幕、阻断检查、24组可读性矩阵与首页截图；见[任务说明](../validation/two-machine/task-5060-acceptance-guard.md) |
-| M10 | 宣传片《一刀之差》 | 5090真实采集完成（`dev/5090-film-footage` `55e805d`，4次运行、23张静帧）；男女两版旁白已录制（`docs/assets/film/voice/`）；待云端会话制作两版成片 | 见[剧本与分镜](../demo/film/film-script.md)与[制作说明](../demo/film/production-brief.md) |
+| M10 | 宣传片《一刀之差》 | 男女两版成片已完成，候选分支`dev/5060-film`待5090复核 | 181.8秒，1920×1080、24 fps，两版画面字幕配乐相同只换旁白；真实运行画面来自5090采集（`55e805d`），示意动画单独标注；旁白选遍无“建议重录”；访谈原话位与实测位无记录未放；见[制作进度](../demo/film/progress.md)与[选片记录](../demo/film/vo-selection.md) |
 
 “已完成”仅适用于该行所列范围，不表示产品全面实现。
 

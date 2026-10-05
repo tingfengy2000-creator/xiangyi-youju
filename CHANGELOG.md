@@ -1,5 +1,14 @@
 # 更新记录
 
+## 2026-10-05 · 宣传片《一刀之差》男女两版成片（5060候选分支 `dev/5060-film`）
+
+- 新增确定性渲染流程`npm run film:render`（`scripts/film/`）：每个镜头写成HTML/SVG场景并提供`seek(t)`，Playwright逐帧截图，ffmpeg合成1920×1080、24 fps的H.264成片；4个进程并行渲染。`npm run film:verify`自查规格、响度与旁白。
+- 两版成片`docs/assets/video/xiangyi-youju-film-male.mp4`、`xiangyi-youju-film-female.mp4`（181.8秒，各不超过50 MB），画面、字幕、配乐完全相同，只换旁白；字幕另存`xiangyi-youju-film.srt`。分轨与旁白放置记录在`docs/assets/film/mix/`。
+- 镜2–3“阳刻翻阴刻”：原创纹样拆成线描，刀光沿路径走、宽刀路mask逐段刻出阳刻；3D翻面后是同一组线条在整张红纸上刻去的阴刻，二者严格互为正负。真实界面镜头只做推拉、裁切、压暗与叠加框线，角标分别标“真实本地运行画面”与“示意动画”。
+- 旁白选遍：Hugging Face不可达，改用sherpa-onnx发布在GitHub的Paraformer-zh识别并给逐字时间、SenseVoice独立复核；逐字流与17句原文动态规划对齐分遍，按拼音算CER，按规则选遍。男女两版均无“建议重录”，明细见[选片记录](docs/demo/film/vo-selection.md)。旁白只做清晰度处理（高通、降噪、去齿音、轻压缩、整条线性响度统一），未变速、未改音高。
+- 配乐（A羽调五声、Karplus-Strong拨弦、低频铺底、结尾弦乐）与音效（纸张、刀划、翻纸、印章、键盘）全部由代码原创合成；旁白出现时侧链压缩把配乐压低约12–14 dB。
+- 镜13按真实运行改写：修改前方案本身不含茶歇，“不要茶歇”是把茶歇从候选模块中排除，片中茶歇画为时间轴外的可选模块被移走；纸条长度按真实分钟数。访谈原话位与实测位无书面记录，按剧本“没有时”处理，替换方法与每个镜头的状态见[制作进度](docs/demo/film/progress.md)。
+
 ## 2026-10-05 · 宣传片《一刀之差》剧本与素材采集（5060候选分支）
 
 - 新增[剧本与分镜](docs/demo/film/film-script.md)：以“阳刻/阴刻一刀之差”贯穿开场与三幕，21个镜头逐一标明真实运行画面或示意动画；[旁白稿](docs/demo/film/voiceover.md)17句约420字，由队员真人录制；[素材清单](docs/demo/film/asset-manifest.md)写明来源、许可与禁用项；[制作说明](docs/demo/film/production-brief.md)交给云端会话分两步生成成片。
