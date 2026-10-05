@@ -71,7 +71,7 @@ def harness(monkeypatch):
                     value["tea_preference"] = "not_mentioned"
                     value["ambiguities"].append("文字同时要求保留茶歇和取消茶歇，请澄清")
             elif name == "NoteIssueReview":
-                value = {"items": [{"index": int(index), "text": text, "category": "needs_clarification",
+                value = {"items": [{"index": int(index), "text": text, "category": controls.get("review_category", "needs_clarification"),
                                     "reason": "假模型保留真实冲突，不能绕过文字自相矛盾"} for index, text in data["flagged"].items()]}
             elif name == "Audit":
                 value = {"judgments": [{"claim_id": claim["id"], "status": "supported" if claim["evidence"] else "insufficient",
@@ -271,3 +271,43 @@ def test_empty_note_skips_preference_model_and_preserves_form(harness):
     assert run["effective_requirements"]["people"] == 8
     assert run["effective_requirements"]["audience"] == "general"
     assert run["effective_requirements"]["constraints"]["require_tags"] == ["tea"]
+
+
+def english_payload():
+    value = payload()
+    value["requirements"] = {**value["requirements"], "note": "需要安排英语讲解"}
+    return value
+
+
+def test_review_cannot_release_unconfigured_service_as_editorial_note(harness):
+    # 5090真实运行53b9a5aa…：抽取已列为待澄清，复核调用却改成editorial_note并生成方案。
+    client, controls = harness
+    controls["intent"] = neutral_intent(ambiguities=["需要安排英语讲解"])
+    controls["review_category"] = "editorial_note"
+    run = submit(client, english_payload())
+    assert run["status"] == "needs_input"
+    assert run["error"].startswith("文字需求存在矛盾或超出当前模块能力，请先澄清")
+    review = run["note_issue_review"][0]
+    assert review["category"] == "needs_clarification" and review["original_category"] == "editorial_note"
+    assert run["plan"] is None and run["approval"] is None
+    assert client.get(f"/api/runs/{run['id']}/export", params={"preview": True}).status_code == 409
+
+
+def test_unflagged_unconfigured_service_in_user_note_still_blocks(harness):
+    client, controls = harness
+    controls["intent"] = neutral_intent()
+    run = submit(client, english_payload())
+    assert run["status"] == "needs_input"
+    assert "英语讲解" in run["error"] and run["program_note_blockers"]
+    assert run["plan"] is None
+
+
+def test_negated_service_and_default_note_do_not_block(harness):
+    client, controls = harness
+    controls["intent"] = neutral_intent()
+    for note in ("不需要翻译，按现有安排。", "为初次了解剪纸的游客安排文化讲解与入门手作。讲述清楚工艺特色，留出观察和提问的时间。"):
+        value = payload()
+        value["requirements"] = {**value["requirements"], "note": note}
+        run = submit(client, value)
+        assert run["status"] == "awaiting_review", (note, run.get("error"))
+        assert not run.get("program_note_blockers")

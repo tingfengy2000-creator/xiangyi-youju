@@ -333,3 +333,22 @@ def test_omission_wording_in_reason_never_downgrades_a_real_blocker():
     ])
     assert [row["category"] for row in neutral] == ["editorial_note", "editorial_note", "configured_resource_check"]
     assert neutral[0]["original_category"] == "needs_clarification" and neutral[0]["original_reason"] == "需要补充"
+
+
+def test_hard_blockers_survive_review_and_holdout_notes_do_not_trigger():
+    rows = workflow.protect_hard_blockers([
+        {"index": 0, "text": "需要安排英语讲解", "category": "editorial_note", "reason": "需要安排英语讲解"},
+        {"index": 1, "text": "保留待确认经营承诺", "category": "editorial_note", "reason": "编辑说明"},
+    ])
+    assert [row["category"] for row in rows] == ["needs_clarification", "editorial_note"]
+    for note, kind in [("需要安排英语讲解", "未配置服务"), ("中午安排午餐", "未配置服务"),
+                       ("下午转到暖泉古镇再做一场", "跨场地"), ("不要讲解，只做手作", "取消必需环节"),
+                       ("请增加一位教师", "改变资源数量")]:
+        assert kind in workflow.note_blocker_ambiguities(note, [])[0], note
+    for note in ("不需要翻译", "未包含交通、住宿和税费", "亲子互动，不安排茶歇，多留手作时间",
+                 "为初次了解剪纸的游客安排文化讲解与入门手作。讲述清楚工艺特色，留出观察和提问的时间。"):
+        assert workflow.note_blocker_ambiguities(note, []) == [], note
+    root = Path(__file__).resolve().parents[2]
+    for name in ("semantic-holdout.json", "upgrade-holdout.json"):
+        for case in json.loads((root / "tests/acceptance" / name).read_text(encoding="utf-8"))["cases"]:
+            assert workflow.note_blocker_ambiguities(case["input"]["requirements"].get("note", ""), []) == [], case["id"]

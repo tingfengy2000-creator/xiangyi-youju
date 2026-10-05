@@ -62,6 +62,67 @@ def normalize_note_issue_review(items):
     return normalized
 
 
+_NEGATION = re.compile(r"[不无没免别勿未][^，。；,;！？!?]{0,3}$")
+_HARD_NOTE_BLOCKERS = (
+    ("未配置服务", re.compile(r"英语|英文|外语|双语|翻译|日语|韩语|手语")),
+    ("未配置服务", re.compile(r"(?:需要|安排|提供|配备|配|要|请|希望|增加|加|包含|含)[^，。；,;]{0,6}"
+                         r"(?:接送|包车|住宿|午餐|午饭|晚餐|用餐|餐饮|摄影|跟拍|表演|演出|直播|导游)")),
+    ("跨场地", re.compile(r"(?:转场|跨场地|换(?:一个|个)?场地|转到|再去|前往|移到|改到)[^，。；,;]{0,10}"
+                       r"(?:古镇|村|景区|博物馆|场地|地点|基地|广场|会场)|再(?:做|办|开)一场|加一场|第二场")),
+    ("取消必需环节", re.compile(r"(?:取消|不要|去掉|删除|跳过|省掉|省去|不安排|免去)(?:文化|工艺)?"
+                          r"(?:讲解|讲述|介绍|手作|剪纸练习|制作环节|动手环节)")),
+    ("改变资源数量", re.compile(r"(?:增加|新增|追加|再请|多请|加派|再加|多加|多派|另请)"
+                          r"(?:一|两|二|几|[0-9]+)?(?:位|名|个|间)?(?:教师|老师|场地|教室|活动室|房间)")),
+)
+
+
+def hard_note_blockers(text):
+    """Requests the program must always send back for clarification.
+
+    The model may flag them and then a second model call may relabel them as
+    editorial notes, or it may not flag them at all.  These request forms are
+    outside the configured demonstration resources, so the program keeps them
+    blocking regardless of either model call.  A negation right before the
+    request ("不需要翻译") is not a request.
+    """
+    text = str(text or "")
+    found = []
+    for kind, pattern in _HARD_NOTE_BLOCKERS:
+        for match in pattern.finditer(text):
+            if _NEGATION.search(text[:match.start()]):
+                continue
+            found.append({"kind": kind, "match": match.group(0)})
+            break
+    return found
+
+
+def protect_hard_blockers(items):
+    """A model review may not downgrade a flagged hard blocker."""
+    protected = []
+    for row in items:
+        item = deepcopy(row)
+        blockers = hard_note_blockers(item.get("text", ""))
+        if blockers and item.get("category") != "needs_clarification":
+            item.update(original_category=item.get("category"), original_reason=item.get("reason", ""),
+                        category="needs_clarification",
+                        reason="程序保留阻断：" + "、".join(sorted({b["kind"] for b in blockers}))
+                               + "超出当前演示配置，需要先澄清，不能作为编辑说明放行。")
+        protected.append(item)
+    return protected
+
+
+def note_blocker_ambiguities(note, ambiguities):
+    """Add an ambiguity for each unflagged hard blocker in the user's own note."""
+    added = []
+    covered = " ".join(str(item) for item in ambiguities)
+    for sentence in [s for s in re.split(r"[。；;！？!?\n]", str(note or "")) if s.strip()]:
+        blockers = hard_note_blockers(sentence)
+        if blockers and not any(b["match"] in covered for b in blockers):
+            kinds = "、".join(sorted({b["kind"] for b in blockers}))
+            added.append(f"文字需求「{sentence.strip()}」涉及{kinds}，超出当前演示配置，需要先澄清。")
+    return added
+
+
 def validated_judgments(result, claims):
     rows = result["judgments"]
     if len(rows) != len(claims) or {r["claim_id"] for r in rows} != {c["id"] for c in claims}:
@@ -197,10 +258,15 @@ def execute(run_id, policy="agent"):
                         raise ValueError("阻断复核没有完整对应原问题")
                     if any(item["text"] != flagged[item["index"]] for item in review["items"]):
                         raise ValueError("阻断复核改写了原问题")
-                    reviewed_items = normalize_note_issue_review(review["items"])
+                    reviewed_items = protect_hard_blockers(normalize_note_issue_review(review["items"]))
                     r["note_issue_review"] = reviewed_items
                     preferences["ambiguities"] = [item["text"] for item in reviewed_items if item["category"] == "needs_clarification"]
                     store.event(run_id, "semantic_review", "复核文字需求的阻断原因，编辑说明与可计算的资源限制转交对应工具。")
+                program_blockers = note_blocker_ambiguities(r["requirements"].get("note", ""), preferences["ambiguities"])
+                if program_blockers:
+                    preferences["ambiguities"] = [*preferences["ambiguities"], *program_blockers]
+                    r["program_note_blockers"] = program_blockers
+                    store.event(run_id, "semantic_review", "程序检出文字需求中的未配置服务、跨场地、取消必需环节或资源变化，先请使用者澄清。")
                 preferences, r["intent_grounding"] = ground_durations(note, preferences)
                 tea = preferences.pop("tea_preference")
                 r["intent"] = {**preferences, "exclude_tags": ["tea"] if tea == "exclude" else [],
