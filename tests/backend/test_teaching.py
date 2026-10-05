@@ -8,7 +8,7 @@ from backend.bundles import render_bundle
 from backend.evidence import load_profile, load_sources
 from backend.model import ModelFailure
 from backend.planner import solve_plans
-from backend.teaching import CREATIVE_LABEL, generate_teaching, render_teaching_html, validate_teaching
+from backend.teaching import CREATIVE_LABEL, generate_teaching, normalize_open_question_scan, render_teaching_html, validate_teaching
 from backend.teaching import can_recheck_scan, recheck_teaching_scan
 
 
@@ -76,6 +76,29 @@ def test_corrected_supported_card_is_allowed():
                              suggested_text=run["cards"][0]["text"], corrected_status="supported",
                              corrected_evidence_ids=["src-yuxian-technique"])
     assert generate_teaching(FakeLLM(), run)["check"]["passed"]
+
+
+def test_open_question_scan_mismatch_is_normalized_but_factual_command_is_not():
+    run = make_run()
+    teaching = {
+        "observation_task": {"id": "observation", "text": "请观察负责人提供且允许使用的示例，找一找是否有阴刻细节。"},
+        "interaction_question": {"id": "interaction", "text": "你更喜欢阴刻还是阳刻的风格？"},
+        "short_script": [],
+    }
+    rows, changes = normalize_open_question_scan([
+        {"item_id": "observation", "checked_text": teaching["observation_task"]["text"], "status": "unsupported",
+         "cultural_premises": ["示例可能有阴刻"], "activity_scope_passed": True, "claim_ids": ["c1"],
+         "source_ids": ["src-yuxian-technique"], "reason": "开放观察，不涉及文化事实前提。"},
+        {"item_id": "interaction", "checked_text": teaching["interaction_question"]["text"], "status": "unsupported",
+         "cultural_premises": ["个人偏好问题"], "activity_scope_passed": True, "claim_ids": ["c1"],
+         "source_ids": ["src-yuxian-technique"], "reason": "开放个人偏好问题。"},
+    ], teaching)
+    assert [row["status"] for row in rows] == ["no_new_fact", "no_new_fact"]
+    assert len(changes) == 2
+
+    unsafe = {**rows[0], "checked_text": "请找出示例的阴刻细节。", "status": "unsupported"}
+    unsafe_rows, unsafe_changes = normalize_open_question_scan([unsafe], {"observation_task": {"id": "observation", "text": unsafe["checked_text"]}, "short_script": [], "interaction_question": {}})
+    assert unsafe_rows[0]["status"] == "unsupported" and not unsafe_changes
 
 
 def test_scan_contract_repair_is_once_and_preserves_content_and_evidence():

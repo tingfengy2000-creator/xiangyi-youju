@@ -139,6 +139,46 @@ def _references(unit, context):
     return issues
 
 
+def _open_question_kind(item_id, text):
+    """Return the safe open-question contract for a narrowly bounded sentence.
+
+    The model sometimes describes an open observation or preference question as
+    an ``unsupported`` cultural premise while its reason simultaneously says
+    that no premise is present.  Only these explicit, non-assertive forms are
+    eligible for deterministic normalization; factual commands such as
+    ``找出示例的彩色部分`` remain rejected and must be rewritten.
+    """
+    text = str(text or "")
+    if item_id == "observation":
+        if "请观察负责人提供且允许使用的示例" in text:
+            return True
+        if re.search(r"是否有|有没有|有无", text) and "找出" not in text:
+            return True
+        return False
+    if item_id == "interaction":
+        return bool(re.search(r"你更喜欢|你喜欢|哪一处.*兴趣|最想了解|你觉得|你会联想到", text))
+    return False
+
+
+def normalize_open_question_scan(rows, teaching):
+    """Repair only a contradictory scan contract, never an unsupported claim."""
+    units = {item.get("id"): item for item in _units(teaching)}
+    normalized, changes = [], []
+    for row in rows:
+        item = deepcopy(row)
+        unit = units.get(item.get("item_id"), {})
+        if (item.get("item_id") in {"observation", "interaction"}
+                and item.get("status") in {"unsupported", "insufficient"}
+                and item.get("activity_scope_passed") is True
+                and item.get("checked_text") == unit.get("text")
+                and _open_question_kind(item["item_id"], item.get("checked_text"))):
+            item.update(status="no_new_fact", cultural_premises=[], claim_ids=[], source_ids=[],
+                        reason="程序按开放观察/个人偏好契约归类；该句没有断言示例必有某文化特征。")
+            changes.append({"item_id": item["item_id"], "reason": "open_question_contract"})
+        normalized.append(item)
+    return normalized, changes
+
+
 def _structure(teaching, run, context):
     issues = []
     if teaching.get("audience") != run.get("requirements", {}).get("audience", "general"):
@@ -323,8 +363,12 @@ def generate_teaching(llm, run: dict, feedback: dict | None = None) -> dict:
                        {"items": [{"item_id": item["id"], **{k: item[k] for k in ("text", "claim_ids", "source_ids")}} for item in _units(teaching)],
                         "verified_claims": list(context["claims"].values()), "sources": list(context["sources"].values())},
                        ConstrainedTeachingScan, SCAN, max_attempts=1)
-        teaching["check"].update(items=TeachingScan.model_validate(scan).model_dump()["items"],
+        scan_items, normalizations = normalize_open_question_scan(
+            TeachingScan.model_validate(scan).model_dump()["items"], teaching)
+        teaching["check"].update(items=scan_items,
                                  model_calls_used=len(llm.calls) - start_calls, input_sha256=_digest(teaching, context))
+        if normalizations:
+            teaching["check"]["scan_normalizations"] = normalizations
         teaching["check"] = validate_teaching(teaching, run)
     except Exception as error:
         teaching["check"].update(passed=False, error=f"教学阶段未完成：{error}", error_kind=type(error).__name__,
@@ -353,8 +397,12 @@ def recheck_teaching_scan(llm, teaching, run):
             "verified_claims": list(context["claims"].values()), "sources": list(context["sources"].values()),
             "contract_errors": teaching["check"]["issues"]},
             ConstrainedTeachingScan, SCAN + "\n上次扫描字段自相矛盾，本次按原文全文重核一次，不默认支持。no_new_fact必须没有文化前提、claim_ids/source_ids也为空；若确有前提，逐项核证后选择supported或insufficient，不能强行清除文化前提。", max_attempts=1)
-        result["check"] = {"items": TeachingScan.model_validate(scan).model_dump()["items"], "model_calls_used": 3,
+        scan_items, normalizations = normalize_open_question_scan(
+            TeachingScan.model_validate(scan).model_dump()["items"], result)
+        result["check"] = {"items": scan_items, "model_calls_used": 3,
                            "scan_attempts": 2, "input_sha256": _digest(result, context)}
+        if normalizations:
+            result["check"]["scan_normalizations"] = normalizations
         result["check"] = validate_teaching(result, run)
     except Exception as error:
         result["check"].update(passed=False, error=f"教学扫描修复失败：{error}", error_kind=type(error).__name__,

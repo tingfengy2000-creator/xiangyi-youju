@@ -18,6 +18,36 @@ class State(TypedDict):
     run: dict
 
 
+_MISSING_NOTE_MARKERS = ("未提及", "未明确", "未说明", "未给出", "没有说明", "缺少")
+_CONFLICT_NOTE_MARKERS = ("冲突", "矛盾", "同时要求", "既要求", "又要求")
+
+
+def normalize_note_issue_review(items):
+    """Keep optional omissions neutral; only explicit conflicts should block.
+
+    The local model is asked to distinguish an actual contradiction from a field
+    that was simply not mentioned.  A model can still over-report omissions as
+    ``needs_clarification`` (for example, saying that tea or a minimum craft
+    duration was not mentioned even though the form already supplies the
+    remaining conditions).  Missing optional preferences are intentionally
+    represented by ``any``/``None`` and must be handed to the deterministic
+    planner, not turned into a blocking question.  We keep explicit conflict
+    wording as a blocker and preserve every original item for the audit trail.
+    """
+    normalized = []
+    for row in items:
+        item = deepcopy(row)
+        combined = f"{item.get('text', '')} {item.get('reason', '')}"
+        if (item.get("category") == "needs_clarification"
+                and any(marker in combined for marker in _MISSING_NOTE_MARKERS)
+                and not any(marker in combined for marker in _CONFLICT_NOTE_MARKERS)):
+            item["category"] = "editorial_note"
+            item["reason"] = ("原文只是未提及或未明确该可选偏好；按约定保持表单/默认值，"
+                              "不把缺省当作矛盾。")
+        normalized.append(item)
+    return normalized
+
+
 def validated_judgments(result, claims):
     rows = result["judgments"]
     if len(rows) != len(claims) or {r["claim_id"] for r in rows} != {c["id"] for c in claims}:
@@ -153,8 +183,9 @@ def execute(run_id, policy="agent"):
                         raise ValueError("阻断复核没有完整对应原问题")
                     if any(item["text"] != flagged[item["index"]] for item in review["items"]):
                         raise ValueError("阻断复核改写了原问题")
-                    r["note_issue_review"] = review["items"]
-                    preferences["ambiguities"] = [item["text"] for item in review["items"] if item["category"] == "needs_clarification"]
+                    reviewed_items = normalize_note_issue_review(review["items"])
+                    r["note_issue_review"] = reviewed_items
+                    preferences["ambiguities"] = [item["text"] for item in reviewed_items if item["category"] == "needs_clarification"]
                     store.event(run_id, "semantic_review", "复核文字需求的阻断原因，编辑说明与可计算的资源限制转交对应工具。")
                 preferences, r["intent_grounding"] = ground_durations(note, preferences)
                 tea = preferences.pop("tea_preference")

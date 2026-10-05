@@ -100,6 +100,16 @@ def judgment(claim_id="c1", status="supported", evidence_ids=None, suggested_tex
             "reason": "合成审核结果用于程序校验", "suggested_text": suggested_text}
 
 
+def test_missing_optional_note_fields_stay_neutral_but_explicit_conflict_blocks():
+    rows = workflow.normalize_note_issue_review([
+        {"index": 0, "text": "未提及茶歇需求", "category": "needs_clarification", "reason": "未提及"},
+        {"index": 1, "text": "未明确手作最低分钟", "category": "needs_clarification", "reason": "未明确"},
+        {"index": 2, "text": "文字同时要求保留茶歇和取消茶歇，请澄清", "category": "needs_clarification", "reason": "存在冲突"},
+    ])
+    assert [row["category"] for row in rows] == ["editorial_note", "editorial_note", "needs_clarification"]
+    assert "不把缺省当作矛盾" in rows[0]["reason"]
+
+
 def claim(evidence=None):
     sources = [s for s in load_sources() if s["region"] == "河北省蔚县"]
     return {"id": "c1", "text": TEXT, "evidence": sources if evidence is None else evidence}
