@@ -8,7 +8,7 @@ from backend.bundles import render_bundle
 from backend.evidence import load_profile, load_sources
 from backend.model import ModelFailure
 from backend.planner import solve_plans
-from backend.teaching import CREATIVE_LABEL, generate_teaching, render_teaching_html, validate_teaching
+from backend.teaching import CREATIVE_LABEL, generate_teaching, normalize_open_question_scan, render_teaching_html, validate_teaching
 from backend.teaching import can_recheck_scan, recheck_teaching_scan
 
 
@@ -76,6 +76,29 @@ def test_corrected_supported_card_is_allowed():
                              suggested_text=run["cards"][0]["text"], corrected_status="supported",
                              corrected_evidence_ids=["src-yuxian-technique"])
     assert generate_teaching(FakeLLM(), run)["check"]["passed"]
+
+
+def test_open_question_scan_mismatch_is_normalized_but_factual_command_is_not():
+    run = make_run()
+    teaching = {
+        "observation_task": {"id": "observation", "text": "请观察负责人提供且允许使用的示例，找一找是否有阴刻细节。"},
+        "interaction_question": {"id": "interaction", "text": "你更喜欢阴刻还是阳刻的风格？"},
+        "short_script": [],
+    }
+    rows, changes = normalize_open_question_scan([
+        {"item_id": "observation", "checked_text": teaching["observation_task"]["text"], "status": "unsupported",
+         "cultural_premises": ["示例可能有阴刻"], "activity_scope_passed": True, "claim_ids": ["c1"],
+         "source_ids": ["src-yuxian-technique"], "reason": "开放观察，不涉及文化事实前提。"},
+        {"item_id": "interaction", "checked_text": teaching["interaction_question"]["text"], "status": "unsupported",
+         "cultural_premises": ["个人偏好问题"], "activity_scope_passed": True, "claim_ids": ["c1"],
+         "source_ids": ["src-yuxian-technique"], "reason": "开放个人偏好问题。"},
+    ], teaching)
+    assert [row["status"] for row in rows] == ["no_new_fact", "no_new_fact"]
+    assert len(changes) == 2
+
+    unsafe = {**rows[0], "checked_text": "请找出示例的阴刻细节。", "status": "unsupported"}
+    unsafe_rows, unsafe_changes = normalize_open_question_scan([unsafe], {"observation_task": {"id": "observation", "text": unsafe["checked_text"]}, "short_script": [], "interaction_question": {}})
+    assert unsafe_rows[0]["status"] == "unsupported" and not unsafe_changes
 
 
 def test_scan_contract_repair_is_once_and_preserves_content_and_evidence():
@@ -474,3 +497,53 @@ def test_confirmed_teaching_export_matches_validated_content(audience):
     run["plan"]["total_cents"] += 1
     with pytest.raises(ValueError, match="复算不一致"):
         render_bundle(run, audience, preview=True)
+
+
+def test_open_question_normalization_never_clears_assertions_or_presuppositions():
+    def normalized(item_id, text):
+        teaching = {"observation_task": {"id": "observation", "text": text if item_id == "observation" else "略"},
+                    "interaction_question": {"id": "interaction", "text": text if item_id == "interaction" else "略"},
+                    "short_script": []}
+        row = {"item_id": item_id, "checked_text": text, "status": "unsupported", "cultural_premises": ["前提"],
+               "activity_scope_passed": True, "claim_ids": [], "source_ids": [], "reason": "没有来源支持"}
+        rows, changes = normalize_open_question_scan([row], teaching)
+        return rows[0]["status"], bool(changes)
+
+    # 5090真实运行中出现的两句开放问句，以及固定观察模板。
+    for item_id, text in [
+        ("observation", "请观察负责人提供且允许使用的示例，找一找是否有阴刻和阳刻的结合。"),
+        ("observation", "请观察负责人提供且允许使用的剪纸示例，看一看有没有点染的颜色过渡。"),
+        ("interaction", "你最想了解哪一种颜色的点染效果？"),
+        ("interaction", "哪一处细节引起了你的兴趣？"),
+    ]:
+        assert normalized(item_id, text) == ("no_new_fact", True), text
+
+    for item_id, text in [
+        ("observation", "请观察负责人提供且允许使用的示例，找出示例的彩色部分。"),
+        ("observation", "请观察负责人提供且允许使用的示例，蔚县剪纸起源于唐代，体会其千年传承。"),
+        ("observation", "这幅作品是否有阳刻线条？蔚县剪纸以阳刻为主。"),
+        ("observation", "请观察负责人提供且允许使用的示例，找一找是否有以阳刻为主的线条。"),
+        ("interaction", "你觉得蔚县剪纸为什么以阳刻为主？"),
+        ("interaction", "你更喜欢哪种颜色？蔚县剪纸只用红色。"),
+        ("interaction", "你更喜欢这种传承千年的技法吗？"),
+    ]:
+        assert normalized(item_id, text) == ("unsupported", False), text
+
+
+def test_unsupported_premise_inside_observation_template_blocks_delivery():
+    text = "请观察负责人提供且允许使用的示例，蔚县剪纸起源于唐代，体会其千年传承。"
+
+    def draft(value):
+        value["observation_task"]["text"] = text
+        return value
+
+    def scan(value):
+        for row in value["items"]:
+            if row["item_id"] == "observation":
+                row.update(status="unsupported", cultural_premises=["蔚县剪纸起源于唐代"],
+                           claim_ids=[], source_ids=[], reason="资料中没有起源于唐代的依据")
+        return value
+
+    result = generate_teaching(FakeLLM(draft_change=draft, scan_change=scan), make_run())
+    assert result["check"]["passed"] is False
+    assert not result["check"].get("scan_normalizations")
