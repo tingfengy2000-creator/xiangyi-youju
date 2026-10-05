@@ -22,6 +22,7 @@
 | 核对公开活动案例与真实运行 | [金山区案例记录](docs/validation/external-case/public-case-selection.md) · [本轮分组实测与固定流程对照](docs/validation/semantic-reliability-2026-10-03.md) |
 | LLM 和 Agent 如何发挥价值 | [技术架构与验证方案](docs/design/technical-architecture.md) |
 | 如何安排开发和参赛展示 | [实施与参赛清单](docs/design/delivery-plan.md) |
+| 双机接手、5090验证与5060开发 | [双机开发交接入口](docs/development/two-machine-handoff.md) |
 | 后续按什么格式提交材料 | [申报正文与原模板草案](docs/submission/README.md) · [附件约束](docs/development/competition-submission.md) |
 | 观看三分钟内部展示 | [蔚县主线演示视频](docs/assets/video/xiangyi-youju-demo-3min.webm) · [公开案例补充讲稿](docs/demo/external-case-demo-script.md) |
 | 交给工坊或研学组织者试用 | [简短试用说明](docs/trial/field-trial-guide.md) · [反馈模板](docs/trial/trial-feedback-template.md) |

@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "乡艺有据双机验证结果",
+  "type": "object",
+  "required": [
+    "task_id",
+    "tested_code_sha",
+    "record_commit_sha",
+    "machine_role",
+    "run_id",
+    "model",
+    "model_configuration",
+    "data_versions",
+    "raw_input",
+    "actual_output",
+    "checks",
+    "evidence_paths"
+  ],
+  "properties": {
+    "task_id": {"type": "string"},
+    "goal": {"type": "string"},
+    "baseline_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "tested_code_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "record_commit_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "machine_role": {"enum": ["5060-development", "5090-validation", "5090-integration"]},
+    "run_id": {"type": "string"},
+    "model": {"type": "string"},
+    "model_configuration": {
+      "type": "object",
+      "required": ["ollama_url_scope", "quantization", "context_length_tokens", "generation_parameters"],
+      "properties": {
+        "ollama_version": {"type": ["string", "null"]},
+        "ollama_url_scope": {"type": "string"},
+        "model_digest": {"type": ["string", "null"]},
+        "quantization": {"type": "string"},
+        "context_length_tokens": {"type": "integer"},
+        "generation_parameters": {"type": "object"},
+        "api_observed": {"type": "boolean"}
+      }
+    },
+    "data_versions": {"type": "object"},
+    "raw_input": {"type": "object"},
+    "actual_output": {"type": "object"},
+    "model_calls": {"type": ["integer", "null"]},
+    "elapsed_seconds": {"type": ["number", "null"]},
+    "failure": {"type": ["object", "null"]},
+    "checks": {"type": "object"},
+    "evidence_paths": {"type": "array", "items": {"type": "string"}},
+    "notes": {"type": "string"}
+  }
+}

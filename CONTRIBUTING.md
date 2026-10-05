@@ -6,8 +6,9 @@
 
 1. 阅读 [项目总览](README.md)。
 2. 查看 [当前进度](docs/progress/project-status.md)，区分已完成、进行中和待实现事项。
-3. 修改方案前阅读 [产品方案](docs/design/product-plan.md) 与 [技术架构](docs/design/technical-architecture.md)。
-4. 遵循 [协作与交付约定](AGENTS.md) 和 [仓库规范](docs/development/repository-conventions.md)。
+3. 双机开发先阅读 [双机开发交接入口](docs/development/two-machine-handoff.md)，确认当前端是 5060 开发端还是 5090 验证/集成端。
+4. 修改方案前阅读 [产品方案](docs/design/product-plan.md) 与 [技术架构](docs/design/technical-architecture.md)。
+5. 遵循 [协作与交付约定](AGENTS.md) 和 [仓库规范](docs/development/repository-conventions.md)。
 
 前端仍在 `frontend/prototype/`，通过本地 FastAPI 服务接入 `backend/` 的真实流程；双击文件仅进入明示预设模式。启动与验证见 [本地运行说明](docs/development/local-runtime.md)，实际完成能力以项目进度为准。
 
@@ -15,7 +16,7 @@
 
 先执行 `git status --short`，了解工作区是否已有他人的修改。在干净工作区同步远端后再开始开发；已有未提交改动时不要直接执行覆盖、清理或重置。
 
-小范围、已授权的日常成果可以在 `main` 上提交。多人协作或较大的独立功能建议使用 `feat/feature-name`、`fix/issue-name`、`docs/topic-name` 等分支，通过拉取请求合并。不要强制推送或擅自修改他人的分支历史。
+5060 端的日常成果必须从最新 `origin/main` 建立 `dev/5060-<任务名>` 分支，提交完整 SHA 和任务说明后推送；不得直接推送 `main`。5090 端在独立 worktree 验证该 SHA，回传真实运行记录，双方复核后由 5090 端唯一集成到 `main`。5090 端的业务修复也使用独立分支交 5060 复核。不要强制推送、切换运行中的演示目录或擅自修改他人的分支历史。
 
 目录与文件名称优先采用 ASCII 小写和连字符，例如 `product-plan.md`；Python 文件按惯例采用下划线，例如 `serve_preview.py`。中文用于文档内容、页面文字和任务说明。
 
@@ -55,7 +56,7 @@
    chore: 统一开发脚本与文件命名
    ```
 
-5. 常规主分支交付使用 `git push origin main`；功能分支按协作安排提交拉取请求。
+5. 5060 端推送 `dev/5060-<任务名>`；只有 5090 完成候选版本复核、检查 `main` 差异并完成必要回归后，才推送集成后的 `main`。功能分支按双机交接入口的任务格式记录。
 6. 交付说明附上提交号、验证结果、尚未完成的内容和实际推送状态。
 
 用户已授权将每次成果交付到本仓库，因此在授权工作范围内正常提交和推送无需重复确认。没有文件变化不创建空提交；明确要求暂缓提交或推送时尊重该要求。推送失败要清楚说明“本地已提交、远端未更新”等真实状态。
