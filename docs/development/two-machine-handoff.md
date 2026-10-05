@@ -24,8 +24,10 @@
 
 | 端 | 主要职责 | 不做的事 |
 | --- | --- | --- |
-| 5060 端 | 代码、前端、材料、无模型测试；复核 5090 的原始结果 | 不直接推送 `main`；不把 mock/历史回放称为真实模型运行 |
-| 5090 端 | 代码审查、真实本地推理、关键 UI/导出验证、结果回传、最终集成 | 不在运行中的演示目录切换候选代码；不把修改后的结果记为原 SHA |
+| 5060 端 | 全部代码与方案设计：后端、前端、数据、申报材料；无模型测试；复核 5090 回传的原始结果并据此修复 | 不直接推送 `main`；不把 mock/历史回放称为真实模型运行 |
+| 5090 端 | 真实本地 Agent/LLM 运行、关键 UI/导出的真实验证、结果回传、按已验证 SHA 合入 `main` | 不修改业务代码或方案；发现问题只回传原始输入、输出和失败，由 5060 修复；不在运行中的演示目录切换候选代码 |
+
+自 2026-10-05 起采用上述分工：真实运行发现缺陷时，5090 保留首次失败和原始记录，交回 5060 出修复提交，不在 5090 端自行改规则或放宽检查。
 
 标准流程：
 
@@ -36,11 +38,11 @@
 5090: 使用独立数据库、临时输出和应用端口进行检查；模型服务可经端口核对后复用
 5090: 保存原始输入、输出、模型配置、调用次数、耗时、失败与证据路径
 5060: 按原始输入和结果复核人数/时长/费用/证据/双版包/失效保护
-双方: 若 main 已变化，检查候选 SHA 与最终合入代码差异，必要时补回归
-5090: 双方对同一候选版本完成检查后，唯一合入并推送 main
+5060: 若有缺陷，出修复提交和新候选 SHA，回到第 3 步
+5090: 双方对同一候选版本完成检查后，以 fast-forward 或无冲突合并唯一合入并推送 main
 ```
 
-不得强推、重写共享历史、合并无关分支或新增后台轮询服务。5090 若修改业务代码，须使用独立分支交 5060 复核。任务字段、命令和启动提示词见本页第 6 节及 [`two-machine-result.schema.json`](../validation/two-machine/two-machine-result.schema.json)；本次演练的精简记录见 [`handoff-rehearsal-cf7ff41.json`](../validation/two-machine/handoff-rehearsal-cf7ff41.json)，其数据版本来源更正见 [`handoff-rehearsal-cf7ff41-data-correction.json`](../validation/two-machine/handoff-rehearsal-cf7ff41-data-correction.json)。
+不得强推、重写共享历史、合并无关分支或新增后台轮询服务。5090 不修改业务代码；如确需临时诊断补丁，只放在本机忽略目录，不提交、不计入候选结果。任务字段、命令和启动提示词见本页第 6 节及 [`two-machine-result.schema.json`](../validation/two-machine/two-machine-result.schema.json)；本次演练的精简记录见 [`handoff-rehearsal-cf7ff41.json`](../validation/two-machine/handoff-rehearsal-cf7ff41.json)，其数据版本来源更正见 [`handoff-rehearsal-cf7ff41-data-correction.json`](../validation/two-machine/handoff-rehearsal-cf7ff41-data-correction.json)。
 
 ## 3. 代码、资料和交付物入口
 
