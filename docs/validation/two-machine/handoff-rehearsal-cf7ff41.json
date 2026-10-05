@@ -1,0 +1,127 @@
+{
+  "task_id": "handoff-rehearsal-regional-correction",
+  "goal": "5090隔离worktree真实模型交接演练：蔚县地域纠错、可复算方案和双版导出",
+  "baseline_sha": "cf7ff418e42d40ab646d0db94826194247963234",
+  "tested_code_sha": "cf7ff418e42d40ab646d0db94826194247963234",
+  "record_commit_sha": "94144eafd3edb871f1c1efbc5f84fb33b4d637c2",
+  "record_commit_note": "结果记录在交接文档提交后生成；与被测代码SHA分开。",
+  "machine_role": "5090-validation",
+  "run_id": "2fcaeb910f3346e0a922edb7101de5f2",
+  "model": "xiangyi-qwen3:14b-q4_k_m",
+  "model_configuration": {
+    "ollama_version": "0.35.0",
+    "ollama_url_scope": "127.0.0.1:11439（5090本机，仅本地绑定）",
+    "model_digest": "e835bb820c84d5ca90942815563588f1af11ffbc377d8d050620f6560c684a38",
+    "quantization": "Q4_K_M",
+    "model_size_bytes": 9001753109,
+    "model_context_length_advertised": 40960,
+    "context_length_tokens": 8192,
+    "generation_parameters": {
+      "temperature": 0,
+      "think": false,
+      "stream": false,
+      "keep_alive": "15m"
+    },
+    "api_observed": true
+  },
+  "hardware_and_runtime": {
+    "gpu": "NVIDIA GeForce RTX 5090",
+    "vram_mib": 32607,
+    "driver_version": "610.88",
+    "python": "3.12.14",
+    "node": "v24.19.0",
+    "npm": "11.17.0",
+    "requirements_lock_sha256": "5978e6df2dbc5f5ed94771911e473693bade5c79a9c38fccf28bff0cd4f208d8",
+    "package_lock_sha256": "df9e8c4e280af21320070024319b66dbffae9e9dbe225ed2bc99b0bf0ab62691"
+  },
+  "data_versions": {
+    "data/curated/sources.json": "2ce95e8c33ad309e8ad3f4daafb43a5e30f3a59e6483a7182f863728952e85f9",
+    "data/curated/materials.json": "d7c200bd48ac0f0eded3979631b17c61921999ceafc273d2ba6a20608dc4c8d0",
+    "data/curated/public-case-sources.json": "52cd51862befec28d7de1a902ca954814b207e3a947cdec49491d3211d507f69",
+    "data/operating/demo-profile.json": "f8eb6aea38cc74e46c4762fe5ae812499c454c328e8d0b1592cdb895fc66ce18",
+    "data/operating/jinshan-reconstruction.json": "bc29eeb42602196416689ffb09fa8642f67b19d20daf82be38daa899e94f5af5",
+    "requirements-lock.txt": "5978e6df2dbc5f5ed94771911e473693bade5c79a9c38fccf28bff0cd4f208d8",
+    "package-lock.json": "df9e8c4e280af21320070024319b66dbffae9e9dbe225ed2bc99b0bf0ab62691"
+  },
+  "raw_input": {
+    "text": "蔚县剪纸以阳刻为主，阴刻为辅。蔚县剪纸善于多色点染。工坊每天开放并且无需预约。",
+    "requirements": {
+      "region": "河北省蔚县",
+      "project": "剪纸",
+      "people": 8,
+      "budget_per_person": 160.0,
+      "available_minutes": 150,
+      "start_time": "09:30",
+      "preferred_plan": "deep",
+      "note": "为初次了解剪纸的游客安排有来源的讲解与入门体验，不能改变明确人数和经营报价。",
+      "planning_mode": "packages",
+      "audience": "general",
+      "tea_preference": "any",
+      "min_craft_minutes": 0,
+      "teaching_enabled": false
+    },
+    "operating_overrides": {
+      "capacity": 12,
+      "teachers": 1,
+      "rooms": 1,
+      "reuse": true
+    }
+  },
+  "actual_output": {
+    "pre_approval_status": "awaiting_review",
+    "approval_status": "confirmed",
+    "claim_statuses": [
+      "contradicted",
+      "supported",
+      "insufficient"
+    ],
+    "corrected_claim_statuses": [
+      "supported",
+      null,
+      null
+    ],
+    "plan": {
+      "id": "deep",
+      "total_cents": 108000,
+      "per_person_cents": 13500,
+      "duration_minutes": 120,
+      "local_service_cents": 74000,
+      "material_cents": 18000,
+      "operations_cents": 16000,
+      "paper_units": 16,
+      "schedule_minutes": [
+        30,
+        60,
+        30
+      ]
+    },
+    "export_audiences": [
+      "visitor",
+      "organizer"
+    ],
+    "export_same_confirmed_run": true
+  },
+  "model_calls": 3,
+  "elapsed_seconds": 10.14,
+  "failure": null,
+  "checks": {
+    "repository_check": "passed: 539 maintenance files, 207 local links",
+    "backend_tests": "passed: 213 tests",
+    "isolated_api_port": 8790,
+    "isolated_database": "artifacts/handoff/app.sqlite3",
+    "health_model_ready": true,
+    "claims_include_contradiction_support_and_insufficient": true,
+    "plan_amount_recomputable": "8 * 13500 = 108000 cents; ledger categories sum to 108000 cents",
+    "visitor_and_organizer_exports_from_same_confirmed_run": true,
+    "scope": "5090上的交接演练，不是5060验收，不是独立第三方评测，不是跨硬件优势证明"
+  },
+  "evidence_paths": [
+    "docs/validation/two-machine/handoff-rehearsal-cf7ff41.json",
+    "artifacts/handoff-cf7ff41/real-run-summary.json",
+    "artifacts/handoff-cf7ff41/real-run.json",
+    "artifacts/handoff-cf7ff41/real-run-approved.json",
+    "artifacts/handoff-cf7ff41/real-run-visitor.html",
+    "artifacts/handoff-cf7ff41/real-run-organizer.html"
+  ],
+  "notes": "原始运行、SQLite和双版HTML留在5090本机的忽略目录；仓库只提交本精简记录。服务启动前端口曾不可用，随后按仓库脚本启动并由API实际观察到ready。"
+}

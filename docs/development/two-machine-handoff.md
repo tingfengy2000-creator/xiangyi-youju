@@ -1,9 +1,9 @@
 # 乡艺有据双机开发交接入口
 
-**项目**：乡艺有据——可信非遗体验编排智能体  
-**仓库**：<https://github.com/tingfengy2000-creator/xiangyi-youju>  
-**交接基线**：`cf7ff418e42d40ab646d0db94826194247963234`（2026-10-05 核对）  
-**主赛道**：智慧文旅与乡村振兴  
+**项目**：乡艺有据——可信非遗体验编排智能体
+**仓库**：<https://github.com/tingfengy2000-creator/xiangyi-youju>
+**交接基线**：`cf7ff418e42d40ab646d0db94826194247963234`（2026-10-05 核对）
+**主赛道**：智慧文旅与乡村振兴
 **目标**：保持可现场展示的真实闭环，争取进入全国决赛；不把内部自测写成独立评测或真实经营成果。
 
 这是新开发者的单一入口。第一次接手不需要阅读历史聊天；先阅读本页，再阅读 [README](../../README.md)、[当前进度](../progress/project-status.md) 和 [协作约定](../../AGENTS.md)。本页的“已验证”只绑定记录中的代码 SHA、资料版本和运行条件。
@@ -40,7 +40,7 @@
 5090: 双方对同一候选版本完成检查后，唯一合入并推送 main
 ```
 
-不得强推、重写共享历史、合并无关分支或新增后台轮询服务。5090 若修改业务代码，须使用独立分支交 5060 复核。任务字段、命令和启动提示词见本页第 6 节及 [`two-machine-result.schema.json`](../validation/two-machine/two-machine-result.schema.json)。
+不得强推、重写共享历史、合并无关分支或新增后台轮询服务。5090 若修改业务代码，须使用独立分支交 5060 复核。任务字段、命令和启动提示词见本页第 6 节及 [`two-machine-result.schema.json`](../validation/two-machine/two-machine-result.schema.json)；本次演练的精简记录见 [`handoff-rehearsal-cf7ff41.json`](../validation/two-machine/handoff-rehearsal-cf7ff41.json)。
 
 ## 3. 代码、资料和交付物入口
 
