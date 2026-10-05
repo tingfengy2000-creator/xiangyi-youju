@@ -1,10 +1,10 @@
 {
   "task_id": "5090-demo-guide-00ad6b9",
-  "goal": "对三幕演示引导、真实运行状态勾选、首屏静默提示及三页可读性进行5090本地真实模型验证，并在通过后合入main。",
+  "goal": "回传00ad6b9真实运行证据及本轮验证执行偏差；不再声称满足全部一次验收条件。",
   "baseline_sha": "b0a4f0c865ac94ab9dff862c6adf1f862c9aa08c",
   "tested_code_sha": "00ad6b95af8047ef8179d36b2555dc1edd332b34",
-  "record_commit_sha": "20507826c5df75b95b634257d1faeacf19c7954b",
-  "machine_role": "5090-integration",
+  "record_commit_sha": "ef8a220a967a6540712cf656aa55483051403dcd",
+  "machine_role": "5090-validation",
   "run_id": "d44ed06f7dd24e6dab53590ca6e3c17e",
   "model": "xiangyi-qwen3:14b-q4_k_m",
   "model_configuration": {
@@ -48,44 +48,598 @@
     "package-lock.json": "71450e84d23b5189ee704b272a65ca98610c30523ede3c1bc3404ef3bfcce6cb"
   },
   "raw_input": {
-    "main_flow": "沿用蔚县剪纸主流程及默认经营条件；三句原文为阳刻地域、点染、每天开放无需预约。",
-    "module_flow": "沿用固定五场景真实流程。",
+    "main_flow": {
+      "case_id": null,
+      "demo_assumptions_confirmed": false,
+      "text": "蔚县剪纸以阳刻为主，阴刻为辅。蔚县剪纸善于多色点染。工坊每天开放并且无需预约。",
+      "requirements": {
+        "region": "河北省蔚县",
+        "project": "剪纸",
+        "people": 8,
+        "budget_per_person": 160,
+        "available_minutes": 150,
+        "start_time": "09:30",
+        "preferred_plan": "deep",
+        "note": "为初次了解剪纸的游客安排文化讲解与入门手作。讲述清楚工艺特色，留出观察和提问的时间。",
+        "planning_mode": "packages",
+        "audience": "general",
+        "tea_preference": "any",
+        "min_craft_minutes": 0,
+        "teaching_enabled": true
+      },
+      "operating_overrides": {
+        "capacity": 12,
+        "teachers": 1,
+        "rooms": 1,
+        "reuse": true
+      },
+      "constraint_resolution": "ask",
+      "previous_run_id": null
+    },
+    "module_flow": [
+      {
+        "case_id": null,
+        "demo_assumptions_confirmed": false,
+        "text": "蔚县剪纸以阳刻为主，阴刻为辅。蔚县剪纸善于多色点染。工坊每天开放并且无需预约。",
+        "requirements": {
+          "region": "河北省蔚县",
+          "project": "剪纸",
+          "people": 8,
+          "budget_per_person": 160,
+          "available_minutes": 150,
+          "start_time": "09:30",
+          "preferred_plan": "deep",
+          "note": "为初次了解剪纸的游客安排文化讲解与入门手作。讲述清楚工艺特色，留出观察和提问的时间。",
+          "planning_mode": "modules",
+          "audience": "general",
+          "tea_preference": "include",
+          "min_craft_minutes": 0,
+          "teaching_enabled": true
+        },
+        "operating_overrides": {
+          "capacity": 12,
+          "teachers": 1,
+          "rooms": 1,
+          "reuse": true
+        },
+        "constraint_resolution": "ask",
+        "previous_run_id": null
+      },
+      {
+        "case_id": null,
+        "demo_assumptions_confirmed": false,
+        "text": "蔚县剪纸以阳刻为主，阴刻为辅。蔚县剪纸善于多色点染。工坊每天开放并且无需预约。",
+        "requirements": {
+          "region": "河北省蔚县",
+          "project": "剪纸",
+          "people": 8,
+          "budget_per_person": 110,
+          "available_minutes": 150,
+          "start_time": "09:30",
+          "preferred_plan": "deep",
+          "note": "安排亲子互动，不安排茶歇，手作至少40分钟，多留手作时间；讲解浅显易懂。",
+          "planning_mode": "modules",
+          "audience": "general",
+          "tea_preference": "include",
+          "min_craft_minutes": 0,
+          "teaching_enabled": true
+        },
+        "operating_overrides": {
+          "capacity": 12,
+          "teachers": 1,
+          "rooms": 1,
+          "reuse": true
+        },
+        "constraint_resolution": "ask",
+        "previous_run_id": "e43622a155c441f58783c79ba38ae797"
+      },
+      {
+        "case_id": null,
+        "demo_assumptions_confirmed": false,
+        "text": "蔚县剪纸以阳刻为主，阴刻为辅。蔚县剪纸善于多色点染。工坊每天开放并且无需预约。",
+        "requirements": {
+          "region": "河北省蔚县",
+          "project": "剪纸",
+          "people": 8,
+          "budget_per_person": 110,
+          "available_minutes": 150,
+          "start_time": "09:30",
+          "preferred_plan": "deep",
+          "note": "安排亲子互动，不安排茶歇，手作至少40分钟，多留手作时间；讲解浅显易懂。",
+          "planning_mode": "modules",
+          "audience": "family",
+          "tea_preference": "exclude",
+          "min_craft_minutes": 0,
+          "teaching_enabled": true
+        },
+        "operating_overrides": {
+          "capacity": 12,
+          "teachers": 1,
+          "rooms": 1,
+          "reuse": true
+        },
+        "constraint_resolution": "ask",
+        "previous_run_id": "e43622a155c441f58783c79ba38ae797"
+      },
+      {
+        "case_id": null,
+        "demo_assumptions_confirmed": false,
+        "text": "蔚县剪纸以阳刻为主，阴刻为辅。蔚县剪纸善于多色点染。工坊每天开放并且无需预约。",
+        "requirements": {
+          "region": "河北省蔚县",
+          "project": "剪纸",
+          "people": 8,
+          "budget_per_person": 110,
+          "available_minutes": 150,
+          "start_time": "09:30",
+          "preferred_plan": "deep",
+          "note": "安排亲子互动，不安排茶歇，手作至少40分钟，多留手作时间；讲解浅显易懂。",
+          "planning_mode": "modules",
+          "audience": "family",
+          "tea_preference": "exclude",
+          "min_craft_minutes": 0,
+          "teaching_enabled": true
+        },
+        "operating_overrides": {
+          "capacity": 12,
+          "teachers": 1,
+          "rooms": 1,
+          "reuse": true
+        },
+        "constraint_resolution": "ask",
+        "previous_run_id": "f463ca2653f04d5e853e758b8de8621b"
+      },
+      {
+        "case_id": null,
+        "demo_assumptions_confirmed": false,
+        "text": "蔚县剪纸以阳刻为主，阴刻为辅。蔚县剪纸善于多色点染。工坊每天开放并且无需预约。",
+        "requirements": {
+          "region": "河北省蔚县",
+          "project": "剪纸",
+          "people": 16,
+          "budget_per_person": 110,
+          "available_minutes": 150,
+          "start_time": "09:30",
+          "preferred_plan": "deep",
+          "note": "安排亲子互动，不安排茶歇，手作至少40分钟，多留手作时间；讲解浅显易懂。",
+          "planning_mode": "modules",
+          "audience": "family",
+          "tea_preference": "exclude",
+          "min_craft_minutes": 0,
+          "teaching_enabled": true
+        },
+        "operating_overrides": {
+          "capacity": 8,
+          "teachers": 1,
+          "rooms": 1,
+          "reuse": true
+        },
+        "constraint_resolution": "ask",
+        "previous_run_id": "2409c70b8c4148b6aea1c24f304bc336"
+      }
+    ],
     "english_blocking_note": "需要安排英语讲解",
     "negation_note": "不需要翻译，按现有安排。",
-    "demo_guide": "第一幕填入主线案例后操作者点击核验；第二幕填入不要茶歇、多留手作时间后操作者点击重编排；第三幕定位mat-paper-garden后操作者撤回，再点击重新核验。"
+    "demo_guide": "第一幕填入主线案例后操作者点击核验；第二幕填入不要茶歇、多留手作时间后操作者点击重编排；第三幕定位mat-paper-garden后操作者撤回，再点击重新核验。",
+    "english_blocking": {
+      "case_id": null,
+      "demo_assumptions_confirmed": false,
+      "text": "蔚县剪纸以阳刻为主，阴刻为辅。蔚县剪纸善于多色点染。工坊每天开放并且无需预约。",
+      "requirements": {
+        "region": "河北省蔚县",
+        "project": "剪纸",
+        "people": 8,
+        "budget_per_person": 160.0,
+        "available_minutes": 150,
+        "start_time": "09:30",
+        "preferred_plan": "deep",
+        "note": "为初次了解剪纸的游客安排文化讲解与入门手作。讲述清楚工艺特色，留出观察和提问的时间。需要安排英语讲解",
+        "planning_mode": "modules",
+        "audience": "general",
+        "tea_preference": "include",
+        "min_craft_minutes": 0,
+        "teaching_enabled": true
+      },
+      "operating_overrides": {
+        "capacity": 12,
+        "teachers": 1,
+        "rooms": 1,
+        "reuse": true
+      },
+      "constraint_resolution": "ask",
+      "previous_run_id": null
+    },
+    "negation_no_block": {
+      "case_id": null,
+      "demo_assumptions_confirmed": false,
+      "text": "蔚县剪纸以阳刻为主，阴刻为辅。蔚县剪纸善于多色点染。工坊每天开放并且无需预约。",
+      "requirements": {
+        "region": "河北省蔚县",
+        "project": "剪纸",
+        "people": 8,
+        "budget_per_person": 160.0,
+        "available_minutes": 150,
+        "start_time": "09:30",
+        "preferred_plan": "deep",
+        "note": "为初次了解剪纸的游客安排文化讲解与入门手作。讲述清楚工艺特色，留出观察和提问的时间。不需要翻译，按现有安排。",
+        "planning_mode": "modules",
+        "audience": "general",
+        "tea_preference": "include",
+        "min_craft_minutes": 0,
+        "teaching_enabled": true
+      },
+      "operating_overrides": {
+        "capacity": 12,
+        "teachers": 1,
+        "rooms": 1,
+        "reuse": true
+      },
+      "constraint_resolution": "ask",
+      "previous_run_id": null
+    }
   },
   "actual_output": {
     "main_flow": {
       "run_id": "d44ed06f7dd24e6dab53590ca6e3c17e",
       "status": "awaiting_review",
       "model_calls": 7,
-      "elapsed_seconds": 16.086,
+      "elapsed_seconds": 16.762,
+      "parent_id": null,
+      "previous_run_id": null,
+      "error": null,
+      "plan": {
+        "id": "deep",
+        "duration_minutes": 120,
+        "total_cents": 108000,
+        "per_person_cents": 13500,
+        "local_service_cents": 74000,
+        "material_cents": 18000,
+        "operations_cents": 16000,
+        "paper_units": 16
+      },
+      "claim_statuses": [
+        "contradicted",
+        "supported",
+        "insufficient"
+      ],
+      "scan_normalizations": [
+        {
+          "item_id": "observation",
+          "reason": "open_question_contract",
+          "original_status": "unsupported",
+          "original_cultural_premises": [
+            "允许使用的示例中可能包含阴刻或多色点染的细节"
+          ],
+          "original_reason": "该任务属于开放观察，不涉及文化事实前提。"
+        },
+        {
+          "item_id": "interaction",
+          "reason": "open_question_contract",
+          "original_status": "unsupported",
+          "original_cultural_premises": [
+            "个人偏好问题，不涉及文化事实前提"
+          ],
+          "original_reason": "该问题属于开放个人偏好问题，不涉及文化事实前提。"
+        }
+      ],
+      "model_purposes": [
+        "理解需求与拆分陈述",
+        "提取文字活动偏好",
+        "复核需求阻断原因",
+        "逐句证据核验",
+        "复核修订文本",
+        "生成分众教学内容",
+        "扫描教学内容全部文化前提"
+      ],
+      "note_issue_review": [
+        {
+          "index": 0,
+          "text": "未提及茶歇需求",
+          "category": "editorial_note",
+          "reason": "原文只是未提及或未明确该可选偏好；按约定保持表单/默认值，不把缺省当作矛盾。",
+          "original_category": "needs_clarification",
+          "original_reason": "未提及茶歇需求"
+        },
+        {
+          "index": 1,
+          "text": "未明确手作最低分钟",
+          "category": "editorial_note",
+          "reason": "原文只是未提及或未明确该可选偏好；按约定保持表单/默认值，不把缺省当作矛盾。",
+          "original_category": "needs_clarification",
+          "original_reason": "未明确手作最低分钟"
+        },
+        {
+          "index": 2,
+          "text": "未明确是否要求更多手作时间",
+          "category": "editorial_note",
+          "reason": "原文只是未提及或未明确该可选偏好；按约定保持表单/默认值，不把缺省当作矛盾。",
+          "original_category": "needs_clarification",
+          "original_reason": "未明确是否要求更多手作时间"
+        },
+        {
+          "index": 3,
+          "text": "未明确客群",
+          "category": "editorial_note",
+          "reason": "原文只是未提及或未明确该可选偏好；按约定保持表单/默认值，不把缺省当作矛盾。",
+          "original_category": "needs_clarification",
+          "original_reason": "未明确客群"
+        },
+        {
+          "index": 4,
+          "text": "未明确人数",
+          "category": "editorial_note",
+          "reason": "原文只是未提及或未明确该可选偏好；按约定保持表单/默认值，不把缺省当作矛盾。",
+          "original_category": "needs_clarification",
+          "original_reason": "未明确人数"
+        },
+        {
+          "index": 5,
+          "text": "未明确人均预算",
+          "category": "editorial_note",
+          "reason": "原文只是未提及或未明确该可选偏好；按约定保持表单/默认值，不把缺省当作矛盾。",
+          "original_category": "needs_clarification",
+          "original_reason": "未明确人均预算"
+        },
+        {
+          "index": 6,
+          "text": "未明确活动总时长",
+          "category": "editorial_note",
+          "reason": "原文只是未提及或未明确该可选偏好；按约定保持表单/默认值，不把缺省当作矛盾。",
+          "original_category": "needs_clarification",
+          "original_reason": "未明确活动总时长"
+        }
+      ],
+      "program_note_blockers": null,
       "expected_met": true,
-      "evidence": "artifacts/handoff-demo-guide/live-browser-check/verification.json"
+      "evidence": "artifacts/handoff-demo-guide/live-browser-check/run.json",
+      "plans": [
+        {
+          "id": "light",
+          "total_cents": 78400,
+          "duration_minutes": 90
+        },
+        {
+          "id": "deep",
+          "total_cents": 108000,
+          "duration_minutes": 120
+        }
+      ]
     },
     "module_flow": {
       "passed": true,
       "scenario_count": 5,
       "runs": [
         {
-          "id": "e43622a155c441f58783c79ba38ae797",
-          "scenario": "01-default"
+          "run_id": "e43622a155c441f58783c79ba38ae797",
+          "status": "awaiting_review",
+          "model_calls": 7,
+          "elapsed_seconds": 13.26,
+          "parent_id": null,
+          "previous_run_id": null,
+          "error": null,
+          "plan": {
+            "id": "mod-brief-story--basic-craft--tea",
+            "craft_minutes": 50,
+            "duration_minutes": 90,
+            "total_cents": 72000,
+            "per_person_cents": 9000,
+            "local_service_cents": 50000,
+            "material_cents": 15000,
+            "operations_cents": 7000,
+            "paper_units": 8,
+            "module_ids": [
+              "brief-story",
+              "basic-craft",
+              "tea"
+            ]
+          },
+          "claim_statuses": [
+            "contradicted",
+            "supported",
+            "insufficient"
+          ],
+          "scan_normalizations": [
+            {
+              "item_id": "observation",
+              "reason": "open_question_contract",
+              "original_status": "unsupported",
+              "original_cultural_premises": [
+                "允许使用的示例中可能包含阴刻或多色点染的细节"
+              ],
+              "original_reason": "该任务属于开放观察，不涉及文化事实前提。"
+            },
+            {
+              "item_id": "interaction",
+              "reason": "open_question_contract",
+              "original_status": "unsupported",
+              "original_cultural_premises": [
+                "个人对阴刻或多色点染风格的偏好"
+              ],
+              "original_reason": "该问题属于开放个人偏好，不涉及文化事实前提。"
+            }
+          ],
+          "model_purposes": [
+            "理解需求与拆分陈述",
+            "提取文字活动偏好",
+            "复核需求阻断原因",
+            "逐句证据核验",
+            "复核修订文本",
+            "生成分众教学内容",
+            "扫描教学内容全部文化前提"
+          ],
+          "note_issue_review": [
+            {
+              "index": 0,
+              "text": "未提及茶歇需求",
+              "category": "configured_resource_check",
+              "reason": "未提及茶歇需求"
+            },
+            {
+              "index": 1,
+              "text": "未明确手作最低分钟",
+              "category": "configured_resource_check",
+              "reason": "未明确手作最低分钟"
+            },
+            {
+              "index": 2,
+              "text": "未明确是否要求更多手作时间",
+              "category": "configured_resource_check",
+              "reason": "未明确是否要求更多手作时间"
+            },
+            {
+              "index": 3,
+              "text": "未明确客群",
+              "category": "configured_resource_check",
+              "reason": "未明确客群"
+            },
+            {
+              "index": 4,
+              "text": "未明确人数",
+              "category": "configured_resource_check",
+              "reason": "未明确人数"
+            },
+            {
+              "index": 5,
+              "text": "未明确人均预算",
+              "category": "configured_resource_check",
+              "reason": "未明确人均预算"
+            },
+            {
+              "index": 6,
+              "text": "未明确活动总时长",
+              "category": "configured_resource_check",
+              "reason": "未明确活动总时长"
+            }
+          ],
+          "program_note_blockers": null
         },
         {
-          "id": "b1ef9a8b236f412b87451549f9edb609",
-          "scenario": "02-note-conflict"
+          "run_id": "b1ef9a8b236f412b87451549f9edb609",
+          "status": "needs_confirmation",
+          "model_calls": 2,
+          "elapsed_seconds": 2.456,
+          "parent_id": null,
+          "previous_run_id": "e43622a155c441f58783c79ba38ae797",
+          "error": "文字需求与表单冲突，请明确使用表单或采纳文字后重新运行。",
+          "plan": null,
+          "claim_statuses": [
+            "insufficient",
+            "insufficient",
+            "insufficient"
+          ],
+          "scan_normalizations": null,
+          "model_purposes": [
+            "理解需求与拆分陈述",
+            "提取文字活动偏好"
+          ],
+          "note_issue_review": null,
+          "program_note_blockers": null
         },
         {
-          "id": "f463ca2653f04d5e853e758b8de8621b",
-          "scenario": "03-note-adopted"
+          "run_id": "f463ca2653f04d5e853e758b8de8621b",
+          "status": "awaiting_review",
+          "model_calls": 6,
+          "elapsed_seconds": 10.553,
+          "parent_id": null,
+          "previous_run_id": "e43622a155c441f58783c79ba38ae797",
+          "error": null,
+          "plan": {
+            "id": "mod-brief-story--deep-craft--craft-extension",
+            "craft_minutes": 80,
+            "duration_minutes": 100,
+            "total_cents": 79600,
+            "per_person_cents": 9950,
+            "local_service_cents": 52400,
+            "material_cents": 19200,
+            "operations_cents": 8000,
+            "paper_units": 24,
+            "module_ids": [
+              "brief-story",
+              "deep-craft",
+              "craft-extension"
+            ]
+          },
+          "claim_statuses": [
+            "contradicted",
+            "supported",
+            "insufficient"
+          ],
+          "scan_normalizations": null,
+          "model_purposes": [
+            "理解需求与拆分陈述",
+            "提取文字活动偏好",
+            "逐句证据核验",
+            "复核修订文本",
+            "生成分众教学内容",
+            "扫描教学内容全部文化前提"
+          ],
+          "note_issue_review": null,
+          "program_note_blockers": null
         },
         {
-          "id": "2409c70b8c4148b6aea1c24f304bc336",
-          "scenario": "04-material-refresh"
+          "run_id": "2409c70b8c4148b6aea1c24f304bc336",
+          "status": "awaiting_review",
+          "model_calls": 6,
+          "elapsed_seconds": 10.642,
+          "parent_id": "f463ca2653f04d5e853e758b8de8621b",
+          "previous_run_id": "f463ca2653f04d5e853e758b8de8621b",
+          "error": null,
+          "plan": {
+            "id": "mod-brief-story--deep-craft--craft-extension",
+            "craft_minutes": 80,
+            "duration_minutes": 100,
+            "total_cents": 79600,
+            "per_person_cents": 9950,
+            "local_service_cents": 52400,
+            "material_cents": 19200,
+            "operations_cents": 8000,
+            "paper_units": 24,
+            "module_ids": [
+              "brief-story",
+              "deep-craft",
+              "craft-extension"
+            ]
+          },
+          "claim_statuses": [
+            "contradicted",
+            "supported",
+            "insufficient"
+          ],
+          "scan_normalizations": null,
+          "model_purposes": [
+            "理解需求与拆分陈述",
+            "提取文字活动偏好",
+            "逐句证据核验",
+            "复核修订文本",
+            "生成分众教学内容",
+            "扫描教学内容全部文化前提"
+          ],
+          "note_issue_review": null,
+          "program_note_blockers": null
         },
         {
-          "id": "c10760e93a4447c5a4fe1e0f84546668",
-          "scenario": "05-resources-impossible"
+          "run_id": "c10760e93a4447c5a4fe1e0f84546668",
+          "status": "needs_input",
+          "model_calls": 4,
+          "elapsed_seconds": 4.746,
+          "parent_id": null,
+          "previous_run_id": "2409c70b8c4148b6aea1c24f304bc336",
+          "error": "当前条件无可行方案：人数16超过单组容量8；不能自动拆组或虚构并行接待。；16人手作需至少2位教师；现有1位、每位上限12人，合计可接待12人；不自动拆组或增加教师。 请落实资源或明确调整相应条件后重算。",
+          "plan": null,
+          "claim_statuses": [
+            "contradicted",
+            "supported",
+            "insufficient"
+          ],
+          "scan_normalizations": null,
+          "model_purposes": [
+            "理解需求与拆分陈述",
+            "提取文字活动偏好",
+            "逐句证据核验",
+            "复核修订文本"
+          ],
+          "note_issue_review": null,
+          "program_note_blockers": null
         }
       ],
       "approved_final_run_id": "2409c70b8c4148b6aea1c24f304bc336",
@@ -96,8 +650,22 @@
       "run_id": "59d68e48c46d40a3b55c7691adac8e41",
       "status": "needs_input",
       "model_calls": 3,
-      "elapsed_seconds": 3.172,
+      "elapsed_seconds": 2.939,
+      "parent_id": null,
+      "previous_run_id": null,
       "error": "文字需求存在矛盾或超出当前模块能力，请先澄清：需要安排英语讲解",
+      "plan": null,
+      "claim_statuses": [
+        "insufficient",
+        "insufficient",
+        "insufficient"
+      ],
+      "scan_normalizations": null,
+      "model_purposes": [
+        "理解需求与拆分陈述",
+        "提取文字活动偏好",
+        "复核需求阻断原因"
+      ],
       "note_issue_review": [
         {
           "index": 0,
@@ -109,18 +677,76 @@
         }
       ],
       "program_note_blockers": null,
-      "plan_created": false,
-      "expected_met": true
+      "expected_business_behavior_observed": true,
+      "expected_met": false,
+      "requested_exact_input_verified": false,
+      "wall_elapsed_seconds": 3.172,
+      "input_deviation": "沿用了模块回归的tea_preference=include（默认应为any），并把要求附在默认说明之后；未按用户要求仅填给定短句。仅回传实际输入的结果，不作为原指定检查通过。"
     },
     "negation_no_block": {
       "run_id": "1b825c464a0347a0a871e62dfb6cbaf2",
       "status": "awaiting_review",
       "model_calls": 6,
-      "elapsed_seconds": 10.855,
+      "elapsed_seconds": 10.541,
+      "parent_id": null,
+      "previous_run_id": null,
+      "error": null,
+      "plan": {
+        "id": "mod-brief-story--basic-craft--tea",
+        "craft_minutes": 50,
+        "duration_minutes": 90,
+        "total_cents": 72000,
+        "per_person_cents": 9000,
+        "local_service_cents": 50000,
+        "material_cents": 15000,
+        "operations_cents": 7000,
+        "paper_units": 8,
+        "module_ids": [
+          "brief-story",
+          "basic-craft",
+          "tea"
+        ]
+      },
+      "claim_statuses": [
+        "contradicted",
+        "supported",
+        "insufficient"
+      ],
+      "scan_normalizations": [
+        {
+          "item_id": "observation",
+          "reason": "open_question_contract",
+          "original_status": "unsupported",
+          "original_cultural_premises": [
+            "允许使用的示例中可能包含阴刻或多色点染的细节"
+          ],
+          "original_reason": "该任务属于开放观察，不涉及文化事实前提。"
+        },
+        {
+          "item_id": "interaction",
+          "reason": "open_question_contract",
+          "original_status": "unsupported",
+          "original_cultural_premises": [
+            "个人对阴刻或多色点染风格的偏好"
+          ],
+          "original_reason": "该问题属于开放个人偏好，不涉及文化事实前提。"
+        }
+      ],
+      "model_purposes": [
+        "理解需求与拆分陈述",
+        "提取文字活动偏好",
+        "逐句证据核验",
+        "复核修订文本",
+        "生成分众教学内容",
+        "扫描教学内容全部文化前提"
+      ],
       "note_issue_review": null,
       "program_note_blockers": null,
-      "plan_created": true,
-      "expected_met": true
+      "expected_business_behavior_observed": true,
+      "expected_met": false,
+      "requested_exact_input_verified": false,
+      "wall_elapsed_seconds": 10.855,
+      "input_deviation": "沿用了模块回归的tea_preference=include（默认应为any），并把要求附在默认说明之后；未按用户要求仅填给定短句。仅回传实际输入的结果，不作为原指定检查通过。"
     },
     "demo_guide": {
       "act_1": {
@@ -218,8 +844,11 @@
         ],
         "expected_met": true
       },
-      "three_runs_triggered_by_operator": true,
-      "post_demo_material_restored": true
+      "three_runs_triggered_by_operator": null,
+      "post_demo_material_restored": true,
+      "expected_met": false,
+      "observation_note": "最终三幕程序断言依次通过，随后因10px标签中断；三个勾选未另存完整DOM快照，只能结合临时脚本断言位置和原始运行复核。第一、二幕原JSON被临时脚本同名覆盖，早期任务现从SQLite及事件恢复归档，不能声称保存了所有即时UI快照。",
+      "guide_no_write_network_audit": "未用网络计数器单独证明；原记录把仅3个显式点击等同零自动写请求，证据不足。"
     },
     "readability": {
       "at": "2026-10-05T11:12:37.466Z",
@@ -239,44 +868,3348 @@
       ],
       "scriptErrors": [],
       "externalResourceRequests": [],
-      "scope": "不启动模型任务，仅复核三幕引导条/首页静止截图/file模式"
+      "scope": "不启动模型任务，仅复核三幕引导条/首页静止截图/file模式",
+      "assertion_scope_note": "程序只检查了横向宽度和引导条字号，不能推导所有遮挡、截断均不存在；未完成引导开启时两种宽度×投屏开/关的完整矩阵，也未单独核对导出全部文字的最小字号。",
+      "expected_met": false
     },
     "print_pages": {
       "visitor": 3,
       "organizer": 7,
-      "method": "Edge channel via Playwright PDF output, A4; pdfinfo page count; no business/API calls"
+      "method": "Edge channel via Playwright PDF output, A4; pdfinfo page count; no business/API calls",
+      "margin_mm": {
+        "top": 12,
+        "right": 12,
+        "bottom": 12,
+        "left": 12
+      },
+      "comparison_note": "本轮Edge导出A4为3/7页；未证明与历史打印设置完全相同，仅报告实际页数。"
     },
     "first_validation_script_failures": [
       {
-        "stage": "pre-run",
-        "type": "harness_selector",
-        "message": "AssertionError: assert(await page.locator('#demoGuideStudio').isVisible())；首页打开引导时非当前页引导条按页面隐藏。未产生模型任务。"
+        "type": "setup-order",
+        "message": "ModuleNotFoundError: No module named 'langgraph'; Error: Cannot find module 'playwright'",
+        "explanation": "5090在依赖安装仍进行时启动检查，安装完成后补跑226 passed及npm test；首次错误日志保留。"
       },
       {
-        "stage": "after-act-1",
-        "type": "harness_selector",
-        "message": "locator.evaluate strict mode violation: .demo-step[data-demo-step=\"0\"] resolved to 2 elements；工坊页和编排页各有一份引导条。原始真实任务已保留，未判为业务失败。"
+        "type": "harness-page",
+        "message": "assert(await page.locator('#demoGuideStudio').isVisible())",
+        "explanation": "从首页误要求两个非当前页引导条可见，无模型任务。"
       },
       {
-        "stage": "after-act-2",
-        "type": "harness_fixture",
-        "message": "验证脚本最初选择列表中另一条已撤回素材；mat-paper-garden仍为可用。未产生第三幕任务。"
+        "type": "harness-page",
+        "message": "locator.click: Timeout 30000ms exceeded; #demoGuideStudio [data-demo-fill=\"0\"] element is not visible",
+        "explanation": "脚本留在编排页却点击工坊条，无模型任务。"
       },
       {
-        "stage": "after-act-2",
-        "type": "harness_endpoint",
-        "message": "重新核验使用 POST /api/runs/{id}/refresh，脚本最初只等待 POST /api/runs；业务请求已发出，等待器超时。原始任务已留在SQLite。"
+        "type": "harness-duplicate-selector",
+        "message": "locator.evaluate: Error: strict mode violation: locator('.demo-step[data-demo-step=\"0\"]') resolved to 2 elements",
+        "first_real_run": "04863b615eb64535bfca330e12f37327"
       },
       {
-        "stage": "visual",
-        "type": "scope_check",
-        "message": "全页字号扫描发现首页装饰性混合英文/中文 eyebrow 为10px；三幕引导条本身中文均≥12px，按本任务范围通过。"
+        "type": "harness-action-semantics",
+        "message": "+ 'withdrawn'\n- 'available'",
+        "explanation": "data-state是按钮将要设置的状态，并非素材当前状态。当前可用时按钮data-state=withdrawn。此前声称选中另一条已撤回素材是错误解释，本项更正。"
+      },
+      {
+        "type": "harness-endpoint",
+        "message": "page.waitForResponse: Timeout 30000ms exceeded while waiting for event \"response\"",
+        "explanation": "等待器只匹配/api/runs，但点击refresh实际已创建3a6e5754390f4fb09ccd39b7c5d34dfa；此前说未产生第三幕任务不准确。"
+      },
+      {
+        "type": "harness-restoration",
+        "message": "+ 'available'\n- 'withdrawn'",
+        "explanation": "上一轮中止后素材仍撤回，下一轮前未恢复，导致两个额外真实任务基于撤回素材运行。之后通过API恢复，操作非模型修复。"
+      },
+      {
+        "type": "observed-font-boundary",
+        "message": "1440/home small Chinese: [{\"text\":\"HEBEI · YUXIAN / 河北 · 蔚县剪纸专题\",\"font\":\"10px\"}]",
+        "explanation": "实测存在10px中文。此次候选未改index.html，属于已有标签；不可由5090自行豁免或写成三页所有中文>=12px。交5060决定修复或明确范围。"
       }
-    ]
+    ],
+    "all_runs_ledger": [
+      {
+        "run_id": "d44ed06f7dd24e6dab53590ca6e3c17e",
+        "status": "invalidated",
+        "model_calls": 7,
+        "elapsed_seconds": 16.762,
+        "parent_id": null,
+        "previous_run_id": null,
+        "error": null,
+        "plan": {
+          "id": "deep",
+          "duration_minutes": 120,
+          "total_cents": 108000,
+          "per_person_cents": 13500,
+          "local_service_cents": 74000,
+          "material_cents": 18000,
+          "operations_cents": 16000,
+          "paper_units": 16
+        },
+        "claim_statuses": [
+          "contradicted",
+          "supported",
+          "insufficient"
+        ],
+        "scan_normalizations": [
+          {
+            "item_id": "observation",
+            "reason": "open_question_contract",
+            "original_status": "unsupported",
+            "original_cultural_premises": [
+              "允许使用的示例中可能包含阴刻或多色点染的细节"
+            ],
+            "original_reason": "该任务属于开放观察，不涉及文化事实前提。"
+          },
+          {
+            "item_id": "interaction",
+            "reason": "open_question_contract",
+            "original_status": "unsupported",
+            "original_cultural_premises": [
+              "个人偏好问题，不涉及文化事实前提"
+            ],
+            "original_reason": "该问题属于开放个人偏好问题，不涉及文化事实前提。"
+          }
+        ],
+        "model_purposes": [
+          "理解需求与拆分陈述",
+          "提取文字活动偏好",
+          "复核需求阻断原因",
+          "逐句证据核验",
+          "复核修订文本",
+          "生成分众教学内容",
+          "扫描教学内容全部文化前提"
+        ],
+        "note_issue_review": [
+          {
+            "index": 0,
+            "text": "未提及茶歇需求",
+            "category": "editorial_note",
+            "reason": "原文只是未提及或未明确该可选偏好；按约定保持表单/默认值，不把缺省当作矛盾。",
+            "original_category": "needs_clarification",
+            "original_reason": "未提及茶歇需求"
+          },
+          {
+            "index": 1,
+            "text": "未明确手作最低分钟",
+            "category": "editorial_note",
+            "reason": "原文只是未提及或未明确该可选偏好；按约定保持表单/默认值，不把缺省当作矛盾。",
+            "original_category": "needs_clarification",
+            "original_reason": "未明确手作最低分钟"
+          },
+          {
+            "index": 2,
+            "text": "未明确是否要求更多手作时间",
+            "category": "editorial_note",
+            "reason": "原文只是未提及或未明确该可选偏好；按约定保持表单/默认值，不把缺省当作矛盾。",
+            "original_category": "needs_clarification",
+            "original_reason": "未明确是否要求更多手作时间"
+          },
+          {
+            "index": 3,
+            "text": "未明确客群",
+            "category": "editorial_note",
+            "reason": "原文只是未提及或未明确该可选偏好；按约定保持表单/默认值，不把缺省当作矛盾。",
+            "original_category": "needs_clarification",
+            "original_reason": "未明确客群"
+          },
+          {
+            "index": 4,
+            "text": "未明确人数",
+            "category": "editorial_note",
+            "reason": "原文只是未提及或未明确该可选偏好；按约定保持表单/默认值，不把缺省当作矛盾。",
+            "original_category": "needs_clarification",
+            "original_reason": "未明确人数"
+          },
+          {
+            "index": 5,
+            "text": "未明确人均预算",
+            "category": "editorial_note",
+            "reason": "原文只是未提及或未明确该可选偏好；按约定保持表单/默认值，不把缺省当作矛盾。",
+            "original_category": "needs_clarification",
+            "original_reason": "未明确人均预算"
+          },
+          {
+            "index": 6,
+            "text": "未明确活动总时长",
+            "category": "editorial_note",
+            "reason": "原文只是未提及或未明确该可选偏好；按约定保持表单/默认值，不把缺省当作矛盾。",
+            "original_category": "needs_clarification",
+            "original_reason": "未明确活动总时长"
+          }
+        ],
+        "program_note_blockers": null,
+        "group": "standard-or-blocker",
+        "created_at": "2026-10-05T10:51:52.521141+00:00",
+        "snapshot_status_note": "SQLite归档当前状态；后续撤回可使此前完成任务invalidated，不能当成最初模型失败。",
+        "completion_event": {
+          "seq": 22,
+          "stage": "awaiting_review",
+          "message": "真实运行结束，等待人工确认。",
+          "at": "2026-10-05T10:52:09.295085+00:00"
+        },
+        "input": {
+          "case_id": null,
+          "demo_assumptions_confirmed": false,
+          "text": "蔚县剪纸以阳刻为主，阴刻为辅。蔚县剪纸善于多色点染。工坊每天开放并且无需预约。",
+          "requirements": {
+            "region": "河北省蔚县",
+            "project": "剪纸",
+            "people": 8,
+            "budget_per_person": 160.0,
+            "available_minutes": 150,
+            "start_time": "09:30",
+            "preferred_plan": "deep",
+            "note": "为初次了解剪纸的游客安排文化讲解与入门手作。讲述清楚工艺特色，留出观察和提问的时间。",
+            "planning_mode": "packages",
+            "audience": "general",
+            "tea_preference": "any",
+            "min_craft_minutes": 0,
+            "teaching_enabled": true
+          },
+          "operating_overrides": {
+            "capacity": 12,
+            "teachers": 1,
+            "rooms": 1,
+            "reuse": true
+          },
+          "constraint_resolution": "ask",
+          "previous_run_id": null
+        },
+        "source_versions": {
+          "src-yuxian-carving-tool": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-color": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-color-layer": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-early-floral": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-region": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-technique": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-themes": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-window-name": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-xuan-paper": {
+            "version": 1,
+            "usage_status": "available"
+          }
+        },
+        "material_versions": {
+          "mat-paper-garden": {
+            "version": 1,
+            "usage_status": "available"
+          }
+        },
+        "raw_evidence": "artifacts/handoff-demo-guide/all-runs/d44ed06f7dd24e6dab53590ca6e3c17e.json"
+      },
+      {
+        "run_id": "e43622a155c441f58783c79ba38ae797",
+        "status": "invalidated",
+        "model_calls": 7,
+        "elapsed_seconds": 13.26,
+        "parent_id": null,
+        "previous_run_id": null,
+        "error": null,
+        "plan": {
+          "id": "mod-brief-story--basic-craft--tea",
+          "craft_minutes": 50,
+          "duration_minutes": 90,
+          "total_cents": 72000,
+          "per_person_cents": 9000,
+          "local_service_cents": 50000,
+          "material_cents": 15000,
+          "operations_cents": 7000,
+          "paper_units": 8,
+          "module_ids": [
+            "brief-story",
+            "basic-craft",
+            "tea"
+          ]
+        },
+        "claim_statuses": [
+          "contradicted",
+          "supported",
+          "insufficient"
+        ],
+        "scan_normalizations": [
+          {
+            "item_id": "observation",
+            "reason": "open_question_contract",
+            "original_status": "unsupported",
+            "original_cultural_premises": [
+              "允许使用的示例中可能包含阴刻或多色点染的细节"
+            ],
+            "original_reason": "该任务属于开放观察，不涉及文化事实前提。"
+          },
+          {
+            "item_id": "interaction",
+            "reason": "open_question_contract",
+            "original_status": "unsupported",
+            "original_cultural_premises": [
+              "个人对阴刻或多色点染风格的偏好"
+            ],
+            "original_reason": "该问题属于开放个人偏好，不涉及文化事实前提。"
+          }
+        ],
+        "model_purposes": [
+          "理解需求与拆分陈述",
+          "提取文字活动偏好",
+          "复核需求阻断原因",
+          "逐句证据核验",
+          "复核修订文本",
+          "生成分众教学内容",
+          "扫描教学内容全部文化前提"
+        ],
+        "note_issue_review": [
+          {
+            "index": 0,
+            "text": "未提及茶歇需求",
+            "category": "configured_resource_check",
+            "reason": "未提及茶歇需求"
+          },
+          {
+            "index": 1,
+            "text": "未明确手作最低分钟",
+            "category": "configured_resource_check",
+            "reason": "未明确手作最低分钟"
+          },
+          {
+            "index": 2,
+            "text": "未明确是否要求更多手作时间",
+            "category": "configured_resource_check",
+            "reason": "未明确是否要求更多手作时间"
+          },
+          {
+            "index": 3,
+            "text": "未明确客群",
+            "category": "configured_resource_check",
+            "reason": "未明确客群"
+          },
+          {
+            "index": 4,
+            "text": "未明确人数",
+            "category": "configured_resource_check",
+            "reason": "未明确人数"
+          },
+          {
+            "index": 5,
+            "text": "未明确人均预算",
+            "category": "configured_resource_check",
+            "reason": "未明确人均预算"
+          },
+          {
+            "index": 6,
+            "text": "未明确活动总时长",
+            "category": "configured_resource_check",
+            "reason": "未明确活动总时长"
+          }
+        ],
+        "program_note_blockers": null,
+        "group": "standard-or-blocker",
+        "created_at": "2026-10-05T10:52:59.500585+00:00",
+        "snapshot_status_note": "SQLite归档当前状态；后续撤回可使此前完成任务invalidated，不能当成最初模型失败。",
+        "completion_event": {
+          "seq": 22,
+          "stage": "awaiting_review",
+          "message": "真实运行结束，等待人工确认。",
+          "at": "2026-10-05T10:53:12.774387+00:00"
+        },
+        "input": {
+          "case_id": null,
+          "demo_assumptions_confirmed": false,
+          "text": "蔚县剪纸以阳刻为主，阴刻为辅。蔚县剪纸善于多色点染。工坊每天开放并且无需预约。",
+          "requirements": {
+            "region": "河北省蔚县",
+            "project": "剪纸",
+            "people": 8,
+            "budget_per_person": 160.0,
+            "available_minutes": 150,
+            "start_time": "09:30",
+            "preferred_plan": "deep",
+            "note": "为初次了解剪纸的游客安排文化讲解与入门手作。讲述清楚工艺特色，留出观察和提问的时间。",
+            "planning_mode": "modules",
+            "audience": "general",
+            "tea_preference": "include",
+            "min_craft_minutes": 0,
+            "teaching_enabled": true
+          },
+          "operating_overrides": {
+            "capacity": 12,
+            "teachers": 1,
+            "rooms": 1,
+            "reuse": true
+          },
+          "constraint_resolution": "ask",
+          "previous_run_id": null
+        },
+        "source_versions": {
+          "src-yuxian-carving-tool": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-color": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-color-layer": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-early-floral": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-region": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-technique": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-themes": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-window-name": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-xuan-paper": {
+            "version": 1,
+            "usage_status": "available"
+          }
+        },
+        "material_versions": {
+          "mat-paper-garden": {
+            "version": 1,
+            "usage_status": "available"
+          }
+        },
+        "raw_evidence": "artifacts/handoff-demo-guide/all-runs/e43622a155c441f58783c79ba38ae797.json"
+      },
+      {
+        "run_id": "b1ef9a8b236f412b87451549f9edb609",
+        "status": "invalidated",
+        "model_calls": 2,
+        "elapsed_seconds": 2.456,
+        "parent_id": null,
+        "previous_run_id": "e43622a155c441f58783c79ba38ae797",
+        "error": "文字需求与表单冲突，请明确使用表单或采纳文字后重新运行。",
+        "plan": null,
+        "claim_statuses": [
+          "insufficient",
+          "insufficient",
+          "insufficient"
+        ],
+        "scan_normalizations": null,
+        "model_purposes": [
+          "理解需求与拆分陈述",
+          "提取文字活动偏好"
+        ],
+        "note_issue_review": null,
+        "program_note_blockers": null,
+        "group": "standard-or-blocker",
+        "created_at": "2026-10-05T10:53:19.059670+00:00",
+        "snapshot_status_note": "SQLite归档当前状态；后续撤回可使此前完成任务invalidated，不能当成最初模型失败。",
+        "completion_event": {
+          "seq": 4,
+          "stage": "needs_confirmation",
+          "message": "文字需求与表单冲突，请明确使用表单或采纳文字后重新运行。",
+          "at": "2026-10-05T10:53:21.533254+00:00"
+        },
+        "input": {
+          "case_id": null,
+          "demo_assumptions_confirmed": false,
+          "text": "蔚县剪纸以阳刻为主，阴刻为辅。蔚县剪纸善于多色点染。工坊每天开放并且无需预约。",
+          "requirements": {
+            "region": "河北省蔚县",
+            "project": "剪纸",
+            "people": 8,
+            "budget_per_person": 110.0,
+            "available_minutes": 150,
+            "start_time": "09:30",
+            "preferred_plan": "deep",
+            "note": "安排亲子互动，不安排茶歇，手作至少40分钟，多留手作时间；讲解浅显易懂。",
+            "planning_mode": "modules",
+            "audience": "general",
+            "tea_preference": "include",
+            "min_craft_minutes": 0,
+            "teaching_enabled": true
+          },
+          "operating_overrides": {
+            "capacity": 12,
+            "teachers": 1,
+            "rooms": 1,
+            "reuse": true
+          },
+          "constraint_resolution": "ask",
+          "previous_run_id": "e43622a155c441f58783c79ba38ae797"
+        },
+        "source_versions": {
+          "src-yuxian-carving-tool": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-color": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-color-layer": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-early-floral": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-region": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-technique": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-themes": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-window-name": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-xuan-paper": {
+            "version": 1,
+            "usage_status": "available"
+          }
+        },
+        "material_versions": {
+          "mat-paper-garden": {
+            "version": 1,
+            "usage_status": "available"
+          }
+        },
+        "raw_evidence": "artifacts/handoff-demo-guide/all-runs/b1ef9a8b236f412b87451549f9edb609.json"
+      },
+      {
+        "run_id": "f463ca2653f04d5e853e758b8de8621b",
+        "status": "invalidated",
+        "model_calls": 6,
+        "elapsed_seconds": 10.553,
+        "parent_id": null,
+        "previous_run_id": "e43622a155c441f58783c79ba38ae797",
+        "error": null,
+        "plan": {
+          "id": "mod-brief-story--deep-craft--craft-extension",
+          "craft_minutes": 80,
+          "duration_minutes": 100,
+          "total_cents": 79600,
+          "per_person_cents": 9950,
+          "local_service_cents": 52400,
+          "material_cents": 19200,
+          "operations_cents": 8000,
+          "paper_units": 24,
+          "module_ids": [
+            "brief-story",
+            "deep-craft",
+            "craft-extension"
+          ]
+        },
+        "claim_statuses": [
+          "contradicted",
+          "supported",
+          "insufficient"
+        ],
+        "scan_normalizations": null,
+        "model_purposes": [
+          "理解需求与拆分陈述",
+          "提取文字活动偏好",
+          "逐句证据核验",
+          "复核修订文本",
+          "生成分众教学内容",
+          "扫描教学内容全部文化前提"
+        ],
+        "note_issue_review": null,
+        "program_note_blockers": null,
+        "group": "standard-or-blocker",
+        "created_at": "2026-10-05T10:53:21.998865+00:00",
+        "snapshot_status_note": "SQLite归档当前状态；后续撤回可使此前完成任务invalidated，不能当成最初模型失败。",
+        "completion_event": {
+          "seq": 21,
+          "stage": "awaiting_review",
+          "message": "真实运行结束，等待人工确认。",
+          "at": "2026-10-05T10:53:32.565016+00:00"
+        },
+        "input": {
+          "case_id": null,
+          "demo_assumptions_confirmed": false,
+          "text": "蔚县剪纸以阳刻为主，阴刻为辅。蔚县剪纸善于多色点染。工坊每天开放并且无需预约。",
+          "requirements": {
+            "region": "河北省蔚县",
+            "project": "剪纸",
+            "people": 8,
+            "budget_per_person": 110.0,
+            "available_minutes": 150,
+            "start_time": "09:30",
+            "preferred_plan": "deep",
+            "note": "安排亲子互动，不安排茶歇，手作至少40分钟，多留手作时间；讲解浅显易懂。",
+            "planning_mode": "modules",
+            "audience": "family",
+            "tea_preference": "exclude",
+            "min_craft_minutes": 0,
+            "teaching_enabled": true
+          },
+          "operating_overrides": {
+            "capacity": 12,
+            "teachers": 1,
+            "rooms": 1,
+            "reuse": true
+          },
+          "constraint_resolution": "ask",
+          "previous_run_id": "e43622a155c441f58783c79ba38ae797"
+        },
+        "source_versions": {
+          "src-yuxian-carving-tool": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-color": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-color-layer": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-early-floral": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-region": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-technique": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-themes": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-window-name": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-xuan-paper": {
+            "version": 1,
+            "usage_status": "available"
+          }
+        },
+        "material_versions": {
+          "mat-paper-garden": {
+            "version": 1,
+            "usage_status": "available"
+          }
+        },
+        "raw_evidence": "artifacts/handoff-demo-guide/all-runs/f463ca2653f04d5e853e758b8de8621b.json"
+      },
+      {
+        "run_id": "2409c70b8c4148b6aea1c24f304bc336",
+        "status": "confirmed",
+        "model_calls": 6,
+        "elapsed_seconds": 10.642,
+        "parent_id": "f463ca2653f04d5e853e758b8de8621b",
+        "previous_run_id": "f463ca2653f04d5e853e758b8de8621b",
+        "error": null,
+        "plan": {
+          "id": "mod-brief-story--deep-craft--craft-extension",
+          "craft_minutes": 80,
+          "duration_minutes": 100,
+          "total_cents": 79600,
+          "per_person_cents": 9950,
+          "local_service_cents": 52400,
+          "material_cents": 19200,
+          "operations_cents": 8000,
+          "paper_units": 24,
+          "module_ids": [
+            "brief-story",
+            "deep-craft",
+            "craft-extension"
+          ]
+        },
+        "claim_statuses": [
+          "contradicted",
+          "supported",
+          "insufficient"
+        ],
+        "scan_normalizations": null,
+        "model_purposes": [
+          "理解需求与拆分陈述",
+          "提取文字活动偏好",
+          "逐句证据核验",
+          "复核修订文本",
+          "生成分众教学内容",
+          "扫描教学内容全部文化前提"
+        ],
+        "note_issue_review": null,
+        "program_note_blockers": null,
+        "group": "standard-or-blocker",
+        "created_at": "2026-10-05T10:53:44.471369+00:00",
+        "snapshot_status_note": "SQLite归档当前状态；后续撤回可使此前完成任务invalidated，不能当成最初模型失败。",
+        "completion_event": {
+          "seq": 20,
+          "stage": "awaiting_review",
+          "message": "真实运行结束，等待人工确认。",
+          "at": "2026-10-05T10:53:55.127141+00:00"
+        },
+        "input": {
+          "case_id": null,
+          "demo_assumptions_confirmed": false,
+          "text": "蔚县剪纸以阳刻为主，阴刻为辅。蔚县剪纸善于多色点染。工坊每天开放并且无需预约。",
+          "requirements": {
+            "region": "河北省蔚县",
+            "project": "剪纸",
+            "people": 8,
+            "budget_per_person": 110.0,
+            "available_minutes": 150,
+            "start_time": "09:30",
+            "preferred_plan": "deep",
+            "note": "安排亲子互动，不安排茶歇，手作至少40分钟，多留手作时间；讲解浅显易懂。",
+            "planning_mode": "modules",
+            "audience": "family",
+            "tea_preference": "exclude",
+            "min_craft_minutes": 0,
+            "teaching_enabled": true
+          },
+          "operating_overrides": {
+            "capacity": 12,
+            "teachers": 1,
+            "rooms": 1,
+            "reuse": true
+          },
+          "constraint_resolution": "ask",
+          "previous_run_id": "f463ca2653f04d5e853e758b8de8621b"
+        },
+        "source_versions": {
+          "src-yuxian-carving-tool": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-color": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-color-layer": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-early-floral": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-region": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-technique": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-themes": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-window-name": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-xuan-paper": {
+            "version": 1,
+            "usage_status": "available"
+          }
+        },
+        "material_versions": {},
+        "raw_evidence": "artifacts/handoff-demo-guide/all-runs/2409c70b8c4148b6aea1c24f304bc336.json"
+      },
+      {
+        "run_id": "c10760e93a4447c5a4fe1e0f84546668",
+        "status": "invalidated",
+        "model_calls": 4,
+        "elapsed_seconds": 4.746,
+        "parent_id": null,
+        "previous_run_id": "2409c70b8c4148b6aea1c24f304bc336",
+        "error": "当前条件无可行方案：人数16超过单组容量8；不能自动拆组或虚构并行接待。；16人手作需至少2位教师；现有1位、每位上限12人，合计可接待12人；不自动拆组或增加教师。 请落实资源或明确调整相应条件后重算。",
+        "plan": null,
+        "claim_statuses": [
+          "contradicted",
+          "supported",
+          "insufficient"
+        ],
+        "scan_normalizations": null,
+        "model_purposes": [
+          "理解需求与拆分陈述",
+          "提取文字活动偏好",
+          "逐句证据核验",
+          "复核修订文本"
+        ],
+        "note_issue_review": null,
+        "program_note_blockers": null,
+        "group": "standard-or-blocker",
+        "created_at": "2026-10-05T10:54:00.661266+00:00",
+        "snapshot_status_note": "SQLite归档当前状态；后续撤回可使此前完成任务invalidated，不能当成最初模型失败。",
+        "completion_event": {
+          "seq": 13,
+          "stage": "needs_input",
+          "message": "当前条件无可行方案：人数16超过单组容量8；不能自动拆组或虚构并行接待。；16人手作需至少2位教师；现有1位、每位上限12人，合计可接待12人；不自动拆组或增加教师。 请落实资源或明确调整相应条件后重算。",
+          "at": "2026-10-05T10:54:05.420558+00:00"
+        },
+        "input": {
+          "case_id": null,
+          "demo_assumptions_confirmed": false,
+          "text": "蔚县剪纸以阳刻为主，阴刻为辅。蔚县剪纸善于多色点染。工坊每天开放并且无需预约。",
+          "requirements": {
+            "region": "河北省蔚县",
+            "project": "剪纸",
+            "people": 16,
+            "budget_per_person": 110.0,
+            "available_minutes": 150,
+            "start_time": "09:30",
+            "preferred_plan": "deep",
+            "note": "安排亲子互动，不安排茶歇，手作至少40分钟，多留手作时间；讲解浅显易懂。",
+            "planning_mode": "modules",
+            "audience": "family",
+            "tea_preference": "exclude",
+            "min_craft_minutes": 0,
+            "teaching_enabled": true
+          },
+          "operating_overrides": {
+            "capacity": 8,
+            "teachers": 1,
+            "rooms": 1,
+            "reuse": true
+          },
+          "constraint_resolution": "ask",
+          "previous_run_id": "2409c70b8c4148b6aea1c24f304bc336"
+        },
+        "source_versions": {
+          "src-yuxian-carving-tool": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-color": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-color-layer": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-early-floral": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-region": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-technique": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-themes": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-window-name": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-xuan-paper": {
+            "version": 1,
+            "usage_status": "available"
+          }
+        },
+        "material_versions": {
+          "mat-paper-garden": {
+            "version": 3,
+            "usage_status": "available"
+          }
+        },
+        "raw_evidence": "artifacts/handoff-demo-guide/all-runs/c10760e93a4447c5a4fe1e0f84546668.json"
+      },
+      {
+        "run_id": "59d68e48c46d40a3b55c7691adac8e41",
+        "status": "invalidated",
+        "model_calls": 3,
+        "elapsed_seconds": 2.939,
+        "parent_id": null,
+        "previous_run_id": null,
+        "error": "文字需求存在矛盾或超出当前模块能力，请先澄清：需要安排英语讲解",
+        "plan": null,
+        "claim_statuses": [
+          "insufficient",
+          "insufficient",
+          "insufficient"
+        ],
+        "scan_normalizations": null,
+        "model_purposes": [
+          "理解需求与拆分陈述",
+          "提取文字活动偏好",
+          "复核需求阻断原因"
+        ],
+        "note_issue_review": [
+          {
+            "index": 0,
+            "text": "需要安排英语讲解",
+            "category": "needs_clarification",
+            "reason": "程序保留阻断：未配置服务超出当前演示配置，需要先澄清，不能作为编辑说明放行。",
+            "original_category": "configured_resource_check",
+            "original_reason": "需要安排英语讲解，但未明确是否有英语讲解资源可用。"
+          }
+        ],
+        "program_note_blockers": null,
+        "group": "standard-or-blocker",
+        "created_at": "2026-10-05T10:54:53.702968+00:00",
+        "snapshot_status_note": "SQLite归档当前状态；后续撤回可使此前完成任务invalidated，不能当成最初模型失败。",
+        "completion_event": {
+          "seq": 6,
+          "stage": "needs_input",
+          "message": "文字需求存在矛盾或超出当前模块能力，请先澄清：需要安排英语讲解",
+          "at": "2026-10-05T10:54:56.655402+00:00"
+        },
+        "input": {
+          "case_id": null,
+          "demo_assumptions_confirmed": false,
+          "text": "蔚县剪纸以阳刻为主，阴刻为辅。蔚县剪纸善于多色点染。工坊每天开放并且无需预约。",
+          "requirements": {
+            "region": "河北省蔚县",
+            "project": "剪纸",
+            "people": 8,
+            "budget_per_person": 160.0,
+            "available_minutes": 150,
+            "start_time": "09:30",
+            "preferred_plan": "deep",
+            "note": "为初次了解剪纸的游客安排文化讲解与入门手作。讲述清楚工艺特色，留出观察和提问的时间。需要安排英语讲解",
+            "planning_mode": "modules",
+            "audience": "general",
+            "tea_preference": "include",
+            "min_craft_minutes": 0,
+            "teaching_enabled": true
+          },
+          "operating_overrides": {
+            "capacity": 12,
+            "teachers": 1,
+            "rooms": 1,
+            "reuse": true
+          },
+          "constraint_resolution": "ask",
+          "previous_run_id": null
+        },
+        "source_versions": {
+          "src-yuxian-carving-tool": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-color": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-color-layer": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-early-floral": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-region": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-technique": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-themes": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-window-name": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-xuan-paper": {
+            "version": 1,
+            "usage_status": "available"
+          }
+        },
+        "material_versions": {
+          "mat-paper-garden": {
+            "version": 3,
+            "usage_status": "available"
+          }
+        },
+        "raw_evidence": "artifacts/handoff-demo-guide/all-runs/59d68e48c46d40a3b55c7691adac8e41.json"
+      },
+      {
+        "run_id": "1b825c464a0347a0a871e62dfb6cbaf2",
+        "status": "invalidated",
+        "model_calls": 6,
+        "elapsed_seconds": 10.541,
+        "parent_id": null,
+        "previous_run_id": null,
+        "error": null,
+        "plan": {
+          "id": "mod-brief-story--basic-craft--tea",
+          "craft_minutes": 50,
+          "duration_minutes": 90,
+          "total_cents": 72000,
+          "per_person_cents": 9000,
+          "local_service_cents": 50000,
+          "material_cents": 15000,
+          "operations_cents": 7000,
+          "paper_units": 8,
+          "module_ids": [
+            "brief-story",
+            "basic-craft",
+            "tea"
+          ]
+        },
+        "claim_statuses": [
+          "contradicted",
+          "supported",
+          "insufficient"
+        ],
+        "scan_normalizations": [
+          {
+            "item_id": "observation",
+            "reason": "open_question_contract",
+            "original_status": "unsupported",
+            "original_cultural_premises": [
+              "允许使用的示例中可能包含阴刻或多色点染的细节"
+            ],
+            "original_reason": "该任务属于开放观察，不涉及文化事实前提。"
+          },
+          {
+            "item_id": "interaction",
+            "reason": "open_question_contract",
+            "original_status": "unsupported",
+            "original_cultural_premises": [
+              "个人对阴刻或多色点染风格的偏好"
+            ],
+            "original_reason": "该问题属于开放个人偏好，不涉及文化事实前提。"
+          }
+        ],
+        "model_purposes": [
+          "理解需求与拆分陈述",
+          "提取文字活动偏好",
+          "逐句证据核验",
+          "复核修订文本",
+          "生成分众教学内容",
+          "扫描教学内容全部文化前提"
+        ],
+        "note_issue_review": null,
+        "program_note_blockers": null,
+        "group": "standard-or-blocker",
+        "created_at": "2026-10-05T10:55:42.340737+00:00",
+        "snapshot_status_note": "SQLite归档当前状态；后续撤回可使此前完成任务invalidated，不能当成最初模型失败。",
+        "completion_event": {
+          "seq": 20,
+          "stage": "awaiting_review",
+          "message": "真实运行结束，等待人工确认。",
+          "at": "2026-10-05T10:55:52.892690+00:00"
+        },
+        "input": {
+          "case_id": null,
+          "demo_assumptions_confirmed": false,
+          "text": "蔚县剪纸以阳刻为主，阴刻为辅。蔚县剪纸善于多色点染。工坊每天开放并且无需预约。",
+          "requirements": {
+            "region": "河北省蔚县",
+            "project": "剪纸",
+            "people": 8,
+            "budget_per_person": 160.0,
+            "available_minutes": 150,
+            "start_time": "09:30",
+            "preferred_plan": "deep",
+            "note": "为初次了解剪纸的游客安排文化讲解与入门手作。讲述清楚工艺特色，留出观察和提问的时间。不需要翻译，按现有安排。",
+            "planning_mode": "modules",
+            "audience": "general",
+            "tea_preference": "include",
+            "min_craft_minutes": 0,
+            "teaching_enabled": true
+          },
+          "operating_overrides": {
+            "capacity": 12,
+            "teachers": 1,
+            "rooms": 1,
+            "reuse": true
+          },
+          "constraint_resolution": "ask",
+          "previous_run_id": null
+        },
+        "source_versions": {
+          "src-yuxian-carving-tool": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-color": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-color-layer": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-early-floral": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-region": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-technique": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-themes": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-window-name": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-xuan-paper": {
+            "version": 1,
+            "usage_status": "available"
+          }
+        },
+        "material_versions": {
+          "mat-paper-garden": {
+            "version": 3,
+            "usage_status": "available"
+          }
+        },
+        "raw_evidence": "artifacts/handoff-demo-guide/all-runs/1b825c464a0347a0a871e62dfb6cbaf2.json"
+      },
+      {
+        "run_id": "04863b615eb64535bfca330e12f37327",
+        "status": "invalidated",
+        "model_calls": 7,
+        "elapsed_seconds": 13.276,
+        "parent_id": null,
+        "previous_run_id": null,
+        "error": null,
+        "plan": {
+          "id": "mod-brief-story--basic-craft",
+          "craft_minutes": 50,
+          "duration_minutes": 70,
+          "total_cents": 57400,
+          "per_person_cents": 7175,
+          "local_service_cents": 38000,
+          "material_cents": 13400,
+          "operations_cents": 6000,
+          "paper_units": 8,
+          "module_ids": [
+            "brief-story",
+            "basic-craft"
+          ]
+        },
+        "claim_statuses": [
+          "contradicted",
+          "supported",
+          "insufficient"
+        ],
+        "scan_normalizations": [
+          {
+            "item_id": "observation",
+            "reason": "open_question_contract",
+            "original_status": "unsupported",
+            "original_cultural_premises": [
+              "允许使用的示例中可能包含阴刻或多色点染的细节"
+            ],
+            "original_reason": "该任务属于开放观察，不涉及文化事实前提。"
+          },
+          {
+            "item_id": "interaction",
+            "reason": "open_question_contract",
+            "original_status": "unsupported",
+            "original_cultural_premises": [
+              "个人对阴刻或多色点染风格的偏好"
+            ],
+            "original_reason": "该问题属于开放个人偏好，不涉及文化事实前提。"
+          }
+        ],
+        "model_purposes": [
+          "理解需求与拆分陈述",
+          "提取文字活动偏好",
+          "复核需求阻断原因",
+          "逐句证据核验",
+          "复核修订文本",
+          "生成分众教学内容",
+          "扫描教学内容全部文化前提"
+        ],
+        "note_issue_review": [
+          {
+            "index": 0,
+            "text": "未提及茶歇需求",
+            "category": "editorial_note",
+            "reason": "原文只是未提及或未明确该可选偏好；按约定保持表单/默认值，不把缺省当作矛盾。",
+            "original_category": "needs_clarification",
+            "original_reason": "未提及茶歇需求"
+          },
+          {
+            "index": 1,
+            "text": "未明确手作最低分钟",
+            "category": "editorial_note",
+            "reason": "原文只是未提及或未明确该可选偏好；按约定保持表单/默认值，不把缺省当作矛盾。",
+            "original_category": "needs_clarification",
+            "original_reason": "未明确手作最低分钟"
+          },
+          {
+            "index": 2,
+            "text": "未明确是否要求更多手作时间",
+            "category": "editorial_note",
+            "reason": "原文只是未提及或未明确该可选偏好；按约定保持表单/默认值，不把缺省当作矛盾。",
+            "original_category": "needs_clarification",
+            "original_reason": "未明确是否要求更多手作时间"
+          },
+          {
+            "index": 3,
+            "text": "未明确客群",
+            "category": "editorial_note",
+            "reason": "原文只是未提及或未明确该可选偏好；按约定保持表单/默认值，不把缺省当作矛盾。",
+            "original_category": "needs_clarification",
+            "original_reason": "未明确客群"
+          },
+          {
+            "index": 4,
+            "text": "未明确人数",
+            "category": "editorial_note",
+            "reason": "原文只是未提及或未明确该可选偏好；按约定保持表单/默认值，不把缺省当作矛盾。",
+            "original_category": "needs_clarification",
+            "original_reason": "未明确人数"
+          },
+          {
+            "index": 5,
+            "text": "未明确人均预算",
+            "category": "editorial_note",
+            "reason": "原文只是未提及或未明确该可选偏好；按约定保持表单/默认值，不把缺省当作矛盾。",
+            "original_category": "needs_clarification",
+            "original_reason": "未明确人均预算"
+          },
+          {
+            "index": 6,
+            "text": "未明确活动总时长",
+            "category": "editorial_note",
+            "reason": "原文只是未提及或未明确该可选偏好；按约定保持表单/默认值，不把缺省当作矛盾。",
+            "original_category": "needs_clarification",
+            "original_reason": "未明确活动总时长"
+          }
+        ],
+        "program_note_blockers": null,
+        "group": "demo-guide-harness-attempt",
+        "created_at": "2026-10-05T11:01:17.979526+00:00",
+        "snapshot_status_note": "SQLite归档当前状态；后续撤回可使此前完成任务invalidated，不能当成最初模型失败。",
+        "completion_event": {
+          "seq": 22,
+          "stage": "awaiting_review",
+          "message": "真实运行结束，等待人工确认。",
+          "at": "2026-10-05T11:01:31.267165+00:00"
+        },
+        "input": {
+          "case_id": null,
+          "demo_assumptions_confirmed": false,
+          "text": "蔚县剪纸以阳刻为主，阴刻为辅。蔚县剪纸善于多色点染。工坊每天开放并且无需预约。",
+          "requirements": {
+            "region": "河北省蔚县",
+            "project": "剪纸",
+            "people": 8,
+            "budget_per_person": 160.0,
+            "available_minutes": 150,
+            "start_time": "09:30",
+            "preferred_plan": "deep",
+            "note": "为初次了解剪纸的游客安排文化讲解与入门手作。讲述清楚工艺特色，留出观察和提问的时间。",
+            "planning_mode": "modules",
+            "audience": "general",
+            "tea_preference": "any",
+            "min_craft_minutes": 0,
+            "teaching_enabled": true
+          },
+          "operating_overrides": {
+            "capacity": 12,
+            "teachers": 1,
+            "rooms": 1,
+            "reuse": true
+          },
+          "constraint_resolution": "ask",
+          "previous_run_id": null
+        },
+        "source_versions": {
+          "src-yuxian-carving-tool": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-color": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-color-layer": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-early-floral": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-region": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-technique": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-themes": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-window-name": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-xuan-paper": {
+            "version": 1,
+            "usage_status": "available"
+          }
+        },
+        "material_versions": {
+          "mat-paper-garden": {
+            "version": 3,
+            "usage_status": "available"
+          }
+        },
+        "raw_evidence": "artifacts/handoff-demo-guide/all-runs/04863b615eb64535bfca330e12f37327.json"
+      },
+      {
+        "run_id": "09d67c181a4349dcaa5bbbd5855c1e1c",
+        "status": "invalidated",
+        "model_calls": 7,
+        "elapsed_seconds": 13.279,
+        "parent_id": null,
+        "previous_run_id": null,
+        "error": null,
+        "plan": {
+          "id": "mod-brief-story--basic-craft",
+          "craft_minutes": 50,
+          "duration_minutes": 70,
+          "total_cents": 57400,
+          "per_person_cents": 7175,
+          "local_service_cents": 38000,
+          "material_cents": 13400,
+          "operations_cents": 6000,
+          "paper_units": 8,
+          "module_ids": [
+            "brief-story",
+            "basic-craft"
+          ]
+        },
+        "claim_statuses": [
+          "contradicted",
+          "supported",
+          "insufficient"
+        ],
+        "scan_normalizations": [
+          {
+            "item_id": "observation",
+            "reason": "open_question_contract",
+            "original_status": "unsupported",
+            "original_cultural_premises": [
+              "允许使用的示例中可能包含阴刻或多色点染的细节"
+            ],
+            "original_reason": "该任务属于开放观察，不涉及文化事实前提。"
+          },
+          {
+            "item_id": "interaction",
+            "reason": "open_question_contract",
+            "original_status": "unsupported",
+            "original_cultural_premises": [
+              "个人对阴刻或多色点染风格的偏好"
+            ],
+            "original_reason": "该问题属于开放个人偏好，不涉及文化事实前提。"
+          }
+        ],
+        "model_purposes": [
+          "理解需求与拆分陈述",
+          "提取文字活动偏好",
+          "复核需求阻断原因",
+          "逐句证据核验",
+          "复核修订文本",
+          "生成分众教学内容",
+          "扫描教学内容全部文化前提"
+        ],
+        "note_issue_review": [
+          {
+            "index": 0,
+            "text": "未提及茶歇需求",
+            "category": "editorial_note",
+            "reason": "原文只是未提及或未明确该可选偏好；按约定保持表单/默认值，不把缺省当作矛盾。",
+            "original_category": "needs_clarification",
+            "original_reason": "未提及茶歇需求"
+          },
+          {
+            "index": 1,
+            "text": "未明确手作最低分钟",
+            "category": "editorial_note",
+            "reason": "原文只是未提及或未明确该可选偏好；按约定保持表单/默认值，不把缺省当作矛盾。",
+            "original_category": "needs_clarification",
+            "original_reason": "未明确手作最低分钟"
+          },
+          {
+            "index": 2,
+            "text": "未明确是否要求更多手作时间",
+            "category": "editorial_note",
+            "reason": "原文只是未提及或未明确该可选偏好；按约定保持表单/默认值，不把缺省当作矛盾。",
+            "original_category": "needs_clarification",
+            "original_reason": "未明确是否要求更多手作时间"
+          },
+          {
+            "index": 3,
+            "text": "未明确客群",
+            "category": "editorial_note",
+            "reason": "原文只是未提及或未明确该可选偏好；按约定保持表单/默认值，不把缺省当作矛盾。",
+            "original_category": "needs_clarification",
+            "original_reason": "未明确客群"
+          },
+          {
+            "index": 4,
+            "text": "未明确人数",
+            "category": "editorial_note",
+            "reason": "原文只是未提及或未明确该可选偏好；按约定保持表单/默认值，不把缺省当作矛盾。",
+            "original_category": "needs_clarification",
+            "original_reason": "未明确人数"
+          },
+          {
+            "index": 5,
+            "text": "未明确人均预算",
+            "category": "editorial_note",
+            "reason": "原文只是未提及或未明确该可选偏好；按约定保持表单/默认值，不把缺省当作矛盾。",
+            "original_category": "needs_clarification",
+            "original_reason": "未明确人均预算"
+          },
+          {
+            "index": 6,
+            "text": "未明确活动总时长",
+            "category": "editorial_note",
+            "reason": "原文只是未提及或未明确该可选偏好；按约定保持表单/默认值，不把缺省当作矛盾。",
+            "original_category": "needs_clarification",
+            "original_reason": "未明确活动总时长"
+          }
+        ],
+        "program_note_blockers": null,
+        "group": "demo-guide-harness-attempt",
+        "created_at": "2026-10-05T11:03:15.098204+00:00",
+        "snapshot_status_note": "SQLite归档当前状态；后续撤回可使此前完成任务invalidated，不能当成最初模型失败。",
+        "completion_event": {
+          "seq": 22,
+          "stage": "awaiting_review",
+          "message": "真实运行结束，等待人工确认。",
+          "at": "2026-10-05T11:03:28.389127+00:00"
+        },
+        "input": {
+          "case_id": null,
+          "demo_assumptions_confirmed": false,
+          "text": "蔚县剪纸以阳刻为主，阴刻为辅。蔚县剪纸善于多色点染。工坊每天开放并且无需预约。",
+          "requirements": {
+            "region": "河北省蔚县",
+            "project": "剪纸",
+            "people": 8,
+            "budget_per_person": 160.0,
+            "available_minutes": 150,
+            "start_time": "09:30",
+            "preferred_plan": "deep",
+            "note": "为初次了解剪纸的游客安排文化讲解与入门手作。讲述清楚工艺特色，留出观察和提问的时间。",
+            "planning_mode": "modules",
+            "audience": "general",
+            "tea_preference": "any",
+            "min_craft_minutes": 0,
+            "teaching_enabled": true
+          },
+          "operating_overrides": {
+            "capacity": 12,
+            "teachers": 1,
+            "rooms": 1,
+            "reuse": true
+          },
+          "constraint_resolution": "ask",
+          "previous_run_id": null
+        },
+        "source_versions": {
+          "src-yuxian-carving-tool": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-color": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-color-layer": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-early-floral": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-region": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-technique": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-themes": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-window-name": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-xuan-paper": {
+            "version": 1,
+            "usage_status": "available"
+          }
+        },
+        "material_versions": {
+          "mat-paper-garden": {
+            "version": 3,
+            "usage_status": "available"
+          }
+        },
+        "raw_evidence": "artifacts/handoff-demo-guide/all-runs/09d67c181a4349dcaa5bbbd5855c1e1c.json"
+      },
+      {
+        "run_id": "a84c8a317ca74efe8f6af25227b9e6a2",
+        "status": "invalidated",
+        "model_calls": 6,
+        "elapsed_seconds": 10.393,
+        "parent_id": null,
+        "previous_run_id": "09d67c181a4349dcaa5bbbd5855c1e1c",
+        "error": null,
+        "plan": {
+          "id": "mod-brief-story--deep-craft--craft-extension",
+          "craft_minutes": 80,
+          "duration_minutes": 100,
+          "total_cents": 79600,
+          "per_person_cents": 9950,
+          "local_service_cents": 52400,
+          "material_cents": 19200,
+          "operations_cents": 8000,
+          "paper_units": 24,
+          "module_ids": [
+            "brief-story",
+            "deep-craft",
+            "craft-extension"
+          ]
+        },
+        "claim_statuses": [
+          "contradicted",
+          "supported",
+          "insufficient"
+        ],
+        "scan_normalizations": [
+          {
+            "item_id": "observation",
+            "reason": "open_question_contract",
+            "original_status": "unsupported",
+            "original_cultural_premises": [
+              "允许使用的示例中可能包含阴刻或多色点染的细节"
+            ],
+            "original_reason": "该任务属于开放观察，不涉及文化事实前提。"
+          },
+          {
+            "item_id": "interaction",
+            "reason": "open_question_contract",
+            "original_status": "unsupported",
+            "original_cultural_premises": [
+              "个人对阴刻或多色点染风格的偏好"
+            ],
+            "original_reason": "该问题属于开放个人偏好，不涉及文化事实前提。"
+          }
+        ],
+        "model_purposes": [
+          "理解需求与拆分陈述",
+          "提取文字活动偏好",
+          "逐句证据核验",
+          "复核修订文本",
+          "生成分众教学内容",
+          "扫描教学内容全部文化前提"
+        ],
+        "note_issue_review": null,
+        "program_note_blockers": null,
+        "group": "demo-guide-harness-attempt",
+        "created_at": "2026-10-05T11:03:29.355678+00:00",
+        "snapshot_status_note": "SQLite归档当前状态；后续撤回可使此前完成任务invalidated，不能当成最初模型失败。",
+        "completion_event": {
+          "seq": 21,
+          "stage": "awaiting_review",
+          "message": "真实运行结束，等待人工确认。",
+          "at": "2026-10-05T11:03:39.760277+00:00"
+        },
+        "input": {
+          "case_id": null,
+          "demo_assumptions_confirmed": false,
+          "text": "蔚县剪纸以阳刻为主，阴刻为辅。蔚县剪纸善于多色点染。工坊每天开放并且无需预约。",
+          "requirements": {
+            "region": "河北省蔚县",
+            "project": "剪纸",
+            "people": 8,
+            "budget_per_person": 160.0,
+            "available_minutes": 150,
+            "start_time": "09:30",
+            "preferred_plan": "deep",
+            "note": "不要茶歇，多留手作时间",
+            "planning_mode": "modules",
+            "audience": "general",
+            "tea_preference": "any",
+            "min_craft_minutes": 0,
+            "teaching_enabled": true
+          },
+          "operating_overrides": {
+            "capacity": 12,
+            "teachers": 1,
+            "rooms": 1,
+            "reuse": true
+          },
+          "constraint_resolution": "ask",
+          "previous_run_id": "09d67c181a4349dcaa5bbbd5855c1e1c"
+        },
+        "source_versions": {
+          "src-yuxian-carving-tool": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-color": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-color-layer": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-early-floral": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-region": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-technique": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-themes": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-window-name": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-xuan-paper": {
+            "version": 1,
+            "usage_status": "available"
+          }
+        },
+        "material_versions": {
+          "mat-paper-garden": {
+            "version": 3,
+            "usage_status": "available"
+          }
+        },
+        "raw_evidence": "artifacts/handoff-demo-guide/all-runs/a84c8a317ca74efe8f6af25227b9e6a2.json"
+      },
+      {
+        "run_id": "e16c6140868f4fdfa0e12aabaa8ae291",
+        "status": "invalidated",
+        "model_calls": 7,
+        "elapsed_seconds": 13.272,
+        "parent_id": null,
+        "previous_run_id": null,
+        "error": null,
+        "plan": {
+          "id": "mod-brief-story--basic-craft",
+          "craft_minutes": 50,
+          "duration_minutes": 70,
+          "total_cents": 57400,
+          "per_person_cents": 7175,
+          "local_service_cents": 38000,
+          "material_cents": 13400,
+          "operations_cents": 6000,
+          "paper_units": 8,
+          "module_ids": [
+            "brief-story",
+            "basic-craft"
+          ]
+        },
+        "claim_statuses": [
+          "contradicted",
+          "supported",
+          "insufficient"
+        ],
+        "scan_normalizations": [
+          {
+            "item_id": "observation",
+            "reason": "open_question_contract",
+            "original_status": "unsupported",
+            "original_cultural_premises": [
+              "允许使用的示例中可能包含阴刻或多色点染的细节"
+            ],
+            "original_reason": "该任务属于开放观察，不涉及文化事实前提。"
+          },
+          {
+            "item_id": "interaction",
+            "reason": "open_question_contract",
+            "original_status": "unsupported",
+            "original_cultural_premises": [
+              "个人对阴刻或多色点染风格的偏好"
+            ],
+            "original_reason": "该问题属于开放个人偏好，不涉及文化事实前提。"
+          }
+        ],
+        "model_purposes": [
+          "理解需求与拆分陈述",
+          "提取文字活动偏好",
+          "复核需求阻断原因",
+          "逐句证据核验",
+          "复核修订文本",
+          "生成分众教学内容",
+          "扫描教学内容全部文化前提"
+        ],
+        "note_issue_review": [
+          {
+            "index": 0,
+            "text": "未提及茶歇需求",
+            "category": "editorial_note",
+            "reason": "原文只是未提及或未明确该可选偏好；按约定保持表单/默认值，不把缺省当作矛盾。",
+            "original_category": "needs_clarification",
+            "original_reason": "未提及茶歇需求"
+          },
+          {
+            "index": 1,
+            "text": "未明确手作最低分钟",
+            "category": "editorial_note",
+            "reason": "原文只是未提及或未明确该可选偏好；按约定保持表单/默认值，不把缺省当作矛盾。",
+            "original_category": "needs_clarification",
+            "original_reason": "未明确手作最低分钟"
+          },
+          {
+            "index": 2,
+            "text": "未明确是否要求更多手作时间",
+            "category": "editorial_note",
+            "reason": "原文只是未提及或未明确该可选偏好；按约定保持表单/默认值，不把缺省当作矛盾。",
+            "original_category": "needs_clarification",
+            "original_reason": "未明确是否要求更多手作时间"
+          },
+          {
+            "index": 3,
+            "text": "未明确客群",
+            "category": "editorial_note",
+            "reason": "原文只是未提及或未明确该可选偏好；按约定保持表单/默认值，不把缺省当作矛盾。",
+            "original_category": "needs_clarification",
+            "original_reason": "未明确客群"
+          },
+          {
+            "index": 4,
+            "text": "未明确人数",
+            "category": "editorial_note",
+            "reason": "原文只是未提及或未明确该可选偏好；按约定保持表单/默认值，不把缺省当作矛盾。",
+            "original_category": "needs_clarification",
+            "original_reason": "未明确人数"
+          },
+          {
+            "index": 5,
+            "text": "未明确人均预算",
+            "category": "editorial_note",
+            "reason": "原文只是未提及或未明确该可选偏好；按约定保持表单/默认值，不把缺省当作矛盾。",
+            "original_category": "needs_clarification",
+            "original_reason": "未明确人均预算"
+          },
+          {
+            "index": 6,
+            "text": "未明确活动总时长",
+            "category": "editorial_note",
+            "reason": "原文只是未提及或未明确该可选偏好；按约定保持表单/默认值，不把缺省当作矛盾。",
+            "original_category": "needs_clarification",
+            "original_reason": "未明确活动总时长"
+          }
+        ],
+        "program_note_blockers": null,
+        "group": "demo-guide-harness-attempt",
+        "created_at": "2026-10-05T11:05:47.990604+00:00",
+        "snapshot_status_note": "SQLite归档当前状态；后续撤回可使此前完成任务invalidated，不能当成最初模型失败。",
+        "completion_event": {
+          "seq": 22,
+          "stage": "awaiting_review",
+          "message": "真实运行结束，等待人工确认。",
+          "at": "2026-10-05T11:06:01.276073+00:00"
+        },
+        "input": {
+          "case_id": null,
+          "demo_assumptions_confirmed": false,
+          "text": "蔚县剪纸以阳刻为主，阴刻为辅。蔚县剪纸善于多色点染。工坊每天开放并且无需预约。",
+          "requirements": {
+            "region": "河北省蔚县",
+            "project": "剪纸",
+            "people": 8,
+            "budget_per_person": 160.0,
+            "available_minutes": 150,
+            "start_time": "09:30",
+            "preferred_plan": "deep",
+            "note": "为初次了解剪纸的游客安排文化讲解与入门手作。讲述清楚工艺特色，留出观察和提问的时间。",
+            "planning_mode": "modules",
+            "audience": "general",
+            "tea_preference": "any",
+            "min_craft_minutes": 0,
+            "teaching_enabled": true
+          },
+          "operating_overrides": {
+            "capacity": 12,
+            "teachers": 1,
+            "rooms": 1,
+            "reuse": true
+          },
+          "constraint_resolution": "ask",
+          "previous_run_id": null
+        },
+        "source_versions": {
+          "src-yuxian-carving-tool": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-color": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-color-layer": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-early-floral": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-region": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-technique": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-themes": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-window-name": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-xuan-paper": {
+            "version": 1,
+            "usage_status": "available"
+          }
+        },
+        "material_versions": {
+          "mat-paper-garden": {
+            "version": 3,
+            "usage_status": "available"
+          }
+        },
+        "raw_evidence": "artifacts/handoff-demo-guide/all-runs/e16c6140868f4fdfa0e12aabaa8ae291.json"
+      },
+      {
+        "run_id": "752c0a59fc394ca8a6faa961aa2038b3",
+        "status": "invalidated",
+        "model_calls": 6,
+        "elapsed_seconds": 10.242,
+        "parent_id": null,
+        "previous_run_id": "e16c6140868f4fdfa0e12aabaa8ae291",
+        "error": null,
+        "plan": {
+          "id": "mod-brief-story--deep-craft--craft-extension",
+          "craft_minutes": 80,
+          "duration_minutes": 100,
+          "total_cents": 79600,
+          "per_person_cents": 9950,
+          "local_service_cents": 52400,
+          "material_cents": 19200,
+          "operations_cents": 8000,
+          "paper_units": 24,
+          "module_ids": [
+            "brief-story",
+            "deep-craft",
+            "craft-extension"
+          ]
+        },
+        "claim_statuses": [
+          "contradicted",
+          "supported",
+          "insufficient"
+        ],
+        "scan_normalizations": [
+          {
+            "item_id": "observation",
+            "reason": "open_question_contract",
+            "original_status": "unsupported",
+            "original_cultural_premises": [
+              "允许使用的示例中可能包含阴刻或多色点染的细节"
+            ],
+            "original_reason": "该任务属于开放观察，不涉及文化事实前提。"
+          },
+          {
+            "item_id": "interaction",
+            "reason": "open_question_contract",
+            "original_status": "unsupported",
+            "original_cultural_premises": [
+              "个人对阴刻或多色点染风格的偏好"
+            ],
+            "original_reason": "该问题属于开放个人偏好，不涉及文化事实前提。"
+          }
+        ],
+        "model_purposes": [
+          "理解需求与拆分陈述",
+          "提取文字活动偏好",
+          "逐句证据核验",
+          "复核修订文本",
+          "生成分众教学内容",
+          "扫描教学内容全部文化前提"
+        ],
+        "note_issue_review": null,
+        "program_note_blockers": null,
+        "group": "demo-guide-harness-attempt",
+        "created_at": "2026-10-05T11:06:02.286657+00:00",
+        "snapshot_status_note": "SQLite归档当前状态；后续撤回可使此前完成任务invalidated，不能当成最初模型失败。",
+        "completion_event": {
+          "seq": 21,
+          "stage": "awaiting_review",
+          "message": "真实运行结束，等待人工确认。",
+          "at": "2026-10-05T11:06:12.540799+00:00"
+        },
+        "input": {
+          "case_id": null,
+          "demo_assumptions_confirmed": false,
+          "text": "蔚县剪纸以阳刻为主，阴刻为辅。蔚县剪纸善于多色点染。工坊每天开放并且无需预约。",
+          "requirements": {
+            "region": "河北省蔚县",
+            "project": "剪纸",
+            "people": 8,
+            "budget_per_person": 160.0,
+            "available_minutes": 150,
+            "start_time": "09:30",
+            "preferred_plan": "deep",
+            "note": "不要茶歇，多留手作时间",
+            "planning_mode": "modules",
+            "audience": "general",
+            "tea_preference": "any",
+            "min_craft_minutes": 0,
+            "teaching_enabled": true
+          },
+          "operating_overrides": {
+            "capacity": 12,
+            "teachers": 1,
+            "rooms": 1,
+            "reuse": true
+          },
+          "constraint_resolution": "ask",
+          "previous_run_id": "e16c6140868f4fdfa0e12aabaa8ae291"
+        },
+        "source_versions": {
+          "src-yuxian-carving-tool": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-color": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-color-layer": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-early-floral": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-region": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-technique": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-themes": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-window-name": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-xuan-paper": {
+            "version": 1,
+            "usage_status": "available"
+          }
+        },
+        "material_versions": {
+          "mat-paper-garden": {
+            "version": 3,
+            "usage_status": "available"
+          }
+        },
+        "raw_evidence": "artifacts/handoff-demo-guide/all-runs/752c0a59fc394ca8a6faa961aa2038b3.json"
+      },
+      {
+        "run_id": "1ac77ca962d84aa5a3489c86d4494cc0",
+        "status": "invalidated",
+        "model_calls": 7,
+        "elapsed_seconds": 13.241,
+        "parent_id": null,
+        "previous_run_id": null,
+        "error": null,
+        "plan": {
+          "id": "mod-brief-story--basic-craft",
+          "craft_minutes": 50,
+          "duration_minutes": 70,
+          "total_cents": 57400,
+          "per_person_cents": 7175,
+          "local_service_cents": 38000,
+          "material_cents": 13400,
+          "operations_cents": 6000,
+          "paper_units": 8,
+          "module_ids": [
+            "brief-story",
+            "basic-craft"
+          ]
+        },
+        "claim_statuses": [
+          "contradicted",
+          "supported",
+          "insufficient"
+        ],
+        "scan_normalizations": [
+          {
+            "item_id": "observation",
+            "reason": "open_question_contract",
+            "original_status": "unsupported",
+            "original_cultural_premises": [
+              "允许使用的示例中可能包含阴刻或多色点染的细节"
+            ],
+            "original_reason": "该任务属于开放观察，不涉及文化事实前提。"
+          },
+          {
+            "item_id": "interaction",
+            "reason": "open_question_contract",
+            "original_status": "unsupported",
+            "original_cultural_premises": [
+              "个人对阴刻或多色点染风格的偏好"
+            ],
+            "original_reason": "该问题属于开放个人偏好，不涉及文化事实前提。"
+          }
+        ],
+        "model_purposes": [
+          "理解需求与拆分陈述",
+          "提取文字活动偏好",
+          "复核需求阻断原因",
+          "逐句证据核验",
+          "复核修订文本",
+          "生成分众教学内容",
+          "扫描教学内容全部文化前提"
+        ],
+        "note_issue_review": [
+          {
+            "index": 0,
+            "text": "未提及茶歇需求",
+            "category": "editorial_note",
+            "reason": "原文只是未提及或未明确该可选偏好；按约定保持表单/默认值，不把缺省当作矛盾。",
+            "original_category": "needs_clarification",
+            "original_reason": "未提及茶歇需求"
+          },
+          {
+            "index": 1,
+            "text": "未明确手作最低分钟",
+            "category": "editorial_note",
+            "reason": "原文只是未提及或未明确该可选偏好；按约定保持表单/默认值，不把缺省当作矛盾。",
+            "original_category": "needs_clarification",
+            "original_reason": "未明确手作最低分钟"
+          },
+          {
+            "index": 2,
+            "text": "未明确是否要求更多手作时间",
+            "category": "editorial_note",
+            "reason": "原文只是未提及或未明确该可选偏好；按约定保持表单/默认值，不把缺省当作矛盾。",
+            "original_category": "needs_clarification",
+            "original_reason": "未明确是否要求更多手作时间"
+          },
+          {
+            "index": 3,
+            "text": "未明确客群",
+            "category": "editorial_note",
+            "reason": "原文只是未提及或未明确该可选偏好；按约定保持表单/默认值，不把缺省当作矛盾。",
+            "original_category": "needs_clarification",
+            "original_reason": "未明确客群"
+          },
+          {
+            "index": 4,
+            "text": "未明确人数",
+            "category": "editorial_note",
+            "reason": "原文只是未提及或未明确该可选偏好；按约定保持表单/默认值，不把缺省当作矛盾。",
+            "original_category": "needs_clarification",
+            "original_reason": "未明确人数"
+          },
+          {
+            "index": 5,
+            "text": "未明确人均预算",
+            "category": "editorial_note",
+            "reason": "原文只是未提及或未明确该可选偏好；按约定保持表单/默认值，不把缺省当作矛盾。",
+            "original_category": "needs_clarification",
+            "original_reason": "未明确人均预算"
+          },
+          {
+            "index": 6,
+            "text": "未明确活动总时长",
+            "category": "editorial_note",
+            "reason": "原文只是未提及或未明确该可选偏好；按约定保持表单/默认值，不把缺省当作矛盾。",
+            "original_category": "needs_clarification",
+            "original_reason": "未明确活动总时长"
+          }
+        ],
+        "program_note_blockers": null,
+        "group": "demo-guide-harness-attempt",
+        "created_at": "2026-10-05T11:07:45.590963+00:00",
+        "snapshot_status_note": "SQLite归档当前状态；后续撤回可使此前完成任务invalidated，不能当成最初模型失败。",
+        "completion_event": {
+          "seq": 22,
+          "stage": "awaiting_review",
+          "message": "真实运行结束，等待人工确认。",
+          "at": "2026-10-05T11:07:58.843608+00:00"
+        },
+        "input": {
+          "case_id": null,
+          "demo_assumptions_confirmed": false,
+          "text": "蔚县剪纸以阳刻为主，阴刻为辅。蔚县剪纸善于多色点染。工坊每天开放并且无需预约。",
+          "requirements": {
+            "region": "河北省蔚县",
+            "project": "剪纸",
+            "people": 8,
+            "budget_per_person": 160.0,
+            "available_minutes": 150,
+            "start_time": "09:30",
+            "preferred_plan": "deep",
+            "note": "为初次了解剪纸的游客安排文化讲解与入门手作。讲述清楚工艺特色，留出观察和提问的时间。",
+            "planning_mode": "modules",
+            "audience": "general",
+            "tea_preference": "any",
+            "min_craft_minutes": 0,
+            "teaching_enabled": true
+          },
+          "operating_overrides": {
+            "capacity": 12,
+            "teachers": 1,
+            "rooms": 1,
+            "reuse": true
+          },
+          "constraint_resolution": "ask",
+          "previous_run_id": null
+        },
+        "source_versions": {
+          "src-yuxian-carving-tool": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-color": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-color-layer": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-early-floral": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-region": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-technique": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-themes": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-window-name": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-xuan-paper": {
+            "version": 1,
+            "usage_status": "available"
+          }
+        },
+        "material_versions": {
+          "mat-paper-garden": {
+            "version": 3,
+            "usage_status": "available"
+          }
+        },
+        "raw_evidence": "artifacts/handoff-demo-guide/all-runs/1ac77ca962d84aa5a3489c86d4494cc0.json"
+      },
+      {
+        "run_id": "def4dee72aed4ba0994f4fecfe3cef03",
+        "status": "invalidated",
+        "model_calls": 6,
+        "elapsed_seconds": 10.195,
+        "parent_id": null,
+        "previous_run_id": "1ac77ca962d84aa5a3489c86d4494cc0",
+        "error": null,
+        "plan": {
+          "id": "mod-brief-story--deep-craft--craft-extension",
+          "craft_minutes": 80,
+          "duration_minutes": 100,
+          "total_cents": 79600,
+          "per_person_cents": 9950,
+          "local_service_cents": 52400,
+          "material_cents": 19200,
+          "operations_cents": 8000,
+          "paper_units": 24,
+          "module_ids": [
+            "brief-story",
+            "deep-craft",
+            "craft-extension"
+          ]
+        },
+        "claim_statuses": [
+          "contradicted",
+          "supported",
+          "insufficient"
+        ],
+        "scan_normalizations": [
+          {
+            "item_id": "observation",
+            "reason": "open_question_contract",
+            "original_status": "unsupported",
+            "original_cultural_premises": [
+              "允许使用的示例中可能包含阴刻或多色点染的细节"
+            ],
+            "original_reason": "该任务属于开放观察，不涉及文化事实前提。"
+          },
+          {
+            "item_id": "interaction",
+            "reason": "open_question_contract",
+            "original_status": "unsupported",
+            "original_cultural_premises": [
+              "个人对阴刻或多色点染风格的偏好"
+            ],
+            "original_reason": "该问题属于开放个人偏好，不涉及文化事实前提。"
+          }
+        ],
+        "model_purposes": [
+          "理解需求与拆分陈述",
+          "提取文字活动偏好",
+          "逐句证据核验",
+          "复核修订文本",
+          "生成分众教学内容",
+          "扫描教学内容全部文化前提"
+        ],
+        "note_issue_review": null,
+        "program_note_blockers": null,
+        "group": "demo-guide-harness-attempt",
+        "created_at": "2026-10-05T11:07:59.848087+00:00",
+        "snapshot_status_note": "SQLite归档当前状态；后续撤回可使此前完成任务invalidated，不能当成最初模型失败。",
+        "completion_event": {
+          "seq": 21,
+          "stage": "awaiting_review",
+          "message": "真实运行结束，等待人工确认。",
+          "at": "2026-10-05T11:08:10.054539+00:00"
+        },
+        "input": {
+          "case_id": null,
+          "demo_assumptions_confirmed": false,
+          "text": "蔚县剪纸以阳刻为主，阴刻为辅。蔚县剪纸善于多色点染。工坊每天开放并且无需预约。",
+          "requirements": {
+            "region": "河北省蔚县",
+            "project": "剪纸",
+            "people": 8,
+            "budget_per_person": 160.0,
+            "available_minutes": 150,
+            "start_time": "09:30",
+            "preferred_plan": "deep",
+            "note": "不要茶歇，多留手作时间",
+            "planning_mode": "modules",
+            "audience": "general",
+            "tea_preference": "any",
+            "min_craft_minutes": 0,
+            "teaching_enabled": true
+          },
+          "operating_overrides": {
+            "capacity": 12,
+            "teachers": 1,
+            "rooms": 1,
+            "reuse": true
+          },
+          "constraint_resolution": "ask",
+          "previous_run_id": "1ac77ca962d84aa5a3489c86d4494cc0"
+        },
+        "source_versions": {
+          "src-yuxian-carving-tool": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-color": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-color-layer": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-early-floral": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-region": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-technique": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-themes": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-window-name": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-xuan-paper": {
+            "version": 1,
+            "usage_status": "available"
+          }
+        },
+        "material_versions": {
+          "mat-paper-garden": {
+            "version": 3,
+            "usage_status": "available"
+          }
+        },
+        "raw_evidence": "artifacts/handoff-demo-guide/all-runs/def4dee72aed4ba0994f4fecfe3cef03.json"
+      },
+      {
+        "run_id": "3a6e5754390f4fb09ccd39b7c5d34dfa",
+        "status": "awaiting_review",
+        "model_calls": 6,
+        "elapsed_seconds": 10.388,
+        "parent_id": "def4dee72aed4ba0994f4fecfe3cef03",
+        "previous_run_id": "def4dee72aed4ba0994f4fecfe3cef03",
+        "error": null,
+        "plan": {
+          "id": "mod-brief-story--deep-craft--craft-extension",
+          "craft_minutes": 80,
+          "duration_minutes": 100,
+          "total_cents": 79600,
+          "per_person_cents": 9950,
+          "local_service_cents": 52400,
+          "material_cents": 19200,
+          "operations_cents": 8000,
+          "paper_units": 24,
+          "module_ids": [
+            "brief-story",
+            "deep-craft",
+            "craft-extension"
+          ]
+        },
+        "claim_statuses": [
+          "contradicted",
+          "supported",
+          "insufficient"
+        ],
+        "scan_normalizations": [
+          {
+            "item_id": "observation",
+            "reason": "open_question_contract",
+            "original_status": "unsupported",
+            "original_cultural_premises": [
+              "允许使用的示例中可能包含阴刻或多色点染的细节"
+            ],
+            "original_reason": "该任务属于开放观察，不涉及文化事实前提。"
+          },
+          {
+            "item_id": "interaction",
+            "reason": "open_question_contract",
+            "original_status": "unsupported",
+            "original_cultural_premises": [
+              "个人对阴刻或多色点染风格的偏好"
+            ],
+            "original_reason": "该问题属于开放个人偏好，不涉及文化事实前提。"
+          }
+        ],
+        "model_purposes": [
+          "理解需求与拆分陈述",
+          "提取文字活动偏好",
+          "逐句证据核验",
+          "复核修订文本",
+          "生成分众教学内容",
+          "扫描教学内容全部文化前提"
+        ],
+        "note_issue_review": null,
+        "program_note_blockers": null,
+        "group": "demo-guide-harness-attempt",
+        "created_at": "2026-10-05T11:08:12.113227+00:00",
+        "snapshot_status_note": "SQLite归档当前状态；后续撤回可使此前完成任务invalidated，不能当成最初模型失败。",
+        "completion_event": {
+          "seq": 20,
+          "stage": "awaiting_review",
+          "message": "真实运行结束，等待人工确认。",
+          "at": "2026-10-05T11:08:22.513246+00:00"
+        },
+        "input": {
+          "case_id": null,
+          "demo_assumptions_confirmed": false,
+          "text": "蔚县剪纸以阳刻为主，阴刻为辅。蔚县剪纸善于多色点染。工坊每天开放并且无需预约。",
+          "requirements": {
+            "region": "河北省蔚县",
+            "project": "剪纸",
+            "people": 8,
+            "budget_per_person": 160.0,
+            "available_minutes": 150,
+            "start_time": "09:30",
+            "preferred_plan": "deep",
+            "note": "不要茶歇，多留手作时间",
+            "planning_mode": "modules",
+            "audience": "general",
+            "tea_preference": "any",
+            "min_craft_minutes": 0,
+            "teaching_enabled": true
+          },
+          "operating_overrides": {
+            "capacity": 12,
+            "teachers": 1,
+            "rooms": 1,
+            "reuse": true
+          },
+          "constraint_resolution": "ask",
+          "previous_run_id": "def4dee72aed4ba0994f4fecfe3cef03"
+        },
+        "source_versions": {
+          "src-yuxian-carving-tool": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-color": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-color-layer": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-early-floral": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-region": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-technique": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-themes": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-window-name": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-xuan-paper": {
+            "version": 1,
+            "usage_status": "available"
+          }
+        },
+        "material_versions": {},
+        "raw_evidence": "artifacts/handoff-demo-guide/all-runs/3a6e5754390f4fb09ccd39b7c5d34dfa.json"
+      },
+      {
+        "run_id": "258e258b808b4c68a8b761748d5f68a3",
+        "status": "awaiting_review",
+        "model_calls": 7,
+        "elapsed_seconds": 13.604,
+        "parent_id": null,
+        "previous_run_id": null,
+        "error": null,
+        "plan": {
+          "id": "mod-brief-story--basic-craft",
+          "craft_minutes": 50,
+          "duration_minutes": 70,
+          "total_cents": 57400,
+          "per_person_cents": 7175,
+          "local_service_cents": 38000,
+          "material_cents": 13400,
+          "operations_cents": 6000,
+          "paper_units": 8,
+          "module_ids": [
+            "brief-story",
+            "basic-craft"
+          ]
+        },
+        "claim_statuses": [
+          "contradicted",
+          "supported",
+          "insufficient"
+        ],
+        "scan_normalizations": [
+          {
+            "item_id": "observation",
+            "reason": "open_question_contract",
+            "original_status": "unsupported",
+            "original_cultural_premises": [
+              "允许使用的示例中可能包含阴刻或多色点染的细节"
+            ],
+            "original_reason": "该任务属于开放观察，不涉及文化事实前提。"
+          },
+          {
+            "item_id": "interaction",
+            "reason": "open_question_contract",
+            "original_status": "unsupported",
+            "original_cultural_premises": [
+              "个人对阴刻或多色点染风格的偏好"
+            ],
+            "original_reason": "该问题属于开放个人偏好，不涉及文化事实前提。"
+          }
+        ],
+        "model_purposes": [
+          "理解需求与拆分陈述",
+          "提取文字活动偏好",
+          "复核需求阻断原因",
+          "逐句证据核验",
+          "复核修订文本",
+          "生成分众教学内容",
+          "扫描教学内容全部文化前提"
+        ],
+        "note_issue_review": [
+          {
+            "index": 0,
+            "text": "未提及茶歇需求",
+            "category": "editorial_note",
+            "reason": "原文只是未提及或未明确该可选偏好；按约定保持表单/默认值，不把缺省当作矛盾。",
+            "original_category": "needs_clarification",
+            "original_reason": "未提及茶歇需求"
+          },
+          {
+            "index": 1,
+            "text": "未明确手作最低分钟",
+            "category": "editorial_note",
+            "reason": "原文只是未提及或未明确该可选偏好；按约定保持表单/默认值，不把缺省当作矛盾。",
+            "original_category": "needs_clarification",
+            "original_reason": "未明确手作最低分钟"
+          },
+          {
+            "index": 2,
+            "text": "未明确是否要求更多手作时间",
+            "category": "editorial_note",
+            "reason": "原文只是未提及或未明确该可选偏好；按约定保持表单/默认值，不把缺省当作矛盾。",
+            "original_category": "needs_clarification",
+            "original_reason": "未明确是否要求更多手作时间"
+          },
+          {
+            "index": 3,
+            "text": "未明确客群",
+            "category": "editorial_note",
+            "reason": "原文只是未提及或未明确该可选偏好；按约定保持表单/默认值，不把缺省当作矛盾。",
+            "original_category": "needs_clarification",
+            "original_reason": "未明确客群"
+          },
+          {
+            "index": 4,
+            "text": "未明确人数",
+            "category": "editorial_note",
+            "reason": "原文只是未提及或未明确该可选偏好；按约定保持表单/默认值，不把缺省当作矛盾。",
+            "original_category": "needs_clarification",
+            "original_reason": "未明确人数"
+          },
+          {
+            "index": 5,
+            "text": "未明确人均预算",
+            "category": "editorial_note",
+            "reason": "原文只是未提及或未明确该可选偏好；按约定保持表单/默认值，不把缺省当作矛盾。",
+            "original_category": "needs_clarification",
+            "original_reason": "未明确人均预算"
+          },
+          {
+            "index": 6,
+            "text": "未明确活动总时长",
+            "category": "editorial_note",
+            "reason": "原文只是未提及或未明确该可选偏好；按约定保持表单/默认值，不把缺省当作矛盾。",
+            "original_category": "needs_clarification",
+            "original_reason": "未明确活动总时长"
+          }
+        ],
+        "program_note_blockers": null,
+        "group": "demo-guide-harness-attempt",
+        "created_at": "2026-10-05T11:09:21.182980+00:00",
+        "snapshot_status_note": "SQLite归档当前状态；后续撤回可使此前完成任务invalidated，不能当成最初模型失败。",
+        "completion_event": {
+          "seq": 22,
+          "stage": "awaiting_review",
+          "message": "真实运行结束，等待人工确认。",
+          "at": "2026-10-05T11:09:34.798225+00:00"
+        },
+        "input": {
+          "case_id": null,
+          "demo_assumptions_confirmed": false,
+          "text": "蔚县剪纸以阳刻为主，阴刻为辅。蔚县剪纸善于多色点染。工坊每天开放并且无需预约。",
+          "requirements": {
+            "region": "河北省蔚县",
+            "project": "剪纸",
+            "people": 8,
+            "budget_per_person": 160.0,
+            "available_minutes": 150,
+            "start_time": "09:30",
+            "preferred_plan": "deep",
+            "note": "为初次了解剪纸的游客安排文化讲解与入门手作。讲述清楚工艺特色，留出观察和提问的时间。",
+            "planning_mode": "modules",
+            "audience": "general",
+            "tea_preference": "any",
+            "min_craft_minutes": 0,
+            "teaching_enabled": true
+          },
+          "operating_overrides": {
+            "capacity": 12,
+            "teachers": 1,
+            "rooms": 1,
+            "reuse": true
+          },
+          "constraint_resolution": "ask",
+          "previous_run_id": null
+        },
+        "source_versions": {
+          "src-yuxian-carving-tool": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-color": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-color-layer": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-early-floral": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-region": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-technique": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-themes": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-window-name": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-xuan-paper": {
+            "version": 1,
+            "usage_status": "available"
+          }
+        },
+        "material_versions": {},
+        "raw_evidence": "artifacts/handoff-demo-guide/all-runs/258e258b808b4c68a8b761748d5f68a3.json"
+      },
+      {
+        "run_id": "8daab18822494697980edec5cc522e3b",
+        "status": "awaiting_review",
+        "model_calls": 6,
+        "elapsed_seconds": 10.362,
+        "parent_id": null,
+        "previous_run_id": "258e258b808b4c68a8b761748d5f68a3",
+        "error": null,
+        "plan": {
+          "id": "mod-brief-story--deep-craft--craft-extension",
+          "craft_minutes": 80,
+          "duration_minutes": 100,
+          "total_cents": 79600,
+          "per_person_cents": 9950,
+          "local_service_cents": 52400,
+          "material_cents": 19200,
+          "operations_cents": 8000,
+          "paper_units": 24,
+          "module_ids": [
+            "brief-story",
+            "deep-craft",
+            "craft-extension"
+          ]
+        },
+        "claim_statuses": [
+          "contradicted",
+          "supported",
+          "insufficient"
+        ],
+        "scan_normalizations": [
+          {
+            "item_id": "observation",
+            "reason": "open_question_contract",
+            "original_status": "unsupported",
+            "original_cultural_premises": [
+              "允许使用的示例中可能包含阴刻或多色点染的细节"
+            ],
+            "original_reason": "该任务属于开放观察，不涉及文化事实前提。"
+          },
+          {
+            "item_id": "interaction",
+            "reason": "open_question_contract",
+            "original_status": "unsupported",
+            "original_cultural_premises": [
+              "个人对阴刻或多色点染风格的偏好"
+            ],
+            "original_reason": "该问题属于开放个人偏好，不涉及文化事实前提。"
+          }
+        ],
+        "model_purposes": [
+          "理解需求与拆分陈述",
+          "提取文字活动偏好",
+          "逐句证据核验",
+          "复核修订文本",
+          "生成分众教学内容",
+          "扫描教学内容全部文化前提"
+        ],
+        "note_issue_review": null,
+        "program_note_blockers": null,
+        "group": "demo-guide-harness-attempt",
+        "created_at": "2026-10-05T11:09:35.965521+00:00",
+        "snapshot_status_note": "SQLite归档当前状态；后续撤回可使此前完成任务invalidated，不能当成最初模型失败。",
+        "completion_event": {
+          "seq": 21,
+          "stage": "awaiting_review",
+          "message": "真实运行结束，等待人工确认。",
+          "at": "2026-10-05T11:09:46.338157+00:00"
+        },
+        "input": {
+          "case_id": null,
+          "demo_assumptions_confirmed": false,
+          "text": "蔚县剪纸以阳刻为主，阴刻为辅。蔚县剪纸善于多色点染。工坊每天开放并且无需预约。",
+          "requirements": {
+            "region": "河北省蔚县",
+            "project": "剪纸",
+            "people": 8,
+            "budget_per_person": 160.0,
+            "available_minutes": 150,
+            "start_time": "09:30",
+            "preferred_plan": "deep",
+            "note": "不要茶歇，多留手作时间",
+            "planning_mode": "modules",
+            "audience": "general",
+            "tea_preference": "any",
+            "min_craft_minutes": 0,
+            "teaching_enabled": true
+          },
+          "operating_overrides": {
+            "capacity": 12,
+            "teachers": 1,
+            "rooms": 1,
+            "reuse": true
+          },
+          "constraint_resolution": "ask",
+          "previous_run_id": "258e258b808b4c68a8b761748d5f68a3"
+        },
+        "source_versions": {
+          "src-yuxian-carving-tool": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-color": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-color-layer": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-early-floral": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-region": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-technique": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-themes": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-window-name": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-xuan-paper": {
+            "version": 1,
+            "usage_status": "available"
+          }
+        },
+        "material_versions": {},
+        "raw_evidence": "artifacts/handoff-demo-guide/all-runs/8daab18822494697980edec5cc522e3b.json"
+      },
+      {
+        "run_id": "fe8ece2ca65344b288763387ab5dae24",
+        "status": "invalidated",
+        "model_calls": 7,
+        "elapsed_seconds": 13.332,
+        "parent_id": null,
+        "previous_run_id": null,
+        "error": null,
+        "plan": {
+          "id": "mod-brief-story--basic-craft",
+          "craft_minutes": 50,
+          "duration_minutes": 70,
+          "total_cents": 57400,
+          "per_person_cents": 7175,
+          "local_service_cents": 38000,
+          "material_cents": 13400,
+          "operations_cents": 6000,
+          "paper_units": 8,
+          "module_ids": [
+            "brief-story",
+            "basic-craft"
+          ]
+        },
+        "claim_statuses": [
+          "contradicted",
+          "supported",
+          "insufficient"
+        ],
+        "scan_normalizations": [
+          {
+            "item_id": "observation",
+            "reason": "open_question_contract",
+            "original_status": "unsupported",
+            "original_cultural_premises": [
+              "允许使用的示例中可能包含阴刻或多色点染的细节"
+            ],
+            "original_reason": "该任务属于开放观察，不涉及文化事实前提。"
+          },
+          {
+            "item_id": "interaction",
+            "reason": "open_question_contract",
+            "original_status": "unsupported",
+            "original_cultural_premises": [
+              "个人对阴刻或多色点染风格的偏好"
+            ],
+            "original_reason": "该问题属于开放个人偏好，不涉及文化事实前提。"
+          }
+        ],
+        "model_purposes": [
+          "理解需求与拆分陈述",
+          "提取文字活动偏好",
+          "复核需求阻断原因",
+          "逐句证据核验",
+          "复核修订文本",
+          "生成分众教学内容",
+          "扫描教学内容全部文化前提"
+        ],
+        "note_issue_review": [
+          {
+            "index": 0,
+            "text": "未提及茶歇需求",
+            "category": "editorial_note",
+            "reason": "原文只是未提及或未明确该可选偏好；按约定保持表单/默认值，不把缺省当作矛盾。",
+            "original_category": "needs_clarification",
+            "original_reason": "未提及茶歇需求"
+          },
+          {
+            "index": 1,
+            "text": "未明确手作最低分钟",
+            "category": "editorial_note",
+            "reason": "原文只是未提及或未明确该可选偏好；按约定保持表单/默认值，不把缺省当作矛盾。",
+            "original_category": "needs_clarification",
+            "original_reason": "未明确手作最低分钟"
+          },
+          {
+            "index": 2,
+            "text": "未明确是否要求更多手作时间",
+            "category": "editorial_note",
+            "reason": "原文只是未提及或未明确该可选偏好；按约定保持表单/默认值，不把缺省当作矛盾。",
+            "original_category": "needs_clarification",
+            "original_reason": "未明确是否要求更多手作时间"
+          },
+          {
+            "index": 3,
+            "text": "未明确客群",
+            "category": "editorial_note",
+            "reason": "原文只是未提及或未明确该可选偏好；按约定保持表单/默认值，不把缺省当作矛盾。",
+            "original_category": "needs_clarification",
+            "original_reason": "未明确客群"
+          },
+          {
+            "index": 4,
+            "text": "未明确人数",
+            "category": "editorial_note",
+            "reason": "原文只是未提及或未明确该可选偏好；按约定保持表单/默认值，不把缺省当作矛盾。",
+            "original_category": "needs_clarification",
+            "original_reason": "未明确人数"
+          },
+          {
+            "index": 5,
+            "text": "未明确人均预算",
+            "category": "editorial_note",
+            "reason": "原文只是未提及或未明确该可选偏好；按约定保持表单/默认值，不把缺省当作矛盾。",
+            "original_category": "needs_clarification",
+            "original_reason": "未明确人均预算"
+          },
+          {
+            "index": 6,
+            "text": "未明确活动总时长",
+            "category": "editorial_note",
+            "reason": "原文只是未提及或未明确该可选偏好；按约定保持表单/默认值，不把缺省当作矛盾。",
+            "original_category": "needs_clarification",
+            "original_reason": "未明确活动总时长"
+          }
+        ],
+        "program_note_blockers": null,
+        "group": "demo-guide-harness-attempt",
+        "created_at": "2026-10-05T11:10:39.182843+00:00",
+        "snapshot_status_note": "SQLite归档当前状态；后续撤回可使此前完成任务invalidated，不能当成最初模型失败。",
+        "completion_event": {
+          "seq": 22,
+          "stage": "awaiting_review",
+          "message": "真实运行结束，等待人工确认。",
+          "at": "2026-10-05T11:10:52.528678+00:00"
+        },
+        "input": {
+          "case_id": null,
+          "demo_assumptions_confirmed": false,
+          "text": "蔚县剪纸以阳刻为主，阴刻为辅。蔚县剪纸善于多色点染。工坊每天开放并且无需预约。",
+          "requirements": {
+            "region": "河北省蔚县",
+            "project": "剪纸",
+            "people": 8,
+            "budget_per_person": 160.0,
+            "available_minutes": 150,
+            "start_time": "09:30",
+            "preferred_plan": "deep",
+            "note": "为初次了解剪纸的游客安排文化讲解与入门手作。讲述清楚工艺特色，留出观察和提问的时间。",
+            "planning_mode": "modules",
+            "audience": "general",
+            "tea_preference": "any",
+            "min_craft_minutes": 0,
+            "teaching_enabled": true
+          },
+          "operating_overrides": {
+            "capacity": 12,
+            "teachers": 1,
+            "rooms": 1,
+            "reuse": true
+          },
+          "constraint_resolution": "ask",
+          "previous_run_id": null
+        },
+        "source_versions": {
+          "src-yuxian-carving-tool": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-color": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-color-layer": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-early-floral": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-region": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-technique": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-themes": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-window-name": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-xuan-paper": {
+            "version": 1,
+            "usage_status": "available"
+          }
+        },
+        "material_versions": {
+          "mat-paper-garden": {
+            "version": 5,
+            "usage_status": "available"
+          }
+        },
+        "raw_evidence": "artifacts/handoff-demo-guide/all-runs/fe8ece2ca65344b288763387ab5dae24.json"
+      },
+      {
+        "run_id": "8f8c28acdab84c3eadcd62d9f18855d6",
+        "status": "invalidated",
+        "model_calls": 6,
+        "elapsed_seconds": 10.338,
+        "parent_id": null,
+        "previous_run_id": "fe8ece2ca65344b288763387ab5dae24",
+        "error": null,
+        "plan": {
+          "id": "mod-brief-story--deep-craft--craft-extension",
+          "craft_minutes": 80,
+          "duration_minutes": 100,
+          "total_cents": 79600,
+          "per_person_cents": 9950,
+          "local_service_cents": 52400,
+          "material_cents": 19200,
+          "operations_cents": 8000,
+          "paper_units": 24,
+          "module_ids": [
+            "brief-story",
+            "deep-craft",
+            "craft-extension"
+          ]
+        },
+        "claim_statuses": [
+          "contradicted",
+          "supported",
+          "insufficient"
+        ],
+        "scan_normalizations": [
+          {
+            "item_id": "observation",
+            "reason": "open_question_contract",
+            "original_status": "unsupported",
+            "original_cultural_premises": [
+              "允许使用的示例中可能包含阴刻或多色点染的细节"
+            ],
+            "original_reason": "该任务属于开放观察，不涉及文化事实前提。"
+          },
+          {
+            "item_id": "interaction",
+            "reason": "open_question_contract",
+            "original_status": "unsupported",
+            "original_cultural_premises": [
+              "个人对阴刻或多色点染风格的偏好"
+            ],
+            "original_reason": "该问题属于开放个人偏好，不涉及文化事实前提。"
+          }
+        ],
+        "model_purposes": [
+          "理解需求与拆分陈述",
+          "提取文字活动偏好",
+          "逐句证据核验",
+          "复核修订文本",
+          "生成分众教学内容",
+          "扫描教学内容全部文化前提"
+        ],
+        "note_issue_review": null,
+        "program_note_blockers": null,
+        "group": "demo-guide-harness-attempt",
+        "created_at": "2026-10-05T11:10:53.922347+00:00",
+        "snapshot_status_note": "SQLite归档当前状态；后续撤回可使此前完成任务invalidated，不能当成最初模型失败。",
+        "completion_event": {
+          "seq": 21,
+          "stage": "awaiting_review",
+          "message": "真实运行结束，等待人工确认。",
+          "at": "2026-10-05T11:11:04.271748+00:00"
+        },
+        "input": {
+          "case_id": null,
+          "demo_assumptions_confirmed": false,
+          "text": "蔚县剪纸以阳刻为主，阴刻为辅。蔚县剪纸善于多色点染。工坊每天开放并且无需预约。",
+          "requirements": {
+            "region": "河北省蔚县",
+            "project": "剪纸",
+            "people": 8,
+            "budget_per_person": 160.0,
+            "available_minutes": 150,
+            "start_time": "09:30",
+            "preferred_plan": "deep",
+            "note": "不要茶歇，多留手作时间",
+            "planning_mode": "modules",
+            "audience": "general",
+            "tea_preference": "any",
+            "min_craft_minutes": 0,
+            "teaching_enabled": true
+          },
+          "operating_overrides": {
+            "capacity": 12,
+            "teachers": 1,
+            "rooms": 1,
+            "reuse": true
+          },
+          "constraint_resolution": "ask",
+          "previous_run_id": "fe8ece2ca65344b288763387ab5dae24"
+        },
+        "source_versions": {
+          "src-yuxian-carving-tool": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-color": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-color-layer": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-early-floral": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-region": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-technique": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-themes": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-window-name": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-xuan-paper": {
+            "version": 1,
+            "usage_status": "available"
+          }
+        },
+        "material_versions": {
+          "mat-paper-garden": {
+            "version": 5,
+            "usage_status": "available"
+          }
+        },
+        "raw_evidence": "artifacts/handoff-demo-guide/all-runs/8f8c28acdab84c3eadcd62d9f18855d6.json"
+      },
+      {
+        "run_id": "4b5700c7f39143a7b5c1b8c48267c09d",
+        "status": "awaiting_review",
+        "model_calls": 6,
+        "elapsed_seconds": 10.449,
+        "parent_id": "8f8c28acdab84c3eadcd62d9f18855d6",
+        "previous_run_id": "8f8c28acdab84c3eadcd62d9f18855d6",
+        "error": null,
+        "plan": {
+          "id": "mod-brief-story--deep-craft--craft-extension",
+          "craft_minutes": 80,
+          "duration_minutes": 100,
+          "total_cents": 79600,
+          "per_person_cents": 9950,
+          "local_service_cents": 52400,
+          "material_cents": 19200,
+          "operations_cents": 8000,
+          "paper_units": 24,
+          "module_ids": [
+            "brief-story",
+            "deep-craft",
+            "craft-extension"
+          ]
+        },
+        "claim_statuses": [
+          "contradicted",
+          "supported",
+          "insufficient"
+        ],
+        "scan_normalizations": [
+          {
+            "item_id": "observation",
+            "reason": "open_question_contract",
+            "original_status": "unsupported",
+            "original_cultural_premises": [
+              "允许使用的示例中可能包含阴刻或多色点染的细节"
+            ],
+            "original_reason": "该任务属于开放观察，不涉及文化事实前提。"
+          },
+          {
+            "item_id": "interaction",
+            "reason": "open_question_contract",
+            "original_status": "unsupported",
+            "original_cultural_premises": [
+              "个人对阴刻或多色点染风格的偏好"
+            ],
+            "original_reason": "该问题属于开放个人偏好，不涉及文化事实前提。"
+          }
+        ],
+        "model_purposes": [
+          "理解需求与拆分陈述",
+          "提取文字活动偏好",
+          "逐句证据核验",
+          "复核修订文本",
+          "生成分众教学内容",
+          "扫描教学内容全部文化前提"
+        ],
+        "note_issue_review": null,
+        "program_note_blockers": null,
+        "group": "demo-guide-harness-attempt",
+        "created_at": "2026-10-05T11:11:06.425764+00:00",
+        "snapshot_status_note": "SQLite归档当前状态；后续撤回可使此前完成任务invalidated，不能当成最初模型失败。",
+        "completion_event": {
+          "seq": 20,
+          "stage": "awaiting_review",
+          "message": "真实运行结束，等待人工确认。",
+          "at": "2026-10-05T11:11:16.887161+00:00"
+        },
+        "input": {
+          "case_id": null,
+          "demo_assumptions_confirmed": false,
+          "text": "蔚县剪纸以阳刻为主，阴刻为辅。蔚县剪纸善于多色点染。工坊每天开放并且无需预约。",
+          "requirements": {
+            "region": "河北省蔚县",
+            "project": "剪纸",
+            "people": 8,
+            "budget_per_person": 160.0,
+            "available_minutes": 150,
+            "start_time": "09:30",
+            "preferred_plan": "deep",
+            "note": "不要茶歇，多留手作时间",
+            "planning_mode": "modules",
+            "audience": "general",
+            "tea_preference": "any",
+            "min_craft_minutes": 0,
+            "teaching_enabled": true
+          },
+          "operating_overrides": {
+            "capacity": 12,
+            "teachers": 1,
+            "rooms": 1,
+            "reuse": true
+          },
+          "constraint_resolution": "ask",
+          "previous_run_id": "8f8c28acdab84c3eadcd62d9f18855d6"
+        },
+        "source_versions": {
+          "src-yuxian-carving-tool": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-color": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-color-layer": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-early-floral": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-region": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-technique": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-themes": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-window-name": {
+            "version": 1,
+            "usage_status": "available"
+          },
+          "src-yuxian-xuan-paper": {
+            "version": 1,
+            "usage_status": "available"
+          }
+        },
+        "material_versions": {},
+        "raw_evidence": "artifacts/handoff-demo-guide/all-runs/4b5700c7f39143a7b5c1b8c48267c09d.json"
+      }
+    ],
+    "run_accounting": {
+      "total_runs": 21,
+      "total_model_calls": 125,
+      "demo_runs": 13,
+      "demo_model_calls": 84,
+      "guide_real_run_repetition": true,
+      "single_attempt_protocol_met": false,
+      "note": "本轮临时验证脚本错误引发重复推理；不以最后成功三幕替代首轮记录。不再重跑模型。原始结果全部从本轮SQLite导出，包括被后续素材操作标为invalidated的记录。"
+    }
   },
   "model_calls": 7,
-  "elapsed_seconds": 16.086,
-  "failure": null,
+  "elapsed_seconds": 16.762,
+  "failure": {
+    "classification": "5090-validation-procedure-and-evidence-defect",
+    "business_code_modified": false,
+    "business_standard_regression_passed": true,
+    "all_acceptance_requirements_met": false,
+    "issues": [
+      "提前启动无模型检查",
+      "重复彩排推理",
+      "阻断检查输入偏离默认",
+      "10px中文检查被错误豁免",
+      "部分可读性和网络计数证据缺失",
+      "结果记录曾使用不准确耗时和不可达record_commit_sha",
+      "main被过早合入"
+    ]
+  },
   "checks": {
     "origin_main_before_merge": "b0a4f0c865ac94ab9dff862c6adf1f862c9aa08c",
     "repository_check": "passed: 568 maintenance files, 260 local links",
@@ -286,11 +4219,12 @@
     "api_health": "status=ready, model_ready=true, Ollama 0.35.0 at 127.0.0.1:11439",
     "live_workflow": "expected result met",
     "module_workflow": "5 scenarios passed",
-    "demo_guide": "three operator-triggered real runs; three checks visible only after expected server results",
+    "demo_guide": "部分实际业务成功；重复触发13个彩排任务，不符合一次执行要求；完整证据见all_runs_ledger。",
     "homepage_silence": "refresh produced no bottom load toast",
     "file_mode": "no three-act guide button; preset mode unchanged",
     "exports": "visitor and organizer real downloads; A4 print count 3 and 7",
-    "merge_decision": "pending result commit"
+    "merge_decision": "不满足用户一次验收与全部检查条件，应交回5060。本轮已过早合入main至ef8a220，本更正只推候选分支；不继续改main或重写历史。",
+    "readability": "引导字号与横向宽度部分通过；存在10px中文标签及未完成检查，不能判全通过。"
   },
   "evidence_paths": [
     "docs/validation/two-machine/handoff-rehearsal-5090-demo-guide-00ad6b9.json",
@@ -306,10 +4240,793 @@
     "artifacts/handoff-demo-guide/module-browser-check/verification.json",
     "docs/assets/screenshots/home-hero.png",
     "docs/assets/screenshots/home-desktop.png",
-    "docs/assets/screenshots/home-mobile.png"
+    "docs/assets/screenshots/home-mobile.png",
+    "artifacts/handoff-demo-guide/app.sqlite3",
+    "artifacts/handoff-demo-guide/all-runs-index.json",
+    "artifacts/handoff-demo-guide/real-demo-guide.cjs",
+    "artifacts/handoff-demo-guide/demo-guide-console-success.log",
+    "artifacts/handoff-demo-guide/backend-check.log",
+    "artifacts/handoff-demo-guide/prototype-check.log"
   ],
-  "notes": "5090双机开发与交叉复核，不是独立第三方评测。首页故事化上一轮已验证；本候选只接通三幕引导和首屏静默提示，未修改后端、金额、规则、提示词或资料。真实模型服务、数据库和原始日志均留在本机artifacts，不提交。前三幕最终业务结果通过；验证脚本自身的中止记录按首次失败保留。"
+  "notes": "这是5090本机真实模型记录与双机复核资料，不是独立第三方评测。标准test:live和test:modules各一次通过。临时彩排脚本重复运行、两个边界任务输入不符与部分未完成检查使本轮不能认定全部验收通过；保留早期失败和全部运行，不挑最后一次代替。主分支已过早合入，明确回报该执行错误。数据、模型和业务代码未修改。",
+  "record_commit_sha_note": "此前已发布的结果记录版本。本更正的提交号由 git log -1 -- <本文件> 获取；不声称文件可以内嵌自身提交哈希。此前值20507826已被本地amend替换，不再作为可达证据入口。",
+  "integration_status": {
+    "main_already_pushed_sha": "ef8a220a967a6540712cf656aa55483051403dcd",
+    "candidate_result_before_correction": "ef8a220a967a6540712cf656aa55483051403dcd",
+    "correction_policy": "只推dev/5060-demo-guide，不再合入main。交5060复核，无强推或业务修改。"
+  },
+  "correction_history": {
+    "supersedes_result_at": "ef8a220a967a6540712cf656aa55483051403dcd",
+    "old_main_elapsed_seconds": 16.086,
+    "correct_main_elapsed_seconds": 16.762,
+    "source_of_corrected_timing": "首次保存live-browser-check/run.json；边界任务wall时间与run.elapsed_seconds分别记录。",
+    "original_record_sha256": "ca29a7fc37b61670ceec3eded92b85f982ddc31ae9ecbf8d9482df8556afc70d"
+  },
+  "data_versions_worktree": {
+    "head": "00ad6b95af8047ef8179d36b2555dc1edd332b34",
+    "head_is_tested_code": true,
+    "dirty_tracked_files": [],
+    "files": {
+      "data/curated/sources.json": {
+        "exists": true,
+        "sha256": "2ce95e8c33ad309e8ad3f4daafb43a5e30f3a59e6483a7182f863728952e85f9",
+        "same_bytes_as_git": true,
+        "same_after_crlf_to_lf": true
+      },
+      "data/curated/materials.json": {
+        "exists": true,
+        "sha256": "d7c200bd48ac0f0eded3979631b17c61921999ceafc273d2ba6a20608dc4c8d0",
+        "same_bytes_as_git": true,
+        "same_after_crlf_to_lf": true
+      },
+      "data/curated/public-case-sources.json": {
+        "exists": true,
+        "sha256": "622af882bd080ee2e5c7eeb4ab859d60104f04a727a1df066820739f53b70fc5",
+        "same_bytes_as_git": true,
+        "same_after_crlf_to_lf": true
+      },
+      "data/operating/demo-profile.json": {
+        "exists": true,
+        "sha256": "f8eb6aea38cc74e46c4762fe5ae812499c454c328e8d0b1592cdb895fc66ce18",
+        "same_bytes_as_git": true,
+        "same_after_crlf_to_lf": true
+      },
+      "data/operating/jinshan-reconstruction.json": {
+        "exists": true,
+        "sha256": "b5239faf8c6bff27060077c3c8ab3b2e66ed4d269b7c211b2c1ff788e1261660",
+        "same_bytes_as_git": true,
+        "same_after_crlf_to_lf": true
+      },
+      "requirements-lock.txt": {
+        "exists": true,
+        "sha256": "e39e2412f4d42c5e371842765bc9afd0d59eebe15588b246e9dad15ca72d4fc0",
+        "same_bytes_as_git": true,
+        "same_after_crlf_to_lf": true
+      },
+      "package-lock.json": {
+        "exists": true,
+        "sha256": "71450e84d23b5189ee704b272a65ca98610c30523ede3c1bc3404ef3bfcce6cb",
+        "same_bytes_as_git": true,
+        "same_after_crlf_to_lf": true
+      }
+    },
+    "note": "工作区字节仅用于排查换行或本地修改；正式 data_versions 以 Git 对象为准。"
+  },
+  "local_evidence_manifest": [
+    {
+      "path": "artifacts/handoff-demo-guide/4b5700c7f39143a7b5c1b8c48267c09d-final.json",
+      "size_bytes": 110746,
+      "sha256": "ee440f3df588b24c4b4e6889ec6c6ef8126d517c6283b4f29152e365f6e6c686"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/8f8c28acdab84c3eadcd62d9f18855d6-final.json",
+      "size_bytes": 111107,
+      "sha256": "617055c4757e2f586fc928266e8f1f3f4e7b830fa4a9d37148d23dff3b8d9035"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/all-runs/04863b615eb64535bfca330e12f37327.json",
+      "size_bytes": 118254,
+      "sha256": "433bdaf86fba02e89d390bedcf6721a33b717e28d4dcbfee775a3a3efe1cb849"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/all-runs/09d67c181a4349dcaa5bbbd5855c1e1c.json",
+      "size_bytes": 118253,
+      "sha256": "e214e50a1fad870dc19cb4ca1e14876df9ec770c6e02432107a0a720966488d8"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/all-runs/1ac77ca962d84aa5a3489c86d4494cc0.json",
+      "size_bytes": 118258,
+      "sha256": "8758b73ad0912a4fc64d39b9c351dfba13688f693fa3dd540dae3cf478a78bb4"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/all-runs/1b825c464a0347a0a871e62dfb6cbaf2.json",
+      "size_bytes": 116604,
+      "sha256": "2869e413881b1642bf0a15d3b379896b47b0cfd157991e39711cb0d4861871cb"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/all-runs/2409c70b8c4148b6aea1c24f304bc336.json",
+      "size_bytes": 115217,
+      "sha256": "0469742921469d4c32a4bbc5fed72ac92da37cec57a62e7b4402ce70705e504b"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/all-runs/258e258b808b4c68a8b761748d5f68a3.json",
+      "size_bytes": 115361,
+      "sha256": "934d1f0e9c93d24c598360db2a547603e6cefc85e9856bc62ebbc2e57ed216f6"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/all-runs/3a6e5754390f4fb09ccd39b7c5d34dfa.json",
+      "size_bytes": 115068,
+      "sha256": "2427c2cc784f44bd39dace19fc3227a15301f8cd9e1f33e884a08544246939f3"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/all-runs/4b5700c7f39143a7b5c1b8c48267c09d.json",
+      "size_bytes": 115070,
+      "sha256": "0278a2e47f39b686c7246a43006083cca8bf9b25ed8e275046d205b675229c32"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/all-runs/59d68e48c46d40a3b55c7691adac8e41.json",
+      "size_bytes": 31855,
+      "sha256": "ecd2f7ae1753a62ebe3757c15d98b7328f3a093dd8643d73d108968251ee0452"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/all-runs/752c0a59fc394ca8a6faa961aa2038b3.json",
+      "size_bytes": 117192,
+      "sha256": "ba6dba5b4471198bda1b2328b939187d9b4143e8020ead928f335e20d74e9685"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/all-runs/8daab18822494697980edec5cc522e3b.json",
+      "size_bytes": 114230,
+      "sha256": "b63e9e9c8e4a8125401dd5a60a567ab3c7848d4b9174c16273c79a73c2697e50"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/all-runs/8f8c28acdab84c3eadcd62d9f18855d6.json",
+      "size_bytes": 116110,
+      "sha256": "018383f7553f9f1a917470ba6de24ed1a1faaade3165ec214bd3d19dd8ddb664"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/all-runs/a84c8a317ca74efe8f6af25227b9e6a2.json",
+      "size_bytes": 117192,
+      "sha256": "7bc96f7529c54a346b8c04fecfffc9bb738725175f78a29e33edf726e8808808"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/all-runs/b1ef9a8b236f412b87451549f9edb609.json",
+      "size_bytes": 36062,
+      "sha256": "6652695b4696dea85dc06ef1ce1d201b31af29620ea2745e9096016f45e11fbb"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/all-runs/c10760e93a4447c5a4fe1e0f84546668.json",
+      "size_bytes": 106244,
+      "sha256": "8d526a085664101b0364d7187a3e35052aed0d8d1afe72c9610ab5f005003fdb"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/all-runs/d44ed06f7dd24e6dab53590ca6e3c17e.json",
+      "size_bytes": 83003,
+      "sha256": "9b70c85fe522f16f2c2f55829938b1ed077ca7f00c75e1636fe9345099876c6f"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/all-runs/def4dee72aed4ba0994f4fecfe3cef03.json",
+      "size_bytes": 117191,
+      "sha256": "9d817efbacc3dac2f3216e68dae0b4effddf72a99e0046a3d10f5c36d5dd7497"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/all-runs/e16c6140868f4fdfa0e12aabaa8ae291.json",
+      "size_bytes": 118258,
+      "sha256": "9f32666125600ce17adc84a63a8fa166306dee792174bccd1ea632a51aaa7c9e"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/all-runs/e43622a155c441f58783c79ba38ae797.json",
+      "size_bytes": 121043,
+      "sha256": "c487fa7c9e8f1baa9ceb635be7a4a9fb32137c3e1ae17ca98ff23b2879b7186d"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/all-runs/f463ca2653f04d5e853e758b8de8621b.json",
+      "size_bytes": 119420,
+      "sha256": "8cd2ffdf6e6455e880e4c6f305cc792ce6c5ba0ea32e057ccf62fb6cb324ff8b"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/all-runs/fe8ece2ca65344b288763387ab5dae24.json",
+      "size_bytes": 117207,
+      "sha256": "db2e8aef93bab110ce294edb7b951e8800c4c50169c43e0d2009b8b432156bf0"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/all-runs-index.json",
+      "size_bytes": 108538,
+      "sha256": "1a556c9873e9e742d2324bdbe0d6b911895ad8f68ad72ead9afa18afe19a660e"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/app.sqlite3",
+      "size_bytes": 1826816,
+      "sha256": "cff422f22ee4a6f5a1eda3687e2b8684c788bd6ebdd54f92d1d572989438b4c2"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/backend-check-after-install.log",
+      "size_bytes": 345,
+      "sha256": "a8835ce107003ee6861300d870c031514e6988d08a9aae31d69568b318651c48"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/backend-check.log",
+      "size_bytes": 2866,
+      "sha256": "af4247460e379f66e47225fa9960b3138be3d421345d481b1b9197a67186350b"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/data-versions.json",
+      "size_bytes": 2856,
+      "sha256": "35331650c5933ec7e69dee537de4e974ad8263589df695bbacb7b4cd150ec90b"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/demo-act-1-run.json",
+      "size_bytes": 106249,
+      "sha256": "8f6520b2e7014e7fcb91c4a341f4aa3e072c1d9aae553242f0fa516dabd026d7"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/demo-act-2-run.json",
+      "size_bytes": 106595,
+      "sha256": "578a62a354a30d127a31953db8b7ddb88dd491fa2745d8f316d7fc4e4e86e299"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/demo-act-3-run.json",
+      "size_bytes": 106631,
+      "sha256": "62b442fc8385919364dde45989f320a0c71332124fe947fced88a94eccfb0865"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/demo-guide-console-final.log",
+      "size_bytes": 688,
+      "sha256": "c992e74c82a0225e84cbf2790d148ac9438814327b608c4efb92c0bd24dc68e4"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/demo-guide-console-final2.log",
+      "size_bytes": 232,
+      "sha256": "bdc013370465053b3e137e6193aae6e96119d19c3b46e9491873bc44a7c81500"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/demo-guide-console-final3.log",
+      "size_bytes": 232,
+      "sha256": "bdc013370465053b3e137e6193aae6e96119d19c3b46e9491873bc44a7c81500"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/demo-guide-console-final4.log",
+      "size_bytes": 305,
+      "sha256": "7812da686de0c61bcd679f63c83d1a85889950e613651f859250abb1f063d204"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/demo-guide-console-final5.log",
+      "size_bytes": 232,
+      "sha256": "87e23c5841d6bb43746e28ad8c1a920261bdcf285ca9ef465016558a3939d1c5"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/demo-guide-console-rerun.log",
+      "size_bytes": 801,
+      "sha256": "9a08c1530fedcec9377deeade95bdd5f09afd96dc205a7c584e652315a5f7744"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/demo-guide-console-success.log",
+      "size_bytes": 272,
+      "sha256": "bf82f906d1d71fc7fd0bac4741837d536927bf5c6194bea87cd5648747080a7a"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/demo-guide-console.log",
+      "size_bytes": 247,
+      "sha256": "344df7ff01f3395740e059d77db402cd5bbab59e800287c526f66bc76895ce1c"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/demo-guide-visual-console.log",
+      "size_bytes": 884,
+      "sha256": "bb7bb2fffb5578fc5eca14f70f12449211a3b42caa55d237fa8355e83fe86d83"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/demo-guide-visual-verification.json",
+      "size_bytes": 863,
+      "sha256": "0c5ceb9fce712488211dd6db3e8a84e081f8ad82fc5da0f671a2a6c8a8b52f9e"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/demo-guide-visual.cjs",
+      "size_bytes": 4307,
+      "sha256": "fc9e05c0d58af3f158f7c793ce7abe69b8b17abcd543480c6a2d9094706b377c"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/english-block-run.json",
+      "size_bytes": 31252,
+      "sha256": "8ff04a775aab302a53d3f82c962f4a45b7a78f43474641ecdbcf91744086fafa"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/fe8ece2ca65344b288763387ab5dae24-final.json",
+      "size_bytes": 112028,
+      "sha256": "c962020e469b4de5b40362e5c14e5cdd67991f161954983754e934899bc19fe0"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/health.json",
+      "size_bytes": 153,
+      "sha256": "7e7e78e2a0aeb4224e82bad7662a977e93eedc1666067073dc476c7de25f7dab"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/home-desktop.png",
+      "size_bytes": 845020,
+      "sha256": "b07b4daad55f6e8051e88d1748b441d28babda60d2b41878f20b4f43d778d450"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/home-hero.png",
+      "size_bytes": 542594,
+      "sha256": "69cf74b7efc68634f7668e8b608283d50ea19a54e3f6efd769d3a84f05c0a1c0"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/home-mobile.png",
+      "size_bytes": 497300,
+      "sha256": "539547f2259a95bcd87910d4eee67e416ddfe5869f7c2e4098606634fc3285d7"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/inspect-material.cjs",
+      "size_bytes": 637,
+      "sha256": "63188034d6f00a09f3cb90688baa227be907beb0c049f95dbb47ca765ff7204a"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/install-node.log",
+      "size_bytes": 80,
+      "sha256": "c729e1640002a9165f66572e9b6a088c84e1ee71212494f36324f40d2361f2c0"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/install-python.log",
+      "size_bytes": 12081,
+      "sha256": "71a7584b6f2e86d6cc038de46aefdcdaf7b4580b50cafb192d816bbd0d0a650a"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/live-browser-check/browser-resource-audit.json",
+      "size_bytes": 340,
+      "sha256": "aeeb299a2c0ed2d3e7553ccc00a057cbb0c87efa98726aebc676ac1349b9fd6c"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/live-browser-check/evidence-desktop.png",
+      "size_bytes": 199965,
+      "sha256": "339f957c3dbfd70d48454deb6bc7c9637476d2868c35f84cc1b8bd6a119749e6"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/live-browser-check/home-desktop.png",
+      "size_bytes": 844336,
+      "sha256": "ad82174d7f302bda2ec73aa8da775d3c28746b9ca2011a6db157d5c93744573c"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/live-browser-check/home-mobile.png",
+      "size_bytes": 496749,
+      "sha256": "57a12cd38821a0ce92955425615156898388468cb58396b3e95d98293c1bc31d"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/live-browser-check/organizer-bundle-desktop.png",
+      "size_bytes": 468727,
+      "sha256": "4f4b7e909d6771c910c00d48c288de7e18c0968db19154092145b2176b5e046e"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/live-browser-check/organizer-bundle-mobile.png",
+      "size_bytes": 412295,
+      "sha256": "e9332f62458a8f1b2de8976b886c9c07e2cdcf2e11e32c21cc2a7533c4fd4f35"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/live-browser-check/organizer-bundle.html",
+      "size_bytes": 23461,
+      "sha256": "05244d8227447b7c4897239acabe8ecb472a3048a231825214ecf460c4f68603"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/live-browser-check/planner-desktop.png",
+      "size_bytes": 302116,
+      "sha256": "0aeb60716fa80400abff32940010d7b13e387c597c0ec4235143e4de2ab6a95f"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/live-browser-check/planner-mobile.png",
+      "size_bytes": 281121,
+      "sha256": "2d80b6bd63f360d3259ff32652a7ef26297efe9167d78f694b9c4820e4c953d5"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/live-browser-check/run.json",
+      "size_bytes": 70902,
+      "sha256": "cc35bda1b2d981748c775ac02045c444ab91c781f7ed43ed96cb251ea4a172d9"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/live-browser-check/studio-desktop.png",
+      "size_bytes": 199965,
+      "sha256": "339f957c3dbfd70d48454deb6bc7c9637476d2868c35f84cc1b8bd6a119749e6"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/live-browser-check/studio-mobile.png",
+      "size_bytes": 186459,
+      "sha256": "85c9d02a8e56e4d552b8b421d612a6bb09526ec4140627c302221b9110111254"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/live-browser-check/verification.json",
+      "size_bytes": 1319,
+      "sha256": "71845d34c11c5ce258bfa42e5f20e71e6d6f85171b9d79664b8319c30c1ac62e"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/live-browser-check/visitor-bundle-desktop.png",
+      "size_bytes": 205601,
+      "sha256": "305894b502a5971a5b6970f0dce37c281a8153a9b5b17ade5f32af8c89f7c280"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/live-browser-check/visitor-bundle-mobile.png",
+      "size_bytes": 174545,
+      "sha256": "0f37a56d2e86f6e06c817a0ccc52c0a7237302ee89098e557d0fe1c8a4743701"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/live-browser-check/visitor-bundle.html",
+      "size_bytes": 15455,
+      "sha256": "f384417da89426ee965fb34543ce1b9588232da10793a786d8d558bf9be1c114"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/live-console.log",
+      "size_bytes": 1349,
+      "sha256": "b1e23425387af34397499e40ffdd99907fa8c3670726bd237ae80f183356623d"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/module-browser-check/01-default-approved.json",
+      "size_bytes": 107962,
+      "sha256": "c7caf2748ea115f1656d23fced07f505594ed20f2a1cce103ccfda0ebed3780b"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/module-browser-check/01-default-run.json",
+      "size_bytes": 107636,
+      "sha256": "a717730c0da4551d43df98353eaa71d8fa7e67b420f966db527521b965411ae6"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/module-browser-check/02-note-conflict-run.json",
+      "size_bytes": 31419,
+      "sha256": "57c526c4140ca719c3553287492e92350a86866162bb93d0c60485c6b40c18a6"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/module-browser-check/03-note-adopted-approved.json",
+      "size_bytes": 107798,
+      "sha256": "94e4f57bdfeb14b8a28c0d3cbf0803f74a83b7c43a9168da46a6ae653cd9d64d"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/module-browser-check/03-note-adopted-run.json",
+      "size_bytes": 107461,
+      "sha256": "90d8cf425264567077c23a118887f498c11ec19e25231e4f740c54937b0a8c78"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/module-browser-check/04-material-refresh-run.json",
+      "size_bytes": 106387,
+      "sha256": "386a58310cfec7ff2074a1b56b2654fd3816a287276b647b45b0e3f049bc4866"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/module-browser-check/04-material-refreshed-approved.json",
+      "size_bytes": 106724,
+      "sha256": "446a1aaf98dcafdbff4c6229b5d97fd8992f8703fa40bb9580ad277d3a73beb4"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/module-browser-check/05-resources-impossible-run.json",
+      "size_bytes": 99164,
+      "sha256": "194c5b2c387829da0a3c7566fa273cc5101499427f00dd96b7005b8940e75d15"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/module-browser-check/comparison-with-candidates.png",
+      "size_bytes": 137613,
+      "sha256": "3f8e7fe9ab64c0bf1735c8371635498da81d78d06360bb4988103aaeebef57ab"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/module-browser-check/comparison.png",
+      "size_bytes": 42473,
+      "sha256": "95d33aec6b8e26f9789051adcd7af15e214d7d818ab7813056f7e5d897cf1789"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/module-browser-check/default-home-1440.png",
+      "size_bytes": 845007,
+      "sha256": "4f6de1eec79885444f0a9342e8ada60ea0e5c7923fbfa123351739cd65800bea"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/module-browser-check/default-home-390.png",
+      "size_bytes": 497355,
+      "sha256": "05c80079cdf97f18e5e0a14f866dc943c2891dad1614d8e748b1c35b42b90b5b"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/module-browser-check/default-home-viewport.png",
+      "size_bytes": 536146,
+      "sha256": "c015a0323a701e6b1c3161b8a22affe488bcc7937e2ce4d84e0474566ba7edc3"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/module-browser-check/default-planner-1440.png",
+      "size_bytes": 388524,
+      "sha256": "d25b691666ab9528eb141299bd5b184ff115d89a56c4bf0c6a35510d976c7fa3"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/module-browser-check/default-planner-390.png",
+      "size_bytes": 367490,
+      "sha256": "9d7a30d68c94868ef59302c8e365f8049f50e8d48af1bfadf566335a159bf82d"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/module-browser-check/default-planner-viewport.png",
+      "size_bytes": 136590,
+      "sha256": "5d9ff968287e6c64c87bc11b31b0b5775eda4bdebf24eb3f4c23f8c8233aba00"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/module-browser-check/default-studio-1440.png",
+      "size_bytes": 198499,
+      "sha256": "70917fc3687a09a60d6e9acd425392eb0a859ba873bedeebf3d5be4f3b5d1fcd"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/module-browser-check/default-studio-390.png",
+      "size_bytes": 185175,
+      "sha256": "982a9cf236c821245ff019466b1e9a6bf9723f8c56c8400821e2d731f8a35b85"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/module-browser-check/default-studio-viewport.png",
+      "size_bytes": 111303,
+      "sha256": "e84b00dc3e374d5a187c180bb49076166c44902643ea2b6138a838b18781d036"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/module-browser-check/draft-organizer-preview-1440.png",
+      "size_bytes": 125617,
+      "sha256": "bbc94f21d953a4edd5d9fbf8838124acdee9ea80645040a6f78967fe9b2ec00a"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/module-browser-check/draft-organizer-preview-390.png",
+      "size_bytes": 74251,
+      "sha256": "227d78000fbd56167a4c1bca4af1f4db95965155b1cf8d1aa065456d7db453a3"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/module-browser-check/draft-visitor-preview-1440.png",
+      "size_bytes": 122769,
+      "sha256": "173e0da071c68bcbc7f3e60fd5c9db8b5a4f0d8b067246cff46b37d4d10397c8"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/module-browser-check/draft-visitor-preview-390.png",
+      "size_bytes": 73336,
+      "sha256": "def8ed06b627857d443d4f58526f9d3d9127a898b75eb3988509d5963ccd3b8d"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/module-browser-check/family-confirmed-organizer-1440-viewport.png",
+      "size_bytes": 100915,
+      "sha256": "5abb1e252ca4daf9f828e9ab5f906c5eb4935cee9b28d9ec4bc553902a5409d2"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/module-browser-check/family-confirmed-organizer-1440.png",
+      "size_bytes": 499199,
+      "sha256": "a58247243b71a7bed383d97e900c7a247a833779bd3296016946b22bd9982b4e"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/module-browser-check/family-confirmed-organizer-390-viewport.png",
+      "size_bytes": 73376,
+      "sha256": "3a5e32c780277c7d3fcfd504429aaaaec7106f4d32375679c3101c002b1ba136"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/module-browser-check/family-confirmed-organizer-390.png",
+      "size_bytes": 441132,
+      "sha256": "b309d1532dcccb39ce51e3999a9821f4e6ae6972fc78f2885ea25ed7dda0cf2d"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/module-browser-check/family-confirmed-organizer.html",
+      "size_bytes": 24340,
+      "sha256": "4a441c7391ce23e992dc1e71a53803c2d9ee1f643dafdf2d3a34216b4eb43546"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/module-browser-check/family-confirmed-visitor-1440-viewport.png",
+      "size_bytes": 99154,
+      "sha256": "9c821de629133243c5a7af22edd2fcf3c246107213840f57efe684ac9e8f804e"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/module-browser-check/family-confirmed-visitor-1440.png",
+      "size_bytes": 214283,
+      "sha256": "c9c6495ac1e244cf09e64d92214b58e1339cf472178f1c7eacdb3a134e8c09e1"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/module-browser-check/family-confirmed-visitor-390-viewport.png",
+      "size_bytes": 72686,
+      "sha256": "f81542bb6d4b28664dd065895aafcf1257063e13834f6ea4d986685f179aad2d"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/module-browser-check/family-confirmed-visitor-390.png",
+      "size_bytes": 181807,
+      "sha256": "0a0bb114ffb1c446d6dc416c45cf6cd296c0cc21fee624a2699a16d8027b11af"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/module-browser-check/family-confirmed-visitor.html",
+      "size_bytes": 15534,
+      "sha256": "0e5dd82accc6c86e7b5459b547e4344c7ddfd6bf58ed2e7f168da8255a5abf90"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/module-browser-check/family-draft-organizer-preview-1440.png",
+      "size_bytes": 127010,
+      "sha256": "fbdb73049595b90928adb712629d6dc6a4e20bc229a6d1f185ab9e9459234e90"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/module-browser-check/family-draft-organizer-preview-390.png",
+      "size_bytes": 74869,
+      "sha256": "144b1b3031c05d72fc70131105046af5e1aae2efd30162ed23a942158cca958e"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/module-browser-check/family-draft-visitor-preview-1440.png",
+      "size_bytes": 124095,
+      "sha256": "e331ca1fa8bf941a59f216d20c2705d62b1a87bf74d42972a1e45148968e8f58"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/module-browser-check/family-draft-visitor-preview-390.png",
+      "size_bytes": 73990,
+      "sha256": "a4e6f84246ffe2196d5a88d78e1a287c9c2d24549bee4cb23f4154ea8a349379"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/module-browser-check/family-revised-home-1440.png",
+      "size_bytes": 845037,
+      "sha256": "b978cca0ad59e9b8ef4fe383168ba132c595d191dedacf88988c328baf87298c"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/module-browser-check/family-revised-home-390.png",
+      "size_bytes": 497355,
+      "sha256": "05c80079cdf97f18e5e0a14f866dc943c2891dad1614d8e748b1c35b42b90b5b"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/module-browser-check/family-revised-home-viewport.png",
+      "size_bytes": 536146,
+      "sha256": "c015a0323a701e6b1c3161b8a22affe488bcc7937e2ce4d84e0474566ba7edc3"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/module-browser-check/family-revised-planner-1440.png",
+      "size_bytes": 431517,
+      "sha256": "1e392ba6043fdb29f66c3b9b5ec42768d48c3d2d9240d34eaca308771bbcdf55"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/module-browser-check/family-revised-planner-390.png",
+      "size_bytes": 398261,
+      "sha256": "ed79b28e98e3b6ee6eab58507c87f9886d44fb2f4651276a844cfd562be83577"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/module-browser-check/family-revised-planner-viewport.png",
+      "size_bytes": 117465,
+      "sha256": "7ba8515f5b654b22859055bfae3c595972e20a697cc398ae19edde71759890a6"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/module-browser-check/family-revised-studio-1440.png",
+      "size_bytes": 197285,
+      "sha256": "d5b0848cce04f8719c4b97f6f3cd91eec29a434df75579a8c1232fa5c983c180"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/module-browser-check/family-revised-studio-390.png",
+      "size_bytes": 181924,
+      "sha256": "11c3d316abd515ccfb721eef2e219e73f81e5ba4e36843a41bc0297d64055ce2"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/module-browser-check/family-revised-studio-viewport.png",
+      "size_bytes": 111303,
+      "sha256": "e84b00dc3e374d5a187c180bb49076166c44902643ea2b6138a838b18781d036"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/module-browser-check/family-teaching.png",
+      "size_bytes": 51501,
+      "sha256": "15aa476313c92cc97c3806ccc66af60f24b512f65657bb4efe300ba9bf890d4e"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/module-browser-check/material-refreshed-organizer-1440-viewport.png",
+      "size_bytes": 76051,
+      "sha256": "55a2f8d5acb91af981b729d265b1a60fa37b61784a930b53ac7fd6490791baed"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/module-browser-check/material-refreshed-organizer-1440.png",
+      "size_bytes": 471658,
+      "sha256": "e66b136f6b65858596f79af4df1aea8dec80e1e36884cbb586a7ff52325040f7"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/module-browser-check/material-refreshed-organizer-390-viewport.png",
+      "size_bytes": 55299,
+      "sha256": "4e97d962c00df6fc6dfe4c73126484b81059fdfd21a3986d6a491203e3a53db1"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/module-browser-check/material-refreshed-organizer-390.png",
+      "size_bytes": 419458,
+      "sha256": "7e7a0f8252565c31010502bdb58f3f6ab4acdcab7e9ab09e9225d45de89fb001"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/module-browser-check/material-refreshed-organizer.html",
+      "size_bytes": 19281,
+      "sha256": "569ff7856f97bd08e440007a6e10198726f3381a7c3626625973ed3111df3d30"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/module-browser-check/material-refreshed-visitor-1440-viewport.png",
+      "size_bytes": 74132,
+      "sha256": "626803c005d9aca9ccc281250cecbdb23022fbe55c5d4b26a8240ac15c66ed5a"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/module-browser-check/material-refreshed-visitor-1440.png",
+      "size_bytes": 187848,
+      "sha256": "a2b85f1405491c3f6e5c5d907207dd35cf540fd42352ba8c606c99bb7ad7c176"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/module-browser-check/material-refreshed-visitor-390-viewport.png",
+      "size_bytes": 54782,
+      "sha256": "b2a46e1c666e5e324c13834333f2606582a1c8c34a2c50e472538a51bd90ecbe"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/module-browser-check/material-refreshed-visitor-390.png",
+      "size_bytes": 161604,
+      "sha256": "504a81dcd26067e72576a9f7cfb0308dcc6597fb69e5dea5c73993de455f11d3"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/module-browser-check/material-refreshed-visitor.html",
+      "size_bytes": 10559,
+      "sha256": "2658d64261a9c1c625601c29856e7f6655343c455d69e01ade1bcd271cff3c8b"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/module-browser-check/note-conflict.png",
+      "size_bytes": 41674,
+      "sha256": "45b37c1f296a2c4116767050ee298f48c70d632537fe15af69395ce3197e5609"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/module-browser-check/resources-impossible-viewport.png",
+      "size_bytes": 124393,
+      "sha256": "404580fa49e5ae10cd5c21c91a8e341bb689564bdd8d3beda617be61462203f2"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/module-browser-check/studio-projection-viewport.png",
+      "size_bytes": 116077,
+      "sha256": "821e16adf0d586fde954410a5b716168c293fe4f80a9ae6c52d400327e9a022b"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/module-browser-check/verification.json",
+      "size_bytes": 2230,
+      "sha256": "bf55ccb174ebedd55c34d0fbd81ffcdd03295bec295458253a75054f0787cf7a"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/module-browser-check/withdrawal-impact.png",
+      "size_bytes": 11216,
+      "sha256": "7a507d5074a59edd362952e047d5a47595ff64363f7051af167eeda24c575225"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/module-browser-check/withdrawn-draft-organizer-preview-1440.png",
+      "size_bytes": 107468,
+      "sha256": "b97afc58fbab21e8f9dde8c1bafa949688438b927b3cdd5e0df52e839c716a1e"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/module-browser-check/withdrawn-draft-organizer-preview-390.png",
+      "size_bytes": 56118,
+      "sha256": "fd9f4058f9f197e9247873cb7b7a4728703f1637960f3347c37ab47afb86b3f2"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/module-browser-check/withdrawn-draft-visitor-preview-1440.png",
+      "size_bytes": 104245,
+      "sha256": "d25f33991aee6ab61b48b9f231425a887d137788a89da868a7fcf90ce9dab209"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/module-browser-check/withdrawn-draft-visitor-preview-390.png",
+      "size_bytes": 54688,
+      "sha256": "97facd79177991af37af608f6c6b6370212600fd82d0050f23b69fd654f7ac91"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/modules-console.log",
+      "size_bytes": 2361,
+      "sha256": "0f74b4b6e19b6c18f0c9d5fe68a1d53e090934b1a890f1c1dad6a746ec0ba1ff"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/negation-no-block-run.json",
+      "size_bytes": 115912,
+      "sha256": "6f40fc3a5cce0f760de7afdfbb76f96934b1f6f1317428bc3f1adfaf5979d37a"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/print/organizer-playwright.pdf",
+      "size_bytes": 298093,
+      "sha256": "47f3b4b65869371f184b0e6eb8245e6c6fa3804320aa3aa4ea6724b68d9ecea2"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/print/visitor-playwright.pdf",
+      "size_bytes": 205375,
+      "sha256": "d6a56d8902e48f3b5cda1667407c74fc6846017dc60a20f454b7f65fe13755a3"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/print-edge.cjs",
+      "size_bytes": 559,
+      "sha256": "022f89531c51c4ff89814b4cb654800150d71d8e533c295a508f00026b108f8d"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/prototype-check-after-install.log",
+      "size_bytes": 444,
+      "sha256": "1d23d699bbc2fabb715bc2aa085af7f1de3a963cbf4ba36864f2e58986a88144"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/prototype-check.log",
+      "size_bytes": 69,
+      "sha256": "f79d0c029aca76d12b4f25ad70a4b933c8cad3bf73aba7cb7a8ea226206a6859"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/real-demo-guide.cjs",
+      "size_bytes": 11075,
+      "sha256": "46a40d13697519000d22efafcf9038c7c0c6d7be5588a1ecfaa86010995d53d5"
+    },
+    {
+      "path": "artifacts/handoff-demo-guide/repository-check.log",
+      "size_bytes": 108,
+      "sha256": "0249918d0993903368597e383f5bb28261540a0bdb7aeed057e936c1656d06f8"
+    }
+  ]
 }
-
-
-
