@@ -1,0 +1,340 @@
+{
+  "at": "2026-10-05T13:43:38.530Z",
+  "base": "http://127.0.0.1:8795",
+  "purpose": "宣传片素材：真实本地运行画面",
+  "viewport": "1920x1080",
+  "stillScale": 2,
+  "stills": [
+    {
+      "file": "s01-home-viewport.png",
+      "selector": "viewport",
+      "note": "首页首屏"
+    },
+    {
+      "file": "s02-home-hero.png",
+      "selector": "#home .hero",
+      "note": "首页主视觉"
+    },
+    {
+      "file": "s03-home-acts.png",
+      "selector": "#home .acts",
+      "note": "三幕故事条"
+    },
+    {
+      "file": "s04-home-meaning.png",
+      "selector": "#home .meaning",
+      "note": "意义带"
+    },
+    {
+      "file": "s05-studio-before.png",
+      "selector": "#draft",
+      "note": "待核验文案"
+    },
+    {
+      "file": "s06-studio-viewport.png",
+      "selector": "viewport",
+      "note": "核验结果全屏"
+    },
+    {
+      "file": "s07-audit-result.png",
+      "selector": "#auditResult",
+      "note": "逐句核验与修订"
+    },
+    {
+      "file": "s08-evidence.png",
+      "selector": "#auditResult .evidence-block",
+      "note": "出处原文卡"
+    },
+    {
+      "file": "s10-note-typed.png",
+      "selector": "#requestNote",
+      "note": "一句话需求"
+    },
+    {
+      "file": "s11-planner-viewport.png",
+      "selector": "viewport",
+      "note": "编排结果全屏"
+    },
+    {
+      "file": "s12-comparison.png",
+      "selector": "#planComparison",
+      "note": "改一句话，方案真变化"
+    },
+    {
+      "file": "s13-ledger.png",
+      "selector": ".ledger-details",
+      "note": "账目：本地服务报酬、材料、组织"
+    },
+    {
+      "file": "s09-teaching.png",
+      "selector": "#teachingPanel",
+      "note": "分众教学内容"
+    },
+    {
+      "file": "s14-route.png",
+      "selector": "#routeCards",
+      "note": "日程"
+    },
+    {
+      "file": "s15-materials-before.png",
+      "selector": "#materialList",
+      "note": "素材使用边界（撤回前）"
+    },
+    {
+      "file": "s16-invalidated-viewport.png",
+      "selector": "viewport",
+      "note": "撤回后全屏"
+    },
+    {
+      "file": "s17-impact.png",
+      "selector": "#impactTrail",
+      "note": "受影响内容定位"
+    },
+    {
+      "file": "s18-materials-after.png",
+      "selector": "#materialList",
+      "note": "素材使用边界（撤回后）"
+    },
+    {
+      "file": "s19-refreshed-viewport.png",
+      "selector": "viewport",
+      "note": "重新核验后全屏"
+    },
+    {
+      "file": "s20-preview-visitor.png",
+      "selector": "viewport",
+      "note": "游客版预览"
+    },
+    {
+      "file": "s21-preview-organizer.png",
+      "selector": "viewport",
+      "note": "组织者版预览"
+    },
+    {
+      "file": "s22-stop-viewport.png",
+      "selector": "viewport",
+      "note": "停下来请人澄清"
+    },
+    {
+      "file": "s23-stop-warning.png",
+      "selector": "#runWarning",
+      "note": "阻断提示"
+    }
+  ],
+  "marks": [
+    {
+      "name": "home-still",
+      "sec": 4.6,
+      "note": "首页首屏静置"
+    },
+    {
+      "name": "act1-draft",
+      "sec": 10,
+      "note": "工坊页：待核验文案（含“阳刻为主”）"
+    },
+    {
+      "name": "act1-click",
+      "sec": 11.3,
+      "note": "点击“核验并编排体验”"
+    },
+    {
+      "name": "act1-result",
+      "sec": 29.8,
+      "note": "核验结果出现（此前为等待段）"
+    },
+    {
+      "name": "act2-typing",
+      "sec": 33.5,
+      "note": "开始输入一句话"
+    },
+    {
+      "name": "act2-click",
+      "sec": 39,
+      "note": "点击“按当前条件重新编排”"
+    },
+    {
+      "name": "act2-result",
+      "sec": 51.4,
+      "note": "方案对比出现"
+    },
+    {
+      "name": "act3-withdraw",
+      "sec": 60.3,
+      "note": "点击“撤回使用”"
+    },
+    {
+      "name": "act3-invalidated",
+      "sec": 62.8,
+      "note": "旧确认失效、确认与导出禁用"
+    },
+    {
+      "name": "act3-click",
+      "sec": 64.8,
+      "note": "点击“依据最新资料重新核验”"
+    },
+    {
+      "name": "act3-result",
+      "sec": 77.2,
+      "note": "重新核验完成"
+    },
+    {
+      "name": "confirm",
+      "sec": 80.2,
+      "note": "人工确认"
+    },
+    {
+      "name": "preview-visitor",
+      "sec": 84.3,
+      "note": "游客版预览"
+    },
+    {
+      "name": "preview-organizer",
+      "sec": 90.3,
+      "note": "组织者版预览"
+    },
+    {
+      "name": "stop-click",
+      "sec": 95.9,
+      "note": "提出未配置服务：需要安排英语讲解"
+    },
+    {
+      "name": "stop-result",
+      "sec": 100.2,
+      "note": "系统停下请人澄清"
+    },
+    {
+      "name": "end",
+      "sec": 103.7,
+      "note": "采集结束"
+    }
+  ],
+  "runs": {
+    "49180226343e404aa4f251efdd4d8914": {
+      "status": "awaiting_review",
+      "model_calls": 7,
+      "elapsed_seconds": 16.741,
+      "parent_id": null,
+      "comparison": null,
+      "plan": {
+        "id": "mod-brief-story--basic-craft",
+        "craft_minutes": 50,
+        "duration_minutes": 70,
+        "total_cents": 57400,
+        "local_service_cents": 38000,
+        "material_cents": 13400,
+        "operations_cents": 6000
+      },
+      "error": null
+    },
+    "66f40b9343754245aee975b5368a0e46": {
+      "status": "awaiting_review",
+      "model_calls": 6,
+      "elapsed_seconds": 10.616,
+      "parent_id": null,
+      "comparison": {
+        "before": {
+          "id": "mod-brief-story--basic-craft",
+          "title": "基础剪纸手作 · 2环节组合",
+          "total_cents": 57400,
+          "duration_minutes": 70,
+          "craft_minutes": 50,
+          "module_ids": [
+            "brief-story",
+            "basic-craft"
+          ],
+          "start_time": "09:30"
+        },
+        "after": {
+          "id": "mod-brief-story--deep-craft--craft-extension",
+          "title": "深度剪纸手作 · 3环节组合",
+          "total_cents": 79600,
+          "duration_minutes": 100,
+          "craft_minutes": 80,
+          "module_ids": [
+            "brief-story",
+            "deep-craft",
+            "craft-extension"
+          ],
+          "start_time": "09:30"
+        }
+      },
+      "plan": {
+        "id": "mod-brief-story--deep-craft--craft-extension",
+        "craft_minutes": 80,
+        "duration_minutes": 100,
+        "total_cents": 79600,
+        "local_service_cents": 52400,
+        "material_cents": 19200,
+        "operations_cents": 8000
+      },
+      "error": null
+    },
+    "cb64c053689e4aa08b43d01973368499": {
+      "status": "awaiting_review",
+      "model_calls": 6,
+      "elapsed_seconds": 10.498,
+      "parent_id": "66f40b9343754245aee975b5368a0e46",
+      "comparison": {
+        "before": {
+          "id": "mod-brief-story--deep-craft--craft-extension",
+          "title": "深度剪纸手作 · 3环节组合",
+          "total_cents": 79600,
+          "duration_minutes": 100,
+          "craft_minutes": 80,
+          "module_ids": [
+            "brief-story",
+            "deep-craft",
+            "craft-extension"
+          ],
+          "start_time": "09:30"
+        },
+        "after": {
+          "id": "mod-brief-story--deep-craft--craft-extension",
+          "title": "深度剪纸手作 · 3环节组合",
+          "total_cents": 79600,
+          "duration_minutes": 100,
+          "craft_minutes": 80,
+          "module_ids": [
+            "brief-story",
+            "deep-craft",
+            "craft-extension"
+          ],
+          "start_time": "09:30"
+        }
+      },
+      "plan": {
+        "id": "mod-brief-story--deep-craft--craft-extension",
+        "craft_minutes": 80,
+        "duration_minutes": 100,
+        "total_cents": 79600,
+        "local_service_cents": 52400,
+        "material_cents": 19200,
+        "operations_cents": 8000
+      },
+      "error": null
+    },
+    "7ace8ed5f05d4acb8c083d39d763349c": {
+      "status": "needs_input",
+      "model_calls": 3,
+      "elapsed_seconds": 2.73,
+      "parent_id": null,
+      "comparison": null,
+      "plan": null,
+      "error": "文字需求存在矛盾或超出当前模块能力，请先澄清：需要安排英语讲解"
+    }
+  },
+  "missing": [],
+  "firstFailure": null,
+  "passed": true,
+  "model": "xiangyi-qwen3:14b-q4_k_m",
+  "invalidated": {
+    "run_id": "66f40b9343754245aee975b5368a0e46",
+    "status": "invalidated"
+  },
+  "stop": {
+    "run_id": "7ace8ed5f05d4acb8c083d39d763349c",
+    "status": "needs_input",
+    "error": "文字需求存在矛盾或超出当前模块能力，请先澄清：需要安排英语讲解"
+  },
+  "video": "take.webm"
+}
