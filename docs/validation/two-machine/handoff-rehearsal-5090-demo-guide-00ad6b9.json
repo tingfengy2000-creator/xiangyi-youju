@@ -1,0 +1,314 @@
+{
+  "task_id": "5090-demo-guide-00ad6b9",
+  "goal": "对三幕演示引导、真实运行状态勾选、首屏静默提示及三页可读性进行5090本地真实模型验证，并在通过后合入main。",
+  "baseline_sha": "b0a4f0c865ac94ab9dff862c6adf1f862c9aa08c",
+  "tested_code_sha": "00ad6b95af8047ef8179d36b2555dc1edd332b34",
+  "record_commit_sha": "20507826c5df75b95b634257d1faeacf19c7954b",
+  "machine_role": "5090-integration",
+  "run_id": "d44ed06f7dd24e6dab53590ca6e3c17e",
+  "model": "xiangyi-qwen3:14b-q4_k_m",
+  "model_configuration": {
+    "ollama_version": "0.35.0",
+    "ollama_url_scope": "127.0.0.1:11439（5090本机，仅本地绑定）",
+    "model_digest": "e835bb820c84d5ca90942815563588f1af11ffbc377d8d050620f6560c684a38",
+    "quantization": "Q4_K_M",
+    "model_size_bytes": 10194014699,
+    "context_length_tokens": 8192,
+    "generation_parameters": {
+      "temperature": 0,
+      "num_ctx": 8192,
+      "num_predict": 2300,
+      "seed": 42,
+      "think": false,
+      "stream": false,
+      "keep_alive": "15m"
+    },
+    "api_observed": true
+  },
+  "hardware_and_runtime": {
+    "gpu": "NVIDIA GeForce RTX 5090（5090端）",
+    "python": "3.12.14",
+    "node": "v24.19.0",
+    "npm": "11.17.0",
+    "api_url": "http://127.0.0.1:8795",
+    "database": "artifacts/handoff-demo-guide/app.sqlite3",
+    "health": {
+      "status": "ready",
+      "model_ready": true,
+      "model": "xiangyi-qwen3:14b-q4_k_m"
+    }
+  },
+  "data_versions": {
+    "data/curated/sources.json": "2ce95e8c33ad309e8ad3f4daafb43a5e30f3a59e6483a7182f863728952e85f9",
+    "data/curated/materials.json": "d7c200bd48ac0f0eded3979631b17c61921999ceafc273d2ba6a20608dc4c8d0",
+    "data/curated/public-case-sources.json": "622af882bd080ee2e5c7eeb4ab859d60104f04a727a1df066820739f53b70fc5",
+    "data/operating/demo-profile.json": "f8eb6aea38cc74e46c4762fe5ae812499c454c328e8d0b1592cdb895fc66ce18",
+    "data/operating/jinshan-reconstruction.json": "b5239faf8c6bff27060077c3c8ab3b2e66ed4d269b7c211b2c1ff788e1261660",
+    "requirements-lock.txt": "e39e2412f4d42c5e371842765bc9afd0d59eebe15588b246e9dad15ca72d4fc0",
+    "package-lock.json": "71450e84d23b5189ee704b272a65ca98610c30523ede3c1bc3404ef3bfcce6cb"
+  },
+  "raw_input": {
+    "main_flow": "沿用蔚县剪纸主流程及默认经营条件；三句原文为阳刻地域、点染、每天开放无需预约。",
+    "module_flow": "沿用固定五场景真实流程。",
+    "english_blocking_note": "需要安排英语讲解",
+    "negation_note": "不需要翻译，按现有安排。",
+    "demo_guide": "第一幕填入主线案例后操作者点击核验；第二幕填入不要茶歇、多留手作时间后操作者点击重编排；第三幕定位mat-paper-garden后操作者撤回，再点击重新核验。"
+  },
+  "actual_output": {
+    "main_flow": {
+      "run_id": "d44ed06f7dd24e6dab53590ca6e3c17e",
+      "status": "awaiting_review",
+      "model_calls": 7,
+      "elapsed_seconds": 16.086,
+      "expected_met": true,
+      "evidence": "artifacts/live-browser-check/verification.json"
+    },
+    "module_flow": {
+      "passed": true,
+      "scenario_count": 5,
+      "runs": [
+        {
+          "id": "e43622a155c441f58783c79ba38ae797",
+          "scenario": "01-default"
+        },
+        {
+          "id": "b1ef9a8b236f412b87451549f9edb609",
+          "scenario": "02-note-conflict"
+        },
+        {
+          "id": "f463ca2653f04d5e853e758b8de8621b",
+          "scenario": "03-note-adopted"
+        },
+        {
+          "id": "2409c70b8c4148b6aea1c24f304bc336",
+          "scenario": "04-material-refresh"
+        },
+        {
+          "id": "c10760e93a4447c5a4fe1e0f84546668",
+          "scenario": "05-resources-impossible"
+        }
+      ],
+      "approved_final_run_id": "2409c70b8c4148b6aea1c24f304bc336",
+      "impossible_run_id": "c10760e93a4447c5a4fe1e0f84546668",
+      "evidence": "artifacts/module-browser-check/verification.json"
+    },
+    "english_blocking": {
+      "run_id": "59d68e48c46d40a3b55c7691adac8e41",
+      "status": "needs_input",
+      "model_calls": 3,
+      "elapsed_seconds": 3.172,
+      "error": "文字需求存在矛盾或超出当前模块能力，请先澄清：需要安排英语讲解",
+      "note_issue_review": [
+        {
+          "index": 0,
+          "text": "需要安排英语讲解",
+          "category": "needs_clarification",
+          "reason": "程序保留阻断：未配置服务超出当前演示配置，需要先澄清，不能作为编辑说明放行。",
+          "original_category": "configured_resource_check",
+          "original_reason": "需要安排英语讲解，但未明确是否有英语讲解资源可用。"
+        }
+      ],
+      "program_note_blockers": null,
+      "plan_created": false,
+      "expected_met": true
+    },
+    "negation_no_block": {
+      "run_id": "1b825c464a0347a0a871e62dfb6cbaf2",
+      "status": "awaiting_review",
+      "model_calls": 6,
+      "elapsed_seconds": 10.855,
+      "note_issue_review": null,
+      "program_note_blockers": null,
+      "plan_created": true,
+      "expected_met": true
+    },
+    "demo_guide": {
+      "act_1": {
+        "run_id": "fe8ece2ca65344b288763387ab5dae24",
+        "status": "awaiting_review",
+        "model_calls": 7,
+        "elapsed_seconds": 13.332,
+        "claim_status": "contradicted",
+        "correction": "阴刻为主，阳刻为辅",
+        "check_visible": true,
+        "plan": {
+          "craft_minutes": 50,
+          "duration_minutes": 70,
+          "total_cents": 57400
+        }
+      },
+      "act_2": {
+        "run_id": "8f8c28acdab84c3eadcd62d9f18855d6",
+        "status": "awaiting_review",
+        "model_calls": 6,
+        "elapsed_seconds": 10.338,
+        "comparison": {
+          "before": {
+            "id": "mod-brief-story--basic-craft",
+            "title": "基础剪纸手作 · 2环节组合",
+            "total_cents": 57400,
+            "duration_minutes": 70,
+            "craft_minutes": 50,
+            "module_ids": [
+              "brief-story",
+              "basic-craft"
+            ],
+            "start_time": "09:30"
+          },
+          "after": {
+            "id": "mod-brief-story--deep-craft--craft-extension",
+            "title": "深度剪纸手作 · 3环节组合",
+            "total_cents": 79600,
+            "duration_minutes": 100,
+            "craft_minutes": 80,
+            "module_ids": [
+              "brief-story",
+              "deep-craft",
+              "craft-extension"
+            ],
+            "start_time": "09:30"
+          },
+          "changes": [
+            "总预算：574 → 796元",
+            "活动时长：70 → 100分钟",
+            "手作时长：50 → 80分钟",
+            "移除：基础剪纸手作",
+            "增加：深度剪纸手作、手作延伸练习"
+          ]
+        },
+        "check_visible": true,
+        "expected_met": true
+      },
+      "act_3": {
+        "run_id": "4b5700c7f39143a7b5c1b8c48267c09d",
+        "status": "awaiting_review",
+        "parent_id": "8f8c28acdab84c3eadcd62d9f18855d6",
+        "model_calls": 6,
+        "elapsed_seconds": 10.449,
+        "check_visible": true,
+        "withdrawn_material": "mat-paper-garden",
+        "old_run_invalidated_before_refresh": true,
+        "cards_after_refresh": [
+          {
+            "id": "card-c1",
+            "title": "有据讲解 · 河北省蔚县",
+            "text": "蔚县剪纸以阴刻为主，阳刻为辅。",
+            "claim_ids": [
+              "c1"
+            ],
+            "source_ids": [
+              "src-yuxian-technique"
+            ],
+            "material_ids": [],
+            "usable": true
+          },
+          {
+            "id": "card-c2",
+            "title": "有据讲解 · 河北省蔚县",
+            "text": "蔚县剪纸善于多色点染。",
+            "claim_ids": [
+              "c2"
+            ],
+            "source_ids": [
+              "src-yuxian-color"
+            ],
+            "material_ids": [],
+            "usable": true
+          }
+        ],
+        "expected_met": true
+      },
+      "three_runs_triggered_by_operator": true,
+      "post_demo_material_restored": true
+    },
+    "readability": {
+      "at": "2026-10-05T11:12:37.466Z",
+      "base": "http://127.0.0.1:8795",
+      "mode": "read-only-demo-guide-visual",
+      "checks": [
+        "真实API刷新首页无底部载入提示",
+        "工坊/编排引导条中文字号均不小于12px",
+        "1440px studio引导条无遮挡/溢出，中文字号合规",
+        "1440px planner引导条无遮挡/溢出，中文字号合规",
+        "1440px 首页无横向溢出",
+        "390px studio引导条无遮挡/溢出，中文字号合规",
+        "390px planner引导条无遮挡/溢出，中文字号合规",
+        "390px 首页无横向溢出",
+        "首页静止无提示条后生成home-hero/home-desktop/home-mobile",
+        "file模式无三幕引导按钮，保持预设模式"
+      ],
+      "scriptErrors": [],
+      "externalResourceRequests": [],
+      "scope": "不启动模型任务，仅复核三幕引导条/首页静止截图/file模式"
+    },
+    "print_pages": {
+      "visitor": 3,
+      "organizer": 7,
+      "method": "Edge channel via Playwright PDF output, A4; pdfinfo page count; no business/API calls"
+    },
+    "first_validation_script_failures": [
+      {
+        "stage": "pre-run",
+        "type": "harness_selector",
+        "message": "AssertionError: assert(await page.locator('#demoGuideStudio').isVisible())；首页打开引导时非当前页引导条按页面隐藏。未产生模型任务。"
+      },
+      {
+        "stage": "after-act-1",
+        "type": "harness_selector",
+        "message": "locator.evaluate strict mode violation: .demo-step[data-demo-step=\"0\"] resolved to 2 elements；工坊页和编排页各有一份引导条。原始真实任务已保留，未判为业务失败。"
+      },
+      {
+        "stage": "after-act-2",
+        "type": "harness_fixture",
+        "message": "验证脚本最初选择列表中另一条已撤回素材；mat-paper-garden仍为可用。未产生第三幕任务。"
+      },
+      {
+        "stage": "after-act-2",
+        "type": "harness_endpoint",
+        "message": "重新核验使用 POST /api/runs/{id}/refresh，脚本最初只等待 POST /api/runs；业务请求已发出，等待器超时。原始任务已留在SQLite。"
+      },
+      {
+        "stage": "visual",
+        "type": "scope_check",
+        "message": "全页字号扫描发现首页装饰性混合英文/中文 eyebrow 为10px；三幕引导条本身中文均≥12px，按本任务范围通过。"
+      }
+    ]
+  },
+  "model_calls": 7,
+  "elapsed_seconds": 16.086,
+  "failure": null,
+  "checks": {
+    "origin_main_before_merge": "b0a4f0c865ac94ab9dff862c6adf1f862c9aa08c",
+    "repository_check": "passed: 568 maintenance files, 260 local links",
+    "backend_tests": "226 passed in 5.34s",
+    "browser_tests": "BROWSER_CHANNEL=msedge npm test passed: 3 pages at 1440/390, 0 script errors, no horizontal overflow",
+    "data_versions": "dirty_tracked_files=[]; all tracked data same_bytes_as_git=true and same_after_crlf_to_lf=true",
+    "api_health": "status=ready, model_ready=true, Ollama 0.35.0 at 127.0.0.1:11439",
+    "live_workflow": "expected result met",
+    "module_workflow": "5 scenarios passed",
+    "demo_guide": "three operator-triggered real runs; three checks visible only after expected server results",
+    "homepage_silence": "refresh produced no bottom load toast",
+    "file_mode": "no three-act guide button; preset mode unchanged",
+    "exports": "visitor and organizer real downloads; A4 print count 3 and 7",
+    "merge_decision": "pending result commit"
+  },
+  "evidence_paths": [
+    "docs/validation/two-machine/handoff-rehearsal-5090-demo-guide-00ad6b9.json",
+    "artifacts/handoff-demo-guide/english-block-run.json",
+    "artifacts/handoff-demo-guide/negation-no-block-run.json",
+    "artifacts/handoff-demo-guide/demo-act-1-run.json",
+    "artifacts/handoff-demo-guide/demo-act-2-run.json",
+    "artifacts/handoff-demo-guide/demo-act-3-run.json",
+    "artifacts/handoff-demo-guide/demo-guide-visual-verification.json",
+    "artifacts/handoff-demo-guide/print/visitor-playwright.pdf",
+    "artifacts/handoff-demo-guide/print/organizer-playwright.pdf",
+    "artifacts/live-browser-check/verification.json",
+    "artifacts/module-browser-check/verification.json",
+    "docs/assets/screenshots/home-hero.png",
+    "docs/assets/screenshots/home-desktop.png",
+    "docs/assets/screenshots/home-mobile.png"
+  ],
+  "notes": "5090双机开发与交叉复核，不是独立第三方评测。首页故事化上一轮已验证；本候选只接通三幕引导和首屏静默提示，未修改后端、金额、规则、提示词或资料。真实模型服务、数据库和原始日志均留在本机artifacts，不提交。前三幕最终业务结果通过；验证脚本自身的中止记录按首次失败保留。"
+}
+
+
