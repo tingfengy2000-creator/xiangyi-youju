@@ -3,7 +3,7 @@
   "goal": "5090端在候选版本上完成真实本地模型、模块闭环和可读性复核；保留首次失败，不合入未满足预期的候选。",
   "baseline_sha": "c23f2e22ff80d67da2e157e8f44cc1e0f19714a4",
   "tested_code_sha": "629b959dcba204931f2cadf9de6f8682c6647e99",
-  "record_commit_sha": "0000000000000000000000000000000000000000",
+  "record_commit_sha": "2f2ed8629e77d20597fc5ba1be99b047f989d7ef",
   "machine_role": "5090-integration",
   "run_id": "92bf0361d9d342ee93c854ba0f2b25df",
   "model": "xiangyi-qwen3:14b-q4_k_m",
