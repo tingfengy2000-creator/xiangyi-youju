@@ -1,0 +1,454 @@
+{
+  "task_id": "5090-acceptance-guard",
+  "goal": "5090 本机真实模型验证验收保护候选：三条真实回归、三幕演示引导、阻断与不误伤检查、首页截图和双版打印页数。",
+  "baseline_sha": "ef8a220a967a6540712cf656aa55483051403dcd",
+  "tested_code_sha": "8e6c439f3e14612ac279ad06c0c82c4cf6d7bc76",
+  "record_commit_sha": "9433acdb252357aeced374f00f697dfcbc166e3a",
+  "machine_role": "5090-validation",
+  "run_id": "0662f681898a4c4cb02cd78856d7cd75",
+  "model": "xiangyi-qwen3:14b-q4_k_m",
+  "model_configuration": {
+    "ollama_version": "0.35.0",
+    "ollama_url_scope": "127.0.0.1:11439（5090本机，仅本地绑定）",
+    "model_digest": "e835bb820c84d5ca90942815563588f1af11ffbc377d8d050620f6560c684a38",
+    "quantization": "Q4_K_M",
+    "context_length_tokens": 8192,
+    "generation_parameters": {
+      "temperature": 0,
+      "num_ctx": 8192,
+      "num_predict": 2300,
+      "seed": 42,
+      "think": false,
+      "stream": false,
+      "keep_alive": "15m"
+    },
+    "api_observed": true,
+    "model_context_length_advertised": 40960
+  },
+  "data_versions": {
+    "data/curated/sources.json": "2ce95e8c33ad309e8ad3f4daafb43a5e30f3a59e6483a7182f863728952e85f9",
+    "data/curated/materials.json": "d7c200bd48ac0f0eded3979631b17c61921999ceafc273d2ba6a20608dc4c8d0",
+    "data/curated/public-case-sources.json": "622af882bd080ee2e5c7eeb4ab859d60104f04a727a1df066820739f53b70fc5",
+    "data/operating/demo-profile.json": "f8eb6aea38cc74e46c4762fe5ae812499c454c328e8d0b1592cdb895fc66ce18",
+    "data/operating/jinshan-reconstruction.json": "b5239faf8c6bff27060077c3c8ab3b2e66ed4d269b7c211b2c1ff788e1261660",
+    "requirements-lock.txt": "e39e2412f4d42c5e371842765bc9afd0d59eebe15588b246e9dad15ca72d4fc0",
+    "package-lock.json": "71450e84d23b5189ee704b272a65ca98610c30523ede3c1bc3404ef3bfcce6cb"
+  },
+  "raw_input": {
+    "live": {
+      "text": "蔚县剪纸以阳刻为主，阴刻为辅。蔚县剪纸善于多色点染。工坊每天开放并且无需预约。",
+      "requirements": {
+        "region": "河北省蔚县",
+        "project": "剪纸",
+        "people": 8,
+        "budget_per_person": 160,
+        "available_minutes": 150,
+        "start_time": "09:30",
+        "preferred_plan": "deep",
+        "note": "为初次了解剪纸的游客安排文化讲解与入门手作。讲述清楚工艺特色，留出观察和提问的时间。",
+        "planning_mode": "packages",
+        "audience": "general",
+        "tea_preference": "any",
+        "min_craft_minutes": 0,
+        "teaching_enabled": true
+      },
+      "operating_overrides": {
+        "capacity": 12,
+        "teachers": 1,
+        "rooms": 1,
+        "reuse": true
+      },
+      "database": "artifacts/handoff/app-8e6c439.sqlite3",
+      "api": "http://127.0.0.1:8795"
+    },
+    "module_scenarios": [
+      "01-default",
+      "02-note-conflict",
+      "03-note-adopted",
+      "04-material-refresh",
+      "05-resources-impossible"
+    ],
+    "demo_guide_inputs": {
+      "english_note": "需要安排英语讲解",
+      "negation_note": "不需要翻译，按现有安排。",
+      "guide": "docs/demo/interview-demo-runbook.md"
+    }
+  },
+  "actual_output": {
+    "test_live": {
+      "run_id": "0662f681898a4c4cb02cd78856d7cd75",
+      "status": "awaiting_review",
+      "model_calls": 7,
+      "elapsed_seconds": 16.442,
+      "claim_statuses": [
+        "contradicted",
+        "supported",
+        "insufficient"
+      ],
+      "plan": {
+        "light": {
+          "total_cents": 78400,
+          "duration_minutes": 90,
+          "craft_minutes": 50,
+          "local_service_cents": 52000,
+          "material_cents": 14400,
+          "operations_cents": 12000
+        },
+        "deep": {
+          "total_cents": 108000,
+          "duration_minutes": 120,
+          "craft_minutes": 60,
+          "local_service_cents": 74000,
+          "material_cents": 18000,
+          "operations_cents": 16000
+        }
+      },
+      "script_errors": [],
+      "external_resource_requests": [],
+      "claim_ids": [
+        "c1",
+        "c2",
+        "c3"
+      ],
+      "selected_plan_id": "deep",
+      "selected_plan_total_cents": 108000
+    },
+    "test_modules": {
+      "passed": true,
+      "approved_final_run_id": "b8a7aad4c7f3465c97e83ab3c2a21dac",
+      "impossible_run_id": "b64a4e07495449aa8a612a4a0164b79e",
+      "runs": {
+        "01-default": {
+          "run_id": "9ab21deaa59b4f16b88525535bf30e54",
+          "status": "awaiting_review",
+          "model_calls": 7,
+          "elapsed_seconds": 13.168,
+          "error": null,
+          "plan": {
+            "id": "mod-brief-story--basic-craft--tea",
+            "total_cents": 72000,
+            "duration_minutes": 90,
+            "craft_minutes": 50
+          }
+        },
+        "02-note-conflict": {
+          "run_id": "8af2aabebc0f460386089b9a3d2d29ea",
+          "status": "needs_confirmation",
+          "model_calls": 2,
+          "elapsed_seconds": 2.348,
+          "error": "文字需求与表单冲突，请明确使用表单或采纳文字后重新运行。",
+          "plan": {
+            "id": null,
+            "total_cents": null,
+            "duration_minutes": null,
+            "craft_minutes": 0
+          }
+        },
+        "03-note-adopted": {
+          "run_id": "57367243724c4bae88c44ab6946ce5e3",
+          "status": "awaiting_review",
+          "model_calls": 6,
+          "elapsed_seconds": 10.446,
+          "error": null,
+          "plan": {
+            "id": "mod-brief-story--deep-craft--craft-extension",
+            "total_cents": 79600,
+            "duration_minutes": 100,
+            "craft_minutes": 80
+          }
+        },
+        "04-material-refresh": {
+          "run_id": "b8a7aad4c7f3465c97e83ab3c2a21dac",
+          "status": "awaiting_review",
+          "model_calls": 6,
+          "elapsed_seconds": 10.535,
+          "error": null,
+          "plan": {
+            "id": "mod-brief-story--deep-craft--craft-extension",
+            "total_cents": 79600,
+            "duration_minutes": 100,
+            "craft_minutes": 80
+          }
+        },
+        "05-resources-impossible": {
+          "run_id": "b64a4e07495449aa8a612a4a0164b79e",
+          "status": "needs_input",
+          "model_calls": 4,
+          "elapsed_seconds": 4.767,
+          "error": "当前条件无可行方案：人数16超过单组容量8；不能自动拆组或虚构并行接待。；16人手作需至少2位教师；现有1位、每位上限12人，合计可接待12人；不自动拆组或增加教师。 请落实资源或明确调整相应条件后重算。",
+          "plan": {
+            "id": null,
+            "total_cents": null,
+            "duration_minutes": null,
+            "craft_minutes": 0
+          }
+        }
+      },
+      "script_errors": [],
+      "external_resource_requests": []
+    },
+    "test_demo_guide": {
+      "at": "2026-10-05T12:44:33.853Z",
+      "base": "http://127.0.0.1:8795",
+      "steps": [
+        {
+          "name": "前置条件：模型就绪，素材全部可用，无运行中任务",
+          "at": "2026-10-05T12:44:34.114Z",
+          "model": "xiangyi-qwen3:14b-q4_k_m"
+        },
+        {
+          "name": "首页：首次载入无提示条；已截取静止画面（桌面）",
+          "at": "2026-10-05T12:44:38.551Z"
+        },
+        {
+          "name": "第一幕：阳刻为主判为矛盾，修订为阴刻为主；✓ 出现",
+          "at": "2026-10-05T12:44:54.739Z",
+          "run_id": "03188a3a68dc49109bf14c9b5352d330",
+          "check": "✓ 已判出与来源矛盾 · 任务 03188a3a"
+        },
+        {
+          "name": "第二幕：手作分钟增加，✓ 与方案对比一致",
+          "at": "2026-10-05T12:45:07.615Z",
+          "run_id": "8ac2df0ebdde4b22b931b01260e01922",
+          "comparison": {
+            "before": {
+              "id": "mod-brief-story--basic-craft",
+              "title": "基础剪纸手作 · 2环节组合",
+              "total_cents": 57400,
+              "duration_minutes": 70,
+              "craft_minutes": 50,
+              "module_ids": [
+                "brief-story",
+                "basic-craft"
+              ],
+              "start_time": "09:30"
+            },
+            "after": {
+              "id": "mod-brief-story--deep-craft--craft-extension",
+              "title": "深度剪纸手作 · 3环节组合",
+              "total_cents": 79600,
+              "duration_minutes": 100,
+              "craft_minutes": 80,
+              "module_ids": [
+                "brief-story",
+                "deep-craft",
+                "craft-extension"
+              ],
+              "start_time": "09:30"
+            }
+          },
+          "check": "✓ 手作 50 → 80 分钟 · 任务 8ac2df0e"
+        },
+        {
+          "name": "第三幕：撤回后旧运行失效、确认与导出禁用；重新核验后 ✓ 出现，新结果不含撤回素材",
+          "at": "2026-10-05T12:45:20.717Z",
+          "run_id": "7ad1c43837ed4ff5a1b519bfd23ae163",
+          "parent_id": "8ac2df0ebdde4b22b931b01260e01922",
+          "material": "mat-paper-garden",
+          "check": "✓ 撤回后已重新核验 · 任务 7ad1c438"
+        },
+        {
+          "name": "可读性矩阵：2 宽度 × 投屏开/关 × 引导开/关 × 3 页，共 24 组，无横向溢出，中文不小于 12px",
+          "at": "2026-10-05T12:45:27.883Z"
+        },
+        {
+          "name": "演示结束：素材已在页面上恢复可用",
+          "at": "2026-10-05T12:45:27.966Z"
+        },
+        {
+          "name": "英语讲解阻断：默认条件 + 只填“需要安排英语讲解”",
+          "at": "2026-10-05T12:45:32.381Z",
+          "run_id": "36ebac87dbfe40c9afce5082a5900f33",
+          "status": "needs_input",
+          "error": "文字需求存在矛盾或超出当前模块能力，请先澄清：需要安排英语讲解",
+          "note_issue_review": [
+            {
+              "index": 0,
+              "text": "需要安排英语讲解",
+              "category": "needs_clarification",
+              "reason": "程序保留阻断：未配置服务超出当前演示配置，需要先澄清，不能作为编辑说明放行。",
+              "original_category": "editorial_note",
+              "original_reason": "需要安排英语讲解"
+            }
+          ],
+          "program_note_blockers": null
+        },
+        {
+          "name": "不误伤：默认条件 + 只填“不需要翻译，按现有安排。”",
+          "at": "2026-10-05T12:45:43.945Z",
+          "run_id": "b7fcd9aea7b1416484ffffb56e259188",
+          "status": "awaiting_review",
+          "error": null,
+          "note_issue_review": null,
+          "program_note_blockers": null
+        },
+        {
+          "name": "首页三图已写入 docs\\assets\\screenshots",
+          "at": "2026-10-05T12:45:48.095Z"
+        }
+      ],
+      "runs": {
+        "03188a3a68dc49109bf14c9b5352d330": {
+          "status": "awaiting_review",
+          "model_calls": 7,
+          "elapsed_seconds": 13.293,
+          "parent_id": null,
+          "error": null
+        },
+        "8ac2df0ebdde4b22b931b01260e01922": {
+          "status": "awaiting_review",
+          "model_calls": 6,
+          "elapsed_seconds": 10.38,
+          "parent_id": null,
+          "error": null
+        },
+        "7ad1c43837ed4ff5a1b519bfd23ae163": {
+          "status": "awaiting_review",
+          "model_calls": 6,
+          "elapsed_seconds": 10.303,
+          "parent_id": "8ac2df0ebdde4b22b931b01260e01922",
+          "error": null
+        },
+        "36ebac87dbfe40c9afce5082a5900f33": {
+          "status": "needs_input",
+          "model_calls": 3,
+          "elapsed_seconds": 2.852,
+          "parent_id": null,
+          "error": "文字需求存在矛盾或超出当前模块能力，请先澄清：需要安排英语讲解"
+        },
+        "b7fcd9aea7b1416484ffffb56e259188": {
+          "status": "awaiting_review",
+          "model_calls": 6,
+          "elapsed_seconds": 10.329,
+          "parent_id": null,
+          "error": null
+        }
+      },
+      "writes": [
+        {
+          "at": "2026-10-05T12:44:40.486Z",
+          "method": "POST",
+          "path": "/api/runs",
+          "body": "{\"case_id\":null,\"demo_assumptions_confirmed\":false,\"text\":\"蔚县剪纸以阳刻为主，阴刻为辅。蔚县剪纸善于多色点染。工坊每天开放并且无需预约。\",\"requirements\":{\"region\":\"河北省蔚县\",\"project\":\"剪纸\",\"people\":8,\"budget_per_person\":160,\"available_minutes\":150,\"preferred_plan\":\"deep\",\"start_time\":\"09:30\",\"note\":\"为初次了解剪纸的游客安排文化讲解与入门手作。讲述清楚工艺特色，留出观察和提问的时间。\",\"planning_mode\":\"modules\",\"audience\":\"general\",\"tea_preference\":\"any\",\"min_craft_minutes\":0,\"teaching_enabled\":true},\"operating_overrides\":{\"capacity\":12,\"teachers\":1,\"rooms\":1,\"reuse\":true},\"constraint_resolution\":\"ask\"}"
+        },
+        {
+          "at": "2026-10-05T12:44:56.323Z",
+          "method": "POST",
+          "path": "/api/runs",
+          "body": "{\"case_id\":null,\"demo_assumptions_confirmed\":false,\"text\":\"蔚县剪纸以阳刻为主，阴刻为辅。蔚县剪纸善于多色点染。工坊每天开放并且无需预约。\",\"requirements\":{\"region\":\"河北省蔚县\",\"project\":\"剪纸\",\"people\":8,\"budget_per_person\":160,\"available_minutes\":150,\"preferred_plan\":\"deep\",\"start_time\":\"09:30\",\"note\":\"不要茶歇，多留手作时间\",\"planning_mode\":\"modules\",\"audience\":\"general\",\"tea_preference\":\"any\",\"min_craft_minutes\":0,\"teaching_enabled\":true},\"operating_overrides\":{\"capacity\":12,\"teachers\":1,\"rooms\":1,\"reuse\":true},\"constraint_resolution\":\"ask\",\"previous_run_id\":\"03188a3a68dc49109bf14c9b5352d330\"}"
+        },
+        {
+          "at": "2026-10-05T12:45:09.163Z",
+          "method": "PATCH",
+          "path": "/api/materials/mat-paper-garden",
+          "body": "{\"usage_status\":\"withdrawn\"}"
+        },
+        {
+          "at": "2026-10-05T12:45:09.443Z",
+          "method": "POST",
+          "path": "/api/runs/8ac2df0ebdde4b22b931b01260e01922/refresh",
+          "body": "{}"
+        },
+        {
+          "at": "2026-10-05T12:45:27.932Z",
+          "method": "PATCH",
+          "path": "/api/materials/mat-paper-garden",
+          "body": "{\"usage_status\":\"available\"}"
+        },
+        {
+          "at": "2026-10-05T12:45:28.403Z",
+          "method": "POST",
+          "path": "/api/runs",
+          "body": "{\"case_id\":null,\"demo_assumptions_confirmed\":false,\"text\":\"蔚县剪纸以阳刻为主，阴刻为辅。蔚县剪纸善于多色点染。工坊每天开放并且无需预约。\",\"requirements\":{\"region\":\"河北省蔚县\",\"project\":\"剪纸\",\"people\":8,\"budget_per_person\":160,\"available_minutes\":150,\"preferred_plan\":\"deep\",\"start_time\":\"09:30\",\"note\":\"需要安排英语讲解\",\"planning_mode\":\"modules\",\"audience\":\"general\",\"tea_preference\":\"any\",\"min_craft_minutes\":0,\"teaching_enabled\":true},\"operating_overrides\":{\"capacity\":12,\"teachers\":1,\"rooms\":1,\"reuse\":true},\"constraint_resolution\":\"ask\"}"
+        },
+        {
+          "at": "2026-10-05T12:45:32.806Z",
+          "method": "POST",
+          "path": "/api/runs",
+          "body": "{\"case_id\":null,\"demo_assumptions_confirmed\":false,\"text\":\"蔚县剪纸以阳刻为主，阴刻为辅。蔚县剪纸善于多色点染。工坊每天开放并且无需预约。\",\"requirements\":{\"region\":\"河北省蔚县\",\"project\":\"剪纸\",\"people\":8,\"budget_per_person\":160,\"available_minutes\":150,\"preferred_plan\":\"deep\",\"start_time\":\"09:30\",\"note\":\"不需要翻译，按现有安排。\",\"planning_mode\":\"modules\",\"audience\":\"general\",\"tea_preference\":\"any\",\"min_craft_minutes\":0,\"teaching_enabled\":true},\"operating_overrides\":{\"capacity\":12,\"teachers\":1,\"rooms\":1,\"reuse\":true},\"constraint_resolution\":\"ask\"}"
+        }
+      ],
+      "scriptErrors": [],
+      "firstFailure": null,
+      "passed": true,
+      "summary": {
+        "real_runs_submitted": 5,
+        "model_calls": 28
+      }
+    },
+    "print_pages": {
+      "visitor": 3,
+      "organizer": 7
+    }
+  },
+  "model_calls": 7,
+  "elapsed_seconds": 16.442,
+  "failure": null,
+  "checks": {
+    "repository_check": "passed: 572 maintenance files, 265 local links",
+    "backend_tests": "226 passed in 5.74s",
+    "npm_test": "passed: home/studio/planner at 1440 and 390; 0 script errors; no horizontal overflow; Chinese text >= 12px",
+    "data_versions": {
+      "worktree_head": "8e6c439f3e14612ac279ad06c0c82c4cf6d7bc76",
+      "dirty_tracked_files": [],
+      "same_after_crlf_to_lf": true
+    },
+    "test_live": {
+      "passed": true,
+      "run_id": "0662f681898a4c4cb02cd78856d7cd75",
+      "expected_business_checks": true
+    },
+    "test_modules": {
+      "passed": true,
+      "scenario_count": 5,
+      "expected_business_checks": true
+    },
+    "test_demo_guide": {
+      "passed": true,
+      "summary": {
+        "real_runs_submitted": 5,
+        "model_calls": 28
+      },
+      "firstFailure": null,
+      "expected_business_checks": true
+    },
+    "readability": {
+      "matrix": "2 widths × presentation on/off × guide on/off × 3 pages = 24",
+      "passed": true
+    },
+    "screenshots": {
+      "home_hero": true,
+      "home_desktop": true,
+      "home_mobile": true
+    },
+    "print_pages": {
+      "visitor": 3,
+      "organizer": 7,
+      "method": "Edge/Playwright A4 PDF via artifacts/print-check; no model calls"
+    }
+  },
+  "evidence_paths": [
+    "artifacts/handoff/data-versions.log",
+    "artifacts/handoff/app-8e6c439.sqlite3",
+    "artifacts/live-browser-check/run.json",
+    "artifacts/live-browser-check/visitor-bundle.html",
+    "artifacts/live-browser-check/organizer-bundle.html",
+    "artifacts/live-browser-check/verification.json",
+    "artifacts/module-browser-check/verification.json",
+    "artifacts/module-browser-check/01-default-run.json",
+    "artifacts/module-browser-check/02-note-conflict-run.json",
+    "artifacts/module-browser-check/03-note-adopted-approved.json",
+    "artifacts/module-browser-check/04-material-refreshed-approved.json",
+    "artifacts/module-browser-check/05-resources-impossible-run.json",
+    "artifacts/demo-guide-acceptance/result.json",
+    "artifacts/demo-guide-acceptance/legibility-matrix.json",
+    "artifacts/demo-guide-acceptance/note-english-request.json",
+    "artifacts/demo-guide-acceptance/note-negation-request.json",
+    "artifacts/print-check/visitor-bundle.pdf",
+    "artifacts/print-check/organizer-bundle.pdf",
+    "docs/assets/screenshots/home-hero.png",
+    "docs/assets/screenshots/home-desktop.png",
+    "docs/assets/screenshots/home-mobile.png"
+  ],
+  "notes": "这是5090上的双机交叉复核，不是独立第三方评测、用户验收或跨硬件算法优势证明。三条正式真实模型命令均按规定各运行一次，首次结果为结论；原始JSON、SQLite、HTML和打印PDF留在忽略目录。"
+}
