@@ -1,32 +1,19 @@
 # 更新记录
 
-## 2026-10-05 · 5060复核5090运行时修复（候选分支）
+## 2026-10-05 · 双机集成：运行时修复、可读性与首次复核（候选）
 
-- 复核`a00c3ab`发现两处规则过宽：阻断复核会因模型理由里的“未说明”等词放行新增服务、跨场地、取消讲解和增加教师；开放问句归类会把含“起源于唐代”“为什么以阳刻为主”等无依据断言的教学句改为无新事实，使其可交付。
-- 改为只按被标记原文判断缺省可选偏好，模型理由不能降级阻断；开放问句须整句匹配固定非断言句式且无预设词，否则保留模型结论并失败关闭。降级与归类均保留原分类、原状态和原理由。
-- 5090真实运行中出现的两句开放问句仍可通过；新增3项反例回归，后端共221项通过。修复改了业务代码，须由5090用真实模型重跑，详见[复核说明](docs/validation/two-machine/task-5060-runtime-recovery-review.md)。
-
-## 2026-10-05 · 5090模型运行时修复候选
-
-- 修复本地模型把“未提及茶歇、未明确手作最低分钟”等可选缺省误报为阻断的问题；只有明确文字矛盾、取消必需环节、跨场地或新增未配置服务才继续等待确认，人数、预算和总时长仍交给程序核算。
-- 修复开放观察和个人偏好问题被教学扫描误标为未支持文化事实的问题；仅对严格开放问句契约做`no_new_fact`归类，事实性命令和无依据文化断言继续拒绝。
-- 在5090隔离数据库和8791端口用真实`xiangyi-qwen3:14b-q4_k_m`复核主流程与5场景模块流程；实际结果、运行ID、模型digest和证据路径见[双机复核记录](docs/validation/two-machine/handoff-rehearsal-5090-runtime-recovery.json)。
-- 新增5090候选代码与5060复核任务说明；本次不直接合入`main`，等待5060按原始输入、账目、双版包和素材失效保护复核。
-
-## 2026-10-05 · 5060首次复核（候选分支）
-
-## 2026-10-05 · 投屏与手机文字可读性（5060候选分支）
-
-- 三页中文说明、标签、账目注释的字号下限提到12px，拉丁装饰标签保留10px；标题均衡换行，手机端不再只剩单字一行。只改样式，业务、金额、文案和导出不变。
-- 5060用预设模式和API排版检查确认无水平溢出、无截断；真实模型三段主展示和截图更新待5090验证，见[任务说明](docs/validation/two-machine/task-5060-visual-legibility.md)。
+- **运行时修复**：5090修复本地模型把“未提及茶歇、未明确手作最低分钟”等缺省误报为阻断，以及开放观察/个人偏好问题被误标为未支持事实，见[5090任务说明](docs/validation/two-machine/task-5090-runtime-recovery.md)与[真实复核记录](docs/validation/two-machine/handoff-rehearsal-5090-runtime-recovery.json)。
+- **5060复核与收紧**：发现5090版本的两条规则过宽，会放行新增服务、跨场地、取消讲解、增加教师，以及含“起源于唐代”“为什么以阳刻为主”等无依据断言的教学句。改为只按被标记原文判断缺省偏好，开放问句须整句匹配固定非断言句式，否则失败关闭；保留原分类、原状态和原理由，见[复核说明](docs/validation/two-machine/task-5060-runtime-recovery-review.md)。
+- **三页可读性**：中文字号下限12px，拉丁装饰标签10px，标题均衡换行，见[任务说明](docs/validation/two-machine/task-5060-visual-legibility.md)。
+- **导出可读性**：游客版、组织者版屏幕字号下限12px，打印页数不变（3页/7页），新增导出字号回归，见[任务说明](docs/validation/two-machine/task-5060-export-legibility.md)。
+- **双机分工调整**：5060负责全部代码与方案设计；5090只负责真实Agent/LLM运行验证和合入main，不再修改业务代码，见[交接入口](docs/development/two-machine-handoff.md)。
+- 5060在Linux隔离环境完成仓库检查、222项后端检查和三页浏览器检查；最终真实模型验证待5090在本集成SHA上执行。
 
 ## 2026-10-05 · 5060首次复核（5090已验证并合入）
 
-
 - 5060开发端在Linux隔离环境完成仓库检查、后端检查、三页浏览器检查和无模型失败路径检查；5090记录中的1080元/120分钟方案由程序独立复算一致，三条核验结论与来源原文对应。
-- 发现5090记录的`data_versions`有3项是Windows CRLF工作区字节哈希，`jinshan-reconstruction.json`与被测提交不符；按“记录/环境问题”报告，原记录不改写；5090已查明旧值来自其主工作目录的工作区字节，并追加[更正记录](docs/validation/two-machine/handoff-rehearsal-cf7ff41-data-correction.json)。
-- 新增`scripts/record_data_versions.py`按Git对象记录和核对资料版本，新增3项后端检查（共216项）；浏览器脚本统一支持`BROWSER_EXECUTABLE`，原`BROWSER_CHANNEL`用法不变。
-- 该复核没有在5060 Windows原生环境重跑，也不是真实模型验证；详见[复核记录](docs/validation/two-machine/handoff-review-5060-cf7ff41.json)。
+- 发现5090记录的`data_versions`有3项是Windows CRLF工作区字节哈希，`jinshan-reconstruction.json`与被测提交不符；原记录不改写，5090确认内容一致、差异来自其主工作目录的换行字节，并追加[更正记录](docs/validation/two-machine/handoff-rehearsal-cf7ff41-data-correction.json)。
+- 新增`scripts/record_data_versions.py`按Git对象记录和核对资料版本；浏览器脚本统一支持`BROWSER_EXECUTABLE`，原`BROWSER_CHANNEL`用法不变。
 
 ## 2026-10-05 · 双机开发交接
 
