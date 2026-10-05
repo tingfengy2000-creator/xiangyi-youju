@@ -121,7 +121,8 @@
     // The main display is the existing Yuxian case. The public Jinshan case is
     // an explicit supplemental entry, so the select, text, region, resources,
     // and banner always describe the same case on first paint.
-    applyCasePreset('confusion');
+    // First paint is silent: a toast here would cover the home hero.
+    applyCasePreset('confusion', {silent:true});
     clearPlan(); renderMaterials(); setBanner(); updateValues(); updateActions(); loadHistoryList();
     if(!health.model_ready)showWarning('业务服务已连接，但本地模型尚未就绪。请启动 Ollama 并准备模型。此时运行会保留真实失败记录，不会使用预设案例替代。');
   }
@@ -269,7 +270,7 @@
     if (event.type === 'change' && target.id === 'caseSelect') { applyCasePreset(target.value); markDirty(); }
     if (event.type === 'input') markDirty();
   }
-  function applyCasePreset(value) {
+  function applyCasePreset(value, {silent=false} = {}) {
     activeCaseId = value === 'external' ? 'jinshan-paper-light' : null;
     q('#draft').value = samples[value] || samples.confusion;
     const presets = {
@@ -283,7 +284,7 @@
     q('#publicCaseBanner').hidden = value !== 'external';
     q('#caseAssumptionCheck').checked = value === 'external' ? q('#caseAssumptionCheck').checked : false;
     syncPlanningMode(); updateValues();
-    notify(value === 'external' ? '已载入公开活动案例。运行前请确认演示配置边界。' : '已载入展示输入。');
+    if (!silent) notify(value === 'external' ? '已载入公开活动案例。运行前请确认演示配置边界。' : '已载入展示输入。');
   }
   function updateValues() { for (const [id,suffix] of [['people',' 人'],['minutes',' 分钟'],['capacity',' 人']]) q('#'+id+'Value').textContent = q('#'+id).value + suffix; q('#budgetValue').textContent = '¥' + q('#budget').value; }
   function requestData(resolution='ask') {

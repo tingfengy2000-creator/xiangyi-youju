@@ -3,10 +3,12 @@
 | 字段 | 内容 |
 | --- | --- |
 | task_id | `5060-demo-guide` |
-| 分支 | `dev/5060-demo-guide`（基于 `dev/5060-home-story` `24026874e2c796edc81c5d45aeb8c6fbcfeda467`） |
+| 分支 | `dev/5060-demo-guide`（基于 `dev/5060-home-story` `24026874…`；已普通合并 main `b0a4f0c865ac94ab9dff862c6adf1f862c9aa08c`，可 fast-forward 合入 main） |
 | 候选完整 SHA | 由推送说明给出；本文件位于候选提交内，不自引用 |
 | 改动文件 | `frontend/prototype/live.js`、`frontend/prototype/live.css`、`tests/e2e/live-workflow.spec.cjs`（仅 `LIVE_EXPECT_MODEL_ERROR` 分支）、`docs/demo/interview-demo-runbook.md`、`docs/development/prompt-5090-validation.md`（分支名改占位符）、`README.md`、`CHANGELOG.md`、`docs/progress/project-status.md` |
 | 未改动 | 后端、金额、规则、提示词、测试集、`index.html`、资料与经营配置 |
+
+> 首页故事化已由 5090 在 `2402687` 上真实验证并合入 main `b0a4f0c`，见[验证记录](handoff-rehearsal-5090-home-story-2402687.json)。本候选只需验证三幕演示引导和下面第 7 项的首屏提示修复。
 
 ## 目标
 
@@ -28,6 +30,7 @@
    - 运行失败、需要确认或需要补充条件时，引导条给出一句提示，例如“本次真实运行失败，不显示 ✓；引导不会用预设结果替代”，并且不显示 ✓。
 5. **首页三张幕卡**：真实 API 模式下，点击后照常进入对应页面，同时打开引导、标出对应一步，并把焦点放在该步按钮上。
 6. **样式**：沿用纸白底、墨绿边框和朱红左边线；高亮是朱红描边加轻微脉冲，系统设置减少动态效果时不脉冲。引导条内中文字号不小于 12px。
+7. **首屏不再弹提示**：真实 API 模式首次载入时，`applyCasePreset('confusion', {silent:true})` 静默填入主线案例，不再弹“已载入展示输入。”。原来这条提示会在首页底部停留 3.5 秒，盖住“人工确认才交付”（`b0a4f0c` 中重截的 `home-hero.png`、`home-mobile.png` 可见）。操作者手动切换展示输入、或点第一幕“填入主线案例”时仍照常提示。
 
 ## 第二幕的对比基线（无模型推算，仅供参考）
 
@@ -39,6 +42,7 @@
 
 | 检查 | 结果 |
 | --- | --- |
+| 合并 main `b0a4f0c` 后复跑 | 无冲突；`check_repository.py` 通过（568 个维护文件，259 个本地链接）；226 passed；`npm test` 通过；无模型真实 API 路径通过，并新增“首次载入时 `#toast.show` 为 0”的检查 |
 | `scripts/check_repository.py` | 通过：567 个维护文件，259 个本地链接（含本次新增两份文档） |
 | `pytest tests/backend -q` | 226 passed（未改后端） |
 | `npm test` | 三页 × 1440/390 通过，0 脚本错误，无横向溢出 |
@@ -56,8 +60,9 @@
 4. **第三幕**：点“定位到素材撤回”，由操作者点“撤回使用”。确认旧结果显示失效、确认和导出被禁用、“依据最新资料重新核验”被高亮；此时第三幕还不应 ✓。点重新核验后记录新 run_id 和 `parent_id`。预期：新运行完成后第三幕 ✓；预览游客版时不再使用撤回素材。演示结束后，在页面上点“恢复可用”，把素材恢复。
 5. 整个过程中，引导按钮不应自己发起运行、确认或导出：只有操作者点击“核验并编排体验”“按当前条件重新编排”“依据最新资料重新核验”时才产生新任务。
 6. 在 1440 和 390 宽度下，打开和关闭投屏大字，查看引导条：没有遮挡、溢出或截断，中文不小于 12px。
-7. 直接用文件方式打开 `frontend/prototype/index.html`：没有“三幕演示”按钮，预设模式与之前一致。
-8. 结果记录按 `two-machine-result.schema.json`，写入以上 run_id、调用次数、耗时、三个 ✓ 是否出现以及首次失败；原始 JSON 和截图留在 `artifacts/`。
+7. 直接用文件方式打开 `frontend/prototype/index.html`：没有“三幕演示”按钮，预设模式与之前一致。真实 API 模式刷新首页时，底部不应弹出“已载入展示输入。”。
+8. 全部通过后，等页面静止（无提示条）再重截 `docs/assets/screenshots/home-hero.png`、`home-desktop.png`、`home-mobile.png`，文件名不变。
+9. 结果记录按 `two-machine-result.schema.json`，写入以上 run_id、调用次数、耗时、三个 ✓ 是否出现以及首次失败；原始 JSON 和截图留在 `artifacts/`。
 
 ## 已知限制
 

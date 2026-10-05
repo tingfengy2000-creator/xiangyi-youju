@@ -186,6 +186,7 @@ async function additionalScenarios(page, context, previousId) {
     await page.waitForSelector('#runtimeState', { timeout: 30000 });
     assert(await page.locator('#runtimeState').textContent().then(t => t.includes('真实本地')));
     assert.equal(await page.locator('#draft').getAttribute('readonly'), null);
+    assert.equal(await page.locator('#toast.show').count(), 0, 'first paint must not show a toast over the home hero');
     if (process.env.LIVE_CASES_ONLY_FROM) {
       const runIds = await additionalScenarios(page, context, process.env.LIVE_CASES_ONLY_FROM);
       assert.equal(errors.length, 0, errors.join('\n'));
