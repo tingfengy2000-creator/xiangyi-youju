@@ -2,7 +2,8 @@
 
 - `task_id`：`5090-runtime-recovery`
 - `baseline_sha`：`c23f2e22ff80d67da2e157e8f44cc1e0f19714a4`
-- `tested_code_sha`：`a00c3ab`（完整 SHA 以推送后 `git rev-parse` 为准）
+- `tested_code_sha`：`a00c3abbbb267246834b9fb1931be52aa1cc5f8a`
+- `candidate_review_tip`：本分支推送后的最新提交；该提交只补交接说明、真实结果和精选截图，业务代码仍绑定上述 `tested_code_sha`
 - `candidate_branch`：`fix/5090-runtime-recovery`
 - `machine_role`：5090真实运行与代码审查
 - `review_required_by`：5060端；5090不能将本候选直接合入`main`
