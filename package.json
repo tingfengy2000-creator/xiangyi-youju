@@ -12,7 +12,8 @@
     "render:design": "node scripts/render-design.cjs",
     "test:live": "node tests/e2e/live-workflow.spec.cjs",
     "test:modules": "node tests/e2e/module-workflow.spec.cjs",
-    "test:demo-guide": "node tests/e2e/demo-guide-acceptance.spec.cjs"
+    "test:demo-guide": "node tests/e2e/demo-guide-acceptance.spec.cjs",
+    "film:capture": "node scripts/capture-film-footage.cjs"
   },
   "devDependencies": {
     "playwright": "1.62.1"
