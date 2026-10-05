@@ -42,9 +42,9 @@ npm run film:capture
 
 静帧都是 2 倍图（全屏为 3840×2160），推拉时也能保持清晰。
 
-**交给云端会话的方式**：5090 把 `artifacts/film-footage/` 整个文件夹提交到分支 `dev/5090-film-footage` 的 `docs/assets/film/footage/` 下，只提交这个文件夹。云端会话从这个分支读取素材。
+**交给云端会话的方式**：云端会话从 `dev/5060-film-ready` 开始工作，这个分支已包含上述素材。
 
-5060 已用假模型服务演练过这个脚本，确认能完整走通，产出 23 张静帧、17 个节拍和 1 段录屏。**演练产出的画面不是真实运行，不进片子。**
+**已采集（2026-10-05）**：5090 在 `709912a` 上真实运行一次，`passed=true`。素材在分支 `dev/5090-film-footage`（`55e805d`）的 `docs/assets/film/footage/`：23 张静帧，17 个节拍，`take.webm` 10.6 MB / 104.6 秒，无缺失。4 次运行为 `49180226`、`66f40b93`、`cb64c053`、`7ace8ed5`。此前 5060 用假模型演练产出的画面不进片子。
 
 ## 2. 项目原创素材（仓库内已有）
 
@@ -63,7 +63,7 @@ npm run film:capture
 
 | 素材 | 来源 | 许可要求 |
 | --- | --- | --- |
-| 旁白 | 队员按 [voiceover.md](voiceover.md) 录制 | 本人声音，本人同意使用 |
+| 旁白 | 队员按 [voiceover.md](voiceover.md) 录制 | 本人声音，本人同意使用。原始录音不进公开仓库，由 5060 在本地混音 |
 | 配乐 | **首选**：云端会话用代码合成原创配乐（低频铺底、拨弦单音、弦乐铺开），完全原创，没有版权风险。**备选**：从 Pixabay Music 挑一首约 3 分钟、60–72 BPM 的古琴、钢琴或环境乐。搜索词：`guqin ambient`、`chinese ambient piano`、`cinematic minimal` | Pixabay 内容许可允许免费用于视频，无需署名。使用时保存曲目页面链接和下载日期；不使用标注了 Content ID 的曲目 |
 | 音效 | 纸张翻动、刀划纸、印章落下：首选程序合成；备选 Pixabay Sound Effects | 同上 |
 
