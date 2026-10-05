@@ -1,0 +1,57 @@
+{
+  "task_id": "5090-visual-legibility-review",
+  "review_date": "2026-10-05",
+  "candidate_sha": "f2a8ad1a6ab56ce56fc2a4b6285e20e1bffec8ac",
+  "baseline_sha": "c23f2e22ff80d67da2e157e8f44cc1e0f19714a4",
+  "candidate_branch": "dev/5060-visual-legibility",
+  "machine_role": "5090-review",
+  "worktree": "E:/比赛/xiangyi-youju-legibility-f2a8ad1",
+  "scope": "仅验证可读性候选；候选相对基线只涉及前端样式、页面、变更说明和任务说明，不含业务逻辑或模型代码。",
+  "static_checks": [
+    {"command": "scripts/check_repository.py", "result": "passed: 549 maintenance files, 231 local links"},
+    {"command": "python -m pytest tests/backend -q", "result": "216 passed"},
+    {"command": "BROWSER_CHANNEL=msedge npm test", "result": "passed: 1440/390 home, studio, planner; 0 script errors; no horizontal overflow reported"},
+    {"command": "npm run render:design", "result": "passed: diagrams and homepage viewport rendered"},
+    {"check": "投屏静态检查", "result": "纸白、墨绿、朱红和三页结构保留；1440与390宽度下候选卡、模块标签、账目表及确认区可见，未见遮挡或横向溢出"}
+  ],
+  "runtime_environment": {
+    "api": "candidate FastAPI on http://127.0.0.1:8790 with isolated XY_DATABASE_PATH",
+    "model_service": "existing local Ollama at http://127.0.0.1:11439",
+    "model": "xiangyi-qwen3:14b-q4_k_m",
+    "note": "未复制权重、未启动公网端口；模型服务配置沿用本机实际服务。"
+  },
+  "real_runtime_checks": [
+    {
+      "command": "LIVE_BASE_URL=http://127.0.0.1:8790 BROWSER_CHANNEL=msedge npm run test:live",
+      "run_id": "8340c406107d433c8c095d7d0af1e9c1",
+      "result": "failed",
+      "status": "needs_input",
+      "model_calls": 3,
+      "elapsed_seconds": 7.752,
+      "error": "文字需求存在矛盾或超出当前模块能力，请先澄清：未提及茶歇需求；未明确手作最低分钟；未明确是否要求更多手作时间；未明确客群；未明确人数；未明确人均预算；未明确活动总时长",
+      "interpretation": "真实模型未把已有结构化字段与文本偏好合并为可执行需求，未生成方案；不能计作成功交付。"
+    },
+    {
+      "command": "LIVE_BASE_URL=http://127.0.0.1:8790 BROWSER_CHANNEL=msedge npm run test:modules",
+      "run_id": "9bb9ab7e3ce44011a3e10addaabe967a",
+      "result": "failed",
+      "status": "needs_input",
+      "error": "生成的教学内容未通过事实或引用检查，请调整文案后重试；不会导出未核验内容。",
+      "interpretation": "真实模型生成的教学内容被事实/引用校验阻断，系统正确拒绝导出未核验内容；不能计作成功交付。"
+    }
+  ],
+  "evidence_paths": [
+    "artifacts/handoff-legibility-f2a8ad1/live-browser-check/run.json",
+    "artifacts/handoff-legibility-f2a8ad1/live-browser-check/browser-resource-audit.json",
+    "artifacts/handoff-legibility-f2a8ad1/module-browser-check/verification.json",
+    "artifacts/handoff-legibility-f2a8ad1/module-browser-check/01-default-run.json"
+  ],
+  "decision": {
+    "candidate_accepted": false,
+    "merge_to_main": false,
+    "reason": "静态可读性检查通过，但真实模型主流程与教学模块流程均未完成，不能以静态通过替代真实运行证据。",
+    "next_action": "修复或明确模型运行时的需求合并与教学引用校验后，在同一候选SHA或新SHA上重新做一次受控回归；不重复重跑以挑选最好结果。"
+  },
+  "main_state_after_review": "main/origin/main仍为c23f2e22ff80d67da2e157e8f44cc1e0f19714a4；未改写jinshan-reconstruction.json，工作区无未提交跟踪文件。",
+  "scope_note": "这是5090上的双机交叉复核，不是独立第三方评测、用户验收或跨硬件性能比较。"
+}
