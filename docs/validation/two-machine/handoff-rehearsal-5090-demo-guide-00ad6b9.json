@@ -61,7 +61,7 @@
       "model_calls": 7,
       "elapsed_seconds": 16.086,
       "expected_met": true,
-      "evidence": "artifacts/live-browser-check/verification.json"
+      "evidence": "artifacts/handoff-demo-guide/live-browser-check/verification.json"
     },
     "module_flow": {
       "passed": true,
@@ -90,7 +90,7 @@
       ],
       "approved_final_run_id": "2409c70b8c4148b6aea1c24f304bc336",
       "impossible_run_id": "c10760e93a4447c5a4fe1e0f84546668",
-      "evidence": "artifacts/module-browser-check/verification.json"
+      "evidence": "artifacts/handoff-demo-guide/module-browser-check/verification.json"
     },
     "english_blocking": {
       "run_id": "59d68e48c46d40a3b55c7691adac8e41",
@@ -302,13 +302,14 @@
     "artifacts/handoff-demo-guide/demo-guide-visual-verification.json",
     "artifacts/handoff-demo-guide/print/visitor-playwright.pdf",
     "artifacts/handoff-demo-guide/print/organizer-playwright.pdf",
-    "artifacts/live-browser-check/verification.json",
-    "artifacts/module-browser-check/verification.json",
+    "artifacts/handoff-demo-guide/live-browser-check/verification.json",
+    "artifacts/handoff-demo-guide/module-browser-check/verification.json",
     "docs/assets/screenshots/home-hero.png",
     "docs/assets/screenshots/home-desktop.png",
     "docs/assets/screenshots/home-mobile.png"
   ],
   "notes": "5090双机开发与交叉复核，不是独立第三方评测。首页故事化上一轮已验证；本候选只接通三幕引导和首屏静默提示，未修改后端、金额、规则、提示词或资料。真实模型服务、数据库和原始日志均留在本机artifacts，不提交。前三幕最终业务结果通过；验证脚本自身的中止记录按首次失败保留。"
 }
+
 
 
