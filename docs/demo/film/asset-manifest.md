@@ -63,7 +63,7 @@ npm run film:capture
 
 | 素材 | 来源 | 许可要求 |
 | --- | --- | --- |
-| 旁白 | 队员按 [voiceover.md](voiceover.md) 录制 | 本人声音，本人同意使用。原始录音不进公开仓库，由 5060 在本地混音 |
+| 旁白 | 队员按 [voiceover.md](voiceover.md) 录制，男声、女声两版，在 `docs/assets/film/voice/` | 录音者本人同意上传到公开仓库，并用于参赛宣传片（2026-10-05 确认） |
 | 配乐 | **首选**：云端会话用代码合成原创配乐（低频铺底、拨弦单音、弦乐铺开），完全原创，没有版权风险。**备选**：从 Pixabay Music 挑一首约 3 分钟、60–72 BPM 的古琴、钢琴或环境乐。搜索词：`guqin ambient`、`chinese ambient piano`、`cinematic minimal` | Pixabay 内容许可允许免费用于视频，无需署名。使用时保存曲目页面链接和下载日期；不使用标注了 Content ID 的曲目 |
 | 音效 | 纸张翻动、刀划纸、印章落下：首选程序合成；备选 Pixabay Sound Effects | 同上 |
 
