@@ -8,7 +8,7 @@
 
 项目面向中国研究生智慧城市技术与创意设计大赛，以争取进入全国决赛为目标。前端视觉品质是最高设计要求，技术和案例围绕可展示、可核对的业务闭环展开。
 
-> **当前阶段：参赛候选收束与展示交付。** 主线是“让非遗不止被看见，更能被体验”：一条证据链贯穿讲解、活动和双版交付；一句自然语言要求会改变活动组合，并由模型理解、程序求解与校验共同完成。围绕同一场剪纸体验，已固化“纠正讲解→改变预算与偏好→撤回素材后更新体验包”的三段展示。原三页和八模块组合继续保留，文化事实、经营承诺和用户需求分别处理；手作最低时长与全程上限分开，明确偏好由程序排序，资源不足给出具体缺口。旧六例首次失败、新24例首跑及最终候选版本回归均分开记录，见 [候选版本回归](docs/validation/release-candidate/release-report.md)。新增[公开活动案例入口](docs/validation/external-case/public-case-selection.md)：公告事实、演示资源和待确认条件分开；三个官方模板已有[申报候选正文](docs/submission/README.md)，待补项不会写成真实成果。
+> **当前阶段：参赛候选收束与展示交付。** 主线是“让非遗不止被看见，更能被体验”：一条证据链贯穿讲解、活动和双版交付；一句自然语言要求会改变活动组合，并由模型理解、程序求解与校验共同完成。围绕同一场剪纸体验，已固化“纠正讲解→改变预算与偏好→撤回素材后更新体验包”的三段展示。原三页和八模块组合继续保留，文化事实、经营承诺和用户需求分别处理；手作最低时长与全程上限分开，明确偏好由程序排序，资源不足给出具体缺口。5090候选进一步修复了本地模型把未提及偏好误报为阻断、以及开放观察/互动问题误报为未支持事实的问题；代码候选仍待5060复核后集成。旧六例首次失败、新24例首跑及最终候选版本回归均分开记录，见 [候选版本回归](docs/validation/release-candidate/release-report.md)。新增[公开活动案例入口](docs/validation/external-case/public-case-selection.md)：公告事实、演示资源和待确认条件分开；三个官方模板已有[申报候选正文](docs/submission/README.md)，待补项不会写成真实成果。
 
 ![乡艺有据首页](docs/assets/screenshots/home-hero.png)
 
@@ -47,7 +47,7 @@ GitHub 网页显示源码；真实业务在本机启动后访问。直接打开 
 
 LLM（大语言模型）负责理解、查证和表达；Agent（能按任务调用工具的程序）安排查证与修订步骤；确定性程序负责金额、容量和时间计算；人负责文化判断、授权及对外使用确认。
 
-本轮真实运行截图：[投屏纠错与证据](docs/assets/screenshots/semantic-studio.png) · [一句话改变方案](docs/assets/screenshots/semantic-comparison.png) · [具体资源冲突](docs/assets/screenshots/semantic-resource-refusal.png) · [双版预览](docs/assets/screenshots/semantic-preview.png)。这些图片来自已保存的实际本地任务，不是效果合成图。
+本轮真实运行截图：[投屏纠错与证据](docs/assets/screenshots/runtime-recovery-content-studio.png) · [一句话改变方案](docs/assets/screenshots/runtime-recovery-plan-comparison.png) · [教学内容与引用](docs/assets/screenshots/runtime-recovery-teaching.png) · [素材撤回影响](docs/assets/screenshots/runtime-recovery-material-impact.png) · [游客版体验包](docs/assets/screenshots/runtime-recovery-visitor-package.png)。这些图片来自5090候选的实际本地任务，不是效果合成图；对应运行记录见[双机复核记录](docs/validation/two-machine/handoff-rehearsal-5090-runtime-recovery.json)。
 
 ![改一句话，手作50分钟变80分钟](docs/assets/screenshots/semantic-comparison.png)
 
@@ -63,7 +63,7 @@ LLM（大语言模型）负责理解、查证和表达；Agent（能按任务调
 
 ## 当前状态
 
-更新日期：**2026-10-03**。详细状态以 [项目进度](docs/progress/project-status.md) 为准。
+更新日期：**2026-10-05**。详细状态以 [项目进度](docs/progress/project-status.md) 为准。
 
 | 内容 | 状态 | 说明 |
 | --- | --- | --- |

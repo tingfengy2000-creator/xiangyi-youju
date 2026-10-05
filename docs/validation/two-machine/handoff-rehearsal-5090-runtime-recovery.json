@@ -1,0 +1,68 @@
+{
+  "task_id": "5090-runtime-recovery",
+  "review_date": "2026-10-05",
+  "baseline_sha": "c23f2e22ff80d67da2e157e8f44cc1e0f19714a4",
+  "tested_code_sha": "a00c3ab",
+  "candidate_sha": "a00c3ab",
+  "candidate_branch": "fix/5090-runtime-recovery",
+  "machine_role": "5090-real-runtime",
+  "scope": "修复此前可读性候选暴露的模型偏好阻断和开放教学扫描契约问题；不增加模型、模块或调用上限。",
+  "runtime_environment": {
+    "python": "3.12.14",
+    "node": "v24.19.0",
+    "npm": "11.17.0",
+    "ollama_version": "0.35.0",
+    "ollama_url": "http://127.0.0.1:11439",
+    "api_url": "http://127.0.0.1:8791",
+    "database": "artifacts/handoff-runtime-recovery/app.sqlite3",
+    "model": "xiangyi-qwen3:14b-q4_k_m",
+    "model_digest": "e835bb820c84d5ca90942815563588f1af11ffbc377d8d050620f6560c684a38",
+    "model_size_bytes": 9001753109,
+    "quantization": "Q4_K_M",
+    "context_length": 8192,
+    "temperature": 0,
+    "ollama_parameters_note": "未记录的参数沿用服务默认值。"
+  },
+  "checks": [
+    {"command": "scripts/check_repository.py", "result": "passed: 548 maintenance files, 229 local links"},
+    {"command": "python -m pytest tests/backend -q", "result": "218 passed"},
+    {"command": "BROWSER_CHANNEL=msedge npm test", "result": "passed: home/studio/planner at 1440 and 390; 0 script errors; no horizontal overflow"}
+  ],
+  "real_runs": {
+    "live_workflow": {
+      "run_id": "c7a5225aaabe404b905b24572489ca7c",
+      "status": "awaiting_review",
+      "model": "xiangyi-qwen3:14b-q4_k_m",
+      "model_calls": 7,
+      "elapsed_seconds": 16.528,
+      "result": "主流程完成地域纠错、证据核验、轻/深套餐账目和游客/组织者导出；未因缺省偏好错误阻断。"
+    },
+    "module_workflow": {
+      "default_run_id": "d08785b67b3445e4bc884a8f6d893fdc",
+      "approved_final_run_id": "e0969490d6bb4d05afb353e28452bd7d",
+      "impossible_run_id": "7ffabac41d83462ab7b0a9164ea88944",
+      "scenarios": 5,
+      "status": "passed",
+      "result": "默认教学、预算/偏好重排、素材撤回刷新、双版导出和资源不足拒绝全部通过；默认教学扫描记录两条open_question_contract归类。"
+    }
+  },
+  "visual_evidence": [
+    "docs/assets/screenshots/runtime-recovery-content-studio.png",
+    "docs/assets/screenshots/runtime-recovery-plan-comparison.png",
+    "docs/assets/screenshots/runtime-recovery-teaching.png",
+    "docs/assets/screenshots/runtime-recovery-material-impact.png",
+    "docs/assets/screenshots/runtime-recovery-visitor-package.png",
+    "docs/assets/screenshots/runtime-recovery-organizer-package.png"
+  ],
+  "raw_evidence": [
+    "artifacts/live-browser-check/run.json",
+    "artifacts/module-browser-check/verification.json",
+    "artifacts/module-browser-check/01-default-run.json"
+  ],
+  "review_notes": [
+    "模型负责理解与表达；缺省偏好是否阻断、开放问句契约、金额/时长/资源和导出门禁由程序检查。",
+    "开放问句归类只适用于观察负责人提供的示例、是否有/有没有等非断言观察，以及个人偏好问题；事实性命令仍失败关闭。",
+    "这是5090上的双机交叉复核，不是独立第三方评测、用户验收或跨硬件性能比较。"
+  ],
+  "integration_decision": "待5060复核；本候选不直接合入main。"
+}
