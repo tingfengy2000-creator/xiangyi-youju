@@ -3,7 +3,7 @@
   "goal": "5090 本机真实模型验证验收保护候选：三条真实回归、三幕演示引导、阻断与不误伤检查、首页截图和双版打印页数。",
   "baseline_sha": "ef8a220a967a6540712cf656aa55483051403dcd",
   "tested_code_sha": "8e6c439f3e14612ac279ad06c0c82c4cf6d7bc76",
-  "record_commit_sha": "8e6c439f3e14612ac279ad06c0c82c4cf6d7bc76",
+  "record_commit_sha": "9433acdb252357aeced374f00f697dfcbc166e3a",
   "machine_role": "5090-validation",
   "run_id": "0662f681898a4c4cb02cd78856d7cd75",
   "model": "xiangyi-qwen3:14b-q4_k_m",
