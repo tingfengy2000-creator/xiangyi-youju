@@ -1,6 +1,6 @@
 # 5090 真实验证提示词（通用）
 
-本文件是 5060 交给 5090 的标准提示词。每次交接时替换 `<候选完整SHA>`，并按候选的任务说明补充专项检查。
+本文件是 5060 交给 5090 的标准提示词。每次交接时替换 `<候选分支>` 和 `<候选完整SHA>`，并按候选的任务说明补充专项检查。
 
 ---
 
@@ -19,7 +19,7 @@
 ## 本次唯一候选
 
 - 仓库：https://github.com/tingfengy2000-creator/xiangyi-youju
-- 分支：`dev/5060-integration`
+- 分支：`<候选分支>`
 - 候选完整 SHA：`<候选完整SHA>`
 - 基线：当前 `origin/main`。候选应已包含 main，可以 fast-forward 合入；不能 fast-forward 时先停下并报告。
 - 候选内容、改动范围和专项检查见该候选的任务说明 `docs/validation/two-machine/task-5060-*.md`。下面第 3、4 步是每次都要跑的标准回归。
@@ -104,15 +104,15 @@ npm run test:modules
    - 在隔离目录基于候选 SHA 提交，只提交结果记录和截图，不改其他文件，提交信息为 `test: 记录5090集成候选真实验证`；
    - 然后合入并推送：
      ```powershell
-     git push origin HEAD:refs/heads/dev/5060-integration   # 普通推送，不要强推；被拒说明分支有新提交，先停下并报告
+     git push origin HEAD:refs/heads/<候选分支>   # 普通推送，不要强推；被拒说明分支有新提交，先停下并报告
      # 在你的主工作目录：
      git fetch origin
      git switch main
-     git merge --ff-only origin/dev/5060-integration
+     git merge --ff-only origin/<候选分支>
      git push origin main
      ```
    - 合入前确认 `origin/main` 没有出现候选之外的新提交；如果有，先停下并报告。
-3. **任何一项未满足预期时**：不合入 main。仍提交结果记录（可以没有截图），推到 `dev/5060-integration`，在回传中写清是哪一步、哪个字段、原始输入和输出，以及你判断是环境问题、模型波动还是业务缺陷。由 5060 修复后给新 SHA。
+3. **任何一项未满足预期时**：不合入 main。仍提交结果记录（可以没有截图），推到 `<候选分支>`，在回传中写清是哪一步、哪个字段、原始输入和输出，以及你判断是环境问题、模型波动还是业务缺陷。由 5060 修复后给新 SHA。
 
 ## 回传给 5060 的格式
 

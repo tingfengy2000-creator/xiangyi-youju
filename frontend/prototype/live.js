@@ -76,7 +76,7 @@
   }
   function setupLive() {
     mode = 'live'; document.body.classList.remove('pending-runtime'); document.body.classList.add('live-runtime');
-    q('.prototype').insertAdjacentHTML('afterend', `<div class="runtime-bar" id="runtimeBar"><div><strong id="runtimeState"></strong><details class="runtime-information"><summary>查看运行信息</summary><div class="runtime-detail" id="runtimeDetail"></div></details></div><div class="runtime-tools"><button class="text-link" id="presentationMode" aria-pressed="false">投屏大字</button><select id="historySelect" aria-label="查看真实历史记录"><option value="">历史记录 · 选择后仅回放</option></select><button class="text-link" id="refreshHealth">检查环境 ↗</button></div></div>`);
+    q('.prototype').insertAdjacentHTML('afterend', `<div class="runtime-bar" id="runtimeBar"><div><strong id="runtimeState"></strong><details class="runtime-information"><summary>查看运行信息</summary><div class="runtime-detail" id="runtimeDetail"></div></details></div><div class="runtime-tools"><button class="text-link" id="presentationMode" aria-pressed="false">投屏大字</button><button class="text-link" id="demoGuideToggle" aria-pressed="false" aria-controls="demoGuideStudio demoGuidePlanner">三幕演示</button><select id="historySelect" aria-label="查看真实历史记录"><option value="">历史记录 · 选择后仅回放</option></select><button class="text-link" id="refreshHealth">检查环境 ↗</button></div></div>`);
     q('#studio .page-header .chip').textContent = '真实输入 · 逐句关联证据';
     q('#studio .step-strip').innerHTML = '<span>01 理解地域</span>→<span>02 逐句查证</span>→<span>03 编排体验</span>→<span>04 人工确认</span>';
     q('#caseSelect').previousElementSibling.innerHTML = '加载一个展示输入 <span>仅填入文案，不生成结果</span>';
@@ -117,6 +117,7 @@
     q('#previewOrganizer').addEventListener('click', () => previewBundle('organizer'));
     q('#refreshRun').addEventListener('click', refreshRun);
     setupPresentation();
+    setupDemoGuide();
     // The main display is the existing Yuxian case. The public Jinshan case is
     // an explicit supplemental entry, so the select, text, region, resources,
     // and banner always describe the same case on first paint.
@@ -153,6 +154,84 @@
       const resolve=event.target.closest('[data-resolve-requirements]');if(resolve){resolveRequirements(resolve.dataset.resolveRequirements);return;}
       const source=event.target.closest('[data-reveal-claim]');if(source){window.page('studio');const row=document.getElementById('claim-'+source.dataset.revealClaim);if(row){const evidence=row.querySelector('details');if(evidence)evidence.open=true;row.scrollIntoView({block:'start',behavior:'smooth'});}}
     });
+  }
+  // Three-act demo guide: it only fills inputs and points at the next control.
+  // It never submits, approves or exports; every ✓ is derived from a real run.
+  const demoNote='不要茶歇，多留手作时间';
+  const demoSteps=[{act:'第一幕 · 讲对',label:'填入主线案例'},{act:'第二幕 · 排好',label:'填入：'+demoNote},{act:'第三幕 · 守住',label:'定位到素材撤回'}];
+  const demoEvidence=[null,null,null];
+  let demoOn=false,demoActive=0,demoHint='',demoReportedRun=null;
+  function setupDemoGuide(){
+    const bar=id=>`<section class="demo-guide" id="${id}" aria-label="三幕演示引导" hidden><div class="demo-guide-head"><b>演示引导 · 结果以真实运行为准</b><span>只填入与定位，不代为提交、确认或导出</span><button class="demo-guide-close" data-demo-close>收起 ×</button></div><ol class="demo-steps">${demoSteps.map((step,i)=>`<li class="demo-step" data-demo-step="${i}"><span class="demo-act">${esc(step.act)}</span><button class="demo-fill" data-demo-fill="${i}">${esc(step.label)}</button><span class="demo-check"></span></li>`).join('')}</ol><p class="demo-hint" aria-live="polite"></p></section>`;
+    q('#studio .container').insertAdjacentHTML('afterbegin',bar('demoGuideStudio'));
+    q('#planner .container').insertAdjacentHTML('afterbegin',bar('demoGuidePlanner'));
+    q('#demoGuideToggle').addEventListener('click',()=>setDemoGuide(!demoOn));
+    document.addEventListener('click',event=>{
+      if(event.target.closest('[data-demo-close]')){setDemoGuide(false);return;}
+      const fill=event.target.closest('[data-demo-fill]');if(fill)runDemoStep(Number(fill.dataset.demoFill));
+    });
+    // Window capture runs before the page's own capture handlers, so the pointer clears on any press.
+    window.addEventListener('click',event=>{if(event.target instanceof Element&&event.target.closest('.demo-target'))clearDemoTarget();},true);
+    // The page navigation listener on each act card runs first; this only opens the matching step.
+    all('#home .act[data-go]').forEach((card,index)=>card.addEventListener('click',()=>{
+      setDemoGuide(true);demoActive=index;renderDemoGuide();
+      q('.page.active [data-demo-fill="'+index+'"]')?.focus({preventScroll:true});
+    }));
+    renderDemoGuide();
+  }
+  function setDemoGuide(on){
+    demoOn=on;document.body.classList.toggle('demo-guide-on',on);
+    q('#demoGuideToggle').setAttribute('aria-pressed',String(on));q('#demoGuideToggle').textContent=on?'退出三幕演示':'三幕演示';
+    if(!on)clearDemoTarget();
+    renderDemoGuide();
+  }
+  function clearDemoTarget(){all('.demo-target').forEach(element=>element.classList.remove('demo-target'));}
+  function pointDemo(target,hint){
+    clearDemoTarget();demoHint=hint;
+    const element=typeof target==='string'?q(target):target;if(!element)return;
+    element.classList.add('demo-target');element.focus({preventScroll:true});element.scrollIntoView({block:'center',behavior:'smooth'});
+  }
+  function runDemoStep(index){
+    if(busy||activeAction){notify('当前任务仍在执行，完成后再使用引导。');return;}
+    demoActive=index;closePreview();
+    if(index===0){
+      window.page('studio');q('#caseSelect').value='confusion';applyCasePreset('confusion');markDirty();
+      pointDemo('#auditBtn','已填入主线案例（河北省蔚县 · 剪纸）。请操作者点击高亮的「核验并编排体验」；引导不会代为提交。');
+    }else if(index===1){
+      window.page('planner');q('#requestNote').value=demoNote;q('#planningMode').value='modules';syncPlanningMode();markDirty();
+      pointDemo('#runPlan',`已在需求框写入「${demoNote}」，编排方式为“按需求组合活动模块”。请操作者点击高亮的「按当前条件重新编排」。${current?.plan?'':'提示：先完成第一幕，才有上一次方案可比较。'}`);
+    }else{
+      window.page('planner');
+      const button=q('#materialList [data-material-id][data-state="withdrawn"]')||q('#materialList [data-material-id]');
+      pointDemo(button,!button?'尚无素材目录，无法演示撤回。':button.dataset.state!=='withdrawn'?'素材当前均为撤回状态；如需重演，先点「恢复可用」。':current?'已定位素材使用边界。请操作者点击高亮的「撤回使用」，再点「依据最新资料重新核验」。':'已定位素材使用边界。尚无本次运行：先完成第一、二幕，撤回后才能看到旧确认失效。');
+    }
+    notify('引导只填入和定位，结果以真实运行为准。');
+    renderDemoGuide();
+  }
+  function evaluateDemoGuide(){
+    if(busy)clearDemoTarget();
+    if(current&&!replay){
+      const latch=(index,text)=>{if(demoEvidence[index])return;demoEvidence[index]={id:current.id,text};demoActive=Math.min(index+1,2);demoHint=index===2?'三幕均已由真实运行确认。确认与导出仍需人工操作。':`${demoSteps[index].act}已由真实运行确认，下一步：${demoSteps[index+1].act}。`;};
+      if((current.claims||[]).some(claim=>Array.isArray(claim.evidence_ids)&&claim.status==='contradicted'))latch(0,'已判出与来源矛盾');
+      const before=current.comparison?.before?.craft_minutes,after=current.comparison?.after?.craft_minutes;
+      if(!['model_error','failed'].includes(current.status)&&Number.isFinite(before)&&Number.isFinite(after)&&after>before)latch(1,`手作 ${before} → ${after} 分钟`);
+      if(current.parent_id&&invalidatedRuns.has(current.parent_id)&&!executionPending(current)&&['awaiting_review','confirmed'].includes(current.status)&&(catalog?.materials||[]).some(material=>material.usage_status!=='available'))latch(2,'撤回后已重新核验');
+      const notes={model_error:'本次真实运行失败，不显示 ✓；引导不会用预设结果替代。可先点「检查环境」再由操作者重新运行。',failed:'本次真实运行失败，不显示 ✓；引导不会用预设结果替代。',needs_confirmation:'文字需求与表单条件不一致：请操作者在页面卡片中选择采用哪组条件。',needs_input:'本次运行需要补充或调整条件，暂不显示 ✓。'};
+      if(!busy&&notes[current.status]&&demoReportedRun!==current.id){demoReportedRun=current.id;demoHint=notes[current.status];}
+    }
+    renderDemoGuide();
+  }
+  function renderDemoGuide(){
+    for(const bar of all('.demo-guide')){
+      bar.hidden=!demoOn;
+      bar.querySelectorAll('.demo-step').forEach((step,index)=>{
+        const evidence=demoEvidence[index];
+        step.classList.toggle('done',!!evidence);step.classList.toggle('active',index===demoActive);
+        step.querySelector('.demo-check').textContent=evidence?`✓ ${evidence.text} · 任务 ${evidence.id.slice(0,8)}`:'等待真实运行结果';
+        step.querySelector('.demo-fill').disabled=busy||activeAction;
+      });
+      bar.querySelector('.demo-hint').textContent=demoHint;
+    }
   }
   function syncPlanningMode(){q('#preferredPlan').closest('label').hidden=q('#planningMode').value!=='packages';}
   function setInputValue(id,value){
@@ -386,6 +465,7 @@
     q('#historySelect').disabled=busy||activeAction;
     all('[data-scheme]').forEach(button=>button.disabled=busy||activeAction);
     all('[data-material-id]').forEach(button=>button.disabled=busy||activeAction);
+    evaluateDemoGuide();
   }
   async function previewBundle(audience) {
     if(!previewReady()||!['visitor','organizer'].includes(audience))return;
@@ -445,9 +525,10 @@
     q('#impactTrail').innerHTML='<strong>已定位受影响的关联内容</strong>'+affected.map(item=>`<p>来源 / 素材：<code>${esc(item.record_id||item.source_id||item.material_id||lastImpact?.record?.id||'使用状态变更')}</code><br>陈述：${esc((item.claim_ids||[]).join('、')||(item.kind==='materials'?'文本事实不受此素材变更影响':'当前尚未关联具体陈述'))}<br>讲解卡：${esc((item.card_ids||[]).join('、')||'见关联记录')} → 体验方案：${esc((item.plan_ids||[]).join('、')||'关联方案需重验')}<br>运行记录：<code>${esc(item.id||item.run_id||current?.id)}</code></p>`).join('');
   }
   async function changeMaterial(id,state) {
-    if(activeAction||busy)return;closePreview();activeAction=true;updateActions();
-    try {const result=await api('/api/materials/'+encodeURIComponent(id),{method:'PATCH',body:JSON.stringify({usage_status:state})});lastImpact=result;catalog=await api('/api/catalog');renderMaterials();if(current)acceptRun(await api('/api/runs/'+encodeURIComponent(current.id)));q('#approvalCheck').checked=false;renderRun();renderImpact();notify('素材使用状态已更新；关联结果由服务端重新标记。');}
+    if(activeAction||busy)return;closePreview();activeAction=true;updateActions();let changed=false;
+    try {const result=await api('/api/materials/'+encodeURIComponent(id),{method:'PATCH',body:JSON.stringify({usage_status:state})});lastImpact=result;catalog=await api('/api/catalog');renderMaterials();if(current)acceptRun(await api('/api/runs/'+encodeURIComponent(current.id)));q('#approvalCheck').checked=false;renderRun();renderImpact();notify('素材使用状态已更新；关联结果由服务端重新标记。');changed=true;}
     catch(error){showWarning('素材状态未更新：'+errorMessage(error));}finally{activeAction=false;updateActions();}
+    if(changed&&demoOn&&state==='withdrawn'&&current){demoActive=2;pointDemo('#refreshRun',current.status==='invalidated'?'素材已撤回，旧确认与导出随之失效。请操作者点击高亮的「依据最新资料重新核验」。':'素材已撤回，但服务端未把当前运行标为失效，第三幕不会显示 ✓。请如实说明，并检查当前方案是否用到这幅素材。');renderDemoGuide();}
   }
   async function refreshRun() {
     if(!current||busy||activeAction)return;
