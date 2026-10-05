@@ -1,0 +1,164 @@
+{
+  "task_id": "5060-integration-review-629b959",
+  "goal": "5090端在候选版本上完成真实本地模型、模块闭环和可读性复核；保留首次失败，不合入未满足预期的候选。",
+  "baseline_sha": "c23f2e22ff80d67da2e157e8f44cc1e0f19714a4",
+  "tested_code_sha": "629b959dcba204931f2cadf9de6f8682c6647e99",
+  "record_commit_sha": "0000000000000000000000000000000000000000",
+  "machine_role": "5090-integration",
+  "run_id": "92bf0361d9d342ee93c854ba0f2b25df",
+  "model": "xiangyi-qwen3:14b-q4_k_m",
+  "model_configuration": {
+    "ollama_version": "0.35.0",
+    "ollama_url_scope": "127.0.0.1:11439（5090本机，仅本地绑定）",
+    "model_digest": "e835bb820c84d5ca90942815563588f1af11ffbc377d8d050620f6560c684a38",
+    "quantization": "Q4_K_M",
+    "model_size_bytes": 9001753109,
+    "model_context_length_advertised": 40960,
+    "context_length_tokens": 8192,
+    "generation_parameters": {
+      "temperature": 0,
+      "num_ctx": 8192,
+      "num_predict": 2300,
+      "seed": 42,
+      "think": false,
+      "stream": false,
+      "keep_alive": "15m"
+    },
+    "api_observed": true,
+    "observation_note": "context_length_tokens取本项目Modelfile/调用参数；Ollama tags广告值为40960，运行中的/api/ps为8192。未设置参数沿用服务默认值。"
+  },
+  "hardware_and_runtime": {
+    "gpu": "NVIDIA GeForce RTX 5090（本机角色既有记录）",
+    "python": "3.12.14",
+    "node": "v24.19.0",
+    "npm": "11.17.0",
+    "api_url": "http://127.0.0.1:8795",
+    "database": "artifacts/handoff-integration/app.sqlite3",
+    "health": {
+      "status": "ready",
+      "model_ready": true,
+      "model": "xiangyi-qwen3:14b-q4_k_m"
+    }
+  },
+  "data_versions": {
+    "data/curated/sources.json": "2ce95e8c33ad309e8ad3f4daafb43a5e30f3a59e6483a7182f863728952e85f9",
+    "data/curated/materials.json": "d7c200bd48ac0f0eded3979631b17c61921999ceafc273d2ba6a20608dc4c8d0",
+    "data/curated/public-case-sources.json": "622af882bd080ee2e5c7eeb4ab859d60104f04a727a1df066820739f53b70fc5",
+    "data/operating/demo-profile.json": "f8eb6aea38cc74e46c4762fe5ae812499c454c328e8d0b1592cdb895fc66ce18",
+    "data/operating/jinshan-reconstruction.json": "b5239faf8c6bff27060077c3c8ab3b2e66ed4d269b7c211b2c1ff788e1261660",
+    "requirements-lock.txt": "e39e2412f4d42c5e371842765bc9afd0d59eebe15588b246e9dad15ca72d4fc0",
+    "package-lock.json": "71450e84d23b5189ee704b272a65ca98610c30523ede3c1bc3404ef3bfcce6cb",
+    "worktree": {
+      "dirty_tracked_files": [],
+      "same_bytes_as_git": true,
+      "same_after_crlf_to_lf": true
+    }
+  },
+  "raw_input": {
+    "main_flow": {
+      "text": "蔚县剪纸以阳刻为主，阴刻为辅。蔚县剪纸善于多色点染。工坊每天开放并且无需预约。",
+      "requirements": {
+        "region": "河北省蔚县",
+        "project": "剪纸",
+        "people": 8,
+        "budget_per_person": 160,
+        "available_minutes": 150,
+        "start_time": "09:30",
+        "preferred_plan": "deep",
+        "note": "为初次了解剪纸的游客安排文化讲解与入门手作。讲述清楚工艺特色，留出观察和提问的时间。",
+        "planning_mode": "packages",
+        "audience": "general",
+        "tea_preference": "any",
+        "min_craft_minutes": 0,
+        "teaching_enabled": true
+      },
+      "operating_overrides": {"capacity": 12, "teachers": 1, "rooms": 1, "reuse": true}
+    },
+    "english_blocking": {
+      "text": "蔚县剪纸以阳刻为主，阴刻为辅。蔚县剪纸善于多色点染。工坊每天开放并且无需预约。",
+      "note": "需要安排英语讲解",
+      "planning_mode": "modules",
+      "requirements_otherwise_default": true,
+      "operating_overrides": {"capacity": 12, "teachers": 1, "rooms": 1, "reuse": true}
+    }
+  },
+  "actual_output": {
+    "main_flow": {
+      "run_id": "92bf0361d9d342ee93c854ba0f2b25df",
+      "status": "awaiting_review",
+      "model_calls": 7,
+      "elapsed_seconds": 19.298,
+      "claim_statuses": ["contradicted", "supported", "insufficient"],
+      "plan": {"light_total_cents": 78400, "light_duration_minutes": 90, "deep_total_cents": 108000, "deep_duration_minutes": 120},
+      "expected_business_result": true,
+      "export_and_confirmation_checks": true
+    },
+    "module_flow": {
+      "passed": true,
+      "scenario_count": 5,
+      "runs": [
+        {"name": "default", "run_id": "36789c58725f4351b25e667997a6c7aa", "status": "awaiting_review", "model_calls": 7, "elapsed_seconds": 13.906, "plan_id": "mod-brief-story--basic-craft--tea", "craft_minutes": 50, "duration_minutes": 90, "total_cents": 72000, "expected": true},
+        {"name": "note_conflict", "run_id": "a258dc23b7be43e298f116b16d8fab71", "status": "needs_confirmation", "model_calls": 2, "elapsed_seconds": 2.805, "plan": null, "expected": true},
+        {"name": "note_adopted", "run_id": "b5a6e6e067324990aa34d491337d9269", "status": "awaiting_review", "model_calls": 6, "elapsed_seconds": 12.016, "plan_id": "mod-brief-story--deep-craft--craft-extension", "craft_minutes": 80, "duration_minutes": 100, "total_cents": 79600, "expected": true},
+        {"name": "material_refresh", "run_id": "d7f1c7d11c504b019b8f155508909851", "status": "awaiting_review", "model_calls": 6, "elapsed_seconds": 12.071, "plan_id": "mod-brief-story--deep-craft--craft-extension", "craft_minutes": 80, "duration_minutes": 100, "total_cents": 79600, "expected": true},
+        {"name": "resources_impossible", "run_id": "4572399e2e834085926a9dc493620318", "status": "needs_input", "model_calls": 4, "elapsed_seconds": 5.502, "plan": null, "expected": true, "error": "当前条件无可行方案：人数16超过单组容量8；不能自动拆组或虚构并行接待。；16人手作需至少2位教师；现有1位、每位上限12人，合计可接待12人；不自动拆组或增加教师。 请落实资源或明确调整相应条件后重算。"}
+      ],
+      "teaching_scan_normalizations": ["observation: open_question_contract", "interaction: open_question_contract"]
+    },
+    "english_blocking": {
+      "run_id": "53b9a5aa2d184bcd81a83ebca2049af7",
+      "status": "awaiting_review",
+      "model_calls": 7,
+      "elapsed_seconds": 12.549,
+      "expected_status": "needs_input",
+      "expected_met": false,
+      "error": null,
+      "note_issue_review": {"index": 0, "text": "需要安排英语讲解", "category": "editorial_note", "reason": "需要安排英语讲解"},
+      "requirement_conflicts": [],
+      "plan_created": true,
+      "export_allowed_by_run": true,
+      "first_failure": "未以needs_clarification阻断，流程继续生成基础剪纸手作方案；这是模型抽取/业务边界判定问题，不是API或模型不可用。"
+    },
+    "readability": {
+      "viewport_checks": [
+        {"width": 1440, "pages": ["home", "studio", "planner", "studio-presentation"], "horizontal_overflow": false, "small_chinese_text_below_12px": false},
+        {"width": 390, "pages": ["home", "studio", "planner", "studio-presentation"], "horizontal_overflow": false, "small_chinese_text_below_12px": false}
+      ],
+      "exports": {"visitor": {"source": "family-confirmed-visitor.html", "print_pages_edge_a4": 3}, "organizer": {"source": "family-confirmed-organizer.html", "print_pages_edge_a4": 8}},
+      "screenshots_recaptured": false,
+      "screenshots_note": "英语讲解阻断项未满足，按交接规则不覆盖runtime-recovery精选截图；现有候选截图仅作静态参考。"
+    }
+  },
+  "model_calls": 7,
+  "elapsed_seconds": 19.298,
+  "failure": {
+    "stage": "英语讲解阻断检查",
+    "classification": "模型抽取/业务边界判定问题（非环境故障）",
+    "expected": "status=needs_input；错误以‘文字需求存在矛盾或超出当前模块能力，请先澄清’开头；note_issue_review为needs_clarification；无方案无导出",
+    "actual": "status=awaiting_review；note_issue_review.category=editorial_note；requirement_conflicts=[]；已生成mod-brief-story--basic-craft方案（57400 cents/70分钟）",
+    "raw_evidence": "artifacts/handoff-integration-629b959/handoff-integration/english-block-run.json"
+  },
+  "checks": {
+    "repository_check": "passed: 560 maintenance files, 242 local links",
+    "backend_tests": "222 passed in 5.41s",
+    "browser_tests": "BROWSER_CHANNEL=msedge npm test passed: 3 pages at 1440/390, 0 script errors, no horizontal overflow",
+    "data_versions": "record_data_versions.py --worktree: all tracked files same_bytes_as_git=true, same_after_crlf_to_lf=true, dirty_tracked_files=[]",
+    "api_health": "status=ready, model_ready=true, Ollama 0.35.0 at 127.0.0.1:11439",
+    "live_workflow": "expected result met",
+    "module_workflow": "5 scenarios expected result met",
+    "english_blocking": "expected result not met",
+    "merge_decision": "not_merged"
+  },
+  "evidence_paths": [
+    "docs/validation/two-machine/handoff-rehearsal-5090-integration-629b959.json",
+    "artifacts/handoff-integration-629b959/live-browser-check/run.json",
+    "artifacts/handoff-integration-629b959/module-browser-check/verification.json",
+    "artifacts/handoff-integration-629b959/module-browser-check/01-default-run.json",
+    "artifacts/handoff-integration-629b959/module-browser-check/02-note-conflict-run.json",
+    "artifacts/handoff-integration-629b959/module-browser-check/03-note-adopted-run.json",
+    "artifacts/handoff-integration-629b959/module-browser-check/04-material-refresh-run.json",
+    "artifacts/handoff-integration-629b959/module-browser-check/05-resources-impossible-run.json",
+    "artifacts/handoff-integration-629b959/handoff-integration/english-block-run.json"
+  ],
+  "notes": "这是5090上的双机开发与交叉复核，不是独立第三方评测、用户验收或跨硬件算法优势比较。原始JSON、SQLite和HTML留在5090本机忽略目录；本记录只提交摘要。因英语讲解阻断预期未满足，候选不合入main，等待5060修复后提供新SHA。"
+}
