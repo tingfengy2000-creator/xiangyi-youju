@@ -15,7 +15,15 @@
     "model_size_bytes": 9001753109,
     "model_context_length_advertised": 40960,
     "context_length_tokens": 8192,
-    "generation_parameters": {"temperature": 0, "num_ctx": 8192, "num_predict": 2300, "seed": 42, "think": false, "stream": false, "keep_alive": "15m"},
+    "generation_parameters": {
+      "temperature": 0,
+      "num_ctx": 8192,
+      "num_predict": 2300,
+      "seed": 42,
+      "think": false,
+      "stream": false,
+      "keep_alive": "15m"
+    },
     "api_observed": true,
     "observation_note": "Ollama /api/ps在真实运行后显示context_length=8192；未设置参数沿用服务默认值。"
   },
@@ -26,8 +34,16 @@
     "npm": "11.17.0",
     "api_url": "http://127.0.0.1:8795",
     "database": "artifacts/handoff-integration/app.sqlite3",
-    "health": {"status": "ready", "model_ready": true, "model": "xiangyi-qwen3:14b-q4_k_m"},
-    "remote_state_before_push": {"origin_main": "c23f2e22ff80d67da2e157e8f44cc1e0f19714a4", "origin_dev_5060_integration": "c2ee3f48086754b39eef04c57b6704a8181b659b", "requested_candidate_is_ancestor": true}
+    "health": {
+      "status": "ready",
+      "model_ready": true,
+      "model": "xiangyi-qwen3:14b-q4_k_m"
+    },
+    "remote_state_before_push": {
+      "origin_main": "c23f2e22ff80d67da2e157e8f44cc1e0f19714a4",
+      "origin_dev_5060_integration": "c2ee3f48086754b39eef04c57b6704a8181b659b",
+      "requested_candidate_is_ancestor": true
+    }
   },
   "data_versions": {
     "data/curated/sources.json": "2ce95e8c33ad309e8ad3f4daafb43a5e30f3a59e6483a7182f863728952e85f9",
@@ -37,23 +53,226 @@
     "data/operating/jinshan-reconstruction.json": "b5239faf8c6bff27060077c3c8ab3b2e66ed4d269b7c211b2c1ff788e1261660",
     "requirements-lock.txt": "e39e2412f4d42c5e371842765bc9afd0d59eebe15588b246e9dad15ca72d4fc0",
     "package-lock.json": "71450e84d23b5189ee704b272a65ca98610c30523ede3c1bc3404ef3bfcce6cb",
-    "worktree": {"dirty_tracked_files": [], "same_bytes_as_git": true, "same_after_crlf_to_lf": true}
+    "worktree": {
+      "dirty_tracked_files": [],
+      "same_bytes_as_git": true,
+      "same_after_crlf_to_lf": true
+    }
   },
   "raw_input": {
-    "main_flow": {"text": "蔚县剪纸以阳刻为主，阴刻为辅。蔚县剪纸善于多色点染。工坊每天开放并且无需预约。", "requirements": {"region": "河北省蔚县", "project": "剪纸", "people": 8, "budget_per_person": 160, "available_minutes": 150, "start_time": "09:30", "preferred_plan": "deep", "note": "为初次了解剪纸的游客安排文化讲解与入门手作。讲述清楚工艺特色，留出观察和提问的时间。", "planning_mode": "packages", "audience": "general", "tea_preference": "any", "min_craft_minutes": 0, "teaching_enabled": true}, "operating_overrides": {"capacity": 12, "teachers": 1, "rooms": 1, "reuse": true}},
-    "english_blocking": {"text": "蔚县剪纸以阳刻为主，阴刻为辅。蔚县剪纸善于多色点染。工坊每天开放并且无需预约。", "note": "需要安排英语讲解", "planning_mode": "modules", "requirements_otherwise_default": true, "operating_overrides": {"capacity": 12, "teachers": 1, "rooms": 1, "reuse": true}}
+    "main_flow": {
+      "text": "蔚县剪纸以阳刻为主，阴刻为辅。蔚县剪纸善于多色点染。工坊每天开放并且无需预约。",
+      "requirements": {
+        "region": "河北省蔚县",
+        "project": "剪纸",
+        "people": 8,
+        "budget_per_person": 160,
+        "available_minutes": 150,
+        "start_time": "09:30",
+        "preferred_plan": "deep",
+        "note": "为初次了解剪纸的游客安排文化讲解与入门手作。讲述清楚工艺特色，留出观察和提问的时间。",
+        "planning_mode": "packages",
+        "audience": "general",
+        "tea_preference": "any",
+        "min_craft_minutes": 0,
+        "teaching_enabled": true
+      },
+      "operating_overrides": {
+        "capacity": 12,
+        "teachers": 1,
+        "rooms": 1,
+        "reuse": true
+      }
+    },
+    "english_blocking": {
+      "text": "蔚县剪纸以阳刻为主，阴刻为辅。蔚县剪纸善于多色点染。工坊每天开放并且无需预约。",
+      "note": "需要安排英语讲解",
+      "planning_mode": "modules",
+      "requirements_otherwise_default": true,
+      "operating_overrides": {
+        "capacity": 12,
+        "teachers": 1,
+        "rooms": 1,
+        "reuse": true
+      }
+    }
   },
   "actual_output": {
-    "main_flow": {"run_id": "3545f731188143f0bba2adfb107bd273", "status": "awaiting_review", "model_calls": 7, "elapsed_seconds": 16.876, "claim_statuses": ["contradicted", "supported", "insufficient"], "plans": [{"id": "light", "total_cents": 78400, "duration_minutes": 90}, {"id": "deep", "total_cents": 108000, "duration_minutes": 120}], "expected_met": true},
-    "module_flow": {"verification_passed": true, "scenario_count": 5, "runs": [
-      {"scenario": "01-default", "run_id": "c40e81e0a5514c1d97b8fb482449bfc0", "status": "awaiting_review", "model_calls": 7, "elapsed_seconds": 13.99, "plan_id": "mod-brief-story--basic-craft--tea", "craft_minutes": 50, "duration_minutes": 90, "total_cents": 72000, "expected_met": true, "scan_normalizations": ["observation: open_question_contract", "interaction: open_question_contract"]},
-      {"scenario": "02-note-conflict", "run_id": "845ffa47d9724a98adbeaea938dad52a", "status": "needs_confirmation", "model_calls": 2, "elapsed_seconds": 2.528, "plan": null, "expected_met": true, "error": "文字需求与表单冲突，请明确使用表单或采纳文字后重新运行。"},
-      {"scenario": "03-note-adopted", "run_id": "8d235d85c3494d50b8c83fdd4a475cf0", "status": "awaiting_review", "model_calls": 6, "elapsed_seconds": 10.439, "plan_id": "mod-brief-story--deep-craft--craft-extension", "craft_minutes": 80, "duration_minutes": 100, "total_cents": 79600, "expected_met": true},
-      {"scenario": "04-material-refresh", "run_id": "712dc9d8ca2b49af92e79d0d99c9b5ae", "status": "awaiting_review", "model_calls": 6, "elapsed_seconds": 10.72, "plan_id": "mod-brief-story--deep-craft--craft-extension", "craft_minutes": 80, "duration_minutes": 100, "total_cents": 79600, "expected_met": true},
-      {"scenario": "05-resources-impossible", "run_id": "0c755d9882da44dfbb20f93107830dd4", "status": "needs_input", "model_calls": 4, "elapsed_seconds": 4.698, "plan": null, "expected_met": true, "error": "当前条件无可行方案：人数16超过单组容量8；不能自动拆组或虚构并行接待。；16人手作需至少2位教师；现有1位、每位上限12人，合计可接待12人；不自动拆组或增加教师。 请落实资源或明确调整相应条件后重算。"}
-    ]},
-    "english_blocking": {"run_id": "8674633c9e9844e69c261386df2824de", "status": "needs_input", "model_calls": 3, "elapsed_seconds": 2.748, "expected_status": "needs_input", "error": "文字需求存在矛盾或超出当前模块能力，请先澄清：需要安排英语讲解", "note_issue_review": {"index": 0, "text": "需要安排英语讲解", "category": "needs_clarification", "reason": "程序保留阻断：未配置服务超出当前演示配置，需要先澄清，不能作为编辑说明放行。", "original_category": "editorial_note", "original_reason": "需要安排英语讲解"}, "requirement_conflicts": [], "plan_created": false, "export_allowed": false, "expected_met": true},
-    "readability": {"viewport_checks": [{"width": 1440, "pages": ["studio", "planner", "studio-presentation"], "horizontal_overflow": false, "small_chinese_text_below_12px": false}, {"width": 390, "pages": ["studio", "planner", "studio-presentation"], "horizontal_overflow": false, "small_chinese_text_below_12px": false}], "exports": {"visitor": {"print_pages_edge_a4": 3}, "organizer": {"print_pages_edge_a4": 7}}, "screenshots_recaptured": true}
+    "main_flow": {
+      "run_id": "3545f731188143f0bba2adfb107bd273",
+      "status": "awaiting_review",
+      "model_calls": 7,
+      "elapsed_seconds": 16.876,
+      "claim_statuses": [
+        "contradicted",
+        "supported",
+        "insufficient"
+      ],
+      "plans": [
+        {
+          "id": "light",
+          "total_cents": 78400,
+          "duration_minutes": 90
+        },
+        {
+          "id": "deep",
+          "total_cents": 108000,
+          "duration_minutes": 120
+        }
+      ],
+      "expected_met": true
+    },
+    "module_flow": {
+      "verification_passed": true,
+      "scenario_count": 5,
+      "runs": [
+        {
+          "scenario": "01-default",
+          "run_id": "c40e81e0a5514c1d97b8fb482449bfc0",
+          "status": "awaiting_review",
+          "model_calls": 7,
+          "elapsed_seconds": 13.99,
+          "plan_id": "mod-brief-story--basic-craft--tea",
+          "craft_minutes": 50,
+          "duration_minutes": 90,
+          "total_cents": 72000,
+          "expected_met": true,
+          "scan_normalizations": [
+            "observation: open_question_contract",
+            "interaction: open_question_contract"
+          ]
+        },
+        {
+          "scenario": "02-note-conflict",
+          "run_id": "845ffa47d9724a98adbeaea938dad52a",
+          "status": "needs_confirmation",
+          "model_calls": 2,
+          "elapsed_seconds": 2.528,
+          "plan": null,
+          "expected_met": true,
+          "error": "文字需求与表单冲突，请明确使用表单或采纳文字后重新运行。"
+        },
+        {
+          "scenario": "03-note-adopted",
+          "run_id": "8d235d85c3494d50b8c83fdd4a475cf0",
+          "status": "awaiting_review",
+          "model_calls": 6,
+          "elapsed_seconds": 10.439,
+          "plan_id": "mod-brief-story--deep-craft--craft-extension",
+          "craft_minutes": 80,
+          "duration_minutes": 100,
+          "total_cents": 79600,
+          "expected_met": true
+        },
+        {
+          "scenario": "04-material-refresh",
+          "run_id": "712dc9d8ca2b49af92e79d0d99c9b5ae",
+          "status": "awaiting_review",
+          "model_calls": 6,
+          "elapsed_seconds": 10.72,
+          "plan_id": "mod-brief-story--deep-craft--craft-extension",
+          "craft_minutes": 80,
+          "duration_minutes": 100,
+          "total_cents": 79600,
+          "expected_met": true
+        },
+        {
+          "scenario": "05-resources-impossible",
+          "run_id": "0c755d9882da44dfbb20f93107830dd4",
+          "status": "needs_input",
+          "model_calls": 4,
+          "elapsed_seconds": 4.698,
+          "plan": null,
+          "expected_met": true,
+          "error": "当前条件无可行方案：人数16超过单组容量8；不能自动拆组或虚构并行接待。；16人手作需至少2位教师；现有1位、每位上限12人，合计可接待12人；不自动拆组或增加教师。 请落实资源或明确调整相应条件后重算。"
+        }
+      ]
+    },
+    "english_blocking": {
+      "run_id": "8674633c9e9844e69c261386df2824de",
+      "status": "needs_input",
+      "model_calls": 3,
+      "elapsed_seconds": 2.748,
+      "expected_status": "needs_input",
+      "error": "文字需求存在矛盾或超出当前模块能力，请先澄清：需要安排英语讲解",
+      "note_issue_review": {
+        "index": 0,
+        "text": "需要安排英语讲解",
+        "category": "needs_clarification",
+        "reason": "程序保留阻断：未配置服务超出当前演示配置，需要先澄清，不能作为编辑说明放行。",
+        "original_category": "editorial_note",
+        "original_reason": "需要安排英语讲解"
+      },
+      "requirement_conflicts": [],
+      "plan_created": false,
+      "export_allowed": false,
+      "expected_met": true,
+      "blocking_source": {
+        "note_issue_review": [
+          {
+            "index": 0,
+            "text": "需要安排英语讲解",
+            "category": "needs_clarification",
+            "reason": "程序保留阻断：未配置服务超出当前演示配置，需要先澄清，不能作为编辑说明放行。",
+            "original_category": "editorial_note",
+            "original_reason": "需要安排英语讲解"
+          }
+        ],
+        "program_note_blockers": null,
+        "layer": "程序在模型标记editorial_note后补标为needs_clarification并阻断"
+      },
+      "model_metric_purposes": [
+        "理解需求与拆分陈述",
+        "提取文字活动偏好",
+        "复核需求阻断原因"
+      ]
+    },
+    "readability": {
+      "viewport_checks": [
+        {
+          "width": 1440,
+          "pages": [
+            "studio",
+            "planner",
+            "studio-presentation"
+          ],
+          "horizontal_overflow": false,
+          "small_chinese_text_below_12px": false
+        },
+        {
+          "width": 390,
+          "pages": [
+            "studio",
+            "planner",
+            "studio-presentation"
+          ],
+          "horizontal_overflow": false,
+          "small_chinese_text_below_12px": false
+        }
+      ],
+      "exports": {
+        "visitor": {
+          "print_pages_edge_a4": 3
+        },
+        "organizer": {
+          "print_pages_edge_a4": 7
+        }
+      },
+      "screenshots_recaptured": true
+    },
+    "negation_no_block": {
+      "run_id": "1579c573135e4e2d8e0c396d9c26e9ab",
+      "status": "awaiting_review",
+      "model_calls": 6,
+      "elapsed_seconds": 13.711,
+      "note_issue_review": null,
+      "program_note_blockers": null,
+      "plan_created": true,
+      "plan_id": "mod-brief-story--basic-craft",
+      "duration_minutes": 70,
+      "total_cents": 57400,
+      "expected_met": true
+    }
   },
   "model_calls": 7,
   "elapsed_seconds": 16.876,
@@ -68,7 +287,8 @@
     "module_workflow": "5 scenarios expected result met",
     "english_blocking": "expected result met",
     "readability": "1440/390 studio, planner and projection pass; visitor 3 pages and organizer 7 pages on Edge A4",
-    "merge_decision": "pending branch push; origin/main unchanged but origin/dev/5060-integration advanced to c2ee3f4 before verification"
+    "merge_decision": "pending branch push; origin/main unchanged but origin/dev/5060-integration advanced to c2ee3f4 before verification",
+    "negation_no_block": "expected result met: awaiting_review, no program_note_blockers, plan created"
   },
   "evidence_paths": [
     "docs/validation/two-machine/handoff-rehearsal-5090-integration-57cfa4e.json",
@@ -86,7 +306,8 @@
     "docs/assets/screenshots/runtime-recovery-teaching.png",
     "docs/assets/screenshots/runtime-recovery-material-impact.png",
     "docs/assets/screenshots/runtime-recovery-visitor-package.png",
-    "docs/assets/screenshots/runtime-recovery-organizer-package.png"
+    "docs/assets/screenshots/runtime-recovery-organizer-package.png",
+    "artifacts/handoff-integration/negation-no-block-run.json"
   ],
-  "notes": "这是5090上的双机开发与交叉复核，不是独立第三方评测、用户验收或跨硬件算法优势比较。指定候选SHA的全部第1至第4步预期均满足；远端候选分支在验证前已出现候选之外的文档提交c2ee3f4，需普通推送确认是否可快进，不能强推或擅自合并。"
+  "notes": "这是5090上的双机开发与交叉复核，不是独立第三方评测、用户验收或跨硬件算法优势比较。指定候选SHA的全部第1至第4步预期均满足；远端候选分支在验证前已出现候选之外的文档提交c2ee3f4，需普通推送确认是否可快进，不能强推或擅自合并。 已补记“不需要翻译，按现有安排。”不误伤检查及英语讲解阻断来源。"
 }
