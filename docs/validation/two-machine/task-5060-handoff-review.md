@@ -55,3 +55,7 @@ $env:BROWSER_CHANNEL = "msedge"; npm test
 - 本端检查在 Linux 容器中执行，没有在 5060 Windows 原生 Python/Edge 下重跑；Windows 兼容性需 5090 或后续 5060 Windows 运行确认。
 - 本端 Chromium 版本为 1194，与锁定 Playwright 默认的 1234 不同；仅作开发检查。
 - 5090 原始运行、SQLite 和双版 HTML 未取得，模型调用次数、耗时和 digest 只能引用记录。
+
+## 5090 验证回传
+
+候选完整 SHA `14d5365be3578b611618356442cb7b411c3868af` 已在独立 worktree 完成仓库检查、216 项后端测试、Edge 桌面/移动端浏览器检查及数据版本工具检查。原记录未改写；旧工作区哈希的来源和以 Git 对象哈希为准的更正值见[追加更正记录](handoff-rehearsal-cf7ff41-data-correction.json)。

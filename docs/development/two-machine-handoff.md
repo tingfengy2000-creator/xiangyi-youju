@@ -40,7 +40,7 @@
 5090: 双方对同一候选版本完成检查后，唯一合入并推送 main
 ```
 
-不得强推、重写共享历史、合并无关分支或新增后台轮询服务。5090 若修改业务代码，须使用独立分支交 5060 复核。任务字段、命令和启动提示词见本页第 6 节及 [`two-machine-result.schema.json`](../validation/two-machine/two-machine-result.schema.json)；本次演练的精简记录见 [`handoff-rehearsal-cf7ff41.json`](../validation/two-machine/handoff-rehearsal-cf7ff41.json)。
+不得强推、重写共享历史、合并无关分支或新增后台轮询服务。5090 若修改业务代码，须使用独立分支交 5060 复核。任务字段、命令和启动提示词见本页第 6 节及 [`two-machine-result.schema.json`](../validation/two-machine/two-machine-result.schema.json)；本次演练的精简记录见 [`handoff-rehearsal-cf7ff41.json`](../validation/two-machine/handoff-rehearsal-cf7ff41.json)，其数据版本来源更正见 [`handoff-rehearsal-cf7ff41-data-correction.json`](../validation/two-machine/handoff-rehearsal-cf7ff41-data-correction.json)。
 
 ## 3. 代码、资料和交付物入口
 
