@@ -25,7 +25,8 @@
 | M3 | Agent 与活动编排闭环 | 已通过最小真实闭环 | 预算110改选轻体验；无解停止；素材撤回阻断旧包并刷新；双版导出通过复算 |
 | M4 | 验收与参赛材料 | 外部案例双版交付及原模板候选 | 金山区案例主运行确认、两次变化记录和双版HTML已留存；三份当前Word共14页已用WPS逐页检查；规范渲染、独立人工复核、真实合作、身份和正式提交仍待补 |
 | M5 | 双机交接演练 | 5090隔离worktree已验证；5060首次复核已提交候选 | 5090在基线SHA独立worktree完成结构检查、213项后端检查、独立数据库API启动和1次真实本地模型运行；5060在Linux隔离环境完成无模型检查并复算方案账目一致，发现data_versions中3项为CRLF字节哈希、1项与提交不符，[复核记录](../validation/two-machine/handoff-review-5060-cf7ff41.json)待5090确认 |
-| M6 | 运行时修复与可读性集成 | 5060复核并收紧，集成候选待5090真实验证 | 5090候选`a00c3ab`真实主流程与模块流程通过（[真实复核](../validation/two-machine/handoff-rehearsal-5090-runtime-recovery.json)），但5060复核发现阻断复核与开放问句归类会放行无依据内容，已收紧并补反例回归（[复核说明](../validation/two-machine/task-5060-runtime-recovery-review.md)）；与三页、导出可读性合并为`dev/5060-integration`。5090在`629b959`真实复核中主流程、5场景模块和可读性通过，但“需要安排英语讲解”未阻断（[记录](../validation/two-machine/handoff-rehearsal-5090-integration-629b959.json)）；5060已补硬性要求程序阻断（[修复说明](../validation/two-machine/task-5060-hard-blockers.md)），后端226项通过，待5090在新SHA重做真实验证 |
+| M6 | 运行时修复与可读性集成 | 已验证并合入main（`cfa516b`） | 5090在被测代码`57cfa4e`上真实验证：主流程784/90与1080/120、5场景模块流程、英语讲解程序保留阻断、“不需要翻译”未误拦、三页与导出中文不小于12px，见[验证记录](../validation/two-machine/handoff-rehearsal-5090-integration-57cfa4e.json)；5060复核与收紧见[复核说明](../validation/two-machine/task-5060-runtime-recovery-review.md)和[硬性要求阻断](../validation/two-machine/task-5060-hard-blockers.md) |
+| M7 | 首页故事化 | 5060候选，待5090真实界面验证 | 首页三幕故事条、为谁而做、意义带；见[任务说明](../validation/two-machine/task-5060-home-story.md) |
 
 “已完成”仅适用于该行所列范围，不表示产品全面实现。
 
