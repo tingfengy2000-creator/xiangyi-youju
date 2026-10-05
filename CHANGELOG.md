@@ -15,8 +15,16 @@
 
 ## 2026-10-05 · 5060首次复核（候选分支）
 
+## 2026-10-05 · 投屏与手机文字可读性（5060候选分支）
+
+- 三页中文说明、标签、账目注释的字号下限提到12px，拉丁装饰标签保留10px；标题均衡换行，手机端不再只剩单字一行。只改样式，业务、金额、文案和导出不变。
+- 5060用预设模式和API排版检查确认无水平溢出、无截断；真实模型三段主展示和截图更新待5090验证，见[任务说明](docs/validation/two-machine/task-5060-visual-legibility.md)。
+
+## 2026-10-05 · 5060首次复核（5090已验证并合入）
+
+
 - 5060开发端在Linux隔离环境完成仓库检查、后端检查、三页浏览器检查和无模型失败路径检查；5090记录中的1080元/120分钟方案由程序独立复算一致，三条核验结论与来源原文对应。
-- 发现5090记录的`data_versions`有3项是Windows CRLF工作区字节哈希，`jinshan-reconstruction.json`与被测提交不符；按“记录/环境问题”报告，原记录不改写，请5090说明。
+- 发现5090记录的`data_versions`有3项是Windows CRLF工作区字节哈希，`jinshan-reconstruction.json`与被测提交不符；按“记录/环境问题”报告，原记录不改写；5090已查明旧值来自其主工作目录的工作区字节，并追加[更正记录](docs/validation/two-machine/handoff-rehearsal-cf7ff41-data-correction.json)。
 - 新增`scripts/record_data_versions.py`按Git对象记录和核对资料版本，新增3项后端检查（共216项）；浏览器脚本统一支持`BROWSER_EXECUTABLE`，原`BROWSER_CHANNEL`用法不变。
 - 该复核没有在5060 Windows原生环境重跑，也不是真实模型验证；详见[复核记录](docs/validation/two-machine/handoff-review-5060-cf7ff41.json)。
 
