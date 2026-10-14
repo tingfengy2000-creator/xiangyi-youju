@@ -213,6 +213,9 @@ async function doneText(page, bar, index) {
     await page.goto(base + '/');
     await page.waitForSelector('#runtimeState');
     await page.locator('[data-page="studio"]').first().click();
+    // 重新载入后文字需求恢复为默认句，其中的“游客”可能被模型读成普通游客，与学生冲突；
+    // 先换成与三幕引导相同的中性需求（370f7db 宣传片采集第二幕首次失败即此原因）。
+    await page.locator('#requestNote').fill('讲清楚工艺特色，留出观察和提问的时间。');
     await page.locator('#draftAudience').selectOption('student');
     await page.locator('#draftMinutes').selectOption('5');
     const draftResponse = page.waitForResponse(r => r.request().method() === 'POST' && new URL(r.url()).pathname === '/api/drafts', { timeout: 200000 });

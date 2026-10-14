@@ -122,8 +122,11 @@ async function pause(page, ms) { await page.waitForTimeout(ms); }
     await still(page, 's08-evidence', '#auditResult .evidence-block', '出处原文卡');
 
     // Act two: same heritage, a different audience. The operator switches 体验对象 on screen.
+    // 文字需求框在工坊页：必须先在工坊页换成与对象无关的中性需求（与三幕引导同一句），
+    // 否则默认需求里的“游客”会被模型读成普通游客，与表单上的青少年学生冲突（5090 首次失败，370f7db）。
+    await page.locator('#requestNote').fill(NOTE);
+    assert.equal(await page.locator('#requestNote').inputValue(), NOTE, '第二幕前文字需求应换成中性需求');
     await page.locator('[data-page="planner"]').first().click();
-    await page.locator('#requestNote').fill(NOTE).catch(() => {});
     await page.locator('#planningMode').selectOption('modules');
     await page.locator('#audience').scrollIntoViewIfNeeded(); await pause(page, 1200);
     await still(page, 's10-audience-before', '#audience', '体验对象：普通游客');
@@ -133,6 +136,9 @@ async function pause(page, ms) { await page.waitForTimeout(ms); }
     await pause(page, 1500);
     await still(page, 's10-audience-after', '#audience', '体验对象：青少年学生');
     await page.locator('#runPlan').scrollIntoViewIfNeeded(); await page.locator('#runPlan').hover(); await pause(page, 800);
+    assert.equal(await page.locator('#audience').inputValue(), 'student');
+    assert.equal(await page.locator('#planningMode').inputValue(), 'modules');
+    assert.equal(await page.locator('#requestNote').inputValue(), NOTE, '提交第二幕前文字需求被改动');
     mark('act2-click', '点击“按当前条件重新编排”');
     const act2 = await submit(page, '#runPlan', '/api/runs');
     const run2 = await waitRun(page, act2);
