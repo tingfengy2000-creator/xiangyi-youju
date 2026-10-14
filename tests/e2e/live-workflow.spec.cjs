@@ -107,7 +107,7 @@ async function additionalScenarios(page, context, previousId) {
     await page.locator('[data-material-id="mat-paper-garden"][data-state="withdrawn"]').click();
     assert((await withdrawalResponse).ok());
     restoreNeeded = true;
-    await page.waitForFunction(() => document.querySelector('#runtimeState')?.textContent.includes('结果失效'));
+    await page.waitForFunction(() => document.querySelector('#runtimeState')?.textContent.includes('需重新核验'));
     assert(await page.locator('#approveRun').isDisabled());
     assert(await page.locator('#exportVisitor').isDisabled());
     assert(await page.locator('#exportOrganizer').isDisabled());

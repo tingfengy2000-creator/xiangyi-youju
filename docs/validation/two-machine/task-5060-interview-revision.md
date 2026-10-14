@@ -45,6 +45,12 @@
 | `test:demo-guide` 对假模型服务（**只验证脚本流程，不是真实证据**） | 9 步全部通过；第二幕为 2 → 4 个环节、手作 50 → 80 分钟；第三幕游客版出现新版作品 |
 | `film:capture` 对假模型服务（同上） | 通过：28 张静帧，22 个节拍，无缺失 |
 
+## 5090 首次验证失败与修复（`019a1ff`）
+
+- **首次失败**：`test:modules` 第 3 个场景断言对比卡标题含“改一句话，方案真变化”，而候选已把标题改为按对象显示（“面向亲子家庭，方案真变化。”）。这是 5060 改了前端文案、没有同步回归测试，不是模型问题；5090 记录见 [handoff-rehearsal-5090-interview-revision-019a1ff.json](handoff-rehearsal-5090-interview-revision-019a1ff.json)。
+- **修复**：测试改为断言“方案真变化”。同时修正另外两处依赖旧状态文字“结果失效”的等待条件（现为“需重新核验”）。
+- **防止再犯**：5060 这次用假模型服务完整跑了 `test:modules` 和 `test:live`（正常模式），两条命令都走通。只用来检查脚本和页面文字是否同步，不作为真实证据。上一轮只用假模型跑了 `test:demo-guide` 和 `film:capture`，漏掉了这两条。
+
 ## 请 5090 验证
 
 按 [5090 真实验证提示词](../../development/prompt-5090-validation.md) 执行。三条真实命令各运行一次：`test:live`、`test:modules`、`test:demo-guide`。`test:demo-guide` 必须用新的空数据库，因为作品上新不能撤销。之后再用另一个新的空数据库运行一次 `film:capture`，为宣传片采集画面。
