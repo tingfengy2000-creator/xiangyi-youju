@@ -116,15 +116,16 @@ def stale(run):
     return False
 
 
-def change_usage(kind, record_id, status):
+def _apply_change(kind, record_id, mutate, message):
+    """Bump a record version, then mark every run that used the old version as needing an update."""
     with LOCK, connection() as db:
         row = db.execute("SELECT payload FROM records WHERE kind=? AND id=?", (kind, record_id)).fetchone()
         if row is None:
             raise KeyError(record_id)
         record = json.loads(row[0])
-        if record["usage_status"] == status:
+        if not mutate(record):
             return {"record": record, "affected_runs": []}
-        record.update(usage_status=status, version=record["version"] + 1, updated_at=now())
+        record.update(version=record["version"] + 1, updated_at=now())
         encoded = json.dumps(record, ensure_ascii=False)
         db.execute("UPDATE records SET payload=? WHERE kind=? AND id=?", (encoded, kind, record_id))
         db.execute("INSERT INTO record_history VALUES (?,?,?,?)", (kind, record_id, record["version"], encoded))
@@ -147,5 +148,28 @@ def change_usage(kind, record_id, status):
             db.execute("UPDATE runs SET payload=? WHERE id=?", (json.dumps(run, ensure_ascii=False), run["id"]))
             affected.append(impact)
     for item in affected:
-        event(item["id"], "invalidated", f"{record['title']}使用状态变为{status}；相关内容和确认已失效。")
+        event(item["id"], "invalidated", message(record))
     return {"record": record, "affected_runs": affected}
+
+
+def change_usage(kind, record_id, status):
+    def mutate(record):
+        if record["usage_status"] == status:
+            return False
+        record["usage_status"] = status
+        return True
+    return _apply_change(kind, record_id, mutate, lambda record: f"{record['title']}使用状态变为{status}；相关内容和确认已失效。")
+
+
+def publish_edition(record_id):
+    """手艺人发布作品的下一个版本：作品保持可用，引用旧版本的手册需要重新核验后更新。"""
+    def mutate(record):
+        editions = record.get("editions") or []
+        current = record.get("edition", 1)
+        if record.get("usage_status") != "available" or current >= len(editions):
+            raise ValueError("这件作品没有待发布的新版本（演示中预置了一次更新）")
+        nxt = editions[current]
+        record.update(edition=current + 1, title=nxt["title"], description=nxt["description"])
+        return True
+    return _apply_change("materials", record_id, mutate,
+                         lambda record: f"{record['title']}已发布第{record['edition']}版；引用旧版本的讲解卡与手册需要更新。")

@@ -8,6 +8,8 @@ from decimal import Decimal, InvalidOperation, ROUND_HALF_UP
 from itertools import combinations
 import re
 
+from .audiences import AUDIENCE_IDS, apply_defaults
+
 
 # 向后兼容演示默认值；正式调用读取独立经营资料 profile.plans。
 DEFAULT_PLANS = {
@@ -45,6 +47,12 @@ def _feasible_candidates(planning: dict) -> list[dict]:
             if plan.get("feasible") is True and not plan.get("conflicts") and plan["id"] in feasible_ids]
 
 
+def _maximize_craft(planning: dict, requirements: dict) -> bool:
+    # 体验对象的演示偏好（如青少年学生多动手）由求解器写入 audience_constraints，排序与之保持一致。
+    return bool(requirements.get("constraints", {}).get("maximize_craft", False)
+                or (planning.get("audience_constraints") or {}).get("maximize_craft", False))
+
+
 def select_ranked_plan(planning: dict, requirements: dict) -> dict | None:
     """按明确、可复算的偏好选择已有候选；模型不参与数值排序。
 
@@ -55,7 +63,7 @@ def select_ranked_plan(planning: dict, requirements: dict) -> dict | None:
     feasible = _feasible_candidates(planning)
     if not feasible:
         return None
-    maximize_craft = requirements.get("constraints", {}).get("maximize_craft", False)
+    maximize_craft = _maximize_craft(planning, requirements)
     if not maximize_craft and requirements.get("planning_mode", "packages") == "packages":
         preferred = next((plan for plan in feasible if plan["id"] == requirements.get("preferred_plan", "deep")), None)
         if preferred is not None:
@@ -73,12 +81,14 @@ def ranking_reason(planning: dict, requirements: dict) -> str:
     selected = select_ranked_plan(planning, requirements)
     if selected is None:
         return "程序检查后没有同时满足已确认条件的方案，不能自动放宽人数、报价、时长或资源。"
-    if requirements.get("constraints", {}).get("maximize_craft", False):
+    if _maximize_craft(planning, requirements):
         basis = "先满足全部硬约束，再按手作时长从多到少、演示总价从低到高、总时长从短到长、方案编号排序"
     elif requirements.get("planning_mode", "packages") == "packages" and selected["id"] == requirements.get("preferred_plan", "deep"):
         basis = "已确认偏好的固定套餐通过全部硬约束，保留该套餐"
     else:
         basis = "先满足全部硬约束，再按演示总价从低到高、总时长从短到长、方案编号排序"
+    if planning.get("audience_note"):
+        basis += f"（体验对象：{planning['audience_note']}）"
     return (f"程序选择：{basis}。选定“{selected['title']}”，手作{plan_craft_minutes(selected, planning)}分钟，"
             f"总时长{selected['duration_minutes']}分钟，演示总价{selected['total_cents'] / 100:.2f}元。")
 
@@ -149,7 +159,7 @@ def _validate_plan(plan_id: str, specification: dict) -> dict:
     for key in ("tags", "audiences"):
         if key in spec and (not isinstance(spec[key], list) or any(not isinstance(item, str) or not item for item in spec[key]) or len(spec[key]) != len(set(spec[key]))):
             raise ValueError(f"{plan_id}.{key}须为不重复字符串列表")
-    if "audiences" in spec and (not spec["audiences"] or not set(spec["audiences"]) <= {"general", "family"}):
+    if "audiences" in spec and (not spec["audiences"] or not set(spec["audiences"]) <= set(AUDIENCE_IDS)):
         raise ValueError(f"{plan_id}.audiences须声明有效客群")
     return spec
 
@@ -173,7 +183,7 @@ def _validate_modules(values) -> list[dict]:
             items = module.get(field)
             if not isinstance(items, list) or any(not isinstance(item, str) or not item for item in items) or len(items) != len(set(items)):
                 raise ValueError(f"{identity}.{field}须为不重复的字符串列表")
-        if not module["tags"] or not module["audiences"] or not set(module["audiences"]) <= {"general", "family"}:
+        if not module["tags"] or not module["audiences"] or not set(module["audiences"]) <= set(AUDIENCE_IDS):
             raise ValueError(f"{identity}须声明有效标签和适用客群")
         if module.get("exclusive_group") not in (None, "story", "craft"):
             raise ValueError(f"{identity}互斥分组须为story/craft/null")
@@ -214,8 +224,8 @@ def _module_constraints(raw, modules: list[dict]) -> dict:
         if len(tags) != len(set(tags)) or set(tags) - known_tags:
             raise ValueError(f"{field}含重复或未配置的活动标签")
     _integer(values["min_craft_minutes"], "最低手作分钟", 0, 720)
-    if values["audience"] not in ("general", "family"):
-        raise ValueError("客群须为general或family")
+    if values["audience"] not in AUDIENCE_IDS:
+        raise ValueError("客群须为" + "/".join(AUDIENCE_IDS))
     if not isinstance(values["maximize_craft"], bool):
         raise ValueError("maximize_craft须为明确布尔值")
     return values
@@ -245,6 +255,8 @@ def _solve_modules(req, operating, common, people, budget_cents, available, star
     # 用补齐默认值的局部对象计算；需求快照保留用户已确认约束的原样，不代替用户改参数。
     req.setdefault("constraints", {})
     constraints = _module_constraints(req["constraints"], modules)
+    # 面向不同对象的演示偏好：只补充标签要求与手作优先级，用户明确排除的环节仍然优先。
+    constraints, audience_note = apply_defaults(constraints, {tag for module in modules for tag in module["tags"]})
     operating["modules"] = deepcopy(modules)
     rows = []
     considered_subsets = 0
@@ -319,6 +331,8 @@ def _solve_modules(req, operating, common, people, budget_cents, available, star
             ids = [module["id"] for module in selected]
             main_craft = next(module["title"] for module in selected if module["exclusive_group"] == "craft")
             explanation = f"经营配置组合{len(selected)}个模块，总时长{duration}分钟，其中手作{craft_minutes}分钟；演示总价{total / 100:.2f}元。"
+            if audience_note:
+                explanation += f"按体验对象配置（{audience_note}）。"
             explanation += "满足当前已确认约束，按单组顺序使用现有资源。" if not conflicts else "存在冲突：" + "；".join(item["message"] for item in conflicts)
             rows.append({
                 "id": "mod-" + "--".join(ids), "title": f"{main_craft} · {len(selected)}环节组合",
@@ -375,6 +389,8 @@ def _solve_modules(req, operating, common, people, budget_cents, available, star
         "candidates": selected, "feasible_ids": [row["id"] for row in selected if row["feasible"]],
         "profile_snapshot": operating, "requirements_snapshot": req, "budget_per_person_cents": budget_cents,
         "planning_policy": "single-group-modules-v1",
+        "audience_constraints": {key: constraints[key] for key in ("audience", "require_tags", "maximize_craft")},
+        "audience_note": audience_note,
         "stats": {"enumerated": len(rows), "feasible_count": len(feasible), "infeasible_count": len(failed),
                   "returned_count": len(selected), "considered_subsets": considered_subsets},
         "score_note": "score仅为明确偏好的确定性排序值，不是可信度、质量概率或实际社会效益。",

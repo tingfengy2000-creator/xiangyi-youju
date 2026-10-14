@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 from copy import deepcopy
+
+from .audiences import AUDIENCES, AUDIENCE_IDS
 import hashlib
 from html import escape
 import json
@@ -201,7 +203,7 @@ def _structure(teaching, run, context):
     issues = []
     if teaching.get("audience") != run.get("requirements", {}).get("audience", "general"):
         issues.append("教学受众与运行需求不一致")
-    if teaching.get("audience") not in {"general", "family"}:
+    if teaching.get("audience") not in AUDIENCE_IDS:
         issues.append("未知教学受众")
     if teaching.get("creative_label") != CREATIVE_LABEL:
         issues.append("缺少明确的教学创意标识")
@@ -275,7 +277,7 @@ def validate_teaching(teaching: dict, run: dict) -> dict:
 
 
 GENERATION = """基于给定已核验cards生成中文教学内容，仅输出schema。
-general使用自然清晰的成年游客表达；family面向亲子共同观察，短句易懂，家长陪伴讨论。所有客群均不安排专业刻刀或其他具体工具操作。
+"""+"；".join(f"{key}{value['style']}" for key, value in AUDIENCES.items())+"""。客群只改变口吻和句式，不增加卡片之外的知识。所有客群均不安排专业刻刀或其他具体工具操作。
 short_script严格使用script_count指定的句数，每张卡片最多改写一句，不为凑三句添加技法定义或功能解释。observation_task为1句可观察任务，interaction_question为1句开放讨论问题。
 观察任务必须结合卡片中的一个有据文化点给出具体观察维度，使用“是否/有哪些/找一找”等开放表达，不预设示例必有某一特征，避免仅说“观察示例”的空泛任务。
 互动问题围绕该文化点邀请比较、表达或个人联想，避免只问“想了解哪个细节”；个人联想必须明确属于游客个人想法，不能说成传统寓意。
@@ -346,7 +348,7 @@ def generate_teaching(llm, run: dict, feedback: dict | None = None) -> dict:
                 "creative_label": CREATIVE_LABEL, "generation_mode": "not_generated",
                 "check": {"passed": False, "issues": [], "items": [], "model_calls_used": 0}}
     context = _context(run)
-    if not context["cards"] or teaching["audience"] not in {"general", "family"}:
+    if not context["cards"] or teaching["audience"] not in AUDIENCE_IDS:
         teaching["check"]["issues"] = ["缺少有效讲解卡或教学受众不受支持"]
         return teaching
     if MAX_MODEL_CALLS - start_calls < 2:
@@ -434,7 +436,7 @@ def render_teaching_html(teaching: dict, audience: str) -> str:
         raise ValueError("未知体验包用途")
     if teaching.get("check", {}).get("passed") is not True:
         raise ValueError("教学内容未通过完整事实扫描，不能导出")
-    heading = "一起观察，一起发现" if teaching.get("audience") == "family" else "听见工艺，看见细节"
+    heading = {"family": "一起观察，一起发现", "student": "边看边想，一起发现"}.get(teaching.get("audience"), "听见工艺，看见细节")
     parts = [f'<section class="teaching"><h2>{heading}</h2>']
     parts.extend(f'<p class="short-script">{escape(item["text"])}</p>' for item in teaching["short_script"])
     for key, label in (("observation_task", "观察任务"), ("interaction_question", "一起想一想")):

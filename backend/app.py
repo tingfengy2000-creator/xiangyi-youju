@@ -14,7 +14,9 @@ from .config import ROOT, MODEL, OLLAMA_URL, now
 from . import store
 from .evidence import load_sources, load_materials, load_profile, load_public_case, normalize_region
 from .model import readiness
-from .schemas import RunInput, Approval, UsageChange
+from .schemas import RunInput, Approval, UsageChange, DraftRequest
+from .drafts import generate_draft
+from .model import ModelFailure
 from .workflow import execute
 from .planner import solve_plans
 from .bundles import render_bundle
@@ -97,6 +99,19 @@ def _launch_locked(payload, parent_id=None):
 def launch(payload, parent_id=None):
     with store.LOCK:
         return _launch_locked(payload, parent_id)
+
+
+@app.post("/api/drafts")
+def new_draft(payload: DraftRequest):
+    """生成讲解词草稿，不创建运行；草稿须再提交核验。"""
+    if sum(r["status"] == "running" for r in store.list_runs()) >= 1:
+        raise HTTPException(429, "本地模型正在执行任务，请稍后再生成讲解词")
+    try:
+        return generate_draft(store.records("sources"), payload.region, payload.project, payload.audience, payload.minutes)
+    except ValueError as error:
+        raise HTTPException(422, str(error)) from error
+    except ModelFailure as error:
+        raise HTTPException(503, str(error)) from error
 
 
 @app.post("/api/runs", status_code=202)
@@ -190,6 +205,17 @@ def usage(kind: str, record_id: str, payload: UsageChange):
         return store.change_usage(kind, record_id, payload.usage_status)
     except KeyError as error:
         raise HTTPException(404, "资料不存在") from error
+
+
+@app.post("/api/materials/{record_id}/publish")
+def publish(record_id: str):
+    """手艺人发布作品新版本（演示中每件作品预置一次更新）。"""
+    try:
+        return store.publish_edition(record_id)
+    except KeyError as error:
+        raise HTTPException(404, "作品不存在") from error
+    except ValueError as error:
+        raise HTTPException(409, str(error)) from error
 
 
 @app.post("/api/runs/{run_id}/refresh", status_code=202)
