@@ -1,0 +1,1844 @@
+{
+  "task_id": "5060-interview-revision",
+  "goal": "5090按指定命令一次性验证019a1ff候选；模块流程首次断言失败后停止并回传，未继续三幕或录屏。",
+  "recorded_at": "2026-10-14T14:16:48.283343+00:00",
+  "baseline_sha": "709912a0030118211b0bc31c29b34f5fc845fd2c",
+  "tested_code_sha": "019a1ffe5dce9ce9ca5c69383b1c534f843d5fc9",
+  "record_commit_sha": "019a1ffe5dce9ce9ca5c69383b1c534f843d5fc9",
+  "record_commit_note": "record_commit_sha将在结果首次提交后补记为引入本记录的提交号；补记提交只修改该元数据，不改变tested_code_sha或首次输出。",
+  "candidate_branch": "dev/5060-interview-revision",
+  "machine_role": "5090-validation",
+  "run_id": "82860fd24c5d42fabc24dbceb00e64d8",
+  "model": "xiangyi-qwen3:14b-q4_k_m",
+  "model_configuration": {
+    "ollama_version": "0.35.0",
+    "ollama_url_scope": "127.0.0.1:11439（5090本机，仅回环绑定）",
+    "model_digest": "e835bb820c84d5ca90942815563588f1af11ffbc377d8d050620f6560c684a38",
+    "quantization": "Q4_K_M",
+    "context_length_tokens": 8192,
+    "generation_parameters": {
+      "temperature": 0,
+      "num_ctx": 8192,
+      "num_predict": 2300,
+      "seed": 42,
+      "think": false,
+      "stream": false,
+      "keep_alive": "15m"
+    },
+    "api_observed": true,
+    "unset_parameters": "未显式设置的其余参数沿用Ollama服务默认值。"
+  },
+  "runtime_environment": {
+    "gpu": "NVIDIA GeForce RTX 5090",
+    "vram_mib": 32607,
+    "driver_version": "610.88",
+    "python": "3.12.14",
+    "node": "v24.19.0",
+    "npm": "11.17.0",
+    "api": "http://127.0.0.1:8795",
+    "database": "artifacts/handoff/app.sqlite3",
+    "isolated_worktree": "E:\\比赛\\xiangyi-youju-interview-revision-019a1ff"
+  },
+  "data_versions": {
+    "data/curated/sources.json": "2ce95e8c33ad309e8ad3f4daafb43a5e30f3a59e6483a7182f863728952e85f9",
+    "data/curated/materials.json": "54436cb05ccca8ed57031a95f02525aa081f6191dd5256f628e7eaae03dac06f",
+    "data/curated/public-case-sources.json": "622af882bd080ee2e5c7eeb4ab859d60104f04a727a1df066820739f53b70fc5",
+    "data/curated/draft-presets.json": "328f36b58d9dd96115934a3d58dcd0254cd13f12ca665f92c1fd58d9632d4704",
+    "data/operating/demo-profile.json": "ea58abdaba9adf7789eff92b45d64c7fc618183d00f1a81de8e6702f1b48c1f0",
+    "data/operating/jinshan-reconstruction.json": "b5239faf8c6bff27060077c3c8ab3b2e66ed4d269b7c211b2c1ff788e1261660",
+    "requirements-lock.txt": "e39e2412f4d42c5e371842765bc9afd0d59eebe15588b246e9dad15ca72d4fc0",
+    "package-lock.json": "71450e84d23b5189ee704b272a65ca98610c30523ede3c1bc3404ef3bfcce6cb"
+  },
+  "data_version_worktree_check": {
+    "head": "019a1ffe5dce9ce9ca5c69383b1c534f843d5fc9",
+    "head_is_tested_code": true,
+    "dirty_tracked_files": [],
+    "files": {
+      "data/curated/sources.json": {
+        "exists": true,
+        "sha256": "2ce95e8c33ad309e8ad3f4daafb43a5e30f3a59e6483a7182f863728952e85f9",
+        "same_bytes_as_git": true,
+        "same_after_crlf_to_lf": true
+      },
+      "data/curated/materials.json": {
+        "exists": true,
+        "sha256": "54436cb05ccca8ed57031a95f02525aa081f6191dd5256f628e7eaae03dac06f",
+        "same_bytes_as_git": true,
+        "same_after_crlf_to_lf": true
+      },
+      "data/curated/public-case-sources.json": {
+        "exists": true,
+        "sha256": "622af882bd080ee2e5c7eeb4ab859d60104f04a727a1df066820739f53b70fc5",
+        "same_bytes_as_git": true,
+        "same_after_crlf_to_lf": true
+      },
+      "data/curated/draft-presets.json": {
+        "exists": true,
+        "sha256": "328f36b58d9dd96115934a3d58dcd0254cd13f12ca665f92c1fd58d9632d4704",
+        "same_bytes_as_git": true,
+        "same_after_crlf_to_lf": true
+      },
+      "data/operating/demo-profile.json": {
+        "exists": true,
+        "sha256": "ea58abdaba9adf7789eff92b45d64c7fc618183d00f1a81de8e6702f1b48c1f0",
+        "same_bytes_as_git": true,
+        "same_after_crlf_to_lf": true
+      },
+      "data/operating/jinshan-reconstruction.json": {
+        "exists": true,
+        "sha256": "b5239faf8c6bff27060077c3c8ab3b2e66ed4d269b7c211b2c1ff788e1261660",
+        "same_bytes_as_git": true,
+        "same_after_crlf_to_lf": true
+      },
+      "requirements-lock.txt": {
+        "exists": true,
+        "sha256": "e39e2412f4d42c5e371842765bc9afd0d59eebe15588b246e9dad15ca72d4fc0",
+        "same_bytes_as_git": true,
+        "same_after_crlf_to_lf": true
+      },
+      "package-lock.json": {
+        "exists": true,
+        "sha256": "71450e84d23b5189ee704b272a65ca98610c30523ede3c1bc3404ef3bfcce6cb",
+        "same_bytes_as_git": true,
+        "same_after_crlf_to_lf": true
+      }
+    },
+    "note": "工作区字节仅用于排查换行或本地修改；正式 data_versions 以 Git 对象为准。"
+  },
+  "raw_input": {
+    "test_live": {
+      "text": "蔚县剪纸以阳刻为主，阴刻为辅。蔚县剪纸善于多色点染。工坊每天开放并且无需预约。",
+      "case_id": null,
+      "demo_assumptions_confirmed": false,
+      "requirements": {
+        "region": "河北省蔚县",
+        "project": "剪纸",
+        "people": 8,
+        "budget_per_person": 160,
+        "available_minutes": 150,
+        "start_time": "09:30",
+        "preferred_plan": "deep",
+        "note": "为初次了解剪纸的游客安排文化讲解与入门手作。讲述清楚工艺特色，留出观察和提问的时间。",
+        "planning_mode": "packages",
+        "audience": "general",
+        "tea_preference": "any",
+        "min_craft_minutes": 0,
+        "teaching_enabled": true
+      },
+      "operating_overrides": {
+        "capacity": 12,
+        "teachers": 1,
+        "rooms": 1,
+        "reuse": true
+      },
+      "constraint_resolution": "ask",
+      "previous_run_id": null
+    },
+    "test_modules": [
+      {
+        "scenario": "01-default",
+        "run_id": "9c71fe0bea5d47ed8150214cae24bb9b",
+        "text": "蔚县剪纸以阳刻为主，阴刻为辅。蔚县剪纸善于多色点染。工坊每天开放并且无需预约。",
+        "case_id": null,
+        "demo_assumptions_confirmed": false,
+        "requirements": {
+          "region": "河北省蔚县",
+          "project": "剪纸",
+          "people": 8,
+          "budget_per_person": 160,
+          "available_minutes": 150,
+          "start_time": "09:30",
+          "preferred_plan": "deep",
+          "note": "为初次了解剪纸的游客安排文化讲解与入门手作。讲述清楚工艺特色，留出观察和提问的时间。",
+          "planning_mode": "modules",
+          "audience": "general",
+          "tea_preference": "include",
+          "min_craft_minutes": 0,
+          "teaching_enabled": true
+        },
+        "operating_overrides": {
+          "capacity": 12,
+          "teachers": 1,
+          "rooms": 1,
+          "reuse": true
+        },
+        "constraint_resolution": "ask",
+        "previous_run_id": null
+      },
+      {
+        "scenario": "02-note-conflict",
+        "run_id": "111ea4641b554fe686155f2d0a3a3d95",
+        "text": "蔚县剪纸以阳刻为主，阴刻为辅。蔚县剪纸善于多色点染。工坊每天开放并且无需预约。",
+        "case_id": null,
+        "demo_assumptions_confirmed": false,
+        "requirements": {
+          "region": "河北省蔚县",
+          "project": "剪纸",
+          "people": 8,
+          "budget_per_person": 110,
+          "available_minutes": 150,
+          "start_time": "09:30",
+          "preferred_plan": "deep",
+          "note": "安排亲子互动，不安排茶歇，手作至少40分钟，多留手作时间；讲解浅显易懂。",
+          "planning_mode": "modules",
+          "audience": "general",
+          "tea_preference": "include",
+          "min_craft_minutes": 0,
+          "teaching_enabled": true
+        },
+        "operating_overrides": {
+          "capacity": 12,
+          "teachers": 1,
+          "rooms": 1,
+          "reuse": true
+        },
+        "constraint_resolution": "ask",
+        "previous_run_id": "9c71fe0bea5d47ed8150214cae24bb9b"
+      },
+      {
+        "scenario": "03-note-adopted",
+        "run_id": "5dc10b2a385e45f7a7d678045d68c87c",
+        "text": "蔚县剪纸以阳刻为主，阴刻为辅。蔚县剪纸善于多色点染。工坊每天开放并且无需预约。",
+        "case_id": null,
+        "demo_assumptions_confirmed": false,
+        "requirements": {
+          "region": "河北省蔚县",
+          "project": "剪纸",
+          "people": 8,
+          "budget_per_person": 110,
+          "available_minutes": 150,
+          "start_time": "09:30",
+          "preferred_plan": "deep",
+          "note": "安排亲子互动，不安排茶歇，手作至少40分钟，多留手作时间；讲解浅显易懂。",
+          "planning_mode": "modules",
+          "audience": "family",
+          "tea_preference": "exclude",
+          "min_craft_minutes": 0,
+          "teaching_enabled": true
+        },
+        "operating_overrides": {
+          "capacity": 12,
+          "teachers": 1,
+          "rooms": 1,
+          "reuse": true
+        },
+        "constraint_resolution": "ask",
+        "previous_run_id": "9c71fe0bea5d47ed8150214cae24bb9b"
+      }
+    ]
+  },
+  "actual_output": {
+    "test_live": {
+      "passed": true,
+      "command_exit_code": 0,
+      "run": {
+        "id": "82860fd24c5d42fabc24dbceb00e64d8",
+        "status": "awaiting_review",
+        "mode": "live",
+        "execution_policy": "agent",
+        "model": "xiangyi-qwen3:14b-q4_k_m",
+        "model_calls": 6,
+        "elapsed_seconds": 16.12,
+        "parent_id": null,
+        "error": null,
+        "effective_requirements": {
+          "region": "河北省蔚县",
+          "project": "剪纸",
+          "people": 8,
+          "budget_per_person": 160,
+          "available_minutes": 150,
+          "start_time": "09:30",
+          "preferred_plan": "deep",
+          "note": "为初次了解剪纸的游客安排文化讲解与入门手作。讲述清楚工艺特色，留出观察和提问的时间。",
+          "planning_mode": "packages",
+          "audience": "general",
+          "tea_preference": "any",
+          "min_craft_minutes": 0,
+          "teaching_enabled": true,
+          "constraints": {
+            "exclude_tags": [],
+            "require_tags": [],
+            "min_craft_minutes": 0,
+            "audience": "general",
+            "maximize_craft": false
+          }
+        },
+        "requirement_conflicts": [],
+        "plan": {
+          "id": "deep",
+          "title": "深体验",
+          "feasible": true,
+          "conflicts": [],
+          "duration_minutes": 120,
+          "total_cents": 108000,
+          "per_person_cents": 13500,
+          "local_service_cents": 74000,
+          "material_cents": 18000,
+          "operations_cents": 16000,
+          "paper_units": 16,
+          "schedule": [
+            {
+              "title": "文化讲解",
+              "start": "09:30",
+              "end": "10:00",
+              "minutes": 30,
+              "start_minute": 570,
+              "end_minute": 600,
+              "end_day_offset": 0,
+              "resource_ids": [
+                "room-1"
+              ]
+            },
+            {
+              "title": "剪纸手作",
+              "start": "10:00",
+              "end": "11:00",
+              "minutes": 60,
+              "start_minute": 600,
+              "end_minute": 660,
+              "end_day_offset": 0,
+              "resource_ids": [
+                "room-1",
+                "teacher-1"
+              ]
+            },
+            {
+              "title": "乡土茶歇",
+              "start": "11:00",
+              "end": "11:30",
+              "minutes": 30,
+              "start_minute": 660,
+              "end_minute": 690,
+              "end_day_offset": 0,
+              "resource_ids": [
+                "room-1"
+              ]
+            }
+          ],
+          "ledger": [
+            {
+              "label": "文化讲解服务",
+              "cents": 30000,
+              "payee": "在地讲解人员（演示角色）",
+              "category": "local_service",
+              "unit_cents": 30000,
+              "quantity": 1
+            },
+            {
+              "label": "手作教学服务",
+              "cents": 28000,
+              "payee": "在地手作教师（演示角色）",
+              "category": "local_service",
+              "unit_cents": 3500,
+              "quantity": 8
+            },
+            {
+              "label": "乡土茶歇服务",
+              "cents": 16000,
+              "payee": "在地茶歇服务者（演示角色）",
+              "category": "local_service",
+              "unit_cents": 2000,
+              "quantity": 8
+            },
+            {
+              "label": "工具准备",
+              "cents": 10000,
+              "payee": "材料与工具准备（演示角色）",
+              "category": "material",
+              "unit_cents": 10000,
+              "quantity": 1
+            },
+            {
+              "label": "每人耗材",
+              "cents": 8000,
+              "payee": "耗材采购（演示角色）",
+              "category": "material",
+              "unit_cents": 1000,
+              "quantity": 8
+            },
+            {
+              "label": "组织成本",
+              "cents": 16000,
+              "payee": "活动组织（演示角色）",
+              "category": "operations",
+              "unit_cents": 16000,
+              "quantity": 1
+            }
+          ],
+          "is_demo": true,
+          "scope_note": "同一演示场地、一个组顺序活动；不含交通、住宿和税费。价格、角色、纸材份数均为演示配置，非预约或真实合作。"
+        },
+        "comparison": null,
+        "teaching": {
+          "audience": "general",
+          "short_script": [
+            {
+              "text": "蔚县剪纸主要使用阴刻技法，辅以阳刻。",
+              "claim_ids": [
+                "c1"
+              ],
+              "source_ids": [
+                "src-yuxian-technique"
+              ],
+              "id": "script-1"
+            },
+            {
+              "text": "蔚县剪纸擅长使用多种颜色进行点染。",
+              "claim_ids": [
+                "c2"
+              ],
+              "source_ids": [
+                "src-yuxian-color"
+              ],
+              "id": "script-2"
+            }
+          ],
+          "observation_task": {
+            "text": "请观察负责人提供且允许使用的示例，看看是否有阴刻或多色点染的细节。",
+            "claim_ids": [
+              "c1",
+              "c2"
+            ],
+            "source_ids": [
+              "src-yuxian-technique",
+              "src-yuxian-color"
+            ],
+            "id": "observation"
+          },
+          "interaction_question": {
+            "text": "你更喜欢阴刻还是多色点染的风格？",
+            "claim_ids": [
+              "c1",
+              "c2"
+            ],
+            "source_ids": [
+              "src-yuxian-technique",
+              "src-yuxian-color"
+            ],
+            "id": "interaction"
+          },
+          "creative_label": "教学创意（非传统文化事实）",
+          "generation_mode": "model_generated",
+          "check": {
+            "passed": true,
+            "issues": [],
+            "items": [
+              {
+                "item_id": "script-1",
+                "checked_text": "蔚县剪纸主要使用阴刻技法，辅以阳刻。",
+                "status": "supported",
+                "cultural_premises": [
+                  "蔚县剪纸以阴刻为主，阳刻为辅"
+                ],
+                "activity_scope_passed": true,
+                "claim_ids": [
+                  "c1"
+                ],
+                "source_ids": [
+                  "src-yuxian-technique"
+                ],
+                "reason": "该陈述与已验证的声明c1一致，且有来源src-yuxian-technique支持。"
+              },
+              {
+                "item_id": "script-2",
+                "checked_text": "蔚县剪纸擅长使用多种颜色进行点染。",
+                "status": "supported",
+                "cultural_premises": [
+                  "蔚县剪纸善于多色点染"
+                ],
+                "activity_scope_passed": true,
+                "claim_ids": [
+                  "c2"
+                ],
+                "source_ids": [
+                  "src-yuxian-color"
+                ],
+                "reason": "该陈述与已验证的声明c2一致，且有来源src-yuxian-color支持。"
+              },
+              {
+                "item_id": "observation",
+                "checked_text": "请观察负责人提供且允许使用的示例，看看是否有阴刻或多色点染的细节。",
+                "status": "supported",
+                "cultural_premises": [
+                  "允许使用的示例中可能包含阴刻或多色点染的细节"
+                ],
+                "activity_scope_passed": true,
+                "claim_ids": [
+                  "c1",
+                  "c2"
+                ],
+                "source_ids": [
+                  "src-yuxian-technique",
+                  "src-yuxian-color"
+                ],
+                "reason": "该任务为开放观察，不涉及文化事实前提。"
+              },
+              {
+                "item_id": "interaction",
+                "checked_text": "你更喜欢阴刻还是多色点染的风格？",
+                "status": "supported",
+                "cultural_premises": [
+                  "个人偏好问题，不涉及文化事实前提"
+                ],
+                "activity_scope_passed": true,
+                "claim_ids": [
+                  "c1",
+                  "c2"
+                ],
+                "source_ids": [
+                  "src-yuxian-technique",
+                  "src-yuxian-color"
+                ],
+                "reason": "该问题为开放个人偏好问题，不涉及文化事实前提。"
+              }
+            ],
+            "model_calls_used": 2,
+            "input_sha256": "5ae61b99f9ed72a637f83be19f56dadeb4cf430641a3a14a76f2561f4570393a"
+          }
+        },
+        "model_metrics": [
+          {
+            "purpose": "理解需求与拆分陈述",
+            "attempt": 1,
+            "at": "2026-10-14T14:14:02.206879+00:00",
+            "model": "xiangyi-qwen3:14b-q4_k_m",
+            "elapsed_seconds": 6.89,
+            "prompt_tokens": 723,
+            "output_tokens": 206,
+            "total_duration_ns": 6875388600,
+            "eval_duration_ns": 1464921000,
+            "prompt_eval_duration_ns": 162031000,
+            "ok": true
+          },
+          {
+            "purpose": "提取文字活动偏好",
+            "attempt": 1,
+            "at": "2026-10-14T14:14:09.096608+00:00",
+            "model": "xiangyi-qwen3:14b-q4_k_m",
+            "elapsed_seconds": 0.66,
+            "prompt_tokens": 885,
+            "output_tokens": 69,
+            "total_duration_ns": 645848100,
+            "eval_duration_ns": 502098000,
+            "prompt_eval_duration_ns": 90599000,
+            "ok": true
+          },
+          {
+            "purpose": "逐句证据核验",
+            "attempt": 1,
+            "at": "2026-10-14T14:14:10.091225+00:00",
+            "model": "xiangyi-qwen3:14b-q4_k_m",
+            "elapsed_seconds": 1.78,
+            "prompt_tokens": 1263,
+            "output_tokens": 222,
+            "total_duration_ns": 1751104500,
+            "eval_duration_ns": 1550816000,
+            "prompt_eval_duration_ns": 146137000,
+            "ok": true
+          },
+          {
+            "purpose": "复核修订文本",
+            "attempt": 1,
+            "at": "2026-10-14T14:14:11.878987+00:00",
+            "model": "xiangyi-qwen3:14b-q4_k_m",
+            "elapsed_seconds": 0.586,
+            "prompt_tokens": 926,
+            "output_tokens": 64,
+            "total_duration_ns": 574235000,
+            "eval_duration_ns": 456795000,
+            "prompt_eval_duration_ns": 44810000,
+            "ok": true
+          },
+          {
+            "purpose": "生成分众教学内容",
+            "attempt": 1,
+            "at": "2026-10-14T14:14:12.502588+00:00",
+            "model": "xiangyi-qwen3:14b-q4_k_m",
+            "elapsed_seconds": 1.839,
+            "prompt_tokens": 1151,
+            "output_tokens": 233,
+            "total_duration_ns": 1815597900,
+            "eval_duration_ns": 1634898000,
+            "prompt_eval_duration_ns": 123912000,
+            "ok": true
+          },
+          {
+            "purpose": "扫描教学内容全部文化前提",
+            "attempt": 1,
+            "at": "2026-10-14T14:14:14.342251+00:00",
+            "model": "xiangyi-qwen3:14b-q4_k_m",
+            "elapsed_seconds": 3.964,
+            "prompt_tokens": 1775,
+            "output_tokens": 504,
+            "total_duration_ns": 3948625300,
+            "eval_duration_ns": 3673512000,
+            "prompt_eval_duration_ns": 202961000,
+            "ok": true
+          }
+        ],
+        "claim_statuses": [
+          "contradicted",
+          "supported",
+          "insufficient"
+        ],
+        "claim_results": [
+          {
+            "id": "c1",
+            "text": "蔚县剪纸以阳刻为主，阴刻为辅。",
+            "kind": "cultural_fact",
+            "status": "contradicted",
+            "reason": "证据明确指出蔚县剪纸以阴刻为主，阳刻为辅，与声明内容矛盾。",
+            "evidence_ids": [
+              "src-yuxian-technique"
+            ],
+            "suggested_text": "蔚县剪纸以阴刻为主，阳刻为辅。",
+            "corrected_status": "supported"
+          },
+          {
+            "id": "c2",
+            "text": "蔚县剪纸善于多色点染。",
+            "kind": "cultural_fact",
+            "status": "supported",
+            "reason": "证据明确指出蔚县剪纸善于多色点染彩绘，与声明内容一致。",
+            "evidence_ids": [
+              "src-yuxian-color"
+            ],
+            "suggested_text": "蔚县剪纸善于多色点染。",
+            "corrected_status": null
+          },
+          {
+            "id": "c3",
+            "text": "工坊每天开放并且无需预约。",
+            "kind": "operating_promise",
+            "status": "insufficient",
+            "reason": "经营承诺须另核接待安排与授权，文化资料不构成经营依据。",
+            "evidence_ids": [],
+            "suggested_text": "",
+            "corrected_status": null
+          }
+        ],
+        "package_candidates": [
+          {
+            "id": "light",
+            "feasible": true,
+            "total_cents": 78400,
+            "duration_minutes": 90,
+            "per_person_cents": 9800,
+            "local_service_cents": 52000,
+            "material_cents": 14400,
+            "operations_cents": 12000
+          },
+          {
+            "id": "deep",
+            "feasible": true,
+            "total_cents": 108000,
+            "duration_minutes": 120,
+            "per_person_cents": 13500,
+            "local_service_cents": 74000,
+            "material_cents": 18000,
+            "operations_cents": 16000
+          }
+        ]
+      },
+      "script_report": {
+        "at": "2026-10-14T14:14:23.730Z",
+        "base": "http://127.0.0.1:8795",
+        "runId": "82860fd24c5d42fabc24dbceb00e64d8",
+        "mode": "real-local-inference",
+        "checks": [
+          "浏览器编辑文案后真实提交并等待本地模型运行",
+          "真实默认案例：技法矛盾并复核修订、点染获支持、营业预约信息不足",
+          "真实服务端双方案：轻体验 784 元 / 90 分钟；深体验 1080 元 / 120 分钟",
+          "游客版真实导出 HTML 1440px 无横向溢出",
+          "游客版真实导出 HTML 390px 无横向溢出",
+          "组织者版真实导出 HTML 1440px 无横向溢出",
+          "组织者版真实导出 HTML 390px 无横向溢出",
+          "人工确认后真实下载游客版和组织者版 HTML",
+          "1440px home 无横向溢出",
+          "1440px studio 无横向溢出",
+          "1440px planner 无横向溢出",
+          "390px home 无横向溢出",
+          "390px studio 无横向溢出",
+          "390px planner 无横向溢出",
+          "展开真实来源：原文、位置、时间、使用说明与原始链接",
+          "现场修改预算会使旧结果过期，禁止继续确认和导出",
+          "真实页面、游客版与组织者版体验包无外部 HTTP(S) 资源请求；本机 API 正常访问，此项不代表整机断网验收"
+        ],
+        "scriptErrors": [],
+        "externalResourceRequests": []
+      }
+    },
+    "test_modules": {
+      "passed": false,
+      "command_exit_code": 1,
+      "requested_scenarios": 5,
+      "submitted_scenarios": 3,
+      "runs": [
+        {
+          "scenario": "01-default",
+          "evidence_path": "artifacts/module-browser-check/01-default-run.json",
+          "id": "9c71fe0bea5d47ed8150214cae24bb9b",
+          "status": "awaiting_review",
+          "mode": "live",
+          "execution_policy": "agent",
+          "model": "xiangyi-qwen3:14b-q4_k_m",
+          "model_calls": 6,
+          "elapsed_seconds": 10.316,
+          "parent_id": null,
+          "error": null,
+          "effective_requirements": {
+            "region": "河北省蔚县",
+            "project": "剪纸",
+            "people": 8,
+            "budget_per_person": 160,
+            "available_minutes": 150,
+            "start_time": "09:30",
+            "preferred_plan": "deep",
+            "note": "为初次了解剪纸的游客安排文化讲解与入门手作。讲述清楚工艺特色，留出观察和提问的时间。",
+            "planning_mode": "modules",
+            "audience": "general",
+            "tea_preference": "include",
+            "min_craft_minutes": 0,
+            "teaching_enabled": true,
+            "constraints": {
+              "exclude_tags": [],
+              "require_tags": [
+                "tea"
+              ],
+              "min_craft_minutes": 0,
+              "audience": "general",
+              "maximize_craft": false
+            }
+          },
+          "requirement_conflicts": [],
+          "plan": {
+            "id": "mod-brief-story--basic-craft--tea",
+            "title": "基础剪纸手作 · 3环节组合",
+            "feasible": true,
+            "conflicts": [],
+            "duration_minutes": 90,
+            "total_cents": 72000,
+            "per_person_cents": 9000,
+            "local_service_cents": 50000,
+            "material_cents": 15000,
+            "operations_cents": 7000,
+            "paper_units": 8,
+            "schedule": [
+              {
+                "title": "乡土入门讲解",
+                "start": "09:30",
+                "end": "09:50",
+                "minutes": 20,
+                "start_minute": 570,
+                "end_minute": 590,
+                "end_day_offset": 0,
+                "resource_ids": [
+                  "room-1"
+                ],
+                "module_id": "brief-story"
+              },
+              {
+                "title": "基础剪纸手作",
+                "start": "09:50",
+                "end": "10:40",
+                "minutes": 50,
+                "start_minute": 590,
+                "end_minute": 640,
+                "end_day_offset": 0,
+                "resource_ids": [
+                  "room-1",
+                  "teacher-1"
+                ],
+                "module_id": "basic-craft"
+              },
+              {
+                "title": "乡土茶歇",
+                "start": "10:40",
+                "end": "11:00",
+                "minutes": 20,
+                "start_minute": 640,
+                "end_minute": 660,
+                "end_day_offset": 0,
+                "resource_ids": [
+                  "room-1"
+                ],
+                "module_id": "tea"
+              }
+            ],
+            "ledger": [
+              {
+                "label": "乡土入门讲解·本地服务（固定）",
+                "cents": 18000,
+                "payee": "在地活动服务者（演示角色）",
+                "category": "local_service",
+                "unit_cents": 18000,
+                "quantity": 1,
+                "module_id": "brief-story"
+              },
+              {
+                "label": "乡土入门讲解·组织费用（固定）",
+                "cents": 2000,
+                "payee": "活动组织（演示角色）",
+                "category": "operations",
+                "unit_cents": 2000,
+                "quantity": 1,
+                "module_id": "brief-story"
+              },
+              {
+                "label": "基础剪纸手作·本地服务（按人数）",
+                "cents": 20000,
+                "payee": "在地活动服务者（演示角色）",
+                "category": "local_service",
+                "unit_cents": 2500,
+                "quantity": 8,
+                "module_id": "basic-craft"
+              },
+              {
+                "label": "基础剪纸手作·材料工具（固定）",
+                "cents": 7000,
+                "payee": "材料工具准备（演示角色）",
+                "category": "material",
+                "unit_cents": 7000,
+                "quantity": 1,
+                "module_id": "basic-craft"
+              },
+              {
+                "label": "基础剪纸手作·材料工具（按人数）",
+                "cents": 6400,
+                "payee": "材料工具准备（演示角色）",
+                "category": "material",
+                "unit_cents": 800,
+                "quantity": 8,
+                "module_id": "basic-craft"
+              },
+              {
+                "label": "基础剪纸手作·组织费用（固定）",
+                "cents": 4000,
+                "payee": "活动组织（演示角色）",
+                "category": "operations",
+                "unit_cents": 4000,
+                "quantity": 1,
+                "module_id": "basic-craft"
+              },
+              {
+                "label": "乡土茶歇·本地服务（按人数）",
+                "cents": 12000,
+                "payee": "在地活动服务者（演示角色）",
+                "category": "local_service",
+                "unit_cents": 1500,
+                "quantity": 8,
+                "module_id": "tea"
+              },
+              {
+                "label": "乡土茶歇·材料工具（按人数）",
+                "cents": 1600,
+                "payee": "材料工具准备（演示角色）",
+                "category": "material",
+                "unit_cents": 200,
+                "quantity": 8,
+                "module_id": "tea"
+              },
+              {
+                "label": "乡土茶歇·组织费用（固定）",
+                "cents": 1000,
+                "payee": "活动组织（演示角色）",
+                "category": "operations",
+                "unit_cents": 1000,
+                "quantity": 1,
+                "module_id": "tea"
+              }
+            ],
+            "is_demo": true,
+            "module_ids": [
+              "brief-story",
+              "basic-craft",
+              "tea"
+            ],
+            "tags": [
+              "craft",
+              "family",
+              "story",
+              "tea"
+            ],
+            "craft_minutes": 50,
+            "score": -72000,
+            "score_basis": "优先低总价，其次总时长",
+            "explanation": "经营配置组合3个模块，总时长90分钟，其中手作50分钟；演示总价720.00元。满足当前已确认约束，按单组顺序使用现有资源。",
+            "scope_note": "独立模块演示报价，不沿用固定套餐价格；同场地单组顺序活动，不自动拆组或并行，不含交通、住宿及税费。客群标签和材料份数均为演示配置，非真实经营或安全认证。"
+          },
+          "comparison": null,
+          "teaching": {
+            "audience": "general",
+            "short_script": [
+              {
+                "text": "蔚县剪纸主要使用阴刻技法，辅以阳刻。",
+                "claim_ids": [
+                  "c1"
+                ],
+                "source_ids": [
+                  "src-yuxian-technique"
+                ],
+                "id": "script-1"
+              },
+              {
+                "text": "蔚县剪纸擅长使用多种颜色进行点染。",
+                "claim_ids": [
+                  "c2"
+                ],
+                "source_ids": [
+                  "src-yuxian-color"
+                ],
+                "id": "script-2"
+              }
+            ],
+            "observation_task": {
+              "text": "请观察负责人提供且允许使用的示例，看看是否有阴刻或多色点染的细节。",
+              "claim_ids": [
+                "c1",
+                "c2"
+              ],
+              "source_ids": [
+                "src-yuxian-technique",
+                "src-yuxian-color"
+              ],
+              "id": "observation"
+            },
+            "interaction_question": {
+              "text": "你更喜欢阴刻还是多色点染的风格？",
+              "claim_ids": [
+                "c1",
+                "c2"
+              ],
+              "source_ids": [
+                "src-yuxian-technique",
+                "src-yuxian-color"
+              ],
+              "id": "interaction"
+            },
+            "creative_label": "教学创意（非传统文化事实）",
+            "generation_mode": "model_generated",
+            "check": {
+              "passed": true,
+              "issues": [],
+              "items": [
+                {
+                  "item_id": "script-1",
+                  "checked_text": "蔚县剪纸主要使用阴刻技法，辅以阳刻。",
+                  "status": "supported",
+                  "cultural_premises": [
+                    "蔚县剪纸以阴刻为主，阳刻为辅"
+                  ],
+                  "activity_scope_passed": true,
+                  "claim_ids": [
+                    "c1"
+                  ],
+                  "source_ids": [
+                    "src-yuxian-technique"
+                  ],
+                  "reason": "该陈述与已验证的声明c1一致，且有来源src-yuxian-technique支持。"
+                },
+                {
+                  "item_id": "script-2",
+                  "checked_text": "蔚县剪纸擅长使用多种颜色进行点染。",
+                  "status": "supported",
+                  "cultural_premises": [
+                    "蔚县剪纸善于多色点染"
+                  ],
+                  "activity_scope_passed": true,
+                  "claim_ids": [
+                    "c2"
+                  ],
+                  "source_ids": [
+                    "src-yuxian-color"
+                  ],
+                  "reason": "该陈述与已验证的声明c2一致，且有来源src-yuxian-color支持。"
+                },
+                {
+                  "item_id": "observation",
+                  "checked_text": "请观察负责人提供且允许使用的示例，看看是否有阴刻或多色点染的细节。",
+                  "status": "no_new_fact",
+                  "cultural_premises": [],
+                  "activity_scope_passed": true,
+                  "claim_ids": [],
+                  "source_ids": [],
+                  "reason": "程序按开放观察/个人偏好契约归类；该句没有断言示例必有某文化特征。"
+                },
+                {
+                  "item_id": "interaction",
+                  "checked_text": "你更喜欢阴刻还是多色点染的风格？",
+                  "status": "no_new_fact",
+                  "cultural_premises": [],
+                  "activity_scope_passed": true,
+                  "claim_ids": [],
+                  "source_ids": [],
+                  "reason": "程序按开放观察/个人偏好契约归类；该句没有断言示例必有某文化特征。"
+                }
+              ],
+              "model_calls_used": 2,
+              "input_sha256": "5ae61b99f9ed72a637f83be19f56dadeb4cf430641a3a14a76f2561f4570393a",
+              "scan_normalizations": [
+                {
+                  "item_id": "observation",
+                  "reason": "open_question_contract",
+                  "original_status": "unsupported",
+                  "original_cultural_premises": [
+                    "允许使用的示例中可能包含阴刻或多色点染的细节"
+                  ],
+                  "original_reason": "该任务为开放观察，不涉及文化事实前提。"
+                },
+                {
+                  "item_id": "interaction",
+                  "reason": "open_question_contract",
+                  "original_status": "unsupported",
+                  "original_cultural_premises": [
+                    "个人偏好问题，不涉及文化事实前提"
+                  ],
+                  "original_reason": "该问题为开放个人偏好问题，不涉及文化事实前提。"
+                }
+              ]
+            }
+          },
+          "model_metrics": [
+            {
+              "purpose": "理解需求与拆分陈述",
+              "attempt": 1,
+              "at": "2026-10-14T14:14:31.089624+00:00",
+              "model": "xiangyi-qwen3:14b-q4_k_m",
+              "elapsed_seconds": 1.808,
+              "prompt_tokens": 723,
+              "output_tokens": 207,
+              "total_duration_ns": 1782526200,
+              "eval_duration_ns": 1447096000,
+              "prompt_eval_duration_ns": 94669000,
+              "ok": true
+            },
+            {
+              "purpose": "提取文字活动偏好",
+              "attempt": 1,
+              "at": "2026-10-14T14:14:32.897473+00:00",
+              "model": "xiangyi-qwen3:14b-q4_k_m",
+              "elapsed_seconds": 0.588,
+              "prompt_tokens": 885,
+              "output_tokens": 69,
+              "total_duration_ns": 574302400,
+              "eval_duration_ns": 496498000,
+              "prompt_eval_duration_ns": 7334000,
+              "ok": true
+            },
+            {
+              "purpose": "逐句证据核验",
+              "attempt": 1,
+              "at": "2026-10-14T14:14:33.504242+00:00",
+              "model": "xiangyi-qwen3:14b-q4_k_m",
+              "elapsed_seconds": 1.658,
+              "prompt_tokens": 1263,
+              "output_tokens": 222,
+              "total_duration_ns": 1645762500,
+              "eval_duration_ns": 1552359000,
+              "prompt_eval_duration_ns": 10031000,
+              "ok": true
+            },
+            {
+              "purpose": "复核修订文本",
+              "attempt": 1,
+              "at": "2026-10-14T14:14:35.171231+00:00",
+              "model": "xiangyi-qwen3:14b-q4_k_m",
+              "elapsed_seconds": 0.59,
+              "prompt_tokens": 926,
+              "output_tokens": 64,
+              "total_duration_ns": 555819200,
+              "eval_duration_ns": 453353000,
+              "prompt_eval_duration_ns": 10161000,
+              "ok": true
+            },
+            {
+              "purpose": "生成分众教学内容",
+              "attempt": 1,
+              "at": "2026-10-14T14:14:35.805503+00:00",
+              "model": "xiangyi-qwen3:14b-q4_k_m",
+              "elapsed_seconds": 1.735,
+              "prompt_tokens": 1151,
+              "output_tokens": 233,
+              "total_duration_ns": 1723859500,
+              "eval_duration_ns": 1632357000,
+              "prompt_eval_duration_ns": 10068000,
+              "ok": true
+            },
+            {
+              "purpose": "扫描教学内容全部文化前提",
+              "attempt": 1,
+              "at": "2026-10-14T14:14:37.540661+00:00",
+              "model": "xiangyi-qwen3:14b-q4_k_m",
+              "elapsed_seconds": 3.845,
+              "prompt_tokens": 1775,
+              "output_tokens": 504,
+              "total_duration_ns": 3791474700,
+              "eval_duration_ns": 3665493000,
+              "prompt_eval_duration_ns": 10414000,
+              "ok": true
+            }
+          ]
+        },
+        {
+          "scenario": "02-note-conflict",
+          "evidence_path": "artifacts/module-browser-check/02-note-conflict-run.json",
+          "id": "111ea4641b554fe686155f2d0a3a3d95",
+          "status": "needs_confirmation",
+          "mode": "live",
+          "execution_policy": "agent",
+          "model": null,
+          "model_calls": 2,
+          "elapsed_seconds": 2.389,
+          "parent_id": null,
+          "error": "文字需求与表单冲突，请明确使用表单或采纳文字后重新运行。",
+          "effective_requirements": {
+            "region": "河北省蔚县",
+            "project": "剪纸",
+            "people": 8,
+            "budget_per_person": 110,
+            "available_minutes": 150,
+            "start_time": "09:30",
+            "preferred_plan": "deep",
+            "note": "安排亲子互动，不安排茶歇，手作至少40分钟，多留手作时间；讲解浅显易懂。",
+            "planning_mode": "modules",
+            "audience": "general",
+            "tea_preference": "include",
+            "min_craft_minutes": 40,
+            "teaching_enabled": true
+          },
+          "requirement_conflicts": [
+            {
+              "field": "audience",
+              "label": "客群",
+              "form_value": "general",
+              "note_value": "family",
+              "reason": "文字需求与表单不同；不会由模型自动覆盖。"
+            },
+            {
+              "field": "tea_preference",
+              "label": "茶歇偏好",
+              "form_value": "include",
+              "note_value": "exclude",
+              "reason": "文字需求与表单不同；不会由模型自动覆盖。"
+            }
+          ],
+          "plan": null,
+          "comparison": null,
+          "teaching": null,
+          "model_metrics": [
+            {
+              "purpose": "理解需求与拆分陈述",
+              "attempt": 1,
+              "at": "2026-10-14T14:14:47.884290+00:00",
+              "model": "xiangyi-qwen3:14b-q4_k_m",
+              "elapsed_seconds": 1.796,
+              "prompt_tokens": 723,
+              "output_tokens": 207,
+              "total_duration_ns": 1780788400,
+              "eval_duration_ns": 1445568000,
+              "prompt_eval_duration_ns": 94196000,
+              "ok": true
+            },
+            {
+              "purpose": "提取文字活动偏好",
+              "attempt": 1,
+              "at": "2026-10-14T14:14:49.681142+00:00",
+              "model": "xiangyi-qwen3:14b-q4_k_m",
+              "elapsed_seconds": 0.586,
+              "prompt_tokens": 886,
+              "output_tokens": 67,
+              "total_duration_ns": 571977000,
+              "eval_duration_ns": 486112000,
+              "prompt_eval_duration_ns": 15832000,
+              "ok": true
+            }
+          ]
+        },
+        {
+          "scenario": "03-note-adopted",
+          "evidence_path": "artifacts/module-browser-check/03-note-adopted-run.json",
+          "id": "5dc10b2a385e45f7a7d678045d68c87c",
+          "status": "awaiting_review",
+          "mode": "live",
+          "execution_policy": "agent",
+          "model": "xiangyi-qwen3:14b-q4_k_m",
+          "model_calls": 6,
+          "elapsed_seconds": 10.431,
+          "parent_id": null,
+          "error": null,
+          "effective_requirements": {
+            "region": "河北省蔚县",
+            "project": "剪纸",
+            "people": 8,
+            "budget_per_person": 110,
+            "available_minutes": 150,
+            "start_time": "09:30",
+            "preferred_plan": "deep",
+            "note": "安排亲子互动，不安排茶歇，手作至少40分钟，多留手作时间；讲解浅显易懂。",
+            "planning_mode": "modules",
+            "audience": "family",
+            "tea_preference": "exclude",
+            "min_craft_minutes": 40,
+            "teaching_enabled": true,
+            "constraints": {
+              "exclude_tags": [
+                "tea"
+              ],
+              "require_tags": [],
+              "min_craft_minutes": 40,
+              "audience": "family",
+              "maximize_craft": true
+            }
+          },
+          "requirement_conflicts": [],
+          "plan": {
+            "id": "mod-brief-story--deep-craft--craft-extension",
+            "title": "深度剪纸手作 · 3环节组合",
+            "feasible": true,
+            "conflicts": [],
+            "duration_minutes": 100,
+            "total_cents": 79600,
+            "per_person_cents": 9950,
+            "local_service_cents": 52400,
+            "material_cents": 19200,
+            "operations_cents": 8000,
+            "paper_units": 24,
+            "schedule": [
+              {
+                "title": "乡土入门讲解",
+                "start": "09:30",
+                "end": "09:50",
+                "minutes": 20,
+                "start_minute": 570,
+                "end_minute": 590,
+                "end_day_offset": 0,
+                "resource_ids": [
+                  "room-1"
+                ],
+                "module_id": "brief-story"
+              },
+              {
+                "title": "深度剪纸手作",
+                "start": "09:50",
+                "end": "10:50",
+                "minutes": 60,
+                "start_minute": 590,
+                "end_minute": 650,
+                "end_day_offset": 0,
+                "resource_ids": [
+                  "room-1",
+                  "teacher-1"
+                ],
+                "module_id": "deep-craft"
+              },
+              {
+                "title": "手作延伸练习",
+                "start": "10:50",
+                "end": "11:10",
+                "minutes": 20,
+                "start_minute": 650,
+                "end_minute": 670,
+                "end_day_offset": 0,
+                "resource_ids": [
+                  "room-1",
+                  "teacher-1"
+                ],
+                "module_id": "craft-extension"
+              }
+            ],
+            "ledger": [
+              {
+                "label": "乡土入门讲解·本地服务（固定）",
+                "cents": 18000,
+                "payee": "在地活动服务者（演示角色）",
+                "category": "local_service",
+                "unit_cents": 18000,
+                "quantity": 1,
+                "module_id": "brief-story"
+              },
+              {
+                "label": "乡土入门讲解·组织费用（固定）",
+                "cents": 2000,
+                "payee": "活动组织（演示角色）",
+                "category": "operations",
+                "unit_cents": 2000,
+                "quantity": 1,
+                "module_id": "brief-story"
+              },
+              {
+                "label": "深度剪纸手作·本地服务（按人数）",
+                "cents": 28000,
+                "payee": "在地活动服务者（演示角色）",
+                "category": "local_service",
+                "unit_cents": 3500,
+                "quantity": 8,
+                "module_id": "deep-craft"
+              },
+              {
+                "label": "深度剪纸手作·材料工具（固定）",
+                "cents": 8000,
+                "payee": "材料工具准备（演示角色）",
+                "category": "material",
+                "unit_cents": 8000,
+                "quantity": 1,
+                "module_id": "deep-craft"
+              },
+              {
+                "label": "深度剪纸手作·材料工具（按人数）",
+                "cents": 8000,
+                "payee": "材料工具准备（演示角色）",
+                "category": "material",
+                "unit_cents": 1000,
+                "quantity": 8,
+                "module_id": "deep-craft"
+              },
+              {
+                "label": "深度剪纸手作·组织费用（固定）",
+                "cents": 5000,
+                "payee": "活动组织（演示角色）",
+                "category": "operations",
+                "unit_cents": 5000,
+                "quantity": 1,
+                "module_id": "deep-craft"
+              },
+              {
+                "label": "手作延伸练习·本地服务（按人数）",
+                "cents": 6400,
+                "payee": "在地活动服务者（演示角色）",
+                "category": "local_service",
+                "unit_cents": 800,
+                "quantity": 8,
+                "module_id": "craft-extension"
+              },
+              {
+                "label": "手作延伸练习·材料工具（按人数）",
+                "cents": 3200,
+                "payee": "材料工具准备（演示角色）",
+                "category": "material",
+                "unit_cents": 400,
+                "quantity": 8,
+                "module_id": "craft-extension"
+              },
+              {
+                "label": "手作延伸练习·组织费用（固定）",
+                "cents": 1000,
+                "payee": "活动组织（演示角色）",
+                "category": "operations",
+                "unit_cents": 1000,
+                "quantity": 1,
+                "module_id": "craft-extension"
+              }
+            ],
+            "is_demo": true,
+            "module_ids": [
+              "brief-story",
+              "deep-craft",
+              "craft-extension"
+            ],
+            "tags": [
+              "craft",
+              "deep",
+              "extension",
+              "family",
+              "story"
+            ],
+            "craft_minutes": 80,
+            "score": 80,
+            "score_basis": "优先手作分钟，其次总价",
+            "explanation": "经营配置组合3个模块，总时长100分钟，其中手作80分钟；演示总价796.00元。满足当前已确认约束，按单组顺序使用现有资源。",
+            "scope_note": "独立模块演示报价，不沿用固定套餐价格；同场地单组顺序活动，不自动拆组或并行，不含交通、住宿及税费。客群标签和材料份数均为演示配置，非真实经营或安全认证。"
+          },
+          "comparison": {
+            "before": {
+              "id": "mod-brief-story--basic-craft--tea",
+              "title": "基础剪纸手作 · 3环节组合",
+              "total_cents": 72000,
+              "duration_minutes": 90,
+              "craft_minutes": 50,
+              "module_ids": [
+                "brief-story",
+                "basic-craft",
+                "tea"
+              ],
+              "start_time": "09:30"
+            },
+            "after": {
+              "id": "mod-brief-story--deep-craft--craft-extension",
+              "title": "深度剪纸手作 · 3环节组合",
+              "total_cents": 79600,
+              "duration_minutes": 100,
+              "craft_minutes": 80,
+              "module_ids": [
+                "brief-story",
+                "deep-craft",
+                "craft-extension"
+              ],
+              "start_time": "09:30"
+            },
+            "changes": [
+              "总预算：720 → 796元",
+              "活动时长：90 → 100分钟",
+              "手作时长：50 → 80分钟",
+              "移除：基础剪纸手作、乡土茶歇",
+              "增加：深度剪纸手作、手作延伸练习"
+            ]
+          },
+          "teaching": {
+            "audience": "family",
+            "short_script": [
+              {
+                "text": "蔚县剪纸主要用阴刻，偶尔也会用阳刻。",
+                "claim_ids": [
+                  "c1"
+                ],
+                "source_ids": [
+                  "src-yuxian-technique"
+                ],
+                "id": "script-1"
+              },
+              {
+                "text": "蔚县剪纸喜欢用多种颜色来点染。",
+                "claim_ids": [
+                  "c2"
+                ],
+                "source_ids": [
+                  "src-yuxian-color"
+                ],
+                "id": "script-2"
+              }
+            ],
+            "observation_task": {
+              "text": "请观察负责人提供且允许使用的示例，找一找是否有阴刻和阳刻的结合。",
+              "claim_ids": [
+                "c1",
+                "c2"
+              ],
+              "source_ids": [
+                "src-yuxian-technique",
+                "src-yuxian-color"
+              ],
+              "id": "observation"
+            },
+            "interaction_question": {
+              "text": "你最想了解哪一种颜色的点染效果？",
+              "claim_ids": [
+                "c1",
+                "c2"
+              ],
+              "source_ids": [
+                "src-yuxian-technique",
+                "src-yuxian-color"
+              ],
+              "id": "interaction"
+            },
+            "creative_label": "教学创意（非传统文化事实）",
+            "generation_mode": "model_generated",
+            "check": {
+              "passed": true,
+              "issues": [],
+              "items": [
+                {
+                  "item_id": "script-1",
+                  "checked_text": "蔚县剪纸主要用阴刻，偶尔也会用阳刻。",
+                  "status": "supported",
+                  "cultural_premises": [
+                    "蔚县剪纸以阴刻为主，阳刻为辅"
+                  ],
+                  "activity_scope_passed": true,
+                  "claim_ids": [
+                    "c1"
+                  ],
+                  "source_ids": [
+                    "src-yuxian-technique"
+                  ],
+                  "reason": "该陈述与已验证的声明c1一致，且有来源src-yuxian-technique支持。"
+                },
+                {
+                  "item_id": "script-2",
+                  "checked_text": "蔚县剪纸喜欢用多种颜色来点染。",
+                  "status": "supported",
+                  "cultural_premises": [
+                    "蔚县剪纸善于多色点染"
+                  ],
+                  "activity_scope_passed": true,
+                  "claim_ids": [
+                    "c2"
+                  ],
+                  "source_ids": [
+                    "src-yuxian-color"
+                  ],
+                  "reason": "该陈述与已验证的声明c2一致，且有来源src-yuxian-color支持。"
+                },
+                {
+                  "item_id": "observation",
+                  "checked_text": "请观察负责人提供且允许使用的示例，找一找是否有阴刻和阳刻的结合。",
+                  "status": "supported",
+                  "cultural_premises": [
+                    "蔚县剪纸以阴刻为主，阳刻为辅",
+                    "蔚县剪纸善于多色点染"
+                  ],
+                  "activity_scope_passed": true,
+                  "claim_ids": [
+                    "c1",
+                    "c2"
+                  ],
+                  "source_ids": [
+                    "src-yuxian-technique",
+                    "src-yuxian-color"
+                  ],
+                  "reason": "该任务属于开放观察，不涉及新增文化事实，且允许使用的示例已获支持。"
+                },
+                {
+                  "item_id": "interaction",
+                  "checked_text": "你最想了解哪一种颜色的点染效果？",
+                  "status": "supported",
+                  "cultural_premises": [
+                    "蔚县剪纸以阴刻为主，阳刻为辅",
+                    "蔚县剪纸善于多色点染"
+                  ],
+                  "activity_scope_passed": true,
+                  "claim_ids": [
+                    "c1",
+                    "c2"
+                  ],
+                  "source_ids": [
+                    "src-yuxian-technique",
+                    "src-yuxian-color"
+                  ],
+                  "reason": "该问题属于开放互动，不涉及新增文化事实，且允许使用的示例已获支持。"
+                }
+              ],
+              "model_calls_used": 2,
+              "input_sha256": "9fadc05fffc071eac47b0bc26da1fe2fe953456039349b05f3e1e55110bb4368"
+            }
+          },
+          "model_metrics": [
+            {
+              "purpose": "理解需求与拆分陈述",
+              "attempt": 1,
+              "at": "2026-10-14T14:14:50.483976+00:00",
+              "model": "xiangyi-qwen3:14b-q4_k_m",
+              "elapsed_seconds": 1.567,
+              "prompt_tokens": 723,
+              "output_tokens": 207,
+              "total_duration_ns": 1530713000,
+              "eval_duration_ns": 1447533000,
+              "prompt_eval_duration_ns": 9981000,
+              "ok": true
+            },
+            {
+              "purpose": "提取文字活动偏好",
+              "attempt": 1,
+              "at": "2026-10-14T14:14:52.051569+00:00",
+              "model": "xiangyi-qwen3:14b-q4_k_m",
+              "elapsed_seconds": 0.596,
+              "prompt_tokens": 886,
+              "output_tokens": 67,
+              "total_duration_ns": 563479100,
+              "eval_duration_ns": 484765000,
+              "prompt_eval_duration_ns": 7345000,
+              "ok": true
+            },
+            {
+              "purpose": "逐句证据核验",
+              "attempt": 1,
+              "at": "2026-10-14T14:14:52.668271+00:00",
+              "model": "xiangyi-qwen3:14b-q4_k_m",
+              "elapsed_seconds": 1.68,
+              "prompt_tokens": 1263,
+              "output_tokens": 222,
+              "total_duration_ns": 1648369300,
+              "eval_duration_ns": 1555339000,
+              "prompt_eval_duration_ns": 10152000,
+              "ok": true
+            },
+            {
+              "purpose": "复核修订文本",
+              "attempt": 1,
+              "at": "2026-10-14T14:14:54.357199+00:00",
+              "model": "xiangyi-qwen3:14b-q4_k_m",
+              "elapsed_seconds": 0.579,
+              "prompt_tokens": 926,
+              "output_tokens": 64,
+              "total_duration_ns": 565759600,
+              "eval_duration_ns": 456548000,
+              "prompt_eval_duration_ns": 10248000,
+              "ok": true
+            },
+            {
+              "purpose": "生成分众教学内容",
+              "attempt": 1,
+              "at": "2026-10-14T14:14:54.985787+00:00",
+              "model": "xiangyi-qwen3:14b-q4_k_m",
+              "elapsed_seconds": 1.75,
+              "prompt_tokens": 1151,
+              "output_tokens": 232,
+              "total_duration_ns": 1737468400,
+              "eval_duration_ns": 1631524000,
+              "prompt_eval_duration_ns": 25222000,
+              "ok": true
+            },
+            {
+              "purpose": "扫描教学内容全部文化前提",
+              "attempt": 1,
+              "at": "2026-10-14T14:14:56.736327+00:00",
+              "model": "xiangyi-qwen3:14b-q4_k_m",
+              "elapsed_seconds": 4.16,
+              "prompt_tokens": 1775,
+              "output_tokens": 544,
+              "total_duration_ns": 4122273700,
+              "eval_duration_ns": 3953794000,
+              "prompt_eval_duration_ns": 59172000,
+              "ok": true
+            }
+          ]
+        }
+      ],
+      "script_report": {
+        "at": "2026-10-14T14:15:02.098Z",
+        "base": "http://127.0.0.1:8795",
+        "output": "E:\\比赛\\xiangyi-youju-interview-revision-019a1ff\\artifacts\\module-browser-check",
+        "error": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  assert((await page.locator('#planComparison').textContent()).includes('改一句话，方案真变化'))\n",
+        "passed": false,
+        "runs": [
+          {
+            "id": "9c71fe0bea5d47ed8150214cae24bb9b",
+            "scenario": "01-default"
+          },
+          {
+            "id": "111ea4641b554fe686155f2d0a3a3d95",
+            "scenario": "02-note-conflict"
+          },
+          {
+            "id": "5dc10b2a385e45f7a7d678045d68c87c",
+            "scenario": "03-note-adopted"
+          }
+        ],
+        "checks": [
+          "default: real three-page rendering at 1440/390, no horizontal overflow",
+          "draft: server-rendered visitor/organizer previews at desktop/mobile, draft gating checked",
+          "Default genuine module choices/teaching; user chose feasible 50-minute craft + tea; preview did not approve",
+          "family-revised: real three-page rendering at 1440/390, no horizontal overflow"
+        ],
+        "scriptErrors": [],
+        "externalResourceRequests": []
+      },
+      "observed_comparison_heading": "面向亲子家庭，方案真变化。",
+      "observed_heading_evidence": "artifacts/module-browser-check/family-revised-planner-1440.png"
+    },
+    "test_demo_guide": {
+      "status": "not_executed",
+      "passed": null,
+      "summary": null,
+      "reason": "test:modules首次失败，按停止规则未执行。",
+      "student_teaching_check": null,
+      "draft_origin": null,
+      "english_run_id": null,
+      "negation_run_id": null
+    },
+    "film_capture": {
+      "status": "not_executed",
+      "passed": null,
+      "stills": null,
+      "marks": null,
+      "missing": null,
+      "footage_branch": null,
+      "reason": "标准回归首次失败，未进入录屏步骤。"
+    },
+    "print_pages": {
+      "status": "not_executed",
+      "visitor": null,
+      "organizer": null,
+      "reason": "按任一步失败即停止要求，未继续打印检查。"
+    }
+  },
+  "model_calls": 20,
+  "elapsed_seconds": 39.256,
+  "aggregation_note": "顶层model_calls和elapsed_seconds为本轮4次真实运行的调用数及服务端耗时之和，不是脚本总墙钟耗时。各运行值完整保留。",
+  "failure": {
+    "stage": "npm run test:modules",
+    "scenario": "03-note-adopted",
+    "run_id": "5dc10b2a385e45f7a7d678045d68c87c",
+    "first_failure": true,
+    "message": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  assert((await page.locator('#planComparison').textContent()).includes('改一句话，方案真变化'))\n",
+    "stack_trace": "\n> xiangyi-youju@0.3.1 test:modules\n> node tests/e2e/module-workflow.spec.cjs\n\n{\n  \"at\": \"2026-10-14T14:15:02.098Z\",\n  \"base\": \"http://127.0.0.1:8795\",\n  \"output\": \"E:\\\\比赛\\\\xiangyi-youju-interview-revision-019a1ff\\\\artifacts\\\\module-browser-check\",\n  \"error\": \"AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\\n\\n  assert((await page.locator('#planComparison').textContent()).includes('改一句话，方案真变化'))\\n\",\n  \"passed\": false,\n  \"runs\": [\n    {\n      \"id\": \"9c71fe0bea5d47ed8150214cae24bb9b\",\n      \"scenario\": \"01-default\"\n    },\n    {\n      \"id\": \"111ea4641b554fe686155f2d0a3a3d95\",\n      \"scenario\": \"02-note-conflict\"\n    },\n    {\n      \"id\": \"5dc10b2a385e45f7a7d678045d68c87c\",\n      \"scenario\": \"03-note-adopted\"\n    }\n  ],\n  \"checks\": [\n    \"default: real three-page rendering at 1440/390, no horizontal overflow\",\n    \"draft: server-rendered visitor/organizer previews at desktop/mobile, draft gating checked\",\n    \"Default genuine module choices/teaching; user chose feasible 50-minute craft + tea; preview did not approve\",\n    \"family-revised: real three-page rendering at 1440/390, no horizontal overflow\"\n  ],\n  \"scriptErrors\": [],\n  \"externalResourceRequests\": []\n}\nAssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  assert((await page.locator('#planComparison').textContent()).includes('改一句话，方案真变化'))\n\n    at E:\\比赛\\xiangyi-youju-interview-revision-019a1ff\\tests\\e2e\\module-workflow.spec.cjs:213:7 {\n  generatedMessage: true,\n  code: 'ERR_ASSERTION',\n  actual: false,\n  expected: true,\n  operator: '==',\n  diff: 'simple'\n}\n",
+    "classification": "test_ui_copy_contract_mismatch",
+    "classification_explanation": "候选前端方案对比标题已改为“面向亲子家庭，方案真变化。”，但模块回归脚本213行仍断言旧标题“改一句话，方案真变化”。这是候选中的测试与界面文案未同步；此次失败没有显示环境或模型调用失败，不能据此宣布未执行场景通过。",
+    "expected_heading_substring": "改一句话，方案真变化",
+    "observed_heading": "面向亲子家庭，方案真变化。",
+    "test_location": "tests/e2e/module-workflow.spec.cjs:213",
+    "frontend_location": "frontend/prototype/live.js:433"
+  },
+  "checks": {
+    "repository": {
+      "passed": true,
+      "maintenance_files": 586,
+      "local_links": 290
+    },
+    "backend": {
+      "passed": true,
+      "count": 239,
+      "elapsed_seconds": 6.31
+    },
+    "npm_test": {
+      "passed": true,
+      "pages": [
+        "home",
+        "studio",
+        "planner"
+      ],
+      "widths": [
+        1440,
+        390
+      ],
+      "script_errors": [],
+      "chinese_font_minimum_px": 12
+    },
+    "data_versions": {
+      "passed": true,
+      "dirty_tracked_files": [],
+      "same_after_crlf_to_lf": true
+    },
+    "test_live": {
+      "passed": true,
+      "attempts": 1,
+      "claim_statuses": [
+        "contradicted",
+        "supported",
+        "insufficient"
+      ],
+      "light": [
+        78400,
+        90
+      ],
+      "deep": [
+        108000,
+        120
+      ]
+    },
+    "test_modules": {
+      "passed": false,
+      "attempts": 1,
+      "completed_command": true,
+      "submitted_scenarios": 3,
+      "remaining_scenarios_not_executed": [
+        "04-material-refresh",
+        "05-resources-impossible"
+      ],
+      "default_teaching_passed": true,
+      "default_scan_normalizations": [
+        {
+          "item_id": "observation",
+          "reason": "open_question_contract",
+          "original_status": "unsupported",
+          "original_cultural_premises": [
+            "允许使用的示例中可能包含阴刻或多色点染的细节"
+          ],
+          "original_reason": "该任务为开放观察，不涉及文化事实前提。"
+        },
+        {
+          "item_id": "interaction",
+          "reason": "open_question_contract",
+          "original_status": "unsupported",
+          "original_cultural_premises": [
+            "个人偏好问题，不涉及文化事实前提"
+          ],
+          "original_reason": "该问题为开放个人偏好问题，不涉及文化事实前提。"
+        }
+      ],
+      "adopted_comparison": {
+        "before": {
+          "id": "mod-brief-story--basic-craft--tea",
+          "title": "基础剪纸手作 · 3环节组合",
+          "total_cents": 72000,
+          "duration_minutes": 90,
+          "craft_minutes": 50,
+          "module_ids": [
+            "brief-story",
+            "basic-craft",
+            "tea"
+          ],
+          "start_time": "09:30"
+        },
+        "after": {
+          "id": "mod-brief-story--deep-craft--craft-extension",
+          "title": "深度剪纸手作 · 3环节组合",
+          "total_cents": 79600,
+          "duration_minutes": 100,
+          "craft_minutes": 80,
+          "module_ids": [
+            "brief-story",
+            "deep-craft",
+            "craft-extension"
+          ],
+          "start_time": "09:30"
+        },
+        "changes": [
+          "总预算：720 → 796元",
+          "活动时长：90 → 100分钟",
+          "手作时长：50 → 80分钟",
+          "移除：基础剪纸手作、乡土茶歇",
+          "增加：深度剪纸手作、手作延伸练习"
+        ]
+      },
+      "adopted_teaching_passed": true
+    },
+    "test_demo_guide": {
+      "status": "not_executed",
+      "attempts": 0
+    },
+    "film_capture": {
+      "status": "not_executed",
+      "attempts": 0
+    },
+    "all_acceptance_passed": false,
+    "main_integration": "not_merged",
+    "business_code_modified_by_5090": false,
+    "screenshots_committed": false
+  },
+  "evidence_paths": [
+    "artifacts/handoff/repository-check.log",
+    "artifacts/handoff/backend-check.log",
+    "artifacts/handoff/prototype-check.log",
+    "artifacts/handoff/data-versions.json",
+    "artifacts/handoff/health.json",
+    "artifacts/handoff/ollama-version.json",
+    "artifacts/handoff/ollama-tags.json",
+    "artifacts/handoff/ollama-ps.json",
+    "artifacts/handoff/test-live.log",
+    "artifacts/handoff/test-modules.log",
+    "artifacts/handoff/app.sqlite3",
+    "artifacts/live-browser-check/run.json",
+    "artifacts/live-browser-check/verification.json",
+    "artifacts/live-browser-check/visitor-bundle.html",
+    "artifacts/live-browser-check/organizer-bundle.html",
+    "artifacts/module-browser-check/verification.json",
+    "artifacts/module-browser-check/01-default-run.json",
+    "artifacts/module-browser-check/02-note-conflict-run.json",
+    "artifacts/module-browser-check/03-note-adopted-run.json",
+    "artifacts/module-browser-check/family-revised-planner-1440.png"
+  ],
+  "evidence_sha256": {
+    "artifacts/handoff/repository-check.log": "28363af32565a569cb5dc641da37b7c2124b2243bf535deb7975c868eedcd59e",
+    "artifacts/handoff/backend-check.log": "1b996a6b2030d4539304d391ceddb87946a489d4c2b101e1fdf3fb46e014f64c",
+    "artifacts/handoff/prototype-check.log": "1d23d699bbc2fabb715bc2aa085af7f1de3a963cbf4ba36864f2e58986a88144",
+    "artifacts/handoff/data-versions.json": "866d372723b6e3dc1190283d3cac61d8173fc455fa3b11d03f87569bc8a3f33f",
+    "artifacts/handoff/health.json": "7e7e78e2a0aeb4224e82bad7662a977e93eedc1666067073dc476c7de25f7dab",
+    "artifacts/handoff/ollama-version.json": "cae2b38ea8f2b9b078ab4cfe72da1298b7a3f78d65a166db7529709d599e5064",
+    "artifacts/handoff/ollama-tags.json": "eabc298205ceaa311a4dc73da548a5f620440e4e083b5af7d5cb2a35dc78469f",
+    "artifacts/handoff/ollama-ps.json": "a3f214acecf33d2a27cb9bc1a1fce7009038b30beda8bed13e5371a9d10a2e9b",
+    "artifacts/handoff/test-live.log": "a9868f724eec91e15babc84d9944d24f76bc200b6c588818f6c59c61bd7bb732",
+    "artifacts/handoff/test-modules.log": "d1a9de883467118434c0124f98057dd1db679554b1fa67ca104ada899e643bda",
+    "artifacts/handoff/app.sqlite3": "e77d9abde1f099d5b3b909e0bf02783e4fc5fa1902071c7cc314a59285100823",
+    "artifacts/live-browser-check/run.json": "517f44cd907d5158c8941e77fbf766100c6741a5071d56f2313bc96cda0b6c62",
+    "artifacts/live-browser-check/verification.json": "deb04f0c9a720e338d5b2194802915fdc6c67f1c56614e69794dd40ebbefe7c7",
+    "artifacts/live-browser-check/visitor-bundle.html": "aa376acae5254ccdcf6c357500063003f82d3e21162cfa3b76b37ae72a110d3b",
+    "artifacts/live-browser-check/organizer-bundle.html": "0e67c085e9a8dbf88bb899370a3c161ffb8ffb6e3c36609265da825b98663feb",
+    "artifacts/module-browser-check/verification.json": "329329705a775707815776cfc51f97184f10ac18931cdaf5845ce2a44c517da7",
+    "artifacts/module-browser-check/01-default-run.json": "0f0bb0e9b6f2246fed92587ae655f260b83744c572d71eb0fb0fa39b86698a70",
+    "artifacts/module-browser-check/02-note-conflict-run.json": "1ff181b6019f1f629104477118a831b538d7ccb2dd0c6d1b0671e978c176ca13",
+    "artifacts/module-browser-check/03-note-adopted-run.json": "4b3fd655b147eddbf788369499886383779554349c289e35819a8f1b1bce8a6f",
+    "artifacts/module-browser-check/family-revised-planner-1440.png": "b5cb3dc0ef0cac6cdc8af93ef0b8fd0cc4f76c1f34c40f6142642e8d8c7c9c4b"
+  },
+  "notes": "四次真实运行分别是主流程1次、模块流程前三个场景；模块断言首次失败后立即停止，未补跑、未换输入、未改业务代码或测试。默认与亲子教学不是本轮新增的青少年三幕验收；未进行生成草稿、作品发布、英语与不误伤新验证。原始JSON/SQLite/HTML/截图及日志保留在隔离worktree的artifacts，不提交。本记录只作为双机交叉验证回传，不是独立第三方评测。"
+}
