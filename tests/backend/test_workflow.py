@@ -352,3 +352,55 @@ def test_hard_blockers_survive_review_and_holdout_notes_do_not_trigger():
     for name in ("semantic-holdout.json", "upgrade-holdout.json"):
         for case in json.loads((root / "tests/acceptance" / name).read_text(encoding="utf-8"))["cases"]:
             assert workflow.note_blocker_ambiguities(case["input"]["requirements"].get("note", ""), []) == [], case["id"]
+
+
+# 5090 在 917d90b 宣传片采集中“讲解词草稿核验”的原文与模型拆解输出（运行 523e70f0…）。
+DRAFT_5090 = ("河北省蔚县的剪纸艺术，有着悠久的历史。它以阴刻为主，阳刻为辅，再通过多色点染彩绘增添美感。"
+              "剪纸的题材多为戏曲人物、花卉和脸谱，早期图案以花卉为主。一张宣纸和一把刻刀，是制作剪纸的基本工具。")
+RETURNED_5090 = [
+    {"sentence_id": "s1", "text": "河北省蔚县的剪纸艺术，", "query": "河北省蔚县的剪纸艺术是否具有悠久的历史？", "kind": "cultural_fact"},
+    {"sentence_id": "s3", "text": "它以阴刻为主，阳刻为辅，", "query": "河北省蔚县剪纸是否以阴刻为主，阳刻为辅？", "kind": "cultural_fact"},
+    {"sentence_id": "s4", "text": "再通过多色点染彩绘增添美感。", "query": "河北省蔚县剪纸是否通过多色点染彩绘增添美感？", "kind": "cultural_fact"},
+    {"sentence_id": "s5", "text": "剪纸的题材多为戏曲人物、花卉和脸谱，", "query": "河北省蔚县剪纸的题材是否多为戏曲人物、花卉和脸谱？", "kind": "cultural_fact"},
+    {"sentence_id": "s6", "text": "早期图案以花卉为主。", "query": "河北省蔚县剪纸的早期图案是否以花卉为主？", "kind": "cultural_fact"},
+    {"sentence_id": "s8", "text": "是制作剪纸的基本工具。", "query": "制作河北省蔚县剪纸的基本工具是否为一张宣纸和一把刻刀？", "kind": "cultural_fact"},
+]
+
+
+def test_half_clauses_folded_by_the_model_are_restored_verbatim():
+    from backend.constraints import split_input
+    segments = split_input(DRAFT_5090, compound=True)
+    assert [s["id"] for s in segments] == [f"s{i}" for i in range(1, 9)]
+    items, recoveries = workflow.recover_omitted_clauses(segments, deepcopy(RETURNED_5090))
+    assert set(items) == {s["id"] for s in segments}
+    assert [(r["sentence_id"], r["neighbour_id"]) for r in recoveries] == [("s2", "s1"), ("s7", "s8")]
+    assert items["s2"]["text"] == "有着悠久的历史。" and items["s7"]["text"] == "一张宣纸和一把刻刀，"
+    assert items["s7"]["kind"] == "cultural_fact" and "一张宣纸和一把刻刀" in items["s7"]["query"]
+    # 已返回的分句不被改写，也不被合并。
+    assert all(items[row["sentence_id"]] == row for row in RETURNED_5090)
+
+
+def test_operating_kind_of_the_neighbour_is_kept_for_a_restored_half_clause():
+    from backend.constraints import split_input
+    segments = split_input("工坊每天开放，无需预约。", compound=True)
+    returned = [{"sentence_id": "s1", "text": "工坊每天开放，", "query": "工坊是否每天开放", "kind": "operating_promise"}]
+    items, recoveries = workflow.recover_omitted_clauses(segments, returned)
+    assert items["s2"]["kind"] == "operating_promise" and len(recoveries) == 1
+
+
+@pytest.mark.parametrize("returned", [
+    [row for row in RETURNED_5090 if row["sentence_id"] not in {"s5", "s6"}],      # 整句没有返回
+    RETURNED_5090 + [{**RETURNED_5090[0]}],                                        # 重复
+    RETURNED_5090 + [{"sentence_id": "s9", "text": "虚构", "query": "虚构", "kind": "cultural_fact"}],  # 未知句子
+])
+def test_whole_sentence_omission_duplicate_or_unknown_clause_still_fails(returned):
+    from backend.constraints import split_input
+    with pytest.raises(ValueError, match="模型拆解遗漏原句"):
+        workflow.recover_omitted_clauses(split_input(DRAFT_5090, compound=True), deepcopy(returned))
+
+
+def test_clause_copy_may_differ_only_in_punctuation():
+    assert workflow.same_clause_text("河北省蔚县的剪纸艺术", "河北省蔚县的剪纸艺术，")
+    assert workflow.same_clause_text("它以阴刻为主,阳刻为辅", "它以阴刻为主，阳刻为辅，")
+    assert not workflow.same_clause_text("蔚县剪纸", "蔚县剪纸以阴刻为主，阳刻为辅。")
+    assert not workflow.same_clause_text("它以阳刻为主，阴刻为辅", "它以阴刻为主，阳刻为辅，")

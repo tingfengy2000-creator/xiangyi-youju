@@ -211,8 +211,9 @@ async function pause(page, ms) { await page.waitForTimeout(ms); }
     // Write a 讲解词 from a simple requirement, then verify it once.
     await page.locator('[data-page="studio"]').first().click();
     await page.locator('#draftGenerator').scrollIntoViewIfNeeded(); await pause(page, 1200);
-    await page.locator('#draftAudience').selectOption('senior'); await pause(page, 800);
-    mark('draft-click', '讲给老年人、约 5 分钟：点击“按要求生成讲解词”');
+    // 与三幕验收同一组输入（青少年学生、5 分钟），这条路径已有真实运行通过（370f7db，aa3bf38f…）。
+    await page.locator('#draftAudience').selectOption('student'); await pause(page, 800);
+    mark('draft-click', '讲给青少年学生、约 5 分钟：点击“按要求生成讲解词”');
     const draftResponse = page.waitForResponse(r => r.request().method() === 'POST' && new URL(r.url()).pathname === '/api/drafts', { timeout: 200000 });
     await page.locator('#generateDraft').click();
     const draft = await (await draftResponse).json();
@@ -226,6 +227,7 @@ async function pause(page, ms) { await page.waitForTimeout(ms); }
     mark('draft-audit-click', '草稿送去逐句核验');
     const draftRun = await submit(page, '#auditBtn', '/api/runs');
     const runDraft = await waitRun(page, draftRun);
+    assert.equal(runDraft.status, 'awaiting_review', '讲解词草稿核验：' + runDraft.status + ' ' + (runDraft.error || ''));
     mark('draft-audit-result', '草稿逐句核验结果');
     manifest.draft.audit = { run_id: draftRun, status: runDraft.status, claim_statuses: (runDraft.claims || []).map(c => c.status) };
     await page.locator('#auditResult').scrollIntoViewIfNeeded(); await pause(page, 2500);
@@ -240,6 +242,7 @@ async function pause(page, ms) { await page.waitForTimeout(ms); }
     mark('stop-click', '提出未配置服务：需要安排英语讲解');
     const stop = await submit(page, '#auditBtn', '/api/runs');
     const runStop = await waitRun(page, stop);
+    assert.equal(runStop.status, 'needs_input', '英语讲解应停下请人澄清：' + runStop.status + ' ' + (runStop.error || ''));
     mark('stop-result', '系统停下请人澄清');
     manifest.stop = { run_id: stop, status: runStop.status, error: runStop.error || null };
     await still(page, 's22-stop-viewport', null, '停下来请人澄清');
