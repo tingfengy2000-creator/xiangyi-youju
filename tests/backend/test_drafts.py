@@ -59,3 +59,22 @@ def test_unknown_inputs_are_rejected():
         generate_draft(load_sources(), "河北省蔚县", "剪纸", "tourist", 5, llm=FakeLLM(good))
     with pytest.raises(ValueError):
         generate_draft(load_sources(), "浙江省", "剪纸", "general", 5, llm=FakeLLM(good))
+
+
+@pytest.mark.parametrize("written, kept", [(5, 4), (3, 3)])
+def test_sentence_count_is_a_length_target_not_a_rejection(written, kept):
+    def result(data):
+        facts = data["facts"]
+        return {"sentences": [{"text": f"剪纸{facts[i]['quote']}", "source_ids": [facts[i]["source_id"]]}
+                              for i in range(written)]}
+    draft = generate_draft(load_sources(), "河北省蔚县", "剪纸", "student", 5, llm=FakeLLM(result))
+    assert draft["origin"] == "local_model" and len(draft["sentences"]) == kept
+    assert draft["text"].count("。") == kept
+
+
+def test_out_of_scope_citation_in_a_truncated_sentence_still_rejects_the_draft():
+    def result(data):
+        rows = [{"text": f"剪纸{fact['quote']}", "source_ids": [fact["source_id"]]} for fact in data["facts"][:4]]
+        return {"sentences": rows + [{"text": "丰宁满族剪纸阳刻为主。", "source_ids": ["src-fengning-technique"]}]}
+    draft = generate_draft(load_sources(), "河北省蔚县", "剪纸", "student", 5, llm=FakeLLM(result))
+    assert draft["origin"] == "deployment_preset"

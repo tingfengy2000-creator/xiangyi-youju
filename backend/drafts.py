@@ -77,9 +77,13 @@ def generate_draft(sources: list, region: str, project: str, audience: str, minu
             "project": project, "region": region, "audience": audience,
             "audience_style": AUDIENCES[audience]["style"], "sentence_count": count, "facts": facts,
         }, DraftScript, INSTRUCTION, max_attempts=2)
-        sentences = result["sentences"]
-        if len(sentences) != count or any(not set(row["source_ids"]) <= allowed for row in sentences):
-            raise ModelFailure("草稿句数或引用超出给定资料，未采用")
+        # 句数只是篇幅目标：多写的句子按顺序截去，少写但不少于 2 句仍可作为草稿。
+        # 引用范围是硬约束：任何一句引用了给定资料以外的来源，整份草稿都不采用。
+        sentences = result["sentences"][:count]
+        if any(not set(row["source_ids"]) <= allowed for row in result["sentences"]):
+            raise ModelFailure("草稿引用超出给定资料，未采用")
+        if len(sentences) < 2:
+            raise ModelFailure("草稿少于 2 句，未采用")
         text = "".join(row["text"].strip().rstrip("。") + "。" for row in sentences)
         return {**base, "origin": "local_model", "text": text, "sentences": sentences,
                 "source_ids": sorted({sid for row in sentences for sid in row["source_ids"]}),
