@@ -1,0 +1,1572 @@
+{
+  "task_id": "5060-film-capture-fix",
+  "goal": "5090仅执行一次真实宣传片采集；第二幕修复生效，讲解词核验因模型遗漏分句失败，停止且不合入main。",
+  "recorded_at": "2026-10-14T15:33:36.823658+00:00",
+  "baseline_sha": "69cedc79d075370be7a4549552478d47ae8a63b5",
+  "tested_code_sha": "917d90b1e492bfe8ceeeab5ff803c7a6526956a2",
+  "record_commit_sha": "917d90b1e492bfe8ceeeab5ff803c7a6526956a2",
+  "record_commit_note": "首次提交前的占位值；提交后用单独元数据提交补记首次引入本记录的SHA，不改被测SHA或运行结果。",
+  "machine_role": "5090-validation",
+  "candidate_branch": "dev/5060-film-capture-fix",
+  "run_id": "523e70f01d984f3fa9cc7d618e4fcb28",
+  "model": "xiangyi-qwen3:14b-q4_k_m",
+  "model_configuration": {
+    "ollama_version": "0.35.0",
+    "ollama_url_scope": "http://127.0.0.1:11439，5090本机回环服务，未开放公网端口",
+    "model_digest": "e835bb820c84d5ca90942815563588f1af11ffbc377d8d050620f6560c684a38",
+    "quantization": "Q4_K_M",
+    "context_length_tokens": 8192,
+    "generation_parameters": {
+      "temperature": 0,
+      "num_ctx": 8192,
+      "num_predict": 2300,
+      "seed": 42,
+      "think": false,
+      "stream": false,
+      "keep_alive": "15m"
+    },
+    "api_observed": true,
+    "parameter_basis": "backend/model.py:50-52；/api/ps实测context_length=8192。未显式设置的参数沿用服务默认值。"
+  },
+  "runtime_environment": {
+    "python": "3.12.14",
+    "node": "v24.19.0",
+    "npm": "11.17.0",
+    "browser_channel": "msedge",
+    "api": "http://127.0.0.1:8795",
+    "isolated_worktree": "E:\\比赛\\xiangyi-youju-film-capture-fix-917d90b",
+    "database": "artifacts/film/app.sqlite3",
+    "database_new_at_start": true,
+    "initial_run_count": 0,
+    "health": {
+      "status": "ready",
+      "model": "xiangyi-qwen3:14b-q4_k_m",
+      "model_ready": true,
+      "mode": "live",
+      "ollama_url": "http://127.0.0.1:11439"
+    },
+    "owned_api_stopped_after_failure": true,
+    "existing_ollama_service_preserved": true
+  },
+  "data_versions": {
+    "data/curated/sources.json": "2ce95e8c33ad309e8ad3f4daafb43a5e30f3a59e6483a7182f863728952e85f9",
+    "data/curated/materials.json": "54436cb05ccca8ed57031a95f02525aa081f6191dd5256f628e7eaae03dac06f",
+    "data/curated/public-case-sources.json": "622af882bd080ee2e5c7eeb4ab859d60104f04a727a1df066820739f53b70fc5",
+    "data/curated/draft-presets.json": "328f36b58d9dd96115934a3d58dcd0254cd13f12ca665f92c1fd58d9632d4704",
+    "data/operating/demo-profile.json": "ea58abdaba9adf7789eff92b45d64c7fc618183d00f1a81de8e6702f1b48c1f0",
+    "data/operating/jinshan-reconstruction.json": "b5239faf8c6bff27060077c3c8ab3b2e66ed4d269b7c211b2c1ff788e1261660",
+    "requirements-lock.txt": "e39e2412f4d42c5e371842765bc9afd0d59eebe15588b246e9dad15ca72d4fc0",
+    "package-lock.json": "71450e84d23b5189ee704b272a65ca98610c30523ede3c1bc3404ef3bfcce6cb"
+  },
+  "data_version_hash_basis": "sha256 of git show <tested_code_sha>:<path>",
+  "data_version_worktree_check": {
+    "head": "917d90b1e492bfe8ceeeab5ff803c7a6526956a2",
+    "head_is_tested_code": true,
+    "dirty_tracked_files": [],
+    "files": {
+      "data/curated/sources.json": {
+        "exists": true,
+        "sha256": "2ce95e8c33ad309e8ad3f4daafb43a5e30f3a59e6483a7182f863728952e85f9",
+        "same_bytes_as_git": true,
+        "same_after_crlf_to_lf": true
+      },
+      "data/curated/materials.json": {
+        "exists": true,
+        "sha256": "54436cb05ccca8ed57031a95f02525aa081f6191dd5256f628e7eaae03dac06f",
+        "same_bytes_as_git": true,
+        "same_after_crlf_to_lf": true
+      },
+      "data/curated/public-case-sources.json": {
+        "exists": true,
+        "sha256": "622af882bd080ee2e5c7eeb4ab859d60104f04a727a1df066820739f53b70fc5",
+        "same_bytes_as_git": true,
+        "same_after_crlf_to_lf": true
+      },
+      "data/curated/draft-presets.json": {
+        "exists": true,
+        "sha256": "328f36b58d9dd96115934a3d58dcd0254cd13f12ca665f92c1fd58d9632d4704",
+        "same_bytes_as_git": true,
+        "same_after_crlf_to_lf": true
+      },
+      "data/operating/demo-profile.json": {
+        "exists": true,
+        "sha256": "ea58abdaba9adf7789eff92b45d64c7fc618183d00f1a81de8e6702f1b48c1f0",
+        "same_bytes_as_git": true,
+        "same_after_crlf_to_lf": true
+      },
+      "data/operating/jinshan-reconstruction.json": {
+        "exists": true,
+        "sha256": "b5239faf8c6bff27060077c3c8ab3b2e66ed4d269b7c211b2c1ff788e1261660",
+        "same_bytes_as_git": true,
+        "same_after_crlf_to_lf": true
+      },
+      "requirements-lock.txt": {
+        "exists": true,
+        "sha256": "e39e2412f4d42c5e371842765bc9afd0d59eebe15588b246e9dad15ca72d4fc0",
+        "same_bytes_as_git": true,
+        "same_after_crlf_to_lf": true
+      },
+      "package-lock.json": {
+        "exists": true,
+        "sha256": "71450e84d23b5189ee704b272a65ca98610c30523ede3c1bc3404ef3bfcce6cb",
+        "same_bytes_as_git": true,
+        "same_after_crlf_to_lf": true
+      }
+    },
+    "note": "工作区字节仅用于排查换行或本地修改；正式 data_versions 以 Git 对象为准。"
+  },
+  "raw_input": {
+    "act1": {
+      "run_id": "a279b043d0bd48c8aaefdad8703a902c",
+      "text": "蔚县剪纸以阳刻为主，阴刻为辅。蔚县剪纸善于多色点染。工坊每天开放并且无需预约。",
+      "requirements": {
+        "region": "河北省蔚县",
+        "project": "剪纸",
+        "people": 8,
+        "budget_per_person": 160,
+        "available_minutes": 150,
+        "start_time": "09:30",
+        "preferred_plan": "deep",
+        "note": "为初次了解剪纸的游客安排文化讲解与入门手作。讲述清楚工艺特色，留出观察和提问的时间。",
+        "planning_mode": "modules",
+        "audience": "general",
+        "tea_preference": "any",
+        "min_craft_minutes": 0,
+        "teaching_enabled": true
+      },
+      "operating_overrides": {
+        "capacity": 12,
+        "teachers": 1,
+        "rooms": 1,
+        "reuse": true
+      },
+      "constraint_resolution": "ask",
+      "previous_run_id": null,
+      "parent_id": null,
+      "case_id": null,
+      "demo_assumptions_confirmed": false
+    },
+    "act2": {
+      "run_id": "d171b3e2334546b4bd028852550a48c1",
+      "text": "蔚县剪纸以阳刻为主，阴刻为辅。蔚县剪纸善于多色点染。工坊每天开放并且无需预约。",
+      "requirements": {
+        "region": "河北省蔚县",
+        "project": "剪纸",
+        "people": 8,
+        "budget_per_person": 160,
+        "available_minutes": 150,
+        "start_time": "09:30",
+        "preferred_plan": "deep",
+        "note": "讲清楚工艺特色，留出观察和提问的时间。",
+        "planning_mode": "modules",
+        "audience": "student",
+        "tea_preference": "any",
+        "min_craft_minutes": 0,
+        "teaching_enabled": true
+      },
+      "operating_overrides": {
+        "capacity": 12,
+        "teachers": 1,
+        "rooms": 1,
+        "reuse": true
+      },
+      "constraint_resolution": "ask",
+      "previous_run_id": "a279b043d0bd48c8aaefdad8703a902c",
+      "parent_id": null,
+      "case_id": null,
+      "demo_assumptions_confirmed": false
+    },
+    "act3": {
+      "run_id": "df9d82250c9247208d22fab262e8e76d",
+      "text": "蔚县剪纸以阳刻为主，阴刻为辅。蔚县剪纸善于多色点染。工坊每天开放并且无需预约。",
+      "requirements": {
+        "region": "河北省蔚县",
+        "project": "剪纸",
+        "people": 8,
+        "budget_per_person": 160,
+        "available_minutes": 150,
+        "start_time": "09:30",
+        "preferred_plan": "deep",
+        "note": "讲清楚工艺特色，留出观察和提问的时间。",
+        "planning_mode": "modules",
+        "audience": "student",
+        "tea_preference": "any",
+        "min_craft_minutes": 0,
+        "teaching_enabled": true
+      },
+      "operating_overrides": {
+        "capacity": 12,
+        "teachers": 1,
+        "rooms": 1,
+        "reuse": true
+      },
+      "constraint_resolution": "ask",
+      "previous_run_id": "d171b3e2334546b4bd028852550a48c1",
+      "parent_id": "d171b3e2334546b4bd028852550a48c1",
+      "case_id": null,
+      "demo_assumptions_confirmed": false
+    },
+    "draft_audit": {
+      "run_id": "523e70f01d984f3fa9cc7d618e4fcb28",
+      "text": "河北省蔚县的剪纸艺术，有着悠久的历史。它以阴刻为主，阳刻为辅，再通过多色点染彩绘增添美感。剪纸的题材多为戏曲人物、花卉和脸谱，早期图案以花卉为主。一张宣纸和一把刻刀，是制作剪纸的基本工具。",
+      "requirements": {
+        "region": "河北省蔚县",
+        "project": "剪纸",
+        "people": 8,
+        "budget_per_person": 160,
+        "available_minutes": 150,
+        "start_time": "09:30",
+        "preferred_plan": "deep",
+        "note": "讲清楚工艺特色，留出观察和提问的时间。",
+        "planning_mode": "modules",
+        "audience": "senior",
+        "tea_preference": "any",
+        "min_craft_minutes": 0,
+        "teaching_enabled": true
+      },
+      "operating_overrides": {
+        "capacity": 12,
+        "teachers": 1,
+        "rooms": 1,
+        "reuse": true
+      },
+      "constraint_resolution": "ask",
+      "previous_run_id": "df9d82250c9247208d22fab262e8e76d",
+      "parent_id": null,
+      "case_id": null,
+      "demo_assumptions_confirmed": false
+    },
+    "draft_generation": {
+      "endpoint": "/api/drafts",
+      "region": "河北省蔚县",
+      "project": "剪纸",
+      "audience": "senior",
+      "minutes": 5,
+      "source_ids": [
+        "src-yuxian-carving-tool",
+        "src-yuxian-color",
+        "src-yuxian-early-floral",
+        "src-yuxian-region",
+        "src-yuxian-technique",
+        "src-yuxian-themes",
+        "src-yuxian-xuan-paper"
+      ],
+      "input_basis": "采集脚本选择 senior；5分钟为页面默认值。草稿接收后送检的原始正文与表单另见 draft_audit。"
+    },
+    "stop": {
+      "planned_note": "需要安排英语讲解",
+      "submitted": false,
+      "reason": "讲解词核验失败后脚本停止，未到达此步骤。"
+    }
+  },
+  "actual_output": {
+    "command": "npm run film:capture",
+    "command_attempts": 1,
+    "command_exit_code": 1,
+    "capture": {
+      "passed": false,
+      "stills": 25,
+      "marks": 19,
+      "missing": [],
+      "firstFailure": {
+        "message": "locator.scrollIntoViewIfNeeded: Timeout 29992.168000000005ms exceeded.\nCall log:\n\u001b[2m  - attempting scroll into view action\u001b[22m\n\u001b[2m    2 × waiting for element to be stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying scroll into view action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying scroll into view action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    58 × waiting for element to be stable\u001b[22m\n\u001b[2m       - element is not visible\u001b[22m\n\u001b[2m     - retrying scroll into view action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n\n    at E:\\比赛\\xiangyi-youju-film-capture-fix-917d90b\\scripts\\capture-film-footage.cjs:231:40",
+        "at": "2026-10-14T15:30:18.496Z"
+      }
+    },
+    "runs": [
+      {
+        "stage": "act1",
+        "run_id": "a279b043d0bd48c8aaefdad8703a902c",
+        "status": "awaiting_review",
+        "model_calls": 6,
+        "elapsed_seconds": 13.879,
+        "parent_id": null,
+        "comparison": null,
+        "plan": {
+          "id": "mod-brief-story--basic-craft",
+          "craft_minutes": 50,
+          "duration_minutes": 70,
+          "total_cents": 57400,
+          "local_service_cents": 38000,
+          "material_cents": 13400,
+          "operations_cents": 6000
+        },
+        "error": null,
+        "status_when_capture_read": "awaiting_review",
+        "final_database_status": "invalidated",
+        "expected_status": "awaiting_review",
+        "expected_met": true,
+        "model_metrics": [
+          {
+            "purpose": "理解需求与拆分陈述",
+            "attempt": 1,
+            "at": "2026-10-14T15:28:12.535375+00:00",
+            "model": "xiangyi-qwen3:14b-q4_k_m",
+            "elapsed_seconds": 4.355,
+            "prompt_tokens": 723,
+            "output_tokens": 206,
+            "total_duration_ns": 4337644300,
+            "eval_duration_ns": 1471645000,
+            "prompt_eval_duration_ns": 130419999,
+            "ok": true
+          },
+          {
+            "purpose": "提取文字活动偏好",
+            "attempt": 1,
+            "at": "2026-10-14T15:28:16.890552+00:00",
+            "model": "xiangyi-qwen3:14b-q4_k_m",
+            "elapsed_seconds": 0.67,
+            "prompt_tokens": 885,
+            "output_tokens": 69,
+            "total_duration_ns": 654745700,
+            "eval_duration_ns": 509547000,
+            "prompt_eval_duration_ns": 91073000,
+            "ok": true
+          },
+          {
+            "purpose": "逐句证据核验",
+            "attempt": 1,
+            "at": "2026-10-14T15:28:17.903787+00:00",
+            "model": "xiangyi-qwen3:14b-q4_k_m",
+            "elapsed_seconds": 1.804,
+            "prompt_tokens": 1263,
+            "output_tokens": 222,
+            "total_duration_ns": 1775702200,
+            "eval_duration_ns": 1575348000,
+            "prompt_eval_duration_ns": 146685000,
+            "ok": true
+          },
+          {
+            "purpose": "复核修订文本",
+            "attempt": 1,
+            "at": "2026-10-14T15:28:19.715315+00:00",
+            "model": "xiangyi-qwen3:14b-q4_k_m",
+            "elapsed_seconds": 0.61,
+            "prompt_tokens": 926,
+            "output_tokens": 64,
+            "total_duration_ns": 578723100,
+            "eval_duration_ns": 459628000,
+            "prompt_eval_duration_ns": 45004000,
+            "ok": true
+          },
+          {
+            "purpose": "生成分众教学内容",
+            "attempt": 1,
+            "at": "2026-10-14T15:28:20.369450+00:00",
+            "model": "xiangyi-qwen3:14b-q4_k_m",
+            "elapsed_seconds": 1.899,
+            "prompt_tokens": 1193,
+            "output_tokens": 237,
+            "total_duration_ns": 1886323000,
+            "eval_duration_ns": 1690479000,
+            "prompt_eval_duration_ns": 139969000,
+            "ok": true
+          },
+          {
+            "purpose": "扫描教学内容全部文化前提",
+            "attempt": 1,
+            "at": "2026-10-14T15:28:22.268264+00:00",
+            "model": "xiangyi-qwen3:14b-q4_k_m",
+            "elapsed_seconds": 4.122,
+            "prompt_tokens": 1780,
+            "output_tokens": 518,
+            "total_duration_ns": 4082945400,
+            "eval_duration_ns": 3808554000,
+            "prompt_eval_duration_ns": 199452000,
+            "ok": true
+          }
+        ],
+        "raw_json_path": "artifacts/film-footage/run-a279b043d0bd48c8aaefdad8703a902c.json",
+        "raw_json_sha256": "9d9572098d721def5fa10f6a908872deda6ef94cd20e210958cfbbd30a94123e"
+      },
+      {
+        "stage": "act2",
+        "run_id": "d171b3e2334546b4bd028852550a48c1",
+        "status": "awaiting_review",
+        "model_calls": 7,
+        "elapsed_seconds": 11.122,
+        "parent_id": null,
+        "comparison": {
+          "before": {
+            "id": "mod-brief-story--basic-craft",
+            "title": "基础剪纸手作 · 2环节组合",
+            "total_cents": 57400,
+            "duration_minutes": 70,
+            "craft_minutes": 50,
+            "module_ids": [
+              "brief-story",
+              "basic-craft"
+            ],
+            "start_time": "09:30"
+          },
+          "after": {
+            "id": "mod-brief-story--color-observation--deep-craft--craft-extension",
+            "title": "深度剪纸手作 · 4环节组合",
+            "total_cents": 87400,
+            "duration_minutes": 115,
+            "craft_minutes": 80,
+            "module_ids": [
+              "brief-story",
+              "color-observation",
+              "deep-craft",
+              "craft-extension"
+            ],
+            "start_time": "09:30"
+          }
+        },
+        "plan": {
+          "id": "mod-brief-story--color-observation--deep-craft--craft-extension",
+          "craft_minutes": 80,
+          "duration_minutes": 115,
+          "total_cents": 87400,
+          "local_service_cents": 58400,
+          "material_cents": 20000,
+          "operations_cents": 9000
+        },
+        "error": null,
+        "status_when_capture_read": "awaiting_review",
+        "final_database_status": "invalidated",
+        "expected_status": "awaiting_review",
+        "expected_met": true,
+        "model_metrics": [
+          {
+            "purpose": "理解需求与拆分陈述",
+            "attempt": 1,
+            "at": "2026-10-14T15:28:36.674122+00:00",
+            "model": "xiangyi-qwen3:14b-q4_k_m",
+            "elapsed_seconds": 1.807,
+            "prompt_tokens": 723,
+            "output_tokens": 207,
+            "total_duration_ns": 1790612400,
+            "eval_duration_ns": 1454634000,
+            "prompt_eval_duration_ns": 88747000,
+            "ok": true
+          },
+          {
+            "purpose": "提取文字活动偏好",
+            "attempt": 1,
+            "at": "2026-10-14T15:28:38.481209+00:00",
+            "model": "xiangyi-qwen3:14b-q4_k_m",
+            "elapsed_seconds": 0.6,
+            "prompt_tokens": 870,
+            "output_tokens": 69,
+            "total_duration_ns": 586057700,
+            "eval_duration_ns": 501854000,
+            "prompt_eval_duration_ns": 14189000,
+            "ok": true
+          },
+          {
+            "purpose": "复核需求阻断原因",
+            "attempt": 1,
+            "at": "2026-10-14T15:28:39.081244+00:00",
+            "model": "xiangyi-qwen3:14b-q4_k_m",
+            "elapsed_seconds": 0.51,
+            "prompt_tokens": 693,
+            "output_tokens": 53,
+            "total_duration_ns": 495780100,
+            "eval_duration_ns": 367614000,
+            "prompt_eval_duration_ns": 74210000,
+            "ok": true
+          },
+          {
+            "purpose": "逐句证据核验",
+            "attempt": 1,
+            "at": "2026-10-14T15:28:39.613410+00:00",
+            "model": "xiangyi-qwen3:14b-q4_k_m",
+            "elapsed_seconds": 1.653,
+            "prompt_tokens": 1263,
+            "output_tokens": 222,
+            "total_duration_ns": 1640304900,
+            "eval_duration_ns": 1556740000,
+            "prompt_eval_duration_ns": 10235000,
+            "ok": true
+          },
+          {
+            "purpose": "复核修订文本",
+            "attempt": 1,
+            "at": "2026-10-14T15:28:41.274331+00:00",
+            "model": "xiangyi-qwen3:14b-q4_k_m",
+            "elapsed_seconds": 0.586,
+            "prompt_tokens": 926,
+            "output_tokens": 64,
+            "total_duration_ns": 553733700,
+            "eval_duration_ns": 452618000,
+            "prompt_eval_duration_ns": 10111000,
+            "ok": true
+          },
+          {
+            "purpose": "生成分众教学内容",
+            "attempt": 1,
+            "at": "2026-10-14T15:28:41.908564+00:00",
+            "model": "xiangyi-qwen3:14b-q4_k_m",
+            "elapsed_seconds": 1.803,
+            "prompt_tokens": 1193,
+            "output_tokens": 238,
+            "total_duration_ns": 1789246800,
+            "eval_duration_ns": 1680433000,
+            "prompt_eval_duration_ns": 25119000,
+            "ok": true
+          },
+          {
+            "purpose": "扫描教学内容全部文化前提",
+            "attempt": 1,
+            "at": "2026-10-14T15:28:43.712132+00:00",
+            "model": "xiangyi-qwen3:14b-q4_k_m",
+            "elapsed_seconds": 4.061,
+            "prompt_tokens": 1781,
+            "output_tokens": 532,
+            "total_duration_ns": 4048464000,
+            "eval_duration_ns": 3877532000,
+            "prompt_eval_duration_ns": 59447000,
+            "ok": true
+          }
+        ],
+        "raw_json_path": "artifacts/film-footage/run-d171b3e2334546b4bd028852550a48c1.json",
+        "raw_json_sha256": "99357498a43e9e0fd6ec4fdb15f9bd628d3c6d592d604382fb97a8b34cb7efd2"
+      },
+      {
+        "stage": "act3",
+        "run_id": "df9d82250c9247208d22fab262e8e76d",
+        "status": "awaiting_review",
+        "model_calls": 7,
+        "elapsed_seconds": 11.308,
+        "parent_id": "d171b3e2334546b4bd028852550a48c1",
+        "comparison": {
+          "before": {
+            "id": "mod-brief-story--color-observation--deep-craft--craft-extension",
+            "title": "深度剪纸手作 · 4环节组合",
+            "total_cents": 87400,
+            "duration_minutes": 115,
+            "craft_minutes": 80,
+            "module_ids": [
+              "brief-story",
+              "color-observation",
+              "deep-craft",
+              "craft-extension"
+            ],
+            "start_time": "09:30"
+          },
+          "after": {
+            "id": "mod-brief-story--color-observation--deep-craft--craft-extension",
+            "title": "深度剪纸手作 · 4环节组合",
+            "total_cents": 87400,
+            "duration_minutes": 115,
+            "craft_minutes": 80,
+            "module_ids": [
+              "brief-story",
+              "color-observation",
+              "deep-craft",
+              "craft-extension"
+            ],
+            "start_time": "09:30"
+          }
+        },
+        "plan": {
+          "id": "mod-brief-story--color-observation--deep-craft--craft-extension",
+          "craft_minutes": 80,
+          "duration_minutes": 115,
+          "total_cents": 87400,
+          "local_service_cents": 58400,
+          "material_cents": 20000,
+          "operations_cents": 9000
+        },
+        "error": null,
+        "status_when_capture_read": "awaiting_review",
+        "final_database_status": "confirmed",
+        "expected_status": "awaiting_review",
+        "expected_met": true,
+        "model_metrics": [
+          {
+            "purpose": "理解需求与拆分陈述",
+            "attempt": 1,
+            "at": "2026-10-14T15:29:02.861385+00:00",
+            "model": "xiangyi-qwen3:14b-q4_k_m",
+            "elapsed_seconds": 1.831,
+            "prompt_tokens": 723,
+            "output_tokens": 207,
+            "total_duration_ns": 1813423700,
+            "eval_duration_ns": 1467238000,
+            "prompt_eval_duration_ns": 99248000,
+            "ok": true
+          },
+          {
+            "purpose": "提取文字活动偏好",
+            "attempt": 1,
+            "at": "2026-10-14T15:29:04.691944+00:00",
+            "model": "xiangyi-qwen3:14b-q4_k_m",
+            "elapsed_seconds": 0.594,
+            "prompt_tokens": 870,
+            "output_tokens": 69,
+            "total_duration_ns": 581086000,
+            "eval_duration_ns": 504022000,
+            "prompt_eval_duration_ns": 7260000,
+            "ok": true
+          },
+          {
+            "purpose": "复核需求阻断原因",
+            "attempt": 1,
+            "at": "2026-10-14T15:29:05.285412+00:00",
+            "model": "xiangyi-qwen3:14b-q4_k_m",
+            "elapsed_seconds": 0.458,
+            "prompt_tokens": 693,
+            "output_tokens": 53,
+            "total_duration_ns": 445758400,
+            "eval_duration_ns": 370742000,
+            "prompt_eval_duration_ns": 10110000,
+            "ok": true
+          },
+          {
+            "purpose": "逐句证据核验",
+            "attempt": 1,
+            "at": "2026-10-14T15:29:05.765916+00:00",
+            "model": "xiangyi-qwen3:14b-q4_k_m",
+            "elapsed_seconds": 1.689,
+            "prompt_tokens": 1263,
+            "output_tokens": 222,
+            "total_duration_ns": 1655981000,
+            "eval_duration_ns": 1574708000,
+            "prompt_eval_duration_ns": 10237000,
+            "ok": true
+          },
+          {
+            "purpose": "复核修订文本",
+            "attempt": 1,
+            "at": "2026-10-14T15:29:07.463037+00:00",
+            "model": "xiangyi-qwen3:14b-q4_k_m",
+            "elapsed_seconds": 0.593,
+            "prompt_tokens": 926,
+            "output_tokens": 64,
+            "total_duration_ns": 561569400,
+            "eval_duration_ns": 457130000,
+            "prompt_eval_duration_ns": 10080000,
+            "ok": true
+          },
+          {
+            "purpose": "生成分众教学内容",
+            "attempt": 1,
+            "at": "2026-10-14T15:29:08.115430+00:00",
+            "model": "xiangyi-qwen3:14b-q4_k_m",
+            "elapsed_seconds": 1.8,
+            "prompt_tokens": 1193,
+            "output_tokens": 238,
+            "total_duration_ns": 1785711500,
+            "eval_duration_ns": 1688131000,
+            "prompt_eval_duration_ns": 10601000,
+            "ok": true
+          },
+          {
+            "purpose": "扫描教学内容全部文化前提",
+            "attempt": 1,
+            "at": "2026-10-14T15:29:09.915934+00:00",
+            "model": "xiangyi-qwen3:14b-q4_k_m",
+            "elapsed_seconds": 4.233,
+            "prompt_tokens": 1781,
+            "output_tokens": 550,
+            "total_duration_ns": 4220269300,
+            "eval_duration_ns": 4046860000,
+            "prompt_eval_duration_ns": 59212000,
+            "ok": true
+          }
+        ],
+        "raw_json_path": "artifacts/film-footage/run-df9d82250c9247208d22fab262e8e76d.json",
+        "raw_json_sha256": "9a4bc95e2703acc39383d9295b2ff0ce53c55aea46c99d65015da4855845dc86"
+      },
+      {
+        "stage": "draft_audit",
+        "run_id": "523e70f01d984f3fa9cc7d618e4fcb28",
+        "status": "failed",
+        "model_calls": 1,
+        "elapsed_seconds": 3.487,
+        "parent_id": null,
+        "comparison": null,
+        "plan": null,
+        "error": "模型拆解遗漏原句或新增了未知句子",
+        "status_when_capture_read": "failed",
+        "final_database_status": "failed",
+        "expected_status": "awaiting_review",
+        "expected_met": false,
+        "model_metrics": [
+          {
+            "purpose": "理解需求与拆分陈述",
+            "attempt": 1,
+            "at": "2026-10-14T15:29:43.196101+00:00",
+            "model": "xiangyi-qwen3:14b-q4_k_m",
+            "elapsed_seconds": 3.478,
+            "prompt_tokens": 790,
+            "output_tokens": 442,
+            "total_duration_ns": 3435900700,
+            "eval_duration_ns": 3151536000,
+            "prompt_eval_duration_ns": 166947000,
+            "ok": true
+          }
+        ],
+        "raw_json_path": "artifacts/film-footage/run-523e70f01d984f3fa9cc7d618e4fcb28.json",
+        "raw_json_sha256": "a306be08dd4bd12fb127b5ceca1d25c8a484429a0c21a4f9c4789e93aecafc6a"
+      }
+    ],
+    "act2": {
+      "audience": "student",
+      "teaching_audience": "student",
+      "teaching_passed": true,
+      "teaching_script": [
+        "蔚县剪纸主要用阴刻的方法，偶尔也会用阳刻。",
+        "蔚县剪纸喜欢用多种颜色来点染图案。"
+      ],
+      "observation": "请观察负责人提供且允许使用的示例，找一找是否有阴刻或阳刻的痕迹。",
+      "question": "你更喜欢阴刻的图案，还是多色点染的图案？"
+    },
+    "invalidated": {
+      "run_id": "d171b3e2334546b4bd028852550a48c1",
+      "status": "invalidated",
+      "work": "mat-work-floral-window",
+      "title": "演示作品·花卉窗花（新作）"
+    },
+    "draft": {
+      "origin": "local_model",
+      "text": "河北省蔚县的剪纸艺术，有着悠久的历史。它以阴刻为主，阳刻为辅，再通过多色点染彩绘增添美感。剪纸的题材多为戏曲人物、花卉和脸谱，早期图案以花卉为主。一张宣纸和一把刻刀，是制作剪纸的基本工具。",
+      "source_ids": [
+        "src-yuxian-carving-tool",
+        "src-yuxian-color",
+        "src-yuxian-early-floral",
+        "src-yuxian-region",
+        "src-yuxian-technique",
+        "src-yuxian-themes",
+        "src-yuxian-xuan-paper"
+      ],
+      "model_calls": 1,
+      "error": null,
+      "audit": {
+        "run_id": "523e70f01d984f3fa9cc7d618e4fcb28",
+        "status": "failed",
+        "claim_statuses": []
+      }
+    },
+    "stop": {
+      "executed": false,
+      "run_id": null,
+      "status": null,
+      "error": null,
+      "reason": "此前步骤失败，按硬规则停止。"
+    },
+    "raw_manifest": {
+      "at": "2026-10-14T15:28:00.883Z",
+      "base": "http://127.0.0.1:8795",
+      "purpose": "宣传片素材：真实本地运行画面",
+      "viewport": "1920x1080",
+      "stillScale": 2,
+      "stills": [
+        {
+          "file": "s01-home-viewport.png",
+          "selector": "viewport",
+          "note": "首页首屏"
+        },
+        {
+          "file": "s02-home-hero.png",
+          "selector": "#home .hero",
+          "note": "首页主视觉"
+        },
+        {
+          "file": "s03-home-acts.png",
+          "selector": "#home .acts",
+          "note": "三幕故事条"
+        },
+        {
+          "file": "s04-home-meaning.png",
+          "selector": "#home .meaning",
+          "note": "意义带"
+        },
+        {
+          "file": "s05-studio-before.png",
+          "selector": "#draft",
+          "note": "待核验文案"
+        },
+        {
+          "file": "s06-studio-viewport.png",
+          "selector": "viewport",
+          "note": "核验结果全屏"
+        },
+        {
+          "file": "s07-audit-result.png",
+          "selector": "#auditResult",
+          "note": "逐句核验与修订"
+        },
+        {
+          "file": "s08-evidence.png",
+          "selector": "#auditResult .evidence-block",
+          "note": "出处原文卡"
+        },
+        {
+          "file": "s10-audience-before.png",
+          "selector": "#audience",
+          "note": "体验对象：普通游客"
+        },
+        {
+          "file": "s10-audience-after.png",
+          "selector": "#audience",
+          "note": "体验对象：青少年学生"
+        },
+        {
+          "file": "s11-planner-viewport.png",
+          "selector": "viewport",
+          "note": "编排结果全屏"
+        },
+        {
+          "file": "s12-comparison.png",
+          "selector": "#planComparison",
+          "note": "换个对象，方案真变化"
+        },
+        {
+          "file": "s13-ledger.png",
+          "selector": ".ledger-details",
+          "note": "账目：本地服务报酬、材料、组织"
+        },
+        {
+          "file": "s09-teaching.png",
+          "selector": "#teachingPanel",
+          "note": "面向青少年学生的讲解与提问"
+        },
+        {
+          "file": "s14-route.png",
+          "selector": "#routeCards",
+          "note": "日程"
+        },
+        {
+          "file": "s15-works-before.png",
+          "selector": "#materialList",
+          "note": "手艺人作品（第 1 版）"
+        },
+        {
+          "file": "s16-outdated-viewport.png",
+          "selector": "viewport",
+          "note": "作品上新后全屏"
+        },
+        {
+          "file": "s17-impact.png",
+          "selector": "#impactTrail",
+          "note": "找出引用旧版本的内容"
+        },
+        {
+          "file": "s18-works-after.png",
+          "selector": "#materialList",
+          "note": "手艺人作品（第 2 版）"
+        },
+        {
+          "file": "s19-refreshed-viewport.png",
+          "selector": "viewport",
+          "note": "重新核验后全屏"
+        },
+        {
+          "file": "s20-preview-visitor.png",
+          "selector": "viewport",
+          "note": "游客版预览"
+        },
+        {
+          "file": "s20b-preview-works.png",
+          "selector": "viewport",
+          "note": "游客版手艺人作品栏"
+        },
+        {
+          "file": "s21-preview-organizer.png",
+          "selector": "viewport",
+          "note": "组织者版预览"
+        },
+        {
+          "file": "s24-draft.png",
+          "selector": "#draftGenerator",
+          "note": "按要求生成讲解词"
+        },
+        {
+          "file": "s25-draft-text.png",
+          "selector": "#draft",
+          "note": "生成的讲解词草稿"
+        }
+      ],
+      "marks": [
+        {
+          "name": "home-still",
+          "sec": 4.6,
+          "note": "首页首屏静置"
+        },
+        {
+          "name": "act1-draft",
+          "sec": 9.9,
+          "note": "工坊页：待核验文案（含“阳刻为主”）"
+        },
+        {
+          "name": "act1-click",
+          "sec": 11.3,
+          "note": "点击“核验并编排体验”"
+        },
+        {
+          "name": "act1-result",
+          "sec": 26.7,
+          "note": "核验结果出现（此前为等待段）"
+        },
+        {
+          "name": "act2-audience",
+          "sec": 32.5,
+          "note": "体验对象从普通游客换成青少年学生"
+        },
+        {
+          "name": "act2-click",
+          "sec": 35.4,
+          "note": "点击“按当前条件重新编排”"
+        },
+        {
+          "name": "act2-result",
+          "sec": 48,
+          "note": "方案对比出现"
+        },
+        {
+          "name": "act3-publish",
+          "sec": 57,
+          "note": "点击“发布新版本”"
+        },
+        {
+          "name": "act3-outdated",
+          "sec": 59.5,
+          "note": "旧手册待更新、确认与导出禁用"
+        },
+        {
+          "name": "act3-click",
+          "sec": 61.6,
+          "note": "点击“依据最新资料重新核验”"
+        },
+        {
+          "name": "act3-result",
+          "sec": 75,
+          "note": "重新核验完成"
+        },
+        {
+          "name": "confirm",
+          "sec": 78.1,
+          "note": "人工确认"
+        },
+        {
+          "name": "preview-visitor",
+          "sec": 82.2,
+          "note": "游客版预览"
+        },
+        {
+          "name": "preview-works",
+          "sec": 86.9,
+          "note": "游客版：手艺人作品栏（新版作品）"
+        },
+        {
+          "name": "preview-organizer",
+          "sec": 90.4,
+          "note": "组织者版预览"
+        },
+        {
+          "name": "draft-click",
+          "sec": 96.3,
+          "note": "讲给老年人、约 5 分钟：点击“按要求生成讲解词”"
+        },
+        {
+          "name": "draft-result",
+          "sec": 98.2,
+          "note": "草稿填入，标明来源"
+        },
+        {
+          "name": "draft-audit-click",
+          "sec": 101.9,
+          "note": "草稿送去逐句核验"
+        },
+        {
+          "name": "draft-audit-result",
+          "sec": 107.3,
+          "note": "草稿逐句核验结果"
+        }
+      ],
+      "runs": {
+        "a279b043d0bd48c8aaefdad8703a902c": {
+          "status": "awaiting_review",
+          "model_calls": 6,
+          "elapsed_seconds": 13.879,
+          "parent_id": null,
+          "comparison": null,
+          "plan": {
+            "id": "mod-brief-story--basic-craft",
+            "craft_minutes": 50,
+            "duration_minutes": 70,
+            "total_cents": 57400,
+            "local_service_cents": 38000,
+            "material_cents": 13400,
+            "operations_cents": 6000
+          },
+          "error": null
+        },
+        "d171b3e2334546b4bd028852550a48c1": {
+          "status": "awaiting_review",
+          "model_calls": 7,
+          "elapsed_seconds": 11.122,
+          "parent_id": null,
+          "comparison": {
+            "before": {
+              "id": "mod-brief-story--basic-craft",
+              "title": "基础剪纸手作 · 2环节组合",
+              "total_cents": 57400,
+              "duration_minutes": 70,
+              "craft_minutes": 50,
+              "module_ids": [
+                "brief-story",
+                "basic-craft"
+              ],
+              "start_time": "09:30"
+            },
+            "after": {
+              "id": "mod-brief-story--color-observation--deep-craft--craft-extension",
+              "title": "深度剪纸手作 · 4环节组合",
+              "total_cents": 87400,
+              "duration_minutes": 115,
+              "craft_minutes": 80,
+              "module_ids": [
+                "brief-story",
+                "color-observation",
+                "deep-craft",
+                "craft-extension"
+              ],
+              "start_time": "09:30"
+            }
+          },
+          "plan": {
+            "id": "mod-brief-story--color-observation--deep-craft--craft-extension",
+            "craft_minutes": 80,
+            "duration_minutes": 115,
+            "total_cents": 87400,
+            "local_service_cents": 58400,
+            "material_cents": 20000,
+            "operations_cents": 9000
+          },
+          "error": null
+        },
+        "df9d82250c9247208d22fab262e8e76d": {
+          "status": "awaiting_review",
+          "model_calls": 7,
+          "elapsed_seconds": 11.308,
+          "parent_id": "d171b3e2334546b4bd028852550a48c1",
+          "comparison": {
+            "before": {
+              "id": "mod-brief-story--color-observation--deep-craft--craft-extension",
+              "title": "深度剪纸手作 · 4环节组合",
+              "total_cents": 87400,
+              "duration_minutes": 115,
+              "craft_minutes": 80,
+              "module_ids": [
+                "brief-story",
+                "color-observation",
+                "deep-craft",
+                "craft-extension"
+              ],
+              "start_time": "09:30"
+            },
+            "after": {
+              "id": "mod-brief-story--color-observation--deep-craft--craft-extension",
+              "title": "深度剪纸手作 · 4环节组合",
+              "total_cents": 87400,
+              "duration_minutes": 115,
+              "craft_minutes": 80,
+              "module_ids": [
+                "brief-story",
+                "color-observation",
+                "deep-craft",
+                "craft-extension"
+              ],
+              "start_time": "09:30"
+            }
+          },
+          "plan": {
+            "id": "mod-brief-story--color-observation--deep-craft--craft-extension",
+            "craft_minutes": 80,
+            "duration_minutes": 115,
+            "total_cents": 87400,
+            "local_service_cents": 58400,
+            "material_cents": 20000,
+            "operations_cents": 9000
+          },
+          "error": null
+        },
+        "523e70f01d984f3fa9cc7d618e4fcb28": {
+          "status": "failed",
+          "model_calls": 1,
+          "elapsed_seconds": 3.487,
+          "parent_id": null,
+          "comparison": null,
+          "plan": null,
+          "error": "模型拆解遗漏原句或新增了未知句子"
+        }
+      },
+      "missing": [],
+      "firstFailure": {
+        "message": "locator.scrollIntoViewIfNeeded: Timeout 29992.168000000005ms exceeded.\nCall log:\n\u001b[2m  - attempting scroll into view action\u001b[22m\n\u001b[2m    2 × waiting for element to be stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying scroll into view action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying scroll into view action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    58 × waiting for element to be stable\u001b[22m\n\u001b[2m       - element is not visible\u001b[22m\n\u001b[2m     - retrying scroll into view action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n\n    at E:\\比赛\\xiangyi-youju-film-capture-fix-917d90b\\scripts\\capture-film-footage.cjs:231:40",
+        "at": "2026-10-14T15:30:18.496Z"
+      },
+      "passed": false,
+      "model": "xiangyi-qwen3:14b-q4_k_m",
+      "act2": {
+        "audience": "student",
+        "teaching_audience": "student",
+        "teaching_passed": true,
+        "teaching_script": [
+          "蔚县剪纸主要用阴刻的方法，偶尔也会用阳刻。",
+          "蔚县剪纸喜欢用多种颜色来点染图案。"
+        ],
+        "observation": "请观察负责人提供且允许使用的示例，找一找是否有阴刻或阳刻的痕迹。",
+        "question": "你更喜欢阴刻的图案，还是多色点染的图案？"
+      },
+      "invalidated": {
+        "run_id": "d171b3e2334546b4bd028852550a48c1",
+        "status": "invalidated",
+        "work": "mat-work-floral-window",
+        "title": "演示作品·花卉窗花（新作）"
+      },
+      "draft": {
+        "origin": "local_model",
+        "text": "河北省蔚县的剪纸艺术，有着悠久的历史。它以阴刻为主，阳刻为辅，再通过多色点染彩绘增添美感。剪纸的题材多为戏曲人物、花卉和脸谱，早期图案以花卉为主。一张宣纸和一把刻刀，是制作剪纸的基本工具。",
+        "source_ids": [
+          "src-yuxian-carving-tool",
+          "src-yuxian-color",
+          "src-yuxian-early-floral",
+          "src-yuxian-region",
+          "src-yuxian-technique",
+          "src-yuxian-themes",
+          "src-yuxian-xuan-paper"
+        ],
+        "model_calls": 1,
+        "error": null,
+        "audit": {
+          "run_id": "523e70f01d984f3fa9cc7d618e4fcb28",
+          "status": "failed",
+          "claim_statuses": []
+        }
+      },
+      "video": "take.webm"
+    },
+    "draft_failure": {
+      "run_id": "523e70f01d984f3fa9cc7d618e4fcb28",
+      "expected_segments": [
+        {
+          "id": "s1",
+          "text": "河北省蔚县的剪纸艺术，",
+          "original_sentence": "河北省蔚县的剪纸艺术，有着悠久的历史。",
+          "original_sentence_id": "sentence-1"
+        },
+        {
+          "id": "s2",
+          "text": "有着悠久的历史。",
+          "original_sentence": "河北省蔚县的剪纸艺术，有着悠久的历史。",
+          "original_sentence_id": "sentence-1"
+        },
+        {
+          "id": "s3",
+          "text": "它以阴刻为主，阳刻为辅，",
+          "original_sentence": "它以阴刻为主，阳刻为辅，再通过多色点染彩绘增添美感。",
+          "original_sentence_id": "sentence-2"
+        },
+        {
+          "id": "s4",
+          "text": "再通过多色点染彩绘增添美感。",
+          "original_sentence": "它以阴刻为主，阳刻为辅，再通过多色点染彩绘增添美感。",
+          "original_sentence_id": "sentence-2"
+        },
+        {
+          "id": "s5",
+          "text": "剪纸的题材多为戏曲人物、花卉和脸谱，",
+          "original_sentence": "剪纸的题材多为戏曲人物、花卉和脸谱，早期图案以花卉为主。",
+          "original_sentence_id": "sentence-3"
+        },
+        {
+          "id": "s6",
+          "text": "早期图案以花卉为主。",
+          "original_sentence": "剪纸的题材多为戏曲人物、花卉和脸谱，早期图案以花卉为主。",
+          "original_sentence_id": "sentence-3"
+        },
+        {
+          "id": "s7",
+          "text": "一张宣纸和一把刻刀，",
+          "original_sentence": "一张宣纸和一把刻刀，是制作剪纸的基本工具。",
+          "original_sentence_id": "sentence-4"
+        },
+        {
+          "id": "s8",
+          "text": "是制作剪纸的基本工具。",
+          "original_sentence": "一张宣纸和一把刻刀，是制作剪纸的基本工具。",
+          "original_sentence_id": "sentence-4"
+        }
+      ],
+      "expected_count": 8,
+      "expected_ids": [
+        "s1",
+        "s2",
+        "s3",
+        "s4",
+        "s5",
+        "s6",
+        "s7",
+        "s8"
+      ],
+      "returned_count": 6,
+      "returned_ids": [
+        "s1",
+        "s3",
+        "s4",
+        "s5",
+        "s6",
+        "s8"
+      ],
+      "missing_ids": [
+        "s2",
+        "s7"
+      ],
+      "extra_ids": [],
+      "raw_model_output": "{\n  \"audience\": \"对河北省蔚县剪纸艺术感兴趣的人群\",\n  \"claims\": [\n    {\n      \"query\": \"河北省蔚县的剪纸艺术是否具有悠久的历史？\",\n      \"sentence_id\": \"s1\",\n      \"text\": \"河北省蔚县的剪纸艺术，\",\n      \"kind\": \"cultural_fact\"\n    },\n    {\n      \"query\": \"河北省蔚县剪纸是否以阴刻为主，阳刻为辅？\",\n      \"sentence_id\": \"s3\",\n      \"text\": \"它以阴刻为主，阳刻为辅，\",\n      \"kind\": \"cultural_fact\"\n    },\n    {\n      \"query\": \"河北省蔚县剪纸是否通过多色点染彩绘增添美感？\",\n      \"sentence_id\": \"s4\",\n      \"text\": \"再通过多色点染彩绘增添美感。\",\n      \"kind\": \"cultural_fact\"\n    },\n    {\n      \"query\": \"河北省蔚县剪纸的题材是否多为戏曲人物、花卉和脸谱？\",\n      \"sentence_id\": \"s5\",\n      \"text\": \"剪纸的题材多为戏曲人物、花卉和脸谱，\",\n      \"kind\": \"cultural_fact\"\n    },\n    {\n      \"query\": \"河北省蔚县剪纸的早期图案是否以花卉为主？\",\n      \"sentence_id\": \"s6\",\n      \"text\": \"早期图案以花卉为主。\",\n      \"kind\": \"cultural_fact\"\n    },\n    {\n      \"query\": \"制作河北省蔚县剪纸的基本工具是否为一张宣纸和一把刻刀？\",\n      \"sentence_id\": \"s8\",\n      \"text\": \"是制作剪纸的基本工具。\",\n      \"kind\": \"cultural_fact\"\n    }\n  ],\n  \"summary\": \"河北省蔚县剪纸艺术具有悠久的历史，以阴刻为主、阳刻为辅，通过多色点染彩绘增添美感，题材多为戏曲人物、花卉和脸谱，早期图案以花卉为主，基本工具为一张宣纸和一把刻刀。\"\n}",
+      "actual_error": "模型拆解遗漏原句或新增了未知句子",
+      "model_metrics": [
+        {
+          "purpose": "理解需求与拆分陈述",
+          "attempt": 1,
+          "at": "2026-10-14T15:29:43.196101+00:00",
+          "model": "xiangyi-qwen3:14b-q4_k_m",
+          "elapsed_seconds": 3.478,
+          "prompt_tokens": 790,
+          "output_tokens": 442,
+          "total_duration_ns": 3435900700,
+          "eval_duration_ns": 3151536000,
+          "prompt_eval_duration_ns": 166947000,
+          "raw_output": "{\n  \"audience\": \"对河北省蔚县剪纸艺术感兴趣的人群\",\n  \"claims\": [\n    {\n      \"query\": \"河北省蔚县的剪纸艺术是否具有悠久的历史？\",\n      \"sentence_id\": \"s1\",\n      \"text\": \"河北省蔚县的剪纸艺术，\",\n      \"kind\": \"cultural_fact\"\n    },\n    {\n      \"query\": \"河北省蔚县剪纸是否以阴刻为主，阳刻为辅？\",\n      \"sentence_id\": \"s3\",\n      \"text\": \"它以阴刻为主，阳刻为辅，\",\n      \"kind\": \"cultural_fact\"\n    },\n    {\n      \"query\": \"河北省蔚县剪纸是否通过多色点染彩绘增添美感？\",\n      \"sentence_id\": \"s4\",\n      \"text\": \"再通过多色点染彩绘增添美感。\",\n      \"kind\": \"cultural_fact\"\n    },\n    {\n      \"query\": \"河北省蔚县剪纸的题材是否多为戏曲人物、花卉和脸谱？\",\n      \"sentence_id\": \"s5\",\n      \"text\": \"剪纸的题材多为戏曲人物、花卉和脸谱，\",\n      \"kind\": \"cultural_fact\"\n    },\n    {\n      \"query\": \"河北省蔚县剪纸的早期图案是否以花卉为主？\",\n      \"sentence_id\": \"s6\",\n      \"text\": \"早期图案以花卉为主。\",\n      \"kind\": \"cultural_fact\"\n    },\n    {\n      \"query\": \"制作河北省蔚县剪纸的基本工具是否为一张宣纸和一把刻刀？\",\n      \"sentence_id\": \"s8\",\n      \"text\": \"是制作剪纸的基本工具。\",\n      \"kind\": \"cultural_fact\"\n    }\n  ],\n  \"summary\": \"河北省蔚县剪纸艺术具有悠久的历史，以阴刻为主、阳刻为辅，通过多色点染彩绘增添美感，题材多为戏曲人物、花卉和脸谱，早期图案以花卉为主，基本工具为一张宣纸和一把刻刀。\"\n}",
+          "ok": true
+        }
+      ]
+    },
+    "summary": {
+      "planned_workflow_tasks": 5,
+      "actual_workflow_tasks": 4,
+      "workflow_model_calls": 21,
+      "draft_generation_model_calls": 1,
+      "total_model_calls": 22,
+      "workflow_elapsed_seconds": 39.796,
+      "draft_generation_elapsed_seconds": null,
+      "timing_note": "草稿API/manifest没有返回模型耗时，保留null；marks中的96.3→98.2秒只是含UI处理的节拍间隔。未把它算作模型耗时。"
+    },
+    "take_webm": {
+      "path": "artifacts/film-footage/take.webm",
+      "bytes": 11851011,
+      "mib": 11.302,
+      "complete": false
+    },
+    "footage_branch": {
+      "created": false,
+      "name": "dev/5090-film-footage-v2",
+      "commit_sha": null,
+      "reason": "采集失败，依用户要求不建素材分支。"
+    },
+    "evidence_inventory": [
+      {
+        "path": "artifacts/film-footage/manifest.json",
+        "bytes": 11435,
+        "sha256": "9b486234c5b57eeaff9fb983b170b3492528e134661598ef16c4c9c8ef67d4ea"
+      },
+      {
+        "path": "artifacts/film-footage/run-523e70f01d984f3fa9cc7d618e4fcb28.json",
+        "bytes": 32474,
+        "sha256": "a306be08dd4bd12fb127b5ceca1d25c8a484429a0c21a4f9c4789e93aecafc6a"
+      },
+      {
+        "path": "artifacts/film-footage/run-a279b043d0bd48c8aaefdad8703a902c.json",
+        "bytes": 106574,
+        "sha256": "9d9572098d721def5fa10f6a908872deda6ef94cd20e210958cfbbd30a94123e"
+      },
+      {
+        "path": "artifacts/film-footage/run-d171b3e2334546b4bd028852550a48c1.json",
+        "bytes": 114643,
+        "sha256": "99357498a43e9e0fd6ec4fdb15f9bd628d3c6d592d604382fb97a8b34cb7efd2"
+      },
+      {
+        "path": "artifacts/film-footage/run-df9d82250c9247208d22fab262e8e76d.json",
+        "bytes": 116930,
+        "sha256": "9a4bc95e2703acc39383d9295b2ff0ce53c55aea46c99d65015da4855845dc86"
+      },
+      {
+        "path": "artifacts/film-footage/s01-home-viewport.png",
+        "bytes": 1803907,
+        "sha256": "a217e157d94024244fdd6206b84b3bc25afa2469e90f2cfc790945da154aa7f9"
+      },
+      {
+        "path": "artifacts/film-footage/s02-home-hero.png",
+        "bytes": 1578005,
+        "sha256": "e6bcb10d6722aadf40e64289518e6dd2214677ab152b2c4b459a9bab496e4f06"
+      },
+      {
+        "path": "artifacts/film-footage/s03-home-acts.png",
+        "bytes": 151719,
+        "sha256": "d39c5992b12cf1edfc62c939319180c02365f0cf1d2783e57f61748d496e4150"
+      },
+      {
+        "path": "artifacts/film-footage/s04-home-meaning.png",
+        "bytes": 72609,
+        "sha256": "dbc7eeff97ddbc9aeeb0bf5116d112e930cf6df1ce9f581f88760aa74e9fea3d"
+      },
+      {
+        "path": "artifacts/film-footage/s05-studio-before.png",
+        "bytes": 23691,
+        "sha256": "3da8a3ff6d8414d0462b03e553bf06f9761dc8c71e95be07f924b3f34b9e2e72"
+      },
+      {
+        "path": "artifacts/film-footage/s06-studio-viewport.png",
+        "bytes": 456222,
+        "sha256": "67961dc790bcd4298f0cc670b4dd7c60dfb01445b56202194639487825e9722f"
+      },
+      {
+        "path": "artifacts/film-footage/s07-audit-result.png",
+        "bytes": 312839,
+        "sha256": "221b2fd208ccf3b15fb6de4b2cf5b9f9b903a4a29744311c892cf0f02a1d1880"
+      },
+      {
+        "path": "artifacts/film-footage/s08-evidence.png",
+        "bytes": 51170,
+        "sha256": "22ff85cc0d9ac374693be15cb3a51a5b02320539687a85bd1d9d83000a6cf9c4"
+      },
+      {
+        "path": "artifacts/film-footage/s09-teaching.png",
+        "bytes": 141978,
+        "sha256": "236e6965d65d2e04af2ab45588bd496769e52746826ddd87c2c714e4d4b1903d"
+      },
+      {
+        "path": "artifacts/film-footage/s10-audience-after.png",
+        "bytes": 2775,
+        "sha256": "fa42dfbb2362317c74ebf5599ff68966021d05150ae2b2621e02c575b514f384"
+      },
+      {
+        "path": "artifacts/film-footage/s10-audience-before.png",
+        "bytes": 3497,
+        "sha256": "da2a5af44e2bb3534d7da5f1399d3cd8891254673b1a8de315e7df4dbbc052e4"
+      },
+      {
+        "path": "artifacts/film-footage/s11-planner-viewport.png",
+        "bytes": 506060,
+        "sha256": "0c2805bc12c0e39fc528a78bf05ac2bc69b9c4b669b5e8fd908c46d88c478347"
+      },
+      {
+        "path": "artifacts/film-footage/s12-comparison.png",
+        "bytes": 135543,
+        "sha256": "0e5be5598a92cd1b5995b82e00d805967769ae2d0516ed51a61485e0e51ce5d3"
+      },
+      {
+        "path": "artifacts/film-footage/s13-ledger.png",
+        "bytes": 217620,
+        "sha256": "e54a4faa743d8529a6903d533b216e71396a16e5f079e0798f7093253efa3e38"
+      },
+      {
+        "path": "artifacts/film-footage/s14-route.png",
+        "bytes": 60339,
+        "sha256": "5bdcb0ccbf4685dfa4eab24a28aaa6c074dd5479cd63abfca83a6f1324632c91"
+      },
+      {
+        "path": "artifacts/film-footage/s15-works-before.png",
+        "bytes": 47226,
+        "sha256": "a176aafe40d6668d13d9eb3a8399f398aef2aafd65e390040a511660130bedf1"
+      },
+      {
+        "path": "artifacts/film-footage/s16-outdated-viewport.png",
+        "bytes": 343485,
+        "sha256": "1f61f043ed34da54de281bc5e4a80d3ef79abcb299c21aae5c1ae5c6de62b010"
+      },
+      {
+        "path": "artifacts/film-footage/s17-impact.png",
+        "bytes": 47846,
+        "sha256": "5c9a7163fccbd9ecd6877eab727485fda635b0583bc9e4966d86183526041568"
+      },
+      {
+        "path": "artifacts/film-footage/s18-works-after.png",
+        "bytes": 48918,
+        "sha256": "b1f241040e21f697386506299d27e98ecf14229283f1b261ac4cc40c1b49e254"
+      },
+      {
+        "path": "artifacts/film-footage/s19-refreshed-viewport.png",
+        "bytes": 487043,
+        "sha256": "00d8506a00bc4551d7f72ba141dbe2a416fde0af6635d5a7940d573d9a1adeca"
+      },
+      {
+        "path": "artifacts/film-footage/s20-preview-visitor.png",
+        "bytes": 411265,
+        "sha256": "d82b88390ca438dcdc2d51725756c37245cc1ed3f5e7dc6cf52e17bce34a6205"
+      },
+      {
+        "path": "artifacts/film-footage/s20b-preview-works.png",
+        "bytes": 353047,
+        "sha256": "c3493fb49f7d79f29a560b089e6bb28ee9dbcc2bf8a229bf2b6c1009102a84ef"
+      },
+      {
+        "path": "artifacts/film-footage/s21-preview-organizer.png",
+        "bytes": 422486,
+        "sha256": "4483db0eea012a66ce71ceea519b5509db8484b4369456f6d7d310154395d224"
+      },
+      {
+        "path": "artifacts/film-footage/s24-draft.png",
+        "bytes": 68404,
+        "sha256": "50d315ec31c4b668bc6b64dc4c4a7719e93555cb98cb7099600f7b6b2f943754"
+      },
+      {
+        "path": "artifacts/film-footage/s25-draft-text.png",
+        "bytes": 66660,
+        "sha256": "2ea9b4f8f226f276a5c837ccc8af41c5659e4d081874bfe673a384eaa6ea2bcf"
+      },
+      {
+        "path": "artifacts/film-footage/take.webm",
+        "bytes": 11851011,
+        "sha256": "4b0fde0515d6e4652b59c1aed4a6dd4e24f9471427fbd8157bff37d870677763"
+      },
+      {
+        "path": "artifacts/film/app.sqlite3",
+        "bytes": 376832,
+        "sha256": "193ba3b5f0f4eac7f16fb6d377591670d1a4b1de9b1002fc6595dd5f24f494f9"
+      },
+      {
+        "path": "artifacts/handoff/film-capture.log",
+        "bytes": 1992,
+        "sha256": "8c345acf0007ca615701a3fb5aefb4180f84a6d1e8caed7b47e6d413ecd12739"
+      },
+      {
+        "path": "artifacts/handoff/database-runs-raw.json",
+        "bytes": 407726,
+        "sha256": "b161a8a5cc690ae33205db65db638fe43ffd6130fd235d2a8d84b2c61124b983"
+      },
+      {
+        "path": "artifacts/handoff/draft-failure-analysis.json",
+        "bytes": 6373,
+        "sha256": "601493cf3d5201c95f91e5258f34287f94c15f1de92acb0444b8a59f190bcebe"
+      },
+      {
+        "path": "artifacts/handoff/data-versions.json",
+        "bytes": 3205,
+        "sha256": "68e2f2f33a4bcba8898904e2b882338e61257415a30d3872657236ddee2d9a5c"
+      }
+    ]
+  },
+  "model_calls": 22,
+  "elapsed_seconds": null,
+  "failure": {
+    "stage": "draft_audit",
+    "run_id": "523e70f01d984f3fa9cc7d618e4fcb28",
+    "status": "failed",
+    "error": "模型拆解遗漏原句或新增了未知句子",
+    "manifest_firstFailure": {
+      "message": "locator.scrollIntoViewIfNeeded: Timeout 29992.168000000005ms exceeded.\nCall log:\n\u001b[2m  - attempting scroll into view action\u001b[22m\n\u001b[2m    2 × waiting for element to be stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying scroll into view action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying scroll into view action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    58 × waiting for element to be stable\u001b[22m\n\u001b[2m       - element is not visible\u001b[22m\n\u001b[2m     - retrying scroll into view action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n\n    at E:\\比赛\\xiangyi-youju-film-capture-fix-917d90b\\scripts\\capture-film-footage.cjs:231:40",
+      "at": "2026-10-14T15:30:18.496Z"
+    },
+    "classification": "模型输出违反逐分句完整性约束；采集脚本未先断言任务状态，随后等待隐藏结果区超时。不是模型服务连通或依赖安装问题。是否属于稳定缺陷或偶发波动留待5060判断，本轮不重跑。",
+    "expected_sentence_ids": [
+      "s1",
+      "s2",
+      "s3",
+      "s4",
+      "s5",
+      "s6",
+      "s7",
+      "s8"
+    ],
+    "actual_sentence_ids": [
+      "s1",
+      "s3",
+      "s4",
+      "s5",
+      "s6",
+      "s8"
+    ],
+    "missing_ids": [
+      "s2",
+      "s7"
+    ],
+    "secondary_capture_location": "scripts/capture-film-footage.cjs:231"
+  },
+  "checks": {
+    "repository": {
+      "passed": true,
+      "command": ".venv\\Scripts\\python.exe scripts/check_repository.py",
+      "maintained_files": 590,
+      "local_links": 294,
+      "exit_code": 0
+    },
+    "backend": {
+      "passed": true,
+      "command": ".venv\\Scripts\\python.exe -m pytest tests/backend -q",
+      "passed_count": 268,
+      "duration_seconds": 6.2,
+      "exit_code": 0,
+      "evidence_scope": "无模型程序测试，不是真实模型效果。"
+    },
+    "business_directories_identical_to_main": {
+      "passed": true,
+      "directories": [
+        "backend",
+        "frontend",
+        "data"
+      ],
+      "diff_empty": true,
+      "baseline_sha": "69cedc79d075370be7a4549552478d47ae8a63b5"
+    },
+    "data_versions": {
+      "passed": true,
+      "dirty_tracked_files": [],
+      "all_same_after_crlf_to_lf": true,
+      "count": 8
+    },
+    "film_capture": {
+      "passed": false,
+      "attempts": 1,
+      "exit_code": 1
+    },
+    "act2": {
+      "passed": true,
+      "audience": "student",
+      "teaching_passed": true,
+      "craft_minutes_before": 50,
+      "craft_minutes_after": 80,
+      "total_cents": 87400,
+      "local_service_cents": 58400,
+      "duration_minutes": 115
+    },
+    "act3": {
+      "passed": true,
+      "invalidated_status": "invalidated",
+      "refresh_run_id": "df9d82250c9247208d22fab262e8e76d",
+      "parent_id": "d171b3e2334546b4bd028852550a48c1",
+      "status_at_capture": "awaiting_review",
+      "final_database_status": "confirmed"
+    },
+    "draft_audit": {
+      "passed": false,
+      "status": "failed",
+      "claims_empty": true,
+      "plan_absent": true
+    },
+    "english_block": {
+      "executed": false,
+      "passed": null
+    },
+    "prohibited_standard_commands": {
+      "test_live_executed": false,
+      "test_modules_executed": false,
+      "test_demo_guide_executed": false
+    },
+    "integration": {
+      "eligible": false,
+      "main_unchanged": true,
+      "main_sha": "69cedc79d075370be7a4549552478d47ae8a63b5"
+    }
+  },
+  "evidence_paths": [
+    "artifacts/film-footage/manifest.json",
+    "artifacts/film-footage/take.webm",
+    "artifacts/film/app.sqlite3",
+    "artifacts/handoff/film-capture.log",
+    "artifacts/handoff/database-runs-raw.json",
+    "artifacts/handoff/draft-failure-analysis.json",
+    "artifacts/handoff/data-versions.json",
+    "artifacts/film-footage/run-a279b043d0bd48c8aaefdad8703a902c.json",
+    "artifacts/film-footage/run-d171b3e2334546b4bd028852550a48c1.json",
+    "artifacts/film-footage/run-df9d82250c9247208d22fab262e8e76d.json",
+    "artifacts/film-footage/run-523e70f01d984f3fa9cc7d618e4fcb28.json"
+  ],
+  "notes": "本次为双机交叉验证和宣传片真实本地采集，不是独立第三方评测。未运行上轮三条标准验收，未修改业务、规则、提示词、测试或方案。首次失败与四个已提交任务原样留存；第五个英语任务未提交，绝不补造run_id。原始文件保存在本隔离目录，结果内嵌manifest和失败模型原文供5060直接复核，不提交SQLite、依赖或失败视频。已成功片段不构成全片采集通过。"
+}
