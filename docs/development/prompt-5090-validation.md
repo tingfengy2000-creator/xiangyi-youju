@@ -74,7 +74,7 @@ $env:HOME_SCREENSHOT_DIR = "docs/assets/screenshots"; npm run test:demo-guide
    - 三句结论依次为：矛盾（“阳刻为主”属于丰宁，蔚县是阴刻为主）、支持（多色点染）、信息不足（每天开放无需预约）。
    - 轻、深套餐账目：784 元 / 90 分钟，1080 元 / 120 分钟。
 2. **`test:modules`（5 个场景）**
-   - 默认教学可交付，`scan_normalizations` 中有 `open_question_contract` 条目。
+   - 默认教学可交付（`teaching.check.passed=true`）。只有扫描把开放观察或提问判为 unsupported / insufficient 时，`scan_normalizations` 里才会出现 `open_question_contract` 条目；扫描直接判为 supported 或 no_new_fact 时没有这个字段，属于正常结果，不算未满足。
    - 冲突场景要求确认；采纳偏好后，手作分钟、总时长和账目确实变化。
    - 素材撤回后，旧确认和导出失效；刷新后，两版来自同一新方案。
    - 16 人对容量 8、1 位教师、1 间场地：给出具体冲突，不导出。
