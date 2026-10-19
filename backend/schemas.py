@@ -16,7 +16,7 @@ class Requirements(StrictModel):
     preferred_plan: Literal["light", "deep"] = "deep"
     note: str = Field(default="", max_length=1000)
     planning_mode: Literal["packages", "modules"] = "packages"
-    audience: Literal["general", "family"] = "general"
+    audience: Literal["general", "family", "student", "senior", "expert"] = "general"
     tea_preference: Literal["any", "include", "exclude"] = "any"
     min_craft_minutes: int = Field(default=0, ge=0, le=180, strict=True)
     teaching_enabled: bool = False
@@ -44,6 +44,13 @@ class Approval(StrictModel):
     plan_id: str = Field(pattern=r"^(light|deep|mod-[a-z0-9-]+)$", max_length=300)
 
 
+class DraftRequest(StrictModel):
+    region: str = Field(default="河北省蔚县", max_length=80)
+    project: str = Field(default="剪纸", max_length=50)
+    audience: Literal["general", "family", "student", "senior", "expert"] = "general"
+    minutes: Literal[3, 5, 10] = 5
+
+
 class UsageChange(StrictModel):
     usage_status: Literal["available", "withdrawn", "restricted"]
 
@@ -67,7 +74,7 @@ class Intent(StrictModel):
     require_tags: list[Literal["story", "craft", "tea", "observation", "sharing", "extension"]]
     min_craft_minutes: int | None = Field(ge=0, le=180)
     maximize_craft: bool
-    audience: Literal["general", "family"] | None
+    audience: Literal["general", "family", "student", "senior", "expert"] | None
     people: int | None = Field(ge=1, le=100)
     budget_per_person: float | None = Field(ge=0, le=10000, allow_inf_nan=False)
     available_minutes: int | None = Field(ge=1, le=720)
@@ -78,7 +85,7 @@ class NotePreferences(StrictModel):
     tea_preference: Literal["not_mentioned", "include", "exclude"] = Field(description="文字未谈茶歇为not_mentioned；明确需要为include；明确不要为exclude")
     min_craft_minutes: int | None = Field(ge=0, le=180, description="只提取明确的手作最低分钟；未提到为null")
     maximize_craft: bool = Field(description="明确要求更多手作时间才为true")
-    audience: Literal["general", "family"] | None
+    audience: Literal["general", "family", "student", "senior", "expert"] | None
     people: int | None = Field(ge=1, le=100)
     budget_per_person: float | None = Field(ge=0, le=10000, allow_inf_nan=False)
     available_minutes: int | None = Field(ge=1, le=720)

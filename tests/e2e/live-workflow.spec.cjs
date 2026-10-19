@@ -107,7 +107,7 @@ async function additionalScenarios(page, context, previousId) {
     await page.locator('[data-material-id="mat-paper-garden"][data-state="withdrawn"]').click();
     assert((await withdrawalResponse).ok());
     restoreNeeded = true;
-    await page.waitForFunction(() => document.querySelector('#runtimeState')?.textContent.includes('结果失效'));
+    await page.waitForFunction(() => document.querySelector('#runtimeState')?.textContent.includes('需重新核验'));
     assert(await page.locator('#approveRun').isDisabled());
     assert(await page.locator('#exportVisitor').isDisabled());
     assert(await page.locator('#exportOrganizer').isDisabled());
@@ -255,17 +255,18 @@ async function additionalScenarios(page, context, previousId) {
       checks.push('三幕演示第一幕：填入主线案例（蔚县 · 剪纸 · 主线文案），焦点移到「核验并编排体验」并高亮');
       await page.locator('#demoGuideStudio [data-demo-fill="1"]').click();
       assert(await page.locator('#planner').evaluate(element => element.classList.contains('active')));
-      assert.equal(await page.locator('#requestNote').inputValue(), '不要茶歇，多留手作时间');
+      assert.equal(await page.locator('#audience').inputValue(), 'student');
+      assert.equal(await page.locator('#draftAudience').inputValue(), 'student');
       assert.equal(await page.locator('#planningMode').inputValue(), 'modules');
       assert.equal(await page.evaluate(() => document.activeElement?.id), 'runPlan');
       assert(await page.locator('#runPlan').evaluate(element => element.classList.contains('demo-target')));
       assert(!(await page.locator('#auditBtn').evaluate(element => element.classList.contains('demo-target'))));
-      checks.push('三幕演示第二幕：需求框写入“不要茶歇，多留手作时间”，编排方式为按需求组合活动模块，高亮重新编排按钮');
+      checks.push('三幕演示第二幕：体验对象换成“青少年学生”（工坊与编排页一致），编排方式为按需求组合活动模块，高亮重新编排按钮');
       await page.locator('#demoGuidePlanner [data-demo-fill="2"]').click();
-      const withdraw = page.locator('#materialList [data-material-id]').first();
-      assert.equal(await withdraw.getAttribute('data-state'), 'withdrawn');
-      assert(await withdraw.evaluate(element => element.classList.contains('demo-target') && document.activeElement === element));
-      checks.push('三幕演示第三幕：定位并高亮第一条素材的「撤回使用」，不代为点击');
+      const publish = page.locator('#materialList [data-publish-id]:not(:disabled)').first();
+      assert.equal(await publish.textContent(), '发布新版本');
+      assert(await publish.evaluate(element => element.classList.contains('demo-target') && document.activeElement === element));
+      checks.push('三幕演示第三幕：定位并高亮手艺人作品的「发布新版本」，不代为点击');
       await page.waitForTimeout(1500);
       assert.deepEqual(writes, { runs: 0, other: 0 }, '引导按钮不得发起提交、确认、导出或素材变更');
       assert.equal(await page.locator('.demo-step.done').count(), 0, '模型不可用时三步都不能显示 ✓');
@@ -284,6 +285,20 @@ async function additionalScenarios(page, context, previousId) {
       assert.equal(await page.locator('.demo-step.done').count(), 0, '真实运行失败后仍不能显示 ✓');
       assert((await page.locator('#demoGuidePlanner .demo-hint').textContent()).includes('不显示 ✓'));
       checks.push('操作者自行点击重新编排后真实失败：仍为 model_error，三步均无 ✓，引导提示失败不替代结果');
+      // 按要求生成讲解词：模型不可用时不假装生成，改载部署预置草稿并标明来源。
+      await page.locator('[data-page="studio"]').click();
+      await page.locator('#draftAudience').selectOption('senior');
+      const draftResponse = page.waitForResponse(response => response.url().endsWith('/api/drafts') && response.request().method() === 'POST');
+      await page.locator('#generateDraft').click();
+      const draft = await (await draftResponse).json();
+      await page.waitForSelector('#draftOrigin:not([hidden])');
+      assert.equal(draft.origin, 'deployment_preset');
+      assert.equal(await page.locator('#draftOrigin').getAttribute('data-origin'), 'deployment_preset');
+      assert((await page.locator('#draftOrigin').textContent()).includes('部署时预置'));
+      assert((await page.locator('#draft').inputValue()).includes('初始图案多为花卉'));
+      assert.equal(await page.locator('#audience').inputValue(), 'senior');
+      assert.equal(writes.runs, 1, '生成草稿不得创建运行');
+      checks.push('按要求生成讲解词：模型不可用时如实提示，载入部署预置的“老年人”草稿并标明来源，体验对象同步为老年人，未创建运行');
       for (const width of [1440, 390]) {
         await page.setViewportSize({ width, height: width === 390 ? 844 : 1100 });
         for (const presentation of [false, true]) {

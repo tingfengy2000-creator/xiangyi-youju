@@ -8,7 +8,7 @@
   const all = s => [...document.querySelectorAll(s)];
   const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const money = cents => '¥' + (Number(cents || 0) / 100).toLocaleString('zh-CN', {maximumFractionDigits:2});
-  const statusNames = {running:'本地任务正在执行',queued:'任务等待执行',awaiting_review:'核验完成，等待人工确认',needs_confirmation:'文字与表单有冲突，等待您选择',needs_input:'条件需要调整或补充',model_error:'本地模型调用失败',failed:'任务执行失败',invalidated:'资料或素材已变化，结果失效',confirmed:'已人工确认，可导出'};
+  const statusNames = {running:'本地任务正在执行',queued:'任务等待执行',awaiting_review:'核验完成，等待人工确认',needs_confirmation:'文字与表单有冲突，等待您选择',needs_input:'条件需要调整或补充',model_error:'本地模型调用失败',failed:'任务执行失败',invalidated:'资料或作品有更新，需重新核验',confirmed:'已人工确认，可导出'};
   const claimNames = {supported:'来源支持',contradicted:'与来源矛盾',conflicting:'资料存在分歧',insufficient:'信息不足'};
   const terminal = new Set(['awaiting_review','needs_confirmation','needs_input','model_error','failed','invalidated','confirmed']);
   const samples = {
@@ -44,7 +44,7 @@
   function urlSafe(url) { try { const u = new URL(url); return ['http:','https:'].includes(u.protocol) ? u.href : '#'; } catch { return '#'; } }
   async function api(path, options = {}) {
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 20000);
+    const timeout = setTimeout(() => controller.abort(), options.timeoutMs || 20000);
     try {
       const response = await fetch(path, {...options, signal:controller.signal, headers:{'Content-Type':'application/json', ...(options.headers || {})}});
       const data = await response.json().catch(() => ({}));
@@ -54,6 +54,28 @@
       if (error.name === 'AbortError') throw new Error('本地服务响应超时。未使用预设结果替代。');
       throw error;
     } finally { clearTimeout(timeout); }
+  }
+  async function generateDraft() {
+    if (busy || activeAction) return;
+    const button = q('#generateDraft'), origin = q('#draftOrigin');
+    activeAction = true; updateActions(); button.disabled = true; button.textContent = '正在依据资料写草稿…';
+    try {
+      const body = {region:q('#region').value.trim(), project:q('#project').value.trim(), audience:q('#draftAudience').value, minutes:Number(q('#draftMinutes').value)};
+      const draft = await api('/api/drafts', {method:'POST', body:JSON.stringify(body), timeoutMs:180000});
+      q('#caseSelect').value = 'confusion'; activeCaseId = null; q('#publicCaseBanner').hidden = true;
+      q('#audience').value = draft.audience; q('#draft').value = draft.text; markDirty();
+      const count = (draft.source_ids || []).length;
+      origin.className = 'draft-origin ' + draft.origin;
+      origin.textContent = draft.origin === 'local_model'
+        ? `本地模型依据 ${count} 条资料，为「${draft.audience_label}」写成的草稿（${draft.model_calls} 次调用）。尚未核验：请点击「核验并编排体验」，逐句对照出处。`
+        : `本地模型这次没能生成（${draft.model_error}）。已载入部署时预置的「${draft.audience_label}」讲解词草稿，依据 ${count} 条资料写成；同样需要核验。`;
+      origin.hidden = false; origin.dataset.origin = draft.origin;
+      notify('讲解词草稿已填入，等待核验。');
+    } catch (error) {
+      origin.className = 'draft-origin failed'; origin.hidden = false; origin.textContent = '没有生成讲解词：' + errorMessage(error);
+    } finally {
+      activeAction = false; button.disabled = false; button.textContent = '按要求生成讲解词 ↗'; updateActions();
+    }
   }
   function errorMessage(error) { return error instanceof Error ? error.message : typeof error === 'object' ? JSON.stringify(error) : String(error); }
   function acceptRun(run) {
@@ -84,6 +106,8 @@
     q('#draft').readOnly = false; q('#draft').maxLength = 1800; q('#draft').value = samples.confusion;
     q('#draft').previousElementSibling.innerHTML = '待核验文案 <span>可现场修改，重新运行后生效</span>';
     q('#draft').previousElementSibling.insertAdjacentHTML('beforebegin', `<div class="form-pair"><label for="region">讲解地域<input id="region" value="河北省蔚县" maxlength="80"></label><label for="project">非遗项目<input id="project" value="剪纸" maxlength="50"></label></div>`);
+    // 按简单要求生成讲解词：本地模型只转述资料摘录，草稿仍需逐句核验后才能使用。
+    q('#region').closest('.form-pair').insertAdjacentHTML('afterend', `<div class="draft-generator" id="draftGenerator"><div class="draft-generator-head"><strong>还没有讲解词？</strong><span>选好讲给谁、讲多久，系统只依据已收录的官方资料写一版草稿。</span></div><div class="form-pair"><label for="draftAudience">讲给谁<select id="draftAudience"><option value="general">普通游客</option><option value="family">亲子家庭</option><option value="student">青少年学生</option><option value="senior">老年人</option><option value="expert">专业爱好者</option></select></label><label for="draftMinutes">讲多久<select id="draftMinutes"><option value="3">约 3 分钟</option><option value="5" selected>约 5 分钟</option><option value="10">约 10 分钟</option></select></label></div><button class="text-link draft-generate" id="generateDraft" type="button">按要求生成讲解词 ↗</button><p class="draft-origin" id="draftOrigin" hidden></p></div>`);
     q('#draft').insertAdjacentHTML('beforebegin', `<section class="public-case-banner" id="publicCaseBanner" hidden><div class="eyebrow">PUBLIC CASE · 公开活动案例</div><h3>金山区剪纸小夜灯 · 公告重建</h3><p>把一则政府活动公告转成可核验的体验方案。公告事实、团队演示配置和当前可预约状态分开标记。</p><div class="public-case-facts"><span>公告历史安排：2026-08-08 · 13:30—15:30</span><span>现场教学30′ + 手作90′</span><span>招募15人 · 免费（公告条件）</span></div><label class="case-assumption"><input type="checkbox" id="caseAssumptionCheck"><span>确认采用团队演示配置继续重建（8人、1位教师、1间场地、演示报价）；这不代表历史活动可预约，也不把90分钟解释为工艺最低时间。</span></label><a class="case-source-link" href="https://www.shanghai.gov.cn/nw17239/20260806/ab8799763c384e7eb1b254cebf1e0cf5.html" target="_blank" rel="noopener noreferrer">查看金山区人民政府原始公告 ↗</a></section>`);
     q('#draft').insertAdjacentHTML('afterend', `<label class="field-label" for="requestNote" style="margin-top:18px">这场体验，您有什么想法？ <span>与表单冲突时请您决定</span></label><textarea id="requestNote" maxlength="1000">为初次了解剪纸的游客安排文化讲解与入门手作。讲述清楚工艺特色，留出观察和提问的时间。</textarea><div class="form-pair"><label for="preferredPlan">套餐偏好<select id="preferredPlan"><option value="deep">优先深体验</option><option value="light">优先轻体验</option></select></label><label for="startTime">开始时间<input id="startTime" type="time" value="09:30"></label></div>`);
     q('#auditBtn').innerHTML = '核验并编排体验 <span class="arrow">→</span>';
@@ -100,7 +124,7 @@
     q('.controls .assumption').textContent = '演示经营配置与文化资料分别存储。报价读取服务端；人数、教师、场地和容量不得由模型擅自增加。单组接待，不假设并行扩容。';
     q('.scheme-help').textContent = '运行后显示服务端计算的候选方案；选择可行方案并人工确认，才可导出。';
     q('#routeCards').insertAdjacentHTML('afterend','<div class="guide-cards" id="guideCards"></div>');
-    q('#planner .banner').outerHTML = `<section class="approval-box"><div class="eyebrow">READY TO SHARE</div><h3>把一场体验，交到游客手中。</h3><p>先预览，再确认。游客版简洁易读，组织者版保留日程、账目与来源。演示数据不代表真实报价或经营许可。</p><div class="edition-grid"><article class="edition-card"><span class="edition-number">01</span><h4>游客版</h4><p>文化讲解 · 体验日程 · 参与须知</p><div><button class="text-link" id="previewVisitor" disabled>打开精美预览 ↗</button><button class="text-link" id="exportVisitor" disabled>下载 HTML ↓</button></div></article><article class="edition-card"><span class="edition-number">02</span><h4>组织者版</h4><p>完整账目 · 接待资源 · 核验与授权记录</p><div><button class="text-link" id="previewOrganizer" disabled>打开完整预览 ↗</button><button class="text-link" id="exportOrganizer" disabled>下载 HTML ↓</button></div></article></div><label class="approval-check"><input type="checkbox" id="approvalCheck"><span>我已核对本次讲解与选中方案，知悉演示经营数据及素材使用边界。</span></label><div class="export-actions"><button class="button" id="approveRun" disabled>确认当前方案 ✓</button></div><div class="approval-state" id="approvalState">完成真实运行后可预览；确认后才能下载。</div></section><section class="material-panel"><h3>文化使用边界 · 变化可追溯</h3><p>这个示例改变本项目原创视觉素材的可用状态，展示受影响关系。不是对传统文化或社区权利的授权声明。</p><div id="materialList"></div><div class="impact-trail" id="impactTrail">尚未发生素材使用状态变更。</div><button class="text-link" id="refreshRun" disabled>依据最新资料重新核验 ↗</button></section>`;
+    q('#planner .banner').outerHTML = `<section class="approval-box"><div class="eyebrow">READY TO SHARE</div><h3>把一场体验，交到游客手中。</h3><p>先预览，再确认。游客版简洁易读，组织者版保留日程、账目与来源。演示数据不代表真实报价或经营许可。</p><div class="edition-grid"><article class="edition-card"><span class="edition-number">01</span><h4>游客版</h4><p>文化讲解 · 体验日程 · 参与须知</p><div><button class="text-link" id="previewVisitor" disabled>打开精美预览 ↗</button><button class="text-link" id="exportVisitor" disabled>下载 HTML ↓</button></div></article><article class="edition-card"><span class="edition-number">02</span><h4>组织者版</h4><p>完整账目 · 接待资源 · 核验与授权记录</p><div><button class="text-link" id="previewOrganizer" disabled>打开完整预览 ↗</button><button class="text-link" id="exportOrganizer" disabled>下载 HTML ↓</button></div></article></div><label class="approval-check"><input type="checkbox" id="approvalCheck"><span>我已核对本次讲解与选中方案，知悉演示经营数据及素材使用边界。</span></label><div class="export-actions"><button class="button" id="approveRun" disabled>确认当前方案 ✓</button></div><div class="approval-state" id="approvalState">完成真实运行后可预览；确认后才能下载。</div></section><section class="material-panel"><h3>作品常新 · 手册跟着更新</h3><p>手艺人发布作品新版本后，系统找出引用旧版本的讲解卡和手册，重新核验后换上新版。作品条目与标价为演示，不代表真实传承人或真实售价；原创界面纹样可暂停使用，用于演示使用边界。</p><div id="materialList"></div><div class="impact-trail" id="impactTrail">尚未发生作品或素材更新。</div><button class="text-link" id="refreshRun" disabled>依据最新资料重新核验 ↗</button></section>`;
     q('#ledgerFormula').textContent = '报价均为演示测算；本地服务报酬为毛收入，不等于净利润。未包含交通、住宿和税费。';
     q('.ledger-foot').insertAdjacentHTML('beforebegin','<table class="ledger-table" id="ledgerTable"><thead><tr><th>项目</th><th>服务角色</th><th>金额</th></tr></thead><tbody></tbody></table>');
     q('#historySelect').addEventListener('change', async event => { if (event.target.value) await loadHistory(event.target.value); });
@@ -116,6 +140,7 @@
     q('#previewVisitor').addEventListener('click', () => previewBundle('visitor'));
     q('#previewOrganizer').addEventListener('click', () => previewBundle('organizer'));
     q('#refreshRun').addEventListener('click', refreshRun);
+    q('#generateDraft').addEventListener('click', generateDraft);
     setupPresentation();
     setupDemoGuide();
     // The main display is the existing Yuxian case. The public Jinshan case is
@@ -134,8 +159,11 @@
     });
     q('#requestNote').insertAdjacentHTML('afterend','<div class="note-examples"><span>试着提出：</span><button class="text-link" id="familyNote">亲子互动，不安排茶歇 ↗</button></div>');
     q('#familyNote').addEventListener('click',()=>{q('#requestNote').value='安排亲子互动，不安排茶歇，手作至少40分钟；讲解浅显易懂，留一个观察任务。';markDirty();notify('只填入了文字需求。运行后若与表单不同，将由您确认。');});
-    q('.controls .panel-body').insertAdjacentHTML('afterbegin',`<div class="control full"><label for="planningMode">编排方式</label><select id="planningMode" class="select"><option value="modules">按需求组合活动模块</option><option value="packages">经典轻 / 深体验套餐</option></select></div><div class="resource-grid experience-fields"><label for="audience">参与客群<select id="audience"><option value="general">普通游客</option><option value="family">亲子家庭</option></select></label><label for="teaPreference">茶歇安排<select id="teaPreference"><option value="any">灵活安排</option><option value="include">需要茶歇</option><option value="exclude">不含茶歇</option></select></label><label class="wide-field" for="minCraftMinutes">手作至少（分钟）<input id="minCraftMinutes" type="number" min="0" max="180" step="1" value="0"><small>0 表示不额外设定最低时长</small></label></div>`);
+    q('.controls .panel-body').insertAdjacentHTML('afterbegin',`<div class="control full"><label for="planningMode">编排方式</label><select id="planningMode" class="select"><option value="modules">按需求组合活动模块</option><option value="packages">经典轻 / 深体验套餐</option></select></div><div class="resource-grid experience-fields"><label for="audience">体验对象<select id="audience"><option value="general">普通游客</option><option value="family">亲子家庭</option><option value="student">青少年学生</option><option value="senior">老年人</option><option value="expert">专业爱好者</option></select></label><label for="teaPreference">茶歇安排<select id="teaPreference"><option value="any">灵活安排</option><option value="include">需要茶歇</option><option value="exclude">不含茶歇</option></select></label><label class="wide-field" for="minCraftMinutes">手作至少（分钟）<input id="minCraftMinutes" type="number" min="0" max="180" step="1" value="0"><small>0 表示不额外设定最低时长</small></label></div>`);
     for(const id of ['planningMode','audience','teaPreference','minCraftMinutes'])q('#'+id).addEventListener('input',()=>{syncPlanningMode();markDirty();});
+    // 讲给谁与编排页“体验对象”是同一个选择，两处保持一致。
+    q('#draftAudience').addEventListener('change', () => { q('#audience').value = q('#draftAudience').value; markDirty(); });
+    q('#audience').addEventListener('change', () => { q('#draftAudience').value = q('#audience').value; });
     syncPlanningMode();
     q('#runWarning').insertAdjacentHTML('afterend','<section class="requirement-conflicts" id="requirementConflictStudio" hidden></section>');
     q('#planner .plan-grid').insertAdjacentHTML('beforebegin','<section class="requirement-conflicts" id="requirementConflictPlanner" hidden></section>');
@@ -158,9 +186,10 @@
   }
   // Three-act demo guide: it only fills inputs and points at the next control.
   // It never submits, approves or exports; every ✓ is derived from a real run.
-  const demoNote='不要茶歇，多留手作时间';
-  const demoSteps=[{act:'第一幕 · 讲对',label:'填入主线案例'},{act:'第二幕 · 排好',label:'填入：'+demoNote},{act:'第三幕 · 守住',label:'定位到素材撤回'}];
+  const demoAudience='student',demoAudienceLabel='青少年学生',demoNote='讲清楚工艺特色，留出观察和提问的时间。';
+  const demoSteps=[{act:'第一幕 · 讲对',label:'填入主线案例'},{act:'第二幕 · 因人而讲',label:'换成：'+demoAudienceLabel},{act:'第三幕 · 作品常新',label:'定位到作品上新'}];
   const demoEvidence=[null,null,null];
+  const audienceLabels={general:'普通游客',family:'亲子家庭',student:'青少年学生',senior:'老年人',expert:'专业爱好者'};
   let demoOn=false,demoActive=0,demoHint='',demoReportedRun=null;
   function setupDemoGuide(){
     const bar=id=>`<section class="demo-guide" id="${id}" aria-label="三幕演示引导" hidden><div class="demo-guide-head"><b>演示引导 · 结果以真实运行为准</b><span>只填入与定位，不代为提交、确认或导出</span><button class="demo-guide-close" data-demo-close>收起 ×</button></div><ol class="demo-steps">${demoSteps.map((step,i)=>`<li class="demo-step" data-demo-step="${i}"><span class="demo-act">${esc(step.act)}</span><button class="demo-fill" data-demo-fill="${i}">${esc(step.label)}</button><span class="demo-check"></span></li>`).join('')}</ol><p class="demo-hint" aria-live="polite"></p></section>`;
@@ -199,12 +228,12 @@
       window.page('studio');q('#caseSelect').value='confusion';applyCasePreset('confusion');markDirty();
       pointDemo('#auditBtn','已填入主线案例（河北省蔚县 · 剪纸）。请操作者点击高亮的「核验并编排体验」；引导不会代为提交。');
     }else if(index===1){
-      window.page('planner');q('#requestNote').value=demoNote;q('#planningMode').value='modules';syncPlanningMode();markDirty();
-      pointDemo('#runPlan',`已在需求框写入「${demoNote}」，编排方式为“按需求组合活动模块”。请操作者点击高亮的「按当前条件重新编排」。${current?.plan?'':'提示：先完成第一幕，才有上一次方案可比较。'}`);
+      window.page('planner');q('#audience').value=demoAudience;q('#draftAudience').value=demoAudience;q('#requestNote').value=demoNote;q('#planningMode').value='modules';syncPlanningMode();markDirty();
+      pointDemo('#runPlan',`体验对象已换成「${demoAudienceLabel}」，编排方式为“按需求组合活动模块”。请操作者点击高亮的「按当前条件重新编排」，看活动和讲解怎样跟着对象变。${current?.plan?'':'提示：先完成第一幕，才有上一次方案可比较。'}`);
     }else{
       window.page('planner');
-      const button=q('#materialList [data-material-id][data-state="withdrawn"]')||q('#materialList [data-material-id]');
-      pointDemo(button,!button?'尚无素材目录，无法演示撤回。':button.dataset.state!=='withdrawn'?'素材当前均为撤回状态；如需重演，先点「恢复可用」。':current?'已定位素材使用边界。请操作者点击高亮的「撤回使用」，再点「依据最新资料重新核验」。':'已定位素材使用边界。尚无本次运行：先完成第一、二幕，撤回后才能看到旧确认失效。');
+      const button=q('#materialList [data-publish-id]:not(:disabled)');
+      pointDemo(button||q('#materialList'),!button?'作品都已是最新版；如需重演，请重启演示服务或换用新的演示数据库。':current?'已定位手艺人作品。请操作者点击高亮的「发布新版本」，再点「依据最新资料重新核验」，手册会换上新作品。':'已定位手艺人作品。尚无本次运行：先完成第一、二幕，再发布新版本，才能看到手册随作品更新。');
     }
     notify('引导只填入和定位，结果以真实运行为准。');
     renderDemoGuide();
@@ -214,9 +243,10 @@
     if(current&&!replay){
       const latch=(index,text)=>{if(demoEvidence[index])return;demoEvidence[index]={id:current.id,text};demoActive=Math.min(index+1,2);demoHint=index===2?'三幕均已由真实运行确认。确认与导出仍需人工操作。':`${demoSteps[index].act}已由真实运行确认，下一步：${demoSteps[index+1].act}。`;};
       if((current.claims||[]).some(claim=>Array.isArray(claim.evidence_ids)&&claim.status==='contradicted'))latch(0,'已判出与来源矛盾');
-      const before=current.comparison?.before?.craft_minutes,after=current.comparison?.after?.craft_minutes;
-      if(!['model_error','failed'].includes(current.status)&&Number.isFinite(before)&&Number.isFinite(after)&&after>before)latch(1,`手作 ${before} → ${after} 分钟`);
-      if(current.parent_id&&invalidatedRuns.has(current.parent_id)&&!executionPending(current)&&['awaiting_review','confirmed'].includes(current.status)&&(catalog?.materials||[]).some(material=>material.usage_status!=='available'))latch(2,'撤回后已重新核验');
+      const cmp=current.comparison,audience=current.effective_requirements?.audience||current.requirements?.audience;
+      const changed=cmp?.before&&cmp?.after&&JSON.stringify(cmp.before.module_ids)!==JSON.stringify(cmp.after.module_ids);
+      if(!['model_error','failed'].includes(current.status)&&!executionPending(current)&&audience&&audience!=='general'&&changed)latch(1,`面向${audienceLabels[audience]||audience}：${cmp.before.module_ids.length} → ${cmp.after.module_ids.length} 个环节，手作 ${cmp.before.craft_minutes} → ${cmp.after.craft_minutes} 分钟`);
+      if(current.parent_id&&invalidatedRuns.has(current.parent_id)&&!executionPending(current)&&['awaiting_review','confirmed'].includes(current.status)&&(catalog?.materials||[]).some(material=>(material.edition||1)>1))latch(2,'作品上新后，手册已更新');
       const notes={model_error:'本次真实运行失败，不显示 ✓；引导不会用预设结果替代。可先点「检查环境」再由操作者重新运行。',failed:'本次真实运行失败，不显示 ✓；引导不会用预设结果替代。',needs_confirmation:'文字需求与表单条件不一致：请操作者在页面卡片中选择采用哪组条件。',needs_input:'本次运行需要补充或调整条件，暂不显示 ✓。'};
       if(!busy&&notes[current.status]&&demoReportedRun!==current.id){demoReportedRun=current.id;demoHint=notes[current.status];}
     }
@@ -251,11 +281,11 @@
       panel.innerHTML=`<div class="eyebrow">YOUR CHOICE MATTERS</div><h2>您写下的想法，与表单有一点不同。</h2><p>先确认采用哪组条件，再继续编排。系统不会替您改人数、预算或活动要求。</p><div class="conflict-rows">${current.requirement_conflicts.map(item=>`<div class="conflict-row"><strong>${esc(item.label||item.field)}</strong><span><small>表单条件</small>${esc(conflictValue(item.field,item.form_value))}</span><span><small>文字需求</small>${esc(conflictValue(item.field,item.note_value))}</span><p>${esc(item.reason)}</p></div>`).join('')}</div><div class="conflict-actions"><button class="button secondary" data-resolve-requirements="form" ${busy||activeAction||dirty?'disabled':''}>按表单条件继续</button><button class="button" data-resolve-requirements="note" ${busy||activeAction||dirty?'disabled':''}>采纳文字里的条件 →</button></div><small>${dirty?'输入已变化，请先重新分析需求。':'采纳文字时，只更新上方明确列出的条件；教师、场地与报价保持锁定。'}</small>`;
     }
   }
-  function conflictValue(field,value){const labels={general:'普通游客',family:'亲子家庭',any:'灵活安排',include:'需要茶歇',exclude:'不含茶歇'};if(labels[value])return labels[value];return String(value)+(field==='budget_per_person'?' 元 / 人':['available_minutes','min_craft_minutes'].includes(field)?' 分钟':field==='people'?' 人':'');}
+  function conflictValue(field,value){const labels={general:'普通游客',family:'亲子家庭',student:'青少年学生',senior:'老年人',expert:'专业爱好者',any:'灵活安排',include:'需要茶歇',exclude:'不含茶歇'};if(labels[value])return labels[value];return String(value)+(field==='budget_per_person'?' 元 / 人':['available_minutes','min_craft_minutes'].includes(field)?' 分钟':field==='people'?' 人':'');}
   async function resolveRequirements(resolution){
     if(busy||activeAction||dirty||current?.status!=='needs_confirmation')return;
     if(resolution==='form'){await submit('form');return;}
-    const fields={people:['people',1,100],budget_per_person:['budget',0,10000],available_minutes:['minutes',1,720],min_craft_minutes:['minCraftMinutes',0,180],audience:['audience','general','family'],tea_preference:['teaPreference','any','include','exclude']};
+    const fields={people:['people',1,100],budget_per_person:['budget',0,10000],available_minutes:['minutes',1,720],min_craft_minutes:['minCraftMinutes',0,180],audience:['audience','general','family','student','senior','expert'],tea_preference:['teaPreference','any','include','exclude']};
     const updates=[];
     for(const conflict of current.requirement_conflicts||[]){const rule=fields[conflict.field];if(!rule){showWarning('有无法直接写入表单的冲突，请手动核对。');return;}let value=conflict.note_value;if(typeof rule[1]==='number'){value=Number(value);if(!Number.isFinite(value)||value<rule[1]||value>rule[2]||(conflict.field!=='budget_per_person'&&!Number.isInteger(value))){showWarning('文字中的数值超出允许范围，请手动修正后重新运行。');return;}}else if(!rule.slice(1).includes(value)){showWarning('文字条件不能直接映射到表单，请手动选择。');return;}updates.push([rule[0],value]);}
     updates.forEach(([id,value])=>setInputValue(id,value));updateValues();await submit('ask');
@@ -311,7 +341,7 @@
     closePreview();renderRequirementConflicts();
     stopWatch(); showWarning(''); clearPlan(); q('#auditResult').innerHTML = ''; q('#auditResult').hidden = true; q('#auditEmpty').hidden = false;
     q('#auditEmpty p').textContent = '请求已发送。下方执行记录来自真实服务端事件，模型失败时会保留失败原因。'; q('#auditBadge').textContent = '等待模型结果';
-    q('#eventList').innerHTML = ''; q('#approvalCheck').checked = false; q('#impactTrail').textContent = '尚未发生素材使用状态变更。'; updateActions();
+    q('#eventList').innerHTML = ''; q('#approvalCheck').checked = false; q('#impactTrail').textContent = '尚未发生作品或素材更新。'; updateActions();
     try { const result = await api('/api/runs',{method:'POST',body:JSON.stringify(body)}); current = {id:result.id,status:result.status || 'running',events:[],claims:[],model_calls:0}; setBanner(); await startWatch(result.id); }
     catch (error) { busy = false; current = null; showWarning('任务未成功提交：' + errorMessage(error)); q('#auditBadge').textContent = '服务故障'; updateActions(); setBanner(); }
   }
@@ -400,7 +430,7 @@
   function renderComparison() {
     const comparison=current?.comparison,panel=q('#planComparison');panel.hidden=!comparison?.before||!comparison?.after;if(panel.hidden)return;
     const craftChange=Number.isFinite(comparison.before.craft_minutes)&&Number.isFinite(comparison.after.craft_minutes)?`<div class="comparison-focus"><span>手作时间</span><strong><b data-craft-before>${esc(comparison.before.craft_minutes)}</b><i>→</i><b data-craft-after>${esc(comparison.after.craft_minutes)}</b><small>分钟</small></strong><p>总时长与手作时长分别复算，金额与必要教学时间来自经营配置。</p></div>`:'';
-    panel.innerHTML=`<div class="eyebrow">WHAT CHANGED</div><h3>改一句话，方案真变化。</h3>${craftChange}<div class="comparison-versions"><div><small>上一次方案</small><strong>${esc(comparison.before.title)}</strong><span>${money(comparison.before.total_cents)} · 全程 ${esc(comparison.before.duration_minutes)} 分钟</span></div><span class="comparison-arrow">→</span><div><small>${current.approval?'本次已确认方案':'本次程序推荐'}</small><strong>${esc(comparison.after.title)}</strong><span>${money(comparison.after.total_cents)} · 全程 ${esc(comparison.after.duration_minutes)} 分钟</span></div></div><ul>${(comparison.changes||[]).map(change=>`<li>${esc(change)}</li>`).join('')}</ul><small>${dirty||current.status==='invalidated'?'输入或关联资料已变化，以下保留上次比较记录；重新执行后再确认。':'此比较对应本次程序推荐或已确认的方案；切换其他候选后，确认时会重新记录比较。'}</small>`;
+    panel.innerHTML=`<div class="eyebrow">WHAT CHANGED</div><h3>${(()=>{const aud=current?.effective_requirements?.audience||current?.requirements?.audience;return aud&&aud!=='general'?`面向${esc(audienceLabels[aud]||aud)}，方案真变化。`:'条件一变，方案真变化。';})()}</h3>${craftChange}<div class="comparison-versions"><div><small>上一次方案</small><strong>${esc(comparison.before.title)}</strong><span>${money(comparison.before.total_cents)} · 全程 ${esc(comparison.before.duration_minutes)} 分钟</span></div><span class="comparison-arrow">→</span><div><small>${current.approval?'本次已确认方案':'本次程序推荐'}</small><strong>${esc(comparison.after.title)}</strong><span>${money(comparison.after.total_cents)} · 全程 ${esc(comparison.after.duration_minutes)} 分钟</span></div></div><ul>${(comparison.changes||[]).map(change=>`<li>${esc(change)}</li>`).join('')}</ul><small>${dirty||current.status==='invalidated'?'输入或关联资料已变化，以下保留上次比较记录；重新执行后再确认。':'此比较对应本次程序推荐或已确认的方案；切换其他候选后，确认时会重新记录比较。'}</small>`;
   }
   function renderTeaching() {
     const teaching=current?.teaching,panel=q('#teachingPanel');panel.hidden=!teaching;if(!teaching)return;
@@ -408,7 +438,7 @@
     panel.innerHTML=`<div class="teaching-heading"><div><div class="eyebrow">CULTURE, MADE APPROACHABLE</div><h3>${teaching.audience==='family'?'让孩子看见剪纸里的巧思。':'让一段讲解，有据，也有趣。'}</h3></div><span class="claim-status ${teaching.check?.passed?'supported':'insufficient'}">${teaching.check?.passed?'讲解引用已校验':'教学内容待核对'}</span></div><div class="teaching-script">${(teaching.short_script||[]).map((item,i)=>`<article><span>${String(i+1).padStart(2,'0')}</span><div><p>${esc(item.text)}</p><div class="teaching-refs">${refs(item)}</div></div></article>`).join('')}</div><div class="teaching-tasks">${[['观察任务',teaching.observation_task],['互动提问',teaching.interaction_question]].filter(([,item])=>item).map(([label,item])=>`<article><span>${label}</span><p>${esc(item.text)}</p>${refs(item)}</article>`).join('')}</div><p class="teaching-label">${esc(teaching.creative_label||'观察任务与互动提问属于教学创意，不作为新增文化事实。')}</p>`;
     if(dirty||current.status==='invalidated'){
       const previous=panel.innerHTML.replace('讲解引用已校验','上次运行的核验记录');
-      panel.innerHTML=`<div class="teaching-expired"><strong>${current.status==='invalidated'?'旧版教学包已失效':'输入已变化，教学包等待重编'}</strong><p>以下仅为历史内容，不能用于当前讲解、预览或导出。重新核验后将按最新资料与素材使用边界生成。</p></div><details class="guide-details"><summary>仅查看上一次教学内容</summary>${previous}</details>`;
+      panel.innerHTML=`<div class="teaching-expired"><strong>${current.status==='invalidated'?'资料或作品已更新，旧版教学包待更新':'输入已变化，教学包等待重编'}</strong><p>以下仅为历史内容，不能用于当前讲解、预览或导出。重新核验后将按最新资料与素材使用边界生成。</p></div><details class="guide-details"><summary>仅查看上一次教学内容</summary>${previous}</details>`;
     }
   }
   function renderPlan() {
@@ -446,13 +476,13 @@
     if (current.status==='needs_confirmation')showWarning('需求分析已完成，等待您明确采用哪组条件。');
     else if (current.status==='needs_input')showWarning((constraintRefusal()?'接待校验结论：':'待核对事项：')+errorMessage(current.error));
     else if (current.error) showWarning('真实运行未完成：'+errorMessage(current.error));
-    else if(current.status==='invalidated') showWarning('关联资料或素材使用状态已变化。此结果已失效，重新核验后才可确认与导出。');
+    else if(current.status==='invalidated') showWarning('关联资料或作品已更新。这一版结果不再对应最新内容，重新核验后才可确认与导出。');
     else if(!dirty) showWarning('');
     renderEvents();renderClaims();renderPlan();renderRequirementConflicts();renderImpact();setBanner();updateActions();
   }
   function updateActions() {
     if(mode!=='live')return;
-    q('#auditBtn').disabled=busy||activeAction;q('#runPlan').disabled=busy||activeAction;
+    q('#auditBtn').disabled=busy||activeAction;q('#runPlan').disabled=busy||activeAction;if(q('#generateDraft'))q('#generateDraft').disabled=busy||activeAction;
     q('#auditBtn').innerHTML=busy?'正在执行本地任务…':'核验并编排体验 <span class="arrow">→</span>';
     q('#runPlan').textContent=busy?'正在执行本地任务…':'按当前条件重新编排 →';
     const previewable=previewReady(),valid=previewable&&!replay,confirmed=downloadReady();
@@ -516,20 +546,32 @@
   }
   function renderMaterials() {
     const materials=catalog?.materials||[];
-    q('#materialList').innerHTML=materials.map(material=>`<div class="material-action"><div class="material-name">${esc(material.title||material.id)}<small>${material.usage_status==='available'?'当前可用':'当前不可用'} · 版本 ${esc(material.version||1)}</small></div><button data-material-id="${esc(material.id)}" data-state="${material.usage_status==='available'?'withdrawn':'available'}">${material.usage_status==='available'?'撤回使用':'恢复可用'}</button></div>`).join('')||'<p class="small-note">尚无素材目录。</p>';
+    q('#materialList').innerHTML=materials.map(material=>{
+      if(material.source_type==='craftsperson_demo'){
+        const edition=material.edition||1,next=(material.editions||[]).length>edition,price=material.product?.for_sale?` · 演示标价 ${money(material.product.price_cents)}`:'';
+        return `<div class="material-action work"><div class="material-name">${esc(material.title||material.id)}<small>手艺人作品 · 第 ${esc(edition)} 版${price}</small></div><button data-publish-id="${esc(material.id)}" ${next?'':'disabled'}>${next?'发布新版本':'已是最新版'}</button></div>`;
+      }
+      return `<div class="material-action"><div class="material-name">${esc(material.title||material.id)}<small>${material.usage_status==='available'?'当前可用':'当前不可用'} · 版本 ${esc(material.version||1)}</small></div><button data-material-id="${esc(material.id)}" data-state="${material.usage_status==='available'?'withdrawn':'available'}">${material.usage_status==='available'?'暂停使用':'恢复可用'}</button></div>`;
+    }).join('')||'<p class="small-note">尚无素材目录。</p>';
     all('[data-material-id]').forEach(button=>button.addEventListener('click',()=>changeMaterial(button.dataset.materialId,button.dataset.state)));
+    all('[data-publish-id]').forEach(button=>button.addEventListener('click',()=>publishWork(button.dataset.publishId)));
   }
   function renderImpact() {
     const raw=current?.affected?.length ? current.affected : lastImpact;
     const affected=Array.isArray(raw)?raw:(raw?.affected_runs || (raw ? [raw] : []));
-    if(!affected.length){if(lastImpact)q('#impactTrail').textContent='使用状态已更新；服务端未找到需要失效的已保存内容。';return;}
+    if(!affected.length){if(lastImpact)q('#impactTrail').textContent='已更新；服务端未找到引用旧版本的已保存内容。';return;}
     q('#impactTrail').innerHTML='<strong>已定位受影响的关联内容</strong>'+affected.map(item=>`<p>来源 / 素材：<code>${esc(item.record_id||item.source_id||item.material_id||lastImpact?.record?.id||'使用状态变更')}</code><br>陈述：${esc((item.claim_ids||[]).join('、')||(item.kind==='materials'?'文本事实不受此素材变更影响':'当前尚未关联具体陈述'))}<br>讲解卡：${esc((item.card_ids||[]).join('、')||'见关联记录')} → 体验方案：${esc((item.plan_ids||[]).join('、')||'关联方案需重验')}<br>运行记录：<code>${esc(item.id||item.run_id||current?.id)}</code></p>`).join('');
   }
   async function changeMaterial(id,state) {
     if(activeAction||busy)return;closePreview();activeAction=true;updateActions();let changed=false;
     try {const result=await api('/api/materials/'+encodeURIComponent(id),{method:'PATCH',body:JSON.stringify({usage_status:state})});lastImpact=result;catalog=await api('/api/catalog');renderMaterials();if(current)acceptRun(await api('/api/runs/'+encodeURIComponent(current.id)));q('#approvalCheck').checked=false;renderRun();renderImpact();notify('素材使用状态已更新；关联结果由服务端重新标记。');changed=true;}
     catch(error){showWarning('素材状态未更新：'+errorMessage(error));}finally{activeAction=false;updateActions();}
-    if(changed&&demoOn&&state==='withdrawn'&&current){demoActive=2;pointDemo('#refreshRun',current.status==='invalidated'?'素材已撤回，旧确认与导出随之失效。请操作者点击高亮的「依据最新资料重新核验」。':'素材已撤回，但服务端未把当前运行标为失效，第三幕不会显示 ✓。请如实说明，并检查当前方案是否用到这幅素材。');renderDemoGuide();}
+  }
+  async function publishWork(id) {
+    if(activeAction||busy)return;closePreview();activeAction=true;updateActions();let changed=false;
+    try {const result=await api('/api/materials/'+encodeURIComponent(id)+'/publish',{method:'POST',body:'{}'});lastImpact=result;catalog=await api('/api/catalog');renderMaterials();if(current)acceptRun(await api('/api/runs/'+encodeURIComponent(current.id)));q('#approvalCheck').checked=false;renderRun();renderImpact();notify(`${result.record.title} 已发布第 ${result.record.edition} 版；引用旧版本的手册需要更新。`);changed=true;}
+    catch(error){showWarning('作品未更新：'+errorMessage(error));}finally{activeAction=false;updateActions();}
+    if(changed&&demoOn&&current){demoActive=2;pointDemo('#refreshRun',current.status==='invalidated'?'作品已发布新版本，这一版手册不再对应最新作品。请操作者点击高亮的「依据最新资料重新核验」，生成新版手册。':'作品已更新，但当前方案没有引用这件作品，第三幕不会显示 ✓。请如实说明。');renderDemoGuide();}
   }
   async function refreshRun() {
     if(!current||busy||activeAction)return;

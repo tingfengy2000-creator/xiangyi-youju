@@ -547,3 +547,79 @@ def test_unsupported_premise_inside_observation_template_blocks_delivery():
     result = generate_teaching(FakeLLM(draft_change=draft, scan_change=scan), make_run())
     assert result["check"]["passed"] is False
     assert not result["check"].get("scan_normalizations")
+
+
+# 5090 在 7af0917 第二幕（青少年学生）真实运行中，模型在“找一找”和“是否有”之间加了“剪纸中”，
+# 扫描把这句开放观察标成 unsupported，同时理由写“不涉及文化事实前提”。
+OBSERVATION_5090_STUDENT = "请观察负责人提供且允许使用的示例，找一找剪纸中是否有阴刻或阳刻的痕迹。"
+
+
+@pytest.mark.parametrize("item_id, text", [
+    ("observation", OBSERVATION_5090_STUDENT),
+    ("observation", "请观察负责人提供且允许使用的示例，看看是否有阴刻或多色点染的细节。"),
+    ("observation", "同学们，请仔细观察负责人提供且允许使用的示例，找一找图案中有没有多种颜色。"),
+    ("observation", "请和孩子一起观察负责人提供且允许使用的示例，看一看上面是否有点染的颜色。"),
+    ("observation", "请您慢慢观察负责人提供且允许使用的示例，留意其中是否有阴刻的线条。"),
+    ("observation", "请大家认真观察负责人提供且允许使用的剪纸作品示例，比一比示例里有没有颜色的过渡。"),
+    ("observation", "请观察负责人提供且允许使用的示例中是否有阴刻细节？"),
+    ("observation", "请观察负责人提供且允许使用的示例。"),
+    ("observation", "请观察负责人提供且允许使用的示例，说一说你注意到的细节。"),
+    ("interaction", "同学们，你们更喜欢阴刻还是多色点染？"),
+    ("interaction", "您最想了解哪一种剪纸的制作方式？"),
+    ("interaction", "你和孩子更喜欢哪一种颜色？"),
+    ("interaction", "你会选择哪种颜色来点染自己的作品？"),
+    ("interaction", "大家最想尝试哪一种剪纸方式？"),
+])
+def test_open_question_variants_from_audience_tone_are_normalized(item_id, text):
+    teaching = {"observation_task": {"id": "observation", "text": text if item_id == "observation" else "略"},
+                "interaction_question": {"id": "interaction", "text": text if item_id == "interaction" else "略"},
+                "short_script": []}
+    row = {"item_id": item_id, "checked_text": text, "status": "unsupported",
+           "cultural_premises": ["示例中可能包含阴刻或阳刻痕迹"], "activity_scope_passed": True,
+           "claim_ids": ["c1"], "source_ids": ["src-yuxian-technique"], "reason": "该任务属于开放观察，不涉及文化事实前提。"}
+    rows, changes = normalize_open_question_scan([row], teaching)
+    assert rows[0]["status"] == "no_new_fact" and len(changes) == 1
+
+
+@pytest.mark.parametrize("item_id, text", [
+    ("observation", "同学们，请观察负责人提供且允许使用的示例，找一找剪纸中以阳刻为主的线条。"),
+    ("observation", "请仔细观察负责人提供且允许使用的示例，找出剪纸中的阴刻线条。"),
+    ("observation", "请观察负责人提供且允许使用的示例，剪纸中是否有阴刻？蔚县剪纸以阴刻为主。"),
+    ("observation", "请观察负责人提供且允许使用的示例，找一找剪纸中是否有阴刻，它是蔚县独有的技法。"),
+    ("observation", "请观察负责人提供且允许使用的示例，看看剪纸中是否有传说中避邪的红色。"),
+    ("observation", "请观察负责人提供且允许使用的示例，看看示例中的镂空部分。"),
+    ("observation", "请观察眼前这幅蔚县窗花，找一找其中是否有阴刻线条。"),
+    ("interaction", "同学们，你们知道蔚县剪纸起源于哪个朝代吗？"),
+    ("interaction", "您更喜欢这种相传已久的技法吗？"),
+    ("interaction", "你最想了解为什么蔚县剪纸以阴刻为主？"),
+    ("interaction", "同学们，蔚县剪纸以阴刻为主，你们更喜欢哪一种？"),
+])
+def test_open_question_variants_with_assertions_still_fail_closed(item_id, text):
+    teaching = {"observation_task": {"id": "observation", "text": text if item_id == "observation" else "略"},
+                "interaction_question": {"id": "interaction", "text": text if item_id == "interaction" else "略"},
+                "short_script": []}
+    row = {"item_id": item_id, "checked_text": text, "status": "unsupported", "cultural_premises": ["前提"],
+           "activity_scope_passed": True, "claim_ids": [], "source_ids": [], "reason": "没有来源支持"}
+    rows, changes = normalize_open_question_scan([row], teaching)
+    assert rows[0]["status"] == "unsupported" and not changes
+
+
+def test_student_teaching_with_5090_observation_passes_end_to_end():
+    def draft(value):
+        value["observation_task"]["text"] = OBSERVATION_5090_STUDENT
+        value["interaction_question"]["text"] = "你最想了解哪一种剪纸的制作方式？"
+        return value
+
+    def scan(value):
+        for row in value["items"]:
+            if row["item_id"] == "observation":
+                row.update(status="unsupported", cultural_premises=["允许观察示例", "示例中可能包含阴刻或阳刻痕迹"],
+                           reason="该任务属于开放观察，不涉及文化事实前提。")
+        return value
+
+    llm = FakeLLM(draft_change=draft, scan_change=scan)
+    result = generate_teaching(llm, make_run("student"))
+    assert result["check"]["passed"] is True, result["check"]["issues"]
+    assert result["audience"] == "student"
+    assert [row["item_id"] for row in result["check"]["scan_normalizations"]] == ["observation"]
+    assert len(llm.calls) == 2

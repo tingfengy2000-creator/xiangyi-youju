@@ -210,7 +210,7 @@ const waitToast = page => page.waitForFunction(() => {
       assert(revised.teaching.short_script.every(item => item.claim_ids.length && item.source_ids.length));
       await capturePages('family-revised');
       await page.locator('[data-page="planner"]').click();
-      assert((await page.locator('#planComparison').textContent()).includes('改一句话，方案真变化'));
+      assert((await page.locator('#planComparison').textContent()).includes('方案真变化'));
       assert.equal(await page.locator('[data-craft-before]').textContent(), String(revised.comparison.before.craft_minutes));
       assert.equal(await page.locator('[data-craft-after]').textContent(), String(revised.comparison.after.craft_minutes));
       assert((await page.locator('#effectiveConditions').textContent()).includes('手作最低时长与全程上限分别校验'));
@@ -229,7 +229,7 @@ const waitToast = page => page.waitForFunction(() => {
 
       await page.locator('[data-material-id="mat-paper-garden"][data-state="withdrawn"]').click();
       restoreMaterial = true;
-      await page.waitForFunction(() => document.querySelector('#runtimeState').textContent.includes('结果失效'));
+      await page.waitForFunction(() => document.querySelector('#runtimeState').textContent.includes('需重新核验'));
       for (const id of ['previewVisitor', 'previewOrganizer', 'exportVisitor', 'exportOrganizer', 'approveRun']) assert(await page.locator('#' + id).isDisabled());
       for (const audience of ['visitor', 'organizer']) {
         assert.equal((await page.request.get(`${base}/api/runs/${revised.id}/export?audience=${audience}`)).status(), 409);

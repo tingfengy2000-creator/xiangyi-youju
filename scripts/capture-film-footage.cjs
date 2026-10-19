@@ -5,8 +5,9 @@
  *       manifest.json 的 marks 记下每个节拍在视频里的秒数，剪辑时按秒切段；另有每次运行的原始 JSON。
  *
  * 规则与 test:demo-guide 相同：每个真实任务只提交一次；任何一步失败立即停止，不重试；
- * 撤回的素材在结束时恢复为可用。本脚本只采集画面，不判定验收；验收以 test:demo-guide 为准。
- * 采集用“投屏大字”模式、关闭三幕引导条，由脚本模拟操作者输入和点击（打字有可见节奏）。
+ * 第三幕发布作品新版本不可撤销，每次采集都要用新的空数据库。本脚本只采集画面，不判定验收；验收以 test:demo-guide 为准。
+ * 采集用“投屏大字”模式、关闭三幕引导条，由脚本模拟操作者操作：第二幕切换体验对象，第三幕发布作品新版本，
+ * 另外采集“按要求生成讲解词”并核验一次，以及“需要安排英语讲解”被拦下。
  */
 const { chromium } = require('playwright');
 const { browserOptions } = require('./browser-options.cjs');
@@ -21,7 +22,7 @@ fs.rmSync(output, { recursive: true, force: true });
 fs.mkdirSync(output, { recursive: true });
 
 const manifest = { at: new Date().toISOString(), base, purpose: '宣传片素材：真实本地运行画面', viewport: '1920x1080', stillScale: 2, stills: [], marks: [], runs: {}, missing: [], firstFailure: null, passed: false };
-const NOTE = '不要茶歇，多留手作时间';
+const NOTE = '讲清楚工艺特色，留出观察和提问的时间。';
 const RUN_TIMEOUT = 10 * 60 * 1000;
 const save = () => fs.writeFileSync(path.join(output, 'manifest.json'), JSON.stringify(manifest, null, 2));
 async function getJson(page, url) { const r = await page.request.get(base + url); assert(r.ok(), `${url} → ${r.status()}`); return r.json(); }
@@ -73,7 +74,7 @@ async function pause(page, ms) { await page.waitForTimeout(ms); }
 (async () => {
   const browser = await chromium.launch(browserOptions('msedge'));
   const context = await browser.newContext({ viewport: { width: 1920, height: 1080 }, deviceScaleFactor: 2, recordVideo: { dir: output, size: { width: 1920, height: 1080 } } });
-  let page = null, withdrawnId = null;
+  let page = null;
   try {
     const probe = await context.request.get(base + '/api/health');
     const health = await probe.json();
@@ -81,6 +82,8 @@ async function pause(page, ms) { await page.waitForTimeout(ms); }
     const catalog = await (await context.request.get(base + '/api/catalog')).json();
     const notAvailable = (catalog.materials || []).filter(m => m.usage_status !== 'available').map(m => m.id);
     assert.deepEqual(notAvailable, [], '开始前有素材不是可用状态：' + notAvailable.join(','));
+    const published = (catalog.materials || []).filter(m => (m.edition || 1) > 1).map(m => m.id);
+    assert.deepEqual(published, [], '作品已发布过新版本，请换用新的空数据库：' + published.join(','));
     manifest.model = health.model;
 
     page = await context.newPage();
@@ -118,49 +121,59 @@ async function pause(page, ms) { await page.waitForTimeout(ms); }
     await still(page, 's07-audit-result', '#auditResult', '逐句核验与修订');
     await still(page, 's08-evidence', '#auditResult .evidence-block', '出处原文卡');
 
-    // Act two: the operator types one sentence.
-    await page.locator('#requestNote').scrollIntoViewIfNeeded();
-    await page.locator('#requestNote').click();
-    await page.locator('#requestNote').fill('');
-    mark('act2-typing', '开始输入一句话');
-    await page.keyboard.type(NOTE, { delay: 140 });
-    await pause(page, 1200);
-    await still(page, 's10-note-typed', '#requestNote', '一句话需求');
+    // Act two: same heritage, a different audience. The operator switches 体验对象 on screen.
+    // 文字需求框在工坊页：必须先在工坊页换成与对象无关的中性需求（与三幕引导同一句），
+    // 否则默认需求里的“游客”会被模型读成普通游客，与表单上的青少年学生冲突（5090 首次失败，370f7db）。
+    await page.locator('#requestNote').fill(NOTE);
+    assert.equal(await page.locator('#requestNote').inputValue(), NOTE, '第二幕前文字需求应换成中性需求');
     await page.locator('[data-page="planner"]').first().click();
     await page.locator('#planningMode').selectOption('modules');
-    await pause(page, 1200);
+    await page.locator('#audience').scrollIntoViewIfNeeded(); await pause(page, 1200);
+    await still(page, 's10-audience-before', '#audience', '体验对象：普通游客');
+    mark('act2-audience', '体验对象从普通游客换成青少年学生');
+    await page.locator('#audience').selectOption('student');
+    await page.locator('#audience').dispatchEvent('input');
+    await pause(page, 1500);
+    await still(page, 's10-audience-after', '#audience', '体验对象：青少年学生');
     await page.locator('#runPlan').scrollIntoViewIfNeeded(); await page.locator('#runPlan').hover(); await pause(page, 800);
+    assert.equal(await page.locator('#audience').inputValue(), 'student');
+    assert.equal(await page.locator('#planningMode').inputValue(), 'modules');
+    assert.equal(await page.locator('#requestNote').inputValue(), NOTE, '提交第二幕前文字需求被改动');
     mark('act2-click', '点击“按当前条件重新编排”');
     const act2 = await submit(page, '#runPlan', '/api/runs');
     const run2 = await waitRun(page, act2);
     assert.equal(run2.status, 'awaiting_review', '第二幕：' + run2.status + ' ' + (run2.error || ''));
     mark('act2-result', '方案对比出现');
+    manifest.act2 = { audience: (run2.effective_requirements || run2.requirements).audience, teaching_audience: run2.teaching?.audience,
+                      teaching_passed: run2.teaching?.check?.passed, teaching_script: (run2.teaching?.short_script || []).map(item => item.text),
+                      observation: run2.teaching?.observation_task?.text, question: run2.teaching?.interaction_question?.text };
     await page.locator('#planComparison').scrollIntoViewIfNeeded(); await pause(page, 3000);
     await still(page, 's11-planner-viewport', null, '编排结果全屏');
-    await still(page, 's12-comparison', '#planComparison', '改一句话，方案真变化');
+    await still(page, 's12-comparison', '#planComparison', '换个对象，方案真变化');
     await page.locator('.ledger-details').first().evaluate(d => { d.open = true; }).catch(() => {});
     await pause(page, 600);
     await still(page, 's13-ledger', '.ledger-details', '账目：本地服务报酬、材料、组织');
-    await still(page, 's09-teaching', '#teachingPanel', '分众教学内容');
+    await still(page, 's09-teaching', '#teachingPanel', '面向青少年学生的讲解与提问');
     await still(page, 's14-route', '#routeCards', '日程');
 
-    // Act three.
+    // Act three: the craftsperson publishes a new edition; the handbook follows.
     await page.locator('#materialList').scrollIntoViewIfNeeded(); await pause(page, 1500);
-    await still(page, 's15-materials-before', '#materialList', '素材使用边界（撤回前）');
-    const target = page.locator('#materialList [data-material-id][data-state="withdrawn"]').first();
-    withdrawnId = await target.getAttribute('data-material-id');
+    await still(page, 's15-works-before', '#materialList', '手艺人作品（第 1 版）');
+    const target = page.locator('#materialList [data-publish-id]:not(:disabled)').first();
+    const workId = await target.getAttribute('data-publish-id');
     await target.hover(); await pause(page, 1000);
-    mark('act3-withdraw', '点击“撤回使用”');
-    const patch = page.waitForResponse(r => r.request().method() === 'PATCH' && new URL(r.url()).pathname === `/api/materials/${withdrawnId}`);
+    mark('act3-publish', '点击“发布新版本”');
+    const publishWait = page.waitForResponse(r => r.request().method() === 'POST' && new URL(r.url()).pathname === `/api/materials/${workId}/publish`);
     await target.click();
-    assert((await patch).ok(), '撤回失败');
+    const publishResult = await (await publishWait).json();
+    assert.equal(publishResult.record?.edition, 2, '作品应进入第 2 版');
     await pause(page, 2500);
     const old = await getJson(page, `/api/runs/${act2}`);
-    manifest.invalidated = { run_id: act2, status: old.status };
-    mark('act3-invalidated', '旧确认失效、确认与导出禁用');
-    await still(page, 's16-invalidated-viewport', null, '撤回后全屏');
-    await still(page, 's17-impact', '#impactTrail', '受影响内容定位');
-    await still(page, 's18-materials-after', '#materialList', '素材使用边界（撤回后）');
+    manifest.invalidated = { run_id: act2, status: old.status, work: workId, title: publishResult.record.title };
+    mark('act3-outdated', '旧手册待更新、确认与导出禁用');
+    await still(page, 's16-outdated-viewport', null, '作品上新后全屏');
+    await still(page, 's17-impact', '#impactTrail', '找出引用旧版本的内容');
+    await still(page, 's18-works-after', '#materialList', '手艺人作品（第 2 版）');
     await page.locator('#refreshRun').scrollIntoViewIfNeeded(); await page.locator('#refreshRun').hover(); await pause(page, 800);
     mark('act3-click', '点击“依据最新资料重新核验”');
     const act3 = await submit(page, '#refreshRun', `/api/runs/${act2}/refresh`);
@@ -186,8 +199,39 @@ async function pause(page, ms) { await page.waitForTimeout(ms); }
       const frame = page.frameLocator('#previewFrame');
       await frame.locator('body').evaluate(b => b.scrollTo({ top: 600, behavior: 'smooth' })).catch(() => {});
       await pause(page, 2500);
+      if (edition === 'Visitor') {
+        await frame.locator('h2', { hasText: '手艺人作品' }).scrollIntoViewIfNeeded().catch(() => {});
+        await pause(page, 2000);
+        mark('preview-works', '游客版：手艺人作品栏（新版作品）');
+        await still(page, 's20b-preview-works', null, '游客版手艺人作品栏');
+      }
       await page.locator('#closePreview').click(); await pause(page, 800);
     }
+
+    // Write a 讲解词 from a simple requirement, then verify it once.
+    await page.locator('[data-page="studio"]').first().click();
+    await page.locator('#draftGenerator').scrollIntoViewIfNeeded(); await pause(page, 1200);
+    // 与三幕验收同一组输入（青少年学生、5 分钟），这条路径已有真实运行通过（370f7db，aa3bf38f…）。
+    await page.locator('#draftAudience').selectOption('student'); await pause(page, 800);
+    mark('draft-click', '讲给青少年学生、约 5 分钟：点击“按要求生成讲解词”');
+    const draftResponse = page.waitForResponse(r => r.request().method() === 'POST' && new URL(r.url()).pathname === '/api/drafts', { timeout: 200000 });
+    await page.locator('#generateDraft').click();
+    const draft = await (await draftResponse).json();
+    await page.waitForSelector('#draftOrigin:not([hidden])');
+    mark('draft-result', '草稿填入，标明来源');
+    manifest.draft = { origin: draft.origin, text: draft.text, source_ids: draft.source_ids, model_calls: draft.model_calls, error: draft.model_error || null };
+    await pause(page, 2000);
+    await still(page, 's24-draft', '#draftGenerator', '按要求生成讲解词');
+    await still(page, 's25-draft-text', '#draft', '生成的讲解词草稿');
+    await page.locator('#auditBtn').scrollIntoViewIfNeeded(); await page.locator('#auditBtn').hover(); await pause(page, 600);
+    mark('draft-audit-click', '草稿送去逐句核验');
+    const draftRun = await submit(page, '#auditBtn', '/api/runs');
+    const runDraft = await waitRun(page, draftRun);
+    assert.equal(runDraft.status, 'awaiting_review', '讲解词草稿核验：' + runDraft.status + ' ' + (runDraft.error || ''));
+    mark('draft-audit-result', '草稿逐句核验结果');
+    manifest.draft.audit = { run_id: draftRun, status: runDraft.status, claim_statuses: (runDraft.claims || []).map(c => c.status) };
+    await page.locator('#auditResult').scrollIntoViewIfNeeded(); await pause(page, 2500);
+    await still(page, 's26-draft-audit', '#auditResult', '草稿逐句核验');
 
     // A request the system must not promise: one more real run, defaults kept, note replaced.
     await page.locator('[data-page="studio"]').first().click();
@@ -198,20 +242,13 @@ async function pause(page, ms) { await page.waitForTimeout(ms); }
     mark('stop-click', '提出未配置服务：需要安排英语讲解');
     const stop = await submit(page, '#auditBtn', '/api/runs');
     const runStop = await waitRun(page, stop);
+    assert.equal(runStop.status, 'needs_input', '英语讲解应停下请人澄清：' + runStop.status + ' ' + (runStop.error || ''));
     mark('stop-result', '系统停下请人澄清');
     manifest.stop = { run_id: stop, status: runStop.status, error: runStop.error || null };
     await still(page, 's22-stop-viewport', null, '停下来请人澄清');
     await still(page, 's23-stop-warning', '#runWarning', '阻断提示');
     await pause(page, 2500);
 
-    // Restore the material on screen, as an operator would after the demo.
-    await page.locator('[data-page="planner"]').first().click();
-    const restore = page.locator(`#materialList [data-material-id="${withdrawnId}"]`);
-    await restore.scrollIntoViewIfNeeded();
-    const restored = page.waitForResponse(r => r.request().method() === 'PATCH' && new URL(r.url()).pathname === `/api/materials/${withdrawnId}`);
-    await restore.click();
-    assert((await restored).ok(), '恢复素材失败');
-    withdrawnId = null;
     mark('end', '采集结束');
     manifest.passed = true;
   } catch (error) {
@@ -219,10 +256,6 @@ async function pause(page, ms) { await page.waitForTimeout(ms); }
     console.error('✗ 首次失败：', error.message || error);
     process.exitCode = 1;
   } finally {
-    if (withdrawnId) {
-      try { const r = await context.request.patch(`${base}/api/materials/${encodeURIComponent(withdrawnId)}`, { data: { usage_status: 'available' } }); manifest.restored = { material: withdrawnId, ok: r.ok() }; }
-      catch (e) { manifest.restored = { material: withdrawnId, ok: false, error: String(e) }; }
-    }
     const video = page?.video();
     if (page) await page.close();
     if (video) { await video.saveAs(path.join(output, 'take.webm')); await video.delete().catch(() => {}); manifest.video = 'take.webm'; }

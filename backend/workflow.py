@@ -123,6 +123,55 @@ def note_blocker_ambiguities(note, ambiguities):
     return added
 
 
+_CLAUSE_PUNCTUATION = re.compile(r"[\s，,。．.！!？?；;、：:]")
+
+
+def same_clause_text(a, b):
+    """The model must copy each clause; only punctuation and spacing may differ."""
+    return _CLAUSE_PUNCTUATION.sub("", str(a or "")) == _CLAUSE_PUNCTUATION.sub("", str(b or ""))
+
+
+def recover_omitted_clauses(segments, returned):
+    """Keep every program-split clause under audit when the model merges a half clause.
+
+    The program splits long sentences at commas.  Some parts are then only a
+    subject or an object (``一张宣纸和一把刻刀，``), and the model sometimes folds
+    that half into its neighbour instead of returning it.  The omitted text is
+    added back verbatim as its own claim, with the neighbour's kind and query, so
+    it is still retrieved and judged on its own; nothing is merged into an
+    already returned claim and nothing is marked supported here.
+
+    Still a failure: unknown or repeated ids, and a whole original sentence that
+    the model did not return at all.
+    """
+    known = {segment["id"] for segment in segments}
+    ids = [item.get("sentence_id") for item in returned]
+    if len(ids) != len(set(ids)) or not set(ids) <= known:
+        raise ValueError("模型拆解遗漏原句或新增了未知句子")
+    items = {item["sentence_id"]: item for item in returned}
+    groups = {}
+    for segment in segments:
+        groups.setdefault(segment["original_sentence_id"], []).append(segment)
+    recoveries = []
+    for group in groups.values():
+        present = [segment for segment in group if segment["id"] in items]
+        if not present:
+            raise ValueError("模型拆解遗漏原句或新增了未知句子")
+        for index, segment in enumerate(group):
+            if segment["id"] in items:
+                continue
+            before = [s for s in group[:index] if s["id"] in items]
+            neighbour = before[-1] if before else next(s for s in group[index + 1:] if s["id"] in items)
+            source = items[neighbour["id"]]
+            items[segment["id"]] = {"sentence_id": segment["id"], "text": segment["text"],
+                                    "query": f"{source.get('query', '')} {segment['text']}".strip(),
+                                    "kind": source.get("kind", "cultural_fact")}
+            recoveries.append({"sentence_id": segment["id"], "text": segment["text"],
+                               "neighbour_id": neighbour["id"], "kind": items[segment["id"]]["kind"],
+                               "reason": "模型把半句并入相邻分句；程序按原文补回，单独检索和核验。"})
+    return items, recoveries
+
+
 def validated_judgments(result, claims):
     rows = result["judgments"]
     if len(rows) != len(claims) or {r["claim_id"] for r in rows} != {c["id"] for c in claims}:
@@ -226,15 +275,18 @@ def execute(run_id, policy="agent"):
             understanding_data["requirements"] = {k: r["requirements"].get(k, "") for k in ("region", "project")}
         schema = ContentUnderstanding if enhanced else Understanding
         result = llm.ask("理解需求与拆分陈述", understanding_data, schema, prompt)
-        if len(result["claims"]) != len(indexed) or {c["sentence_id"] for c in result["claims"]} != set(indexed):
-            raise ValueError("模型拆解遗漏原句或新增了未知句子")
+        items, recoveries = recover_omitted_clauses(segments, result["claims"])
+        if recoveries:
+            r["segment_recoveries"] = recoveries
+            store.event(run_id, "segment_recovered", f"模型把{len(recoveries)}个半句并入了相邻分句，程序已按原文补回并单独核验。")
         claims = []
-        items = {c["sentence_id"]: c for c in result["claims"]}
         for i, segment in enumerate(segments):
             item = items[segment["id"]]
             original = indexed[item["sentence_id"]]
-            if item["text"].strip() != original.strip():
+            if not same_clause_text(item["text"], original):
                 raise ValueError("模型陈述未逐字对应原文")
+            # 核验对象始终是程序切出的原文分句，不采用模型抄写时的标点差异。
+            item = {**item, "text": original}
             claims.append({"id": f"c{i+1}", **item, "original_sentence": segment["original_sentence"],
                            "original_sentence_id": segment["original_sentence_id"],
                            "region": r["requirements"]["region"], "status": "insufficient"})

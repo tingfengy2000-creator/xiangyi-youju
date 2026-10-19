@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 from copy import deepcopy
+
+from .audiences import AUDIENCES, AUDIENCE_IDS
 import hashlib
 from html import escape
 import json
@@ -143,14 +145,27 @@ _OPEN_QUESTION_ASSERTIONS = re.compile(
     r"为什么|为何|因为|由于|所以|起源|始于|发源|历史上|传说|相传|最早|千年|年历史|"
     r"只用|只有|都是|一定|必然|必须|总是|从不|为主|为辅|找出|指出|说出|证明"
 )
+# 固定句式只放宽“称呼、观察者、副词、方位词”这些不带文化事实的位置；
+# 问句主体仍必须是“是否有/有没有/有无……”或个人偏好，且整句不能出现上面的断言词。
+_CLAUSE = r"[^。！？!?；;，,：:]"
+_ADDRESS = r"(?:(?:同学们|小朋友们|小朋友|朋友们|大家|各位(?:朋友|长辈)?|家长们|爸爸妈妈们)[，,]\s*)?"
+_YOU = r"(?:你们|你|您)"
+_OBS_LEAD = (r"请(?:大家|你们|你|您|同学们|小朋友们)?(?:(?:和|与)(?:孩子|家长|同伴|家人))?(?:一起)?"
+             r"(?:仔细|认真|慢慢)?地?观察负责人提供且允许使用的(?:剪纸)?(?:作品)?示例")
+_OBS_PLACE = r"(?:(?:剪纸|示例|作品|图案|画面|纸面)(?:中|里|上|上面|里面|当中|之中)|其中|上面|里面)"
+_OBS_OPEN = r"(?:是否有|有没有|有无)" + _CLAUSE + r"{1,30}"
 _OBSERVATION_TEMPLATE = re.compile(
-    r"请观察负责人提供且允许使用的(?:剪纸)?示例[，,]\s*(?:找一找|看一看|看看|留意)?"
-    r"(?:是否有|有没有|有无)[^。！？!?；;，,：:]{1,30}[。？?]?"
+    _ADDRESS + _OBS_LEAD
+    + r"(?:[，,]\s*(?:找一找|找找|看一看|看看|仔细看看|留意|比一比)?" + _OBS_PLACE + r"?" + _OBS_OPEN
+    + r"|(?:中|里|上|当中)" + _OBS_OPEN
+    + r"|[，,]\s*(?:说一说|说说|描述|记下)" + _YOU + r"(?:注意到|发现)的" + _CLAUSE + r"{1,12})?"
+    + r"[。？?]?"
 )
-_OBSERVATION_QUESTION = re.compile(r"[^。！？!?；;，,：:]{0,12}(?:是否有|有没有|有无)[^。！？!?；;，,：:]{1,30}[？?]")
+_OBSERVATION_QUESTION = re.compile(_CLAUSE + r"{0,12}(?:是否有|有没有|有无)" + _CLAUSE + r"{1,30}[？?]")
 _INTERACTION_QUESTION = re.compile(
-    r"(?:(?:你|您)(?:更喜欢|喜欢|最想了解|会联想到)[^。！？!?；;，,：:]{1,30}"
-    r"|哪一处[^。！？!?；;，,：:]{0,20}(?:引起了?(?:你|您)的兴趣|让(?:你|您)感兴趣|(?:你|您)最感兴趣)[^。！？!?；;，,：:]{0,6})[？?]"
+    _ADDRESS + r"(?:(?:" + _YOU + r"|大家|同学们|小朋友们|小朋友)(?:(?:和|与)(?:孩子|家人|家长|同伴|爸爸妈妈))?"
+    r"(?:更喜欢|最喜欢|喜欢|最想了解|想了解|最想知道|想知道|会联想到|最想尝试|想尝试|想试试|会选择)" + _CLAUSE + r"{1,30}"
+    r"|哪一处" + _CLAUSE + r"{0,20}(?:引起了?" + _YOU + r"的兴趣|让" + _YOU + r"感兴趣|" + _YOU + r"最感兴趣)" + _CLAUSE + r"{0,6})[？?]"
 )
 
 
@@ -201,7 +216,7 @@ def _structure(teaching, run, context):
     issues = []
     if teaching.get("audience") != run.get("requirements", {}).get("audience", "general"):
         issues.append("教学受众与运行需求不一致")
-    if teaching.get("audience") not in {"general", "family"}:
+    if teaching.get("audience") not in AUDIENCE_IDS:
         issues.append("未知教学受众")
     if teaching.get("creative_label") != CREATIVE_LABEL:
         issues.append("缺少明确的教学创意标识")
@@ -275,14 +290,14 @@ def validate_teaching(teaching: dict, run: dict) -> dict:
 
 
 GENERATION = """基于给定已核验cards生成中文教学内容，仅输出schema。
-general使用自然清晰的成年游客表达；family面向亲子共同观察，短句易懂，家长陪伴讨论。所有客群均不安排专业刻刀或其他具体工具操作。
+"""+"；".join(f"{key}{value['style']}" for key, value in AUDIENCES.items())+"""。客群只改变口吻和句式，不增加卡片之外的知识。所有客群均不安排专业刻刀或其他具体工具操作。
 short_script严格使用script_count指定的句数，每张卡片最多改写一句，不为凑三句添加技法定义或功能解释。observation_task为1句可观察任务，interaction_question为1句开放讨论问题。
 观察任务必须结合卡片中的一个有据文化点给出具体观察维度，使用“是否/有哪些/找一找”等开放表达，不预设示例必有某一特征，避免仅说“观察示例”的空泛任务。
 互动问题围绕该文化点邀请比较、表达或个人联想，避免只问“想了解哪个细节”；个人联想必须明确属于游客个人想法，不能说成传统寓意。
 每个条目恰好一句，末尾只有一个句号或问号，不在问句后再加“为什么？”等第二句。必须给claim_ids/source_ids，只能用该已验证卡片的引用；不新增文化知识、图案寓意、历史、经营条件、授课人员或授权。卡片只说明技法主次时，不能自行解释阴刻阳刻的定义、效果或用途。
 观察和问题也不能暗藏未经证实的文化前提，例如没有证据不得问某颜色为何避邪。若卡片只写“镂空艺术”而没有实际作品图像，观察任务只能要求观察负责人提供且允许使用的示例并描述个人注意到的细节，绝对不要写“找一找镂空/看看是否有镂空”等预设示例必有该特征的句子。
 没有真实作品图像时只建议观察负责人提供且允许使用的示例，不声称眼前已有特定纹样。
-观察任务和互动问题优先采用不预设作品特征的开放表达，例如“请观察负责人提供且允许使用的示例。”“你最想了解哪一个细节？”。
+观察任务和互动问题优先采用不预设作品特征的开放表达。观察任务写成“请观察负责人提供且允许使用的示例，找一找是否有……。”，互动问题写成“你更喜欢……还是……？”或“你最想了解哪一种……？”；所有体验对象都用这两种句式，对象口吻主要体现在short_script中。
 没有作品图像或已核验文字依据，不预设示例一定有镂空、彩色、某图案或寓意，不把“找出其中的彩色部分”当作无事实前提。
 短讲解只转述已核验文字，不增添“更生动”“更精美”“最独特”等评价或比较。
 教学创意是现代活动表达，不称为当地传统仪式或传承方式；不用数字、价格、时长、预约或具体操作工具安排。"""
@@ -346,7 +361,7 @@ def generate_teaching(llm, run: dict, feedback: dict | None = None) -> dict:
                 "creative_label": CREATIVE_LABEL, "generation_mode": "not_generated",
                 "check": {"passed": False, "issues": [], "items": [], "model_calls_used": 0}}
     context = _context(run)
-    if not context["cards"] or teaching["audience"] not in {"general", "family"}:
+    if not context["cards"] or teaching["audience"] not in AUDIENCE_IDS:
         teaching["check"]["issues"] = ["缺少有效讲解卡或教学受众不受支持"]
         return teaching
     if MAX_MODEL_CALLS - start_calls < 2:
@@ -434,7 +449,7 @@ def render_teaching_html(teaching: dict, audience: str) -> str:
         raise ValueError("未知体验包用途")
     if teaching.get("check", {}).get("passed") is not True:
         raise ValueError("教学内容未通过完整事实扫描，不能导出")
-    heading = "一起观察，一起发现" if teaching.get("audience") == "family" else "听见工艺，看见细节"
+    heading = {"family": "一起观察，一起发现", "student": "边看边想，一起发现"}.get(teaching.get("audience"), "听见工艺，看见细节")
     parts = [f'<section class="teaching"><h2>{heading}</h2>']
     parts.extend(f'<p class="short-script">{escape(item["text"])}</p>' for item in teaching["short_script"])
     for key, label in (("observation_task", "观察任务"), ("interaction_question", "一起想一想")):

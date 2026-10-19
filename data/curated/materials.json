@@ -9,5 +9,59 @@
     "use_note": "本项目原创抽象界面纹样，用于项目演示和体验包装饰；不是传统剪纸作品的复制，也不代表传承人授权。使用状态可在演示中撤回，用于验证受影响内容更新。",
     "rights_scope": "本项目界面与体验包装饰",
     "is_demo": true
+  },
+  {
+    "id": "mat-work-floral-window",
+    "title": "演示作品·花卉窗花",
+    "source_type": "craftsperson_demo",
+    "is_demo": true,
+    "author": "演示手艺人（虚构角色）",
+    "usage_status": "available",
+    "version": 1,
+    "edition": 1,
+    "description": "以花卉为题材的点染窗花，适合作为体验后的伴手礼。",
+    "editions": [
+      {
+        "title": "演示作品·花卉窗花",
+        "description": "以花卉为题材的点染窗花，适合作为体验后的伴手礼。"
+      },
+      {
+        "title": "演示作品·花卉窗花（新作）",
+        "description": "手艺人在花卉题材上新创作了一组配色。"
+      }
+    ],
+    "product": {
+      "for_sale": true,
+      "price_cents": 6800,
+      "unit": "幅",
+      "sale_note": "演示标价；购买、收款与发货由手艺人现场办理，系统不经手资金。"
+    },
+    "rights_scope": "演示：手艺人同意在本场体验手册中展示与介绍",
+    "use_note": "虚构的演示作品条目，用于展示手册中的手艺人作品栏与版本更新；不代表真实传承人、真实作品或真实售价。"
+  },
+  {
+    "id": "mat-work-opera-mask",
+    "title": "演示作品·戏曲脸谱",
+    "source_type": "craftsperson_demo",
+    "is_demo": true,
+    "author": "演示手艺人（虚构角色）",
+    "usage_status": "available",
+    "version": 1,
+    "edition": 1,
+    "description": "以戏曲脸谱为题材的剪纸小品。",
+    "editions": [
+      {
+        "title": "演示作品·戏曲脸谱",
+        "description": "以戏曲脸谱为题材的剪纸小品。"
+      }
+    ],
+    "product": {
+      "for_sale": true,
+      "price_cents": 12800,
+      "unit": "幅",
+      "sale_note": "演示标价；购买、收款与发货由手艺人现场办理，系统不经手资金。"
+    },
+    "rights_scope": "演示：手艺人同意在本场体验手册中展示与介绍",
+    "use_note": "虚构的演示作品条目，用于展示手册中的手艺人作品栏；不代表真实传承人、真实作品或真实售价。"
   }
 ]

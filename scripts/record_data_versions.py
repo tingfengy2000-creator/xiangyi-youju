@@ -23,6 +23,7 @@ TRACKED = (
     "data/curated/sources.json",
     "data/curated/materials.json",
     "data/curated/public-case-sources.json",
+    "data/curated/draft-presets.json",
     "data/operating/demo-profile.json",
     "data/operating/jinshan-reconstruction.json",
     "requirements-lock.txt",

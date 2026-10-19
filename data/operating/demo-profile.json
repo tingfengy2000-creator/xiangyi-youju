@@ -12,7 +12,7 @@
   "reuse": true,
   "venue": "同场地演示工坊",
   "currency": "CNY",
-  "version": 2,
+  "version": 3,
   "use_note": "演示配置，非真实报价与接待授权；本地服务报酬为毛收入测算，不是净利润或真实增收。仅明确同场地故不计转场时间，不含交通、住宿、税费。",
   "usage_note": "讲解、手作教学、茶歇分别计入本地服务报酬；材料与工具和组织费用单列。工具复用为当前演示活动要求。模型无权修改人数、报价、教师、场地或授权。",
   "plans": {
@@ -70,7 +70,7 @@
       ]
     }
   },
-  "modules_note": "模块为独立演示经营配置，价格与固定套餐分别管理，不代表真实报价或合作。必要分钟和教师条件不可由模型压缩；客群适用标签仅为本演示课程设定，不构成真实安全认证。",
+  "modules_note": "模块为独立演示经营配置，价格与固定套餐分别管理，不代表真实报价或合作。必要分钟和教师条件不可由模型压缩；客群适用标签仅为本演示课程设定，不构成真实安全认证。客群适用范围与各客群的编排偏好（见 backend/audiences.py）同为演示配置。",
   "modules": [
     {
       "id": "brief-story",
@@ -87,7 +87,9 @@
       "requires_tags": [],
       "audiences": [
         "general",
-        "family"
+        "family",
+        "student",
+        "senior"
       ],
       "costs": {
         "local_service": {
@@ -121,7 +123,9 @@
       "exclusive_group": "story",
       "requires_tags": [],
       "audiences": [
-        "general"
+        "general",
+        "senior",
+        "expert"
       ],
       "costs": {
         "local_service": {
@@ -156,7 +160,9 @@
       "requires_tags": [],
       "audiences": [
         "general",
-        "family"
+        "family",
+        "student",
+        "senior"
       ],
       "costs": {
         "local_service": {
@@ -191,7 +197,9 @@
       "requires_tags": [],
       "audiences": [
         "general",
-        "family"
+        "family",
+        "student",
+        "expert"
       ],
       "costs": {
         "local_service": {
@@ -229,7 +237,9 @@
       ],
       "audiences": [
         "general",
-        "family"
+        "family",
+        "student",
+        "expert"
       ],
       "costs": {
         "local_service": {
@@ -264,7 +274,9 @@
       "requires_tags": [],
       "audiences": [
         "general",
-        "family"
+        "family",
+        "student",
+        "expert"
       ],
       "costs": {
         "local_service": {
@@ -299,7 +311,10 @@
       "requires_tags": [],
       "audiences": [
         "general",
-        "family"
+        "family",
+        "student",
+        "senior",
+        "expert"
       ],
       "costs": {
         "local_service": {
@@ -334,7 +349,9 @@
       "requires_tags": [],
       "audiences": [
         "general",
-        "family"
+        "family",
+        "senior",
+        "expert"
       ],
       "costs": {
         "local_service": {
@@ -354,5 +371,10 @@
         }
       }
     }
+  ],
+  "material_ids": [
+    "mat-paper-garden",
+    "mat-work-floral-window",
+    "mat-work-opera-mask"
   ]
 }

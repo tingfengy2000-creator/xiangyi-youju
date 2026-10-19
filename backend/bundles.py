@@ -268,6 +268,20 @@ def render_bundle(run: dict, audience: str, preview: bool = False) -> str:
         parts.append(f'<article class="stop"><time>{_text(stage["start"])}—{_text(stage["end"])}</time><h3>{_text(stage["title"])}</h3><p>{stage["minutes"]} 分钟{resources}</p></article>')
     parts.extend(['</div>', f'<div class="notice quiet">{_text(plan["scope_note"])} 工具复用是本演示活动要求；演示纸材用量为{plan["paper_units"]}份，不是实测生态改善。</div>'])
 
+    # 手艺人作品栏：只列运行快照中仍可用的作品条目，版本与快照一致；交易由手艺人自行办理。
+    works = [item for item in run.get("materials_snapshot", []) if isinstance(item, dict)
+             and item.get("source_type") == "craftsperson_demo"
+             and isinstance(material_versions.get(str(item.get("id"))), dict)
+             and material_versions[str(item["id"])].get("usage_status") == "available"]
+    if works:
+        parts.append('<h2><span class="number">作</span>手艺人作品</h2><p class="section-note">体验之后，可以把喜欢的作品带回家。以下为本场手艺人同意展示的作品，随作品更新而更新。</p><div class="columns">')
+        for work in works:
+            product = work.get("product") if isinstance(work.get("product"), dict) else {}
+            price = f'<p><strong>{_money(product["price_cents"])}</strong> / {_text(product.get("unit", "件"))}</p>' if product.get("for_sale") and isinstance(product.get("price_cents"), int) else ""
+            version = f'<br>作品第 {_text(work.get("edition", 1))} 版 · 记录版本 {_text(material_versions[str(work["id"])].get("version"))}' if audience == "organizer" else ""
+            parts.append(f'<article class="card"><h3>{_text(work.get("title"))}</h3><p>{_text(work.get("description", ""))}</p>{price}<div class="card-foot">{_text(work.get("author", "手艺人"))}{version}<br>{_text(product.get("sale_note", "购买由手艺人现场办理。"))}</div></article>')
+        parts.append('</div><div class="notice quiet">作品与标价均为演示条目，不代表真实传承人、真实作品或真实售价；系统只负责展示与更新，不经手交易。</div>')
+
     if audience == "organizer":
         parts.extend([
             '<h2><span class="number">03</span>经营测算与资源边界</h2>',

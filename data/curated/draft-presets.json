@@ -1,0 +1,31 @@
+{
+  "note": "部署时预置的讲解词草稿：由开发团队在首次部署时，借助大语言模型仅依据本库收录的官方资料摘录写成，逐句标注来源后入库。它只在本地模型不可用时作为起点，同样必须经过逐句核验，不代表传承人审定稿。",
+  "prepared_at": "2026-10-14",
+  "drafts": [
+    {
+      "region": "河北省蔚县", "project": "剪纸", "audience": "general",
+      "text": "蔚县剪纸又称窗花。蔚县剪纸以阴刻为主，阳刻为辅。蔚县剪纸以多色点染彩绘为特色，染色讲究层次和光影。蔚县剪纸的主要题材有戏曲人物、花卉、脸谱。",
+      "source_ids": ["src-yuxian-window-name", "src-yuxian-technique", "src-yuxian-color", "src-yuxian-color-layer", "src-yuxian-themes"]
+    },
+    {
+      "region": "河北省蔚县", "project": "剪纸", "audience": "family",
+      "text": "蔚县剪纸又叫窗花。蔚县剪纸以阴刻为主，阳刻为辅。蔚县剪纸会用多色点染彩绘。蔚县剪纸常见的题材有戏曲人物、花卉、脸谱。",
+      "source_ids": ["src-yuxian-window-name", "src-yuxian-technique", "src-yuxian-color", "src-yuxian-themes"]
+    },
+    {
+      "region": "河北省蔚县", "project": "剪纸", "audience": "student",
+      "text": "蔚县剪纸又叫窗花。蔚县剪纸以阴刻为主，阳刻为辅。蔚县剪纸用多色点染彩绘。蔚县剪纸常见的题材有戏曲人物、花卉、脸谱。",
+      "source_ids": ["src-yuxian-window-name", "src-yuxian-technique", "src-yuxian-color", "src-yuxian-themes"]
+    },
+    {
+      "region": "河北省蔚县", "project": "剪纸", "audience": "senior",
+      "text": "蔚县剪纸又称窗花。蔚县剪纸初始图案多为花卉。蔚县剪纸以阴刻为主，阳刻为辅。蔚县剪纸的主要题材有戏曲人物、花卉、脸谱。",
+      "source_ids": ["src-yuxian-window-name", "src-yuxian-early-floral", "src-yuxian-technique", "src-yuxian-themes"]
+    },
+    {
+      "region": "河北省蔚县", "project": "剪纸", "audience": "expert",
+      "text": "蔚县剪纸以阴刻为主，阳刻为辅。蔚县剪纸以多色点染彩绘为特色。蔚县剪纸染色讲究层次和光影。蔚县剪纸初始图案多为花卉，主要题材有戏曲人物、花卉、脸谱。",
+      "source_ids": ["src-yuxian-technique", "src-yuxian-color", "src-yuxian-color-layer", "src-yuxian-early-floral", "src-yuxian-themes"]
+    }
+  ]
+}
