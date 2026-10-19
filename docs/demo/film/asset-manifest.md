@@ -72,3 +72,13 @@ npm run film:capture
 - 网上的剪纸作品照片、传承人照片、景区或机构标志。
 - 任何 AI 生成的“写实”人物或村落画面。
 - 有版权的影视配乐和流行歌曲。
+
+## 6. 第二版新增素材（2026-10-19）
+
+| 素材 | 位置 | 来源与许可 |
+| --- | --- | --- |
+| 真实本地运行画面（第二次采集） | `docs/assets/film/footage-v2/`：28 张静帧、`take.webm`（136.1 秒，25 fps）、`manifest.json`（22 个节拍）、5 份运行记录 | 5090 用真实本地模型对 `16321d7` 一次采集（`passed=true`，`missing=[]`），素材分支 `dev/5090-film-footage-v2` @ `6247502`。画面全部是本项目界面 |
+| 女声旁白第二版 | `docs/assets/film/voice/vo-raw-female-v2-retake.flac`、`vo-raw-female-v2-new.flac` | 队员本人录制并同意公开，见 [第二版旁白稿](voiceover-v2.md) |
+| 访谈原话 | [访谈结论](../../research/practitioner-interviews-2026-10.md)第 3 节 | 受访者亲口同意匿名引用，只用“某非遗土陶手艺人” |
+
+第二版不再使用第一版采集的 `docs/assets/film/footage/` 画面（其中第二、三幕是旧故事），也不再使用男声。
