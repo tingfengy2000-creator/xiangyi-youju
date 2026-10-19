@@ -1,0 +1,480 @@
+{
+  "at": "2026-10-15T00:59:41.598Z",
+  "base": "http://127.0.0.1:8795",
+  "purpose": "宣传片素材：真实本地运行画面",
+  "viewport": "1920x1080",
+  "stillScale": 2,
+  "stills": [
+    {
+      "file": "s01-home-viewport.png",
+      "selector": "viewport",
+      "note": "首页首屏"
+    },
+    {
+      "file": "s02-home-hero.png",
+      "selector": "#home .hero",
+      "note": "首页主视觉"
+    },
+    {
+      "file": "s03-home-acts.png",
+      "selector": "#home .acts",
+      "note": "三幕故事条"
+    },
+    {
+      "file": "s04-home-meaning.png",
+      "selector": "#home .meaning",
+      "note": "意义带"
+    },
+    {
+      "file": "s05-studio-before.png",
+      "selector": "#draft",
+      "note": "待核验文案"
+    },
+    {
+      "file": "s06-studio-viewport.png",
+      "selector": "viewport",
+      "note": "核验结果全屏"
+    },
+    {
+      "file": "s07-audit-result.png",
+      "selector": "#auditResult",
+      "note": "逐句核验与修订"
+    },
+    {
+      "file": "s08-evidence.png",
+      "selector": "#auditResult .evidence-block",
+      "note": "出处原文卡"
+    },
+    {
+      "file": "s10-audience-before.png",
+      "selector": "#audience",
+      "note": "体验对象：普通游客"
+    },
+    {
+      "file": "s10-audience-after.png",
+      "selector": "#audience",
+      "note": "体验对象：青少年学生"
+    },
+    {
+      "file": "s11-planner-viewport.png",
+      "selector": "viewport",
+      "note": "编排结果全屏"
+    },
+    {
+      "file": "s12-comparison.png",
+      "selector": "#planComparison",
+      "note": "换个对象，方案真变化"
+    },
+    {
+      "file": "s13-ledger.png",
+      "selector": ".ledger-details",
+      "note": "账目：本地服务报酬、材料、组织"
+    },
+    {
+      "file": "s09-teaching.png",
+      "selector": "#teachingPanel",
+      "note": "面向青少年学生的讲解与提问"
+    },
+    {
+      "file": "s14-route.png",
+      "selector": "#routeCards",
+      "note": "日程"
+    },
+    {
+      "file": "s15-works-before.png",
+      "selector": "#materialList",
+      "note": "手艺人作品（第 1 版）"
+    },
+    {
+      "file": "s16-outdated-viewport.png",
+      "selector": "viewport",
+      "note": "作品上新后全屏"
+    },
+    {
+      "file": "s17-impact.png",
+      "selector": "#impactTrail",
+      "note": "找出引用旧版本的内容"
+    },
+    {
+      "file": "s18-works-after.png",
+      "selector": "#materialList",
+      "note": "手艺人作品（第 2 版）"
+    },
+    {
+      "file": "s19-refreshed-viewport.png",
+      "selector": "viewport",
+      "note": "重新核验后全屏"
+    },
+    {
+      "file": "s20-preview-visitor.png",
+      "selector": "viewport",
+      "note": "游客版预览"
+    },
+    {
+      "file": "s20b-preview-works.png",
+      "selector": "viewport",
+      "note": "游客版手艺人作品栏"
+    },
+    {
+      "file": "s21-preview-organizer.png",
+      "selector": "viewport",
+      "note": "组织者版预览"
+    },
+    {
+      "file": "s24-draft.png",
+      "selector": "#draftGenerator",
+      "note": "按要求生成讲解词"
+    },
+    {
+      "file": "s25-draft-text.png",
+      "selector": "#draft",
+      "note": "生成的讲解词草稿"
+    },
+    {
+      "file": "s26-draft-audit.png",
+      "selector": "#auditResult",
+      "note": "草稿逐句核验"
+    },
+    {
+      "file": "s22-stop-viewport.png",
+      "selector": "viewport",
+      "note": "停下来请人澄清"
+    },
+    {
+      "file": "s23-stop-warning.png",
+      "selector": "#runWarning",
+      "note": "阻断提示"
+    }
+  ],
+  "marks": [
+    {
+      "name": "home-still",
+      "sec": 4.6,
+      "note": "首页首屏静置"
+    },
+    {
+      "name": "act1-draft",
+      "sec": 10,
+      "note": "工坊页：待核验文案（含“阳刻为主”）"
+    },
+    {
+      "name": "act1-click",
+      "sec": 11.3,
+      "note": "点击“核验并编排体验”"
+    },
+    {
+      "name": "act1-result",
+      "sec": 26.7,
+      "note": "核验结果出现（此前为等待段）"
+    },
+    {
+      "name": "act2-audience",
+      "sec": 32.6,
+      "note": "体验对象从普通游客换成青少年学生"
+    },
+    {
+      "name": "act2-click",
+      "sec": 35.4,
+      "note": "点击“按当前条件重新编排”"
+    },
+    {
+      "name": "act2-result",
+      "sec": 48.8,
+      "note": "方案对比出现"
+    },
+    {
+      "name": "act3-publish",
+      "sec": 57.8,
+      "note": "点击“发布新版本”"
+    },
+    {
+      "name": "act3-outdated",
+      "sec": 60.4,
+      "note": "旧手册待更新、确认与导出禁用"
+    },
+    {
+      "name": "act3-click",
+      "sec": 62.4,
+      "note": "点击“依据最新资料重新核验”"
+    },
+    {
+      "name": "act3-result",
+      "sec": 75.8,
+      "note": "重新核验完成"
+    },
+    {
+      "name": "confirm",
+      "sec": 78.9,
+      "note": "人工确认"
+    },
+    {
+      "name": "preview-visitor",
+      "sec": 82.9,
+      "note": "游客版预览"
+    },
+    {
+      "name": "preview-works",
+      "sec": 87.7,
+      "note": "游客版：手艺人作品栏（新版作品）"
+    },
+    {
+      "name": "preview-organizer",
+      "sec": 91.2,
+      "note": "组织者版预览"
+    },
+    {
+      "name": "draft-click",
+      "sec": 97.1,
+      "note": "讲给青少年学生、约 5 分钟：点击“按要求生成讲解词”"
+    },
+    {
+      "name": "draft-result",
+      "sec": 98.7,
+      "note": "草稿填入，标明来源"
+    },
+    {
+      "name": "draft-audit-click",
+      "sec": 102.3,
+      "note": "草稿送去逐句核验"
+    },
+    {
+      "name": "draft-audit-result",
+      "sec": 120.8,
+      "note": "草稿逐句核验结果"
+    },
+    {
+      "name": "stop-click",
+      "sec": 126.1,
+      "note": "提出未配置服务：需要安排英语讲解"
+    },
+    {
+      "name": "stop-result",
+      "sec": 132.6,
+      "note": "系统停下请人澄清"
+    },
+    {
+      "name": "end",
+      "sec": 135.8,
+      "note": "采集结束"
+    }
+  ],
+  "runs": {
+    "bca1a47e2ef04321aa0a4332cd3475c6": {
+      "status": "awaiting_review",
+      "model_calls": 7,
+      "elapsed_seconds": 13.716,
+      "parent_id": null,
+      "comparison": null,
+      "plan": {
+        "id": "mod-brief-story--basic-craft",
+        "craft_minutes": 50,
+        "duration_minutes": 70,
+        "total_cents": 57400,
+        "local_service_cents": 38000,
+        "material_cents": 13400,
+        "operations_cents": 6000
+      },
+      "error": null
+    },
+    "8ef7b11826594216be2b082870b3d668": {
+      "status": "awaiting_review",
+      "model_calls": 7,
+      "elapsed_seconds": 11.341,
+      "parent_id": null,
+      "comparison": {
+        "before": {
+          "id": "mod-brief-story--basic-craft",
+          "title": "基础剪纸手作 · 2环节组合",
+          "total_cents": 57400,
+          "duration_minutes": 70,
+          "craft_minutes": 50,
+          "module_ids": [
+            "brief-story",
+            "basic-craft"
+          ],
+          "start_time": "09:30"
+        },
+        "after": {
+          "id": "mod-brief-story--color-observation--deep-craft--craft-extension",
+          "title": "深度剪纸手作 · 4环节组合",
+          "total_cents": 87400,
+          "duration_minutes": 115,
+          "craft_minutes": 80,
+          "module_ids": [
+            "brief-story",
+            "color-observation",
+            "deep-craft",
+            "craft-extension"
+          ],
+          "start_time": "09:30"
+        }
+      },
+      "plan": {
+        "id": "mod-brief-story--color-observation--deep-craft--craft-extension",
+        "craft_minutes": 80,
+        "duration_minutes": 115,
+        "total_cents": 87400,
+        "local_service_cents": 58400,
+        "material_cents": 20000,
+        "operations_cents": 9000
+      },
+      "error": null
+    },
+    "293b3c154d3a4c0b8b9ab4cf462eff07": {
+      "status": "awaiting_review",
+      "model_calls": 7,
+      "elapsed_seconds": 11.194,
+      "parent_id": "8ef7b11826594216be2b082870b3d668",
+      "comparison": {
+        "before": {
+          "id": "mod-brief-story--color-observation--deep-craft--craft-extension",
+          "title": "深度剪纸手作 · 4环节组合",
+          "total_cents": 87400,
+          "duration_minutes": 115,
+          "craft_minutes": 80,
+          "module_ids": [
+            "brief-story",
+            "color-observation",
+            "deep-craft",
+            "craft-extension"
+          ],
+          "start_time": "09:30"
+        },
+        "after": {
+          "id": "mod-brief-story--color-observation--deep-craft--craft-extension",
+          "title": "深度剪纸手作 · 4环节组合",
+          "total_cents": 87400,
+          "duration_minutes": 115,
+          "craft_minutes": 80,
+          "module_ids": [
+            "brief-story",
+            "color-observation",
+            "deep-craft",
+            "craft-extension"
+          ],
+          "start_time": "09:30"
+        }
+      },
+      "plan": {
+        "id": "mod-brief-story--color-observation--deep-craft--craft-extension",
+        "craft_minutes": 80,
+        "duration_minutes": 115,
+        "total_cents": 87400,
+        "local_service_cents": 58400,
+        "material_cents": 20000,
+        "operations_cents": 9000
+      },
+      "error": null
+    },
+    "000174e4b4e6412a905f4d34e7803582": {
+      "status": "awaiting_review",
+      "model_calls": 6,
+      "elapsed_seconds": 16.384,
+      "parent_id": null,
+      "comparison": {
+        "before": {
+          "id": "mod-brief-story--color-observation--deep-craft--craft-extension",
+          "title": "深度剪纸手作 · 4环节组合",
+          "total_cents": 87400,
+          "duration_minutes": 115,
+          "craft_minutes": 80,
+          "module_ids": [
+            "brief-story",
+            "color-observation",
+            "deep-craft",
+            "craft-extension"
+          ],
+          "start_time": "09:30"
+        },
+        "after": {
+          "id": "mod-brief-story--color-observation--deep-craft--craft-extension",
+          "title": "深度剪纸手作 · 4环节组合",
+          "total_cents": 87400,
+          "duration_minutes": 115,
+          "craft_minutes": 80,
+          "module_ids": [
+            "brief-story",
+            "color-observation",
+            "deep-craft",
+            "craft-extension"
+          ],
+          "start_time": "09:30"
+        }
+      },
+      "plan": {
+        "id": "mod-brief-story--color-observation--deep-craft--craft-extension",
+        "craft_minutes": 80,
+        "duration_minutes": 115,
+        "total_cents": 87400,
+        "local_service_cents": 58400,
+        "material_cents": 20000,
+        "operations_cents": 9000
+      },
+      "error": null
+    },
+    "eabb33d7a989473d9483d9dc0ce173cd": {
+      "status": "needs_input",
+      "model_calls": 3,
+      "elapsed_seconds": 4.953,
+      "parent_id": null,
+      "comparison": null,
+      "plan": null,
+      "error": "文字需求存在矛盾或超出当前模块能力，请先澄清：需要安排英语讲解"
+    }
+  },
+  "missing": [],
+  "firstFailure": null,
+  "passed": true,
+  "model": "xiangyi-qwen3:14b-q4_k_m",
+  "act2": {
+    "audience": "student",
+    "teaching_audience": "student",
+    "teaching_passed": true,
+    "teaching_script": [
+      "蔚县剪纸主要用阴刻的方法，偶尔也会用阳刻。",
+      "蔚县剪纸喜欢用多种颜色来点染图案。"
+    ],
+    "observation": "请观察负责人提供且允许使用的示例，找一找是否有阴刻或阳刻的痕迹。",
+    "question": "你更喜欢阴刻的图案，还是多色点染的图案？"
+  },
+  "invalidated": {
+    "run_id": "8ef7b11826594216be2b082870b3d668",
+    "status": "invalidated",
+    "work": "mat-work-floral-window",
+    "title": "演示作品·花卉窗花（新作）"
+  },
+  "draft": {
+    "origin": "local_model",
+    "text": "剪纸是河北省蔚县的传统技艺。它用一把刻刀和一张宣纸，以阴刻为主，多色点染彩绘。剪纸的图案有戏曲人物、花卉和脸谱，早期多用花卉。染色时讲究层次和光影，让作品更生动。",
+    "source_ids": [
+      "src-yuxian-color",
+      "src-yuxian-color-layer",
+      "src-yuxian-early-floral",
+      "src-yuxian-region",
+      "src-yuxian-technique",
+      "src-yuxian-themes"
+    ],
+    "model_calls": 1,
+    "error": null,
+    "audit": {
+      "run_id": "000174e4b4e6412a905f4d34e7803582",
+      "status": "awaiting_review",
+      "claim_statuses": [
+        "supported",
+        "supported",
+        "supported",
+        "supported",
+        "supported",
+        "supported",
+        "supported",
+        "insufficient"
+      ]
+    }
+  },
+  "stop": {
+    "run_id": "eabb33d7a989473d9483d9dc0ce173cd",
+    "status": "needs_input",
+    "error": "文字需求存在矛盾或超出当前模块能力，请先澄清：需要安排英语讲解"
+  },
+  "video": "take.webm"
+}
