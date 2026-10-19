@@ -1,9 +1,13 @@
-"""把男女两版的选遍结果写成 docs/demo/film/vo-selection.md。
+"""把选遍结果写成选片记录。
 
-用法：python scripts/film/vo_doc.py
+第二版（默认）：女声三份录音合并结果 → docs/demo/film/vo-selection-v2.md
+第一版：男女两版 → docs/demo/film/vo-selection.md
+
+用法：python scripts/film/vo_doc.py [--v1]
 """
 
 import json
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -11,7 +15,66 @@ VO_DIR = ROOT / "artifacts" / "film" / "vo"
 NAMES = {"male": "男声", "female": "女声"}
 
 
+def main_v2():
+    merged = json.loads((VO_DIR / "female-v2-takes.json").read_text(encoding="utf-8"))
+    sel = merged["selection"]
+    per = {k: json.loads((VO_DIR / f"female-v2-{k}-takes.json").read_text(encoding="utf-8")) for k in ("retake", "new", "yu")}
+    rerecord = [vo for vo, x in sel.items() if x["rerecord"]]
+    not_last = [vo for vo, x in sel.items() if x["take_no"] != x["takes_in_group"]]
+    fallback = [vo for vo, x in sel.items() if x["origin"] == "v1"]
+    wei = [vo for vo in ("VO-03", "VO-07") if sel[vo]["origin"] != "yu"]
+    lines = [
+        "# 宣传片旁白选片记录 · 第二版（女声）",
+        "",
+        "本记录由 `scripts/film/vo_select.py` 生成，`scripts/film/vo_doc.py` 写出。句子与录音分组见 [第二版旁白稿](voiceover-v2.md)，"
+        "方法与规则沿用第一版，见 [第一版选片记录](vo-selection.md) 的“方法”一节。",
+        "",
+        "## 方法",
+        "",
+        "- **识别**：Paraformer-zh（2023-09-14）逐字识别，SenseVoice（2024-07-17）逐遍复核；三份录音各转写一次。",
+        "- **对齐**：每份录音只与它自己那组句子按顺序对齐：retake 11 句（VO-03、VO-07 读作 wèi，参与对齐但不选用）、new 8 句、yu 2 句。",
+        "- **CER 与排除**：同第一版（无声调拼音、合并前后鼻音、“蔚”接受 yu/wei；CER 超过 8%、两种识别一致的漏字加字读错、句中停顿超过 1.5 秒、截断、喷麦与咔嗒声）。",
+        "- **选择**：剩下的遍里取最后一遍；最后一遍被排除时往前取最近的合格遍；整组不合格时取 CER 最低的一遍并标“建议重录”。"
+        "VO-03、VO-07 只从 yu 选；重录 11 句全部不合格时才回到第一版女声 `vo-raw-female.flac`。",
+        "- **指定**：在 `docs/demo/film/vo-overrides.json` 写入 `{\"female\": {\"VO-07\": 2}}`（遍号按该句主录音计），"
+        "然后依次运行 `vo_select.py merge`、`vo_process.py`、`build_timeline.py`、`mix.py` 与 `render.cjs --mux`。",
+        "",
+        "## 摘要",
+        "",
+        f"- 19 句；共 {sum(len(d['takes']) for d in per.values())} 遍（retake {len(per['retake']['takes'])}、new {len(per['new']['takes'])}、yu {len(per['yu']['takes'])}）。",
+        f"- {len(rerecord)} 句标“建议重录”{('（' + '、'.join(rerecord) + '）') if rerecord else ''}；"
+        f"{len(not_last)} 句未用最后一遍（{'、'.join(not_last) or '无'}）。",
+        f"- 用第一版后备录音：{'、'.join(fallback) or '无'}；VO-03、VO-07 {'改用 retake：' + '、'.join(wei) if wei else '均取自 yu 补录（“蔚县”读 yù）'}。",
+        "",
+        "## 选中结果",
+        "",
+        "| 编号 | 录音 | 遍数 | 选中 | 原始文件起止（秒） | 转写（Paraformer） | CER | 被排除的遍及原因 | 说明 |",
+        "| --- | --- | --- | --- | --- | --- | --- | --- | --- |",
+    ]
+    for vo, x in sel.items():
+        t = x["take"]
+        group = [k for k in per[x["origin"]]["takes"] if k["vo"] == vo] if x["origin"] in per else []
+        excl = "；".join(f"第 {k['take_no']} 遍：{'、'.join(k['excluded'])}" for k in group if k["excluded"]) or "无"
+        note = x["note"] + ("，**建议重录**" if x["rerecord"] else "")
+        lines.append(f"| {vo} | {x['origin']} | {x['takes_in_group']} | 第 {x['take_no']} 遍 | {t['start']:.2f}–{t['end']:.2f} | {t['text']} | "
+                     f"{t['cer']:.1%} | {excl} | {note} |")
+    lines.append("")
+    for k, d in per.items():
+        lines += [f"<details><summary>{k}（<code>{d['source']}</code>）全部遍的识别结果</summary>", "",
+                  "| 编号 | 遍 | 起止（秒） | Paraformer | SenseVoice | CER（P/S） | 排除原因 |",
+                  "| --- | --- | --- | --- | --- | --- | --- |"]
+        for t in d["takes"]:
+            lines.append(f"| {t['vo']} | {t['take_no']} | {t['start']:.2f}–{t['end']:.2f} | {t['text']} | {t['text2']} | "
+                         f"{t['cer']:.1%} / {t['cer2']:.1%} | {'、'.join(t['excluded']) or '—'} |")
+        lines += ["", "</details>", ""]
+    lines += ["剪切时在上表起止前后各多留 80 ms。转写中的“杨克”“首座”“玉县 / 预献 / 遇县”等是识别模型的同音字写法，按拼音比对不计为读错；"
+              "yu 补录中“蔚县”被识别为 yu 音，retake 中被识别为“魏县”（wei）。", ""]
+    (ROOT / "docs" / "demo" / "film" / "vo-selection-v2.md").write_text("\n".join(lines), encoding="utf-8")
+
+
 def main():
+    if "--v1" not in sys.argv:
+        return main_v2()
     lines = [
         "# 宣传片旁白选片记录",
         "",

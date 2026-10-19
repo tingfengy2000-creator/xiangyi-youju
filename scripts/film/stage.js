@@ -474,7 +474,7 @@ function scenePaper() {
  * 合成：场景显隐、转场、颗粒、角标、字幕
  * ===================================================================== */
 const SCENE_BUILDERS = [scenePaper];
-const KNIFE_INTO = new Set([7, 8, 12, 16, 19]);   // 段落交界的刀切转场，全片 5 次
+const KNIFE_INTO = new Set([7, 12, 16, 19]);   // 段落交界的刀切转场（第二版：镜 6→7、11b→12、15→16、18b→19），全片 4 次
 
 function sceneRange(sc) { return [shot(sc.from).start, shot(sc.to).end]; }
 

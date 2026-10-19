@@ -1,12 +1,12 @@
 'use strict';
 /* 《一刀之差》渲染入口。
  *
- *   npm run film:render                       全流程：画面 → 配乐音效 → 混音 → 成片（男声、女声两版）
+ *   npm run film:render                       全流程：画面 → 配乐音效 → 混音 → 成片（第二版，只有女声）
  *   node scripts/film/render.cjs --video      只渲染画面（4 个进程并行，输出 artifacts/film/picture.mp4）
  *   node scripts/film/render.cjs --stills 7.5,12,20   抽帧到 artifacts/film/stills/
  *   node scripts/film/render.cjs --sheet 0,31,1       按区间每 1 秒抽帧并拼联系表
- *   node scripts/film/render.cjs --mux        用已有画面与分轨合成两版成片（MP4 与 SRT）
- *   node scripts/film/render.cjs --webm       由两版 MP4 另导出 WebM
+ *   node scripts/film/render.cjs --mux        用已有画面与分轨合成成片（MP4 与 SRT）
+ *   node scripts/film/render.cjs --webm       由 MP4 另导出 WebM
  *
  * 画面由 scripts/film/stage.html 的 filmSeek(t) 逐帧设定，Playwright 截图后经管道交给 ffmpeg。
  */
@@ -19,7 +19,8 @@ const ROOT = path.resolve(__dirname, '..', '..');
 const OUT = path.join(ROOT, 'artifacts', 'film');
 const FPS = 24;
 const STAGE = 'file://' + path.join(__dirname, 'stage.html');
-const FOOTAGE = path.join(ROOT, 'docs', 'assets', 'film', 'footage');
+const FOOTAGE = path.join(ROOT, 'docs', 'assets', 'film', 'footage-v2');
+const VOICES = ['female'];   // 第二版只出女声
 
 function arg(name, fallback = null) {
   const i = process.argv.indexOf(name);
@@ -31,20 +32,19 @@ function run(cmd, args, opts = {}) {
   if (r.status !== 0) throw new Error(`${cmd} ${args.join(' ')} 失败`);
 }
 
-/* 镜 13 的纸条数据：直接取自 5090 采集运行 66f40b93 的方案对比与候选日程 */
+/* 镜 13、14 的数据：直接取自 5090 第二次采集运行 8ef7b118（青少年学生）的方案对比、日程与整数分账目 */
 function planData() {
   const manifest = JSON.parse(fs.readFileSync(path.join(FOOTAGE, 'manifest.json'), 'utf8'));
-  const runId = Object.keys(manifest.runs).find(id => id.startsWith('66f40b93'));
+  const runId = Object.keys(manifest.runs).find(id => id.startsWith('8ef7b118'));
   const run = JSON.parse(fs.readFileSync(path.join(FOOTAGE, `run-${runId}.json`), 'utf8'));
-  const pick = id => run.planning.candidates.find(c => c.id === id);
   const sched = c => c.schedule.map(x => ({ id: x.module_id, title: x.title, minutes: x.minutes }));
-  const tea = run.profile.modules.find(m => m.id === 'tea');
-  const before = pick(run.comparison.before.id), after = pick(run.comparison.after.id);
+  const after = run.planning.candidates.find(c => c.id === run.comparison.after.id);
+  // 修改前的方案不在本次候选里，取运行记录中的 previous_plan
+  if (run.previous_plan.id !== run.comparison.before.id) throw new Error('previous_plan 与 comparison.before 不一致');
   return {
-    run: runId, note: run.requirements.note,
-    before: { craft: run.comparison.before.craft_minutes, total: run.comparison.before.duration_minutes, schedule: sched(before) },
+    run: runId, audience: { student: '青少年学生' }[run.requirements.audience],
+    before: { craft: run.comparison.before.craft_minutes, total: run.comparison.before.duration_minutes, schedule: sched(run.previous_plan) },
     after: { craft: run.comparison.after.craft_minutes, total: run.comparison.after.duration_minutes, schedule: sched(after) },
-    tea: { title: tea.title, minutes: tea.min_duration_minutes },
     plan: manifest.runs[runId].plan,
   };
 }
@@ -170,12 +170,11 @@ async function renderVideo() {
 }
 
 function mux() {
-  const mix = path.join(ROOT, 'docs', 'assets', 'film', 'mix');
   const video = path.join(ROOT, 'docs', 'assets', 'video');
   fs.mkdirSync(video, { recursive: true });
-  for (const voice of ['male', 'female']) {
+  for (const voice of VOICES) {
     const mixed = path.join(OUT, `mix-${voice}.wav`);
-    const mp4 = path.join(video, `xiangyi-youju-film-${voice}.mp4`);
+    const mp4 = path.join(video, 'xiangyi-youju-film-v2.mp4');
     run('ffmpeg', ['-v', 'error', '-y', '-i', path.join(OUT, 'picture.mp4'), '-i', mixed,
       // CRF 18，另设码率上限，保证每版不超过 50 MB（颗粒与纸纹很吃码率）
       '-map', '0:v', '-map', '1:a', '-c:v', 'libx264', '-preset', 'slow', '-crf', '18', '-maxrate', '1800k', '-bufsize', '3600k',
@@ -183,15 +182,15 @@ function mux() {
       '-r', String(FPS), '-c:a', 'aac', '-b:a', '192k', '-ar', '48000', '-ac', '2', '-movflags', '+faststart', '-shortest', mp4]);
     console.log('成片', mp4);
   }
-  fs.copyFileSync(path.join(OUT, 'xiangyi-youju-film.srt'), path.join(video, 'xiangyi-youju-film.srt'));
+  fs.copyFileSync(path.join(OUT, 'xiangyi-youju-film-v2.srt'), path.join(video, 'xiangyi-youju-film-v2.srt'));
 }
 
 /* 另导出 WebM（VP9 + Opus），放在 artifacts/film/，不入库 */
 function webm() {
   const video = path.join(ROOT, 'docs', 'assets', 'video');
-  for (const voice of ['male', 'female']) {
-    const out = path.join(OUT, `xiangyi-youju-film-${voice}.webm`);
-    run('ffmpeg', ['-v', 'error', '-y', '-i', path.join(video, `xiangyi-youju-film-${voice}.mp4`), '-c:v', 'libvpx-vp9', '-b:v', '1800k',
+  for (const voice of VOICES) {
+    const out = path.join(OUT, 'xiangyi-youju-film-v2.webm');
+    run('ffmpeg', ['-v', 'error', '-y', '-i', path.join(video, 'xiangyi-youju-film-v2.mp4'), '-c:v', 'libvpx-vp9', '-b:v', '1800k',
       '-row-mt', '1', '-threads', '4', '-deadline', 'good', '-cpu-used', '5', '-c:a', 'libopus', '-b:a', '128k', out]);
     console.log('WebM', out);
   }

@@ -1,12 +1,11 @@
 """按选中的旁白长度生成全片时间线：镜头起止、旁白放置、字幕与 SRT。
 
-男女两版画面、字幕、配乐完全相同：每个镜头的长度取两版中较长的一句，
-两版旁白在同一时刻开口；字幕换行时刻取两版自然换行时刻的平均值。
-优先微调镜头时长，不对旁白变速。
+第二版只有女声（docs/demo/film/film-script-v2.md）：镜号 1–11、11b、12–18、18b、19–21，
+镜头长度直接取女声旁白长度。优先微调镜头时长，不对旁白变速。
 
 用法：python scripts/film/build_timeline.py
 输入：artifacts/film/vo/clips.json
-输出：artifacts/film/timeline.json、artifacts/film/xiangyi-youju-film.srt
+输出：artifacts/film/timeline.json、artifacts/film/xiangyi-youju-film-v2.srt
 """
 
 import json
@@ -16,23 +15,28 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / "artifacts" / "film"
 
+ORDER = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, "11b", 12, 13, 14, 15, 16, 17, 18, "18b", 19, 20, 21]
+
 TAGS = {
     1: "示意动画", 2: "示意动画 · 原创纹样", 3: "示意动画", 4: "示意动画 · 出处：中国非物质文化遗产网",
-    5: "示意动画（虚构界面，不代表任何真实产品）", 6: "示意动画",
+    5: "示意动画（虚构界面，不代表任何真实产品）", 6: "访谈原话，已获同意",
     8: "真实本地运行画面", 9: "真实本地运行画面 · 等待已剪短", 10: "真实本地运行画面", 11: "真实本地运行画面",
-    12: "真实本地运行画面", 13: "示意动画 · 数据来自真实运行", 14: "真实本地运行画面 · 金额为演示测算",
-    15: "真实本地运行画面", 16: "示意动画 · 原创纹样", 17: "真实本地运行画面（印章为示意叠加）",
-    18: "真实本地运行画面", 19: "示意动画",
+    "11b": "真实本地运行画面", 12: "真实本地运行画面", 13: "示意动画 · 数据来自真实运行",
+    14: "真实本地运行画面 · 金额为演示测算", 15: "真实本地运行画面 · 等待已剪短", 16: "示意动画 · 原创纹样",
+    17: "真实本地运行画面", 18: "真实本地运行画面 · 等待已剪短", "18b": "真实本地运行画面 · 作品与标价为演示条目",
+    19: "示意动画",
 }
 
 # 镜号: (旁白, 最短时长, 开口前留白, 句后留白)
 SHOTS = {
     1: (None, 4.6, 0, 0), 2: ("VO-01", 8.0, 1.6, 0.5), 3: ("VO-02", 6.0, 2.2, 0.5), 4: ("VO-03", 7.0, 0.5, 0.45),
-    5: ("VO-04", 9.0, 0.7, 0.5), 6: (None, 3.0, 0, 0), 7: ("VO-05", 9.0, 1.3, 0.5), 8: ("VO-06", 8.0, 0.6, 0.45),
-    9: (None, 4.6, 0, 0), 10: ("VO-07", 10.0, 0.5, 0.45), 11: ("VO-08", 9.0, 0.5, 0.5), 12: ("VO-09", 7.0, 0.9, 0.5),
-    13: ("VO-10", 10.0, 0.5, 0.5), 14: ("VO-11", 10.0, 0.5, 0.5), 15: ("VO-12", 9.5, 1.6, 0.5),
-    16: ("VO-13", 4.6, 1.3, 0.6), 17: ("VO-14", 5.5, 0.9, 0.6), 18: ("VO-15", 9.5, 0.6, 0.5),
-    19: ("VO-16", 8.0, 0.5, 0.5), 20: ("VO-17", 12.0, 1.0, 0.7), 21: (None, 4.2, 0, 0),
+    5: ("VO-04", 9.0, 0.7, 0.5), 6: (None, 7.2, 0, 0), 7: ("VO-05", 9.0, 1.3, 0.5), 8: ("VO-06", 8.0, 0.6, 0.45),
+    9: (None, 4.6, 0, 0), 10: ("VO-07", 10.0, 0.5, 0.45), 11: ("VO-08", 9.0, 0.5, 0.5),
+    "11b": ("VO-08b", 14.0, 0.6, 0.5), 12: ("VO-09", 7.0, 0.9, 0.5),
+    13: ("VO-10", 10.0, 0.5, 0.5), 14: ("VO-11", 12.0, 0.5, 0.5), 15: ("VO-12", 9.5, 1.6, 0.5),
+    16: ("VO-13", 6.0, 1.3, 0.6), 17: ("VO-14", 8.0, 0.9, 0.6), 18: ("VO-15", 10.5, 0.6, 0.5),
+    "18b": ("VO-15b", 7.5, 0.8, 0.6),
+    19: ("VO-16", 8.0, 0.5, 0.5), 20: ("VO-17", 12.0, 1.0, 0.7), 21: (None, 5.0, 0, 0),
 }
 
 # 字幕：每行 (显示文字, 对应原文)；单行不超过 18 字，句末不加标点
@@ -49,13 +53,18 @@ SUBS = {
               ("原文 出处 位置 都摆在这里", "原文出处位置都摆在这里")],
     "VO-08": [("至于“每天开放 无需预约”这样的承诺", "至于每天开放无需预约这样的承诺"), ("资料证明不了", "资料证明不了"),
               ("它不替人答应 留给接待方确认", "它不替人答应留给接待方确认")],
-    "VO-09": [("如果客人说", "如果客人说"), ("不要茶歇 多留点手作时间", "不要茶歇多留点手作时间")],
-    "VO-10": [("一句话 整场活动重新排", "一句话整场活动重新排"), ("茶歇撤下", "茶歇撤下"), ("手作从 50 分钟 变成 80 分钟", "手作从五十分钟变成八十分钟")],
-    "VO-11": [("账也一起重算", "账也一起重算"), ("这 796 元里 524 元", "这七百九十六元里五百二十四元"), ("是付给本地讲解和手作老师的报酬", "是付给本地讲解和手作老师的报酬")],
+    "VO-08b": [("没有现成的讲解词也不要紧", "没有现成的讲解词也不要紧"), ("说清讲给谁 讲多久", "说清讲给谁讲多久"),
+               ("它只照着资料先写一版", "它只照着资料先写一版"), ("再逐句核对", "再逐句核对")],
+    "VO-09": [("同一项剪纸", "同一项剪纸"), ("来的人不一样 讲法也该不一样", "来的人不一样讲法也该不一样")],
+    "VO-10": [("换成一群中学生", "换成一群中学生"), ("多了一个观察环节", "多了一个观察环节"),
+              ("手作从 50 分钟 变成 80 分钟", "手作从五十分钟变成八十分钟")],
+    "VO-11": [("讲解也换成学生听得懂的话", "讲解也换成学生听得懂的话"), ("这 874 元里 584 元", "这八百七十四元里五百八十四元"),
+              ("付给本地讲解和手作老师", "付给本地讲解和手作老师")],
     "VO-12": [("做不到的事", "做不到的事"), ("比如临时加一场英语讲解", "比如临时加一场英语讲解"), ("它会停下来 先问人", "它会停下来先问人")],
-    "VO-13": [("作品 是手艺人的", "作品是手艺人的")],
-    "VO-14": [("他说不用了 旧手册立刻作废", "他说不用了旧手册立刻作废")],
-    "VO-15": [("重新核验 经人确认 才有新的一版", "重新核验经人确认才有新的一版"), ("拍板的 始终是人", "拍板的始终是人")],
+    "VO-13": [("手艺人的作品 一直在推陈出新", "手艺人的作品一直在推陈出新")],
+    "VO-14": [("新作一发布", "新作一发布"), ("手册里用到旧作的地方 都被找了出来", "手册里用到旧作的地方都被找了出来")],
+    "VO-15": [("重新核验 经人确认", "重新核验经人确认"), ("新手册换上了新作品", "新手册换上了新作品"), ("拍板的 始终是人", "拍板的始终是人")],
+    "VO-15b": [("游客看完体验", "游客看完体验"), ("还能把喜欢的作品 从手艺人手里带回家", "还能把喜欢的作品从手艺人手里带回家")],
     "VO-16": [("这一切 装在一台普通电脑里", "这一切装在一台普通电脑里"), ("离线运行 不花一分钱模型调用费", "离线运行不花一分钱模型调用费")],
     "VO-17": [("AI 正在成为人们", "ai正在成为人们"), ("认识一个地方的第一扇窗", "认识一个地方的第一扇窗"),
               ("我们让它只讲有出处的话", "我们让它只讲有出处的话"), ("把拍板权和收益 留在乡里", "把拍板权和收益留在乡里")],
@@ -91,10 +100,10 @@ def fmt(t):
 
 def main():
     clips = json.loads((OUT / "vo" / "clips.json").read_text(encoding="utf-8"))
-    voices = list(clips)
+    voices = ["female"]
     t = 0.0
     shots, placements, subtitles, cues = [], {v: [] for v in voices}, [], {}
-    for n in range(1, 22):
+    for n in ORDER:
         vo, min_dur, lead, tail = SHOTS[n]
         dur = min_dur
         if vo:
@@ -108,7 +117,7 @@ def main():
                 c = clips[v][vo]
                 offset = t + lead - c["speech_start"]
                 placements[v].append({"vo": vo, "shot": n, "start": round(offset, 4), "file": c["file"],
-                                      "duration": c["duration"], "take_no": c["take_no"],
+                                      "duration": c["duration"], "take_no": c["take_no"], "source": c["source"],
                                       "source_start": c["source_start"], "source_end": c["source_end"]})
                 per_voice[v] = line_times(c, SUBS[vo], offset)
             lines = SUBS[vo]
@@ -124,26 +133,36 @@ def main():
                 subtitles.append({"vo": vo, "line": i + 1, "start": round(start, 3), "end": round(end, 3), "text": text,
                                   "burn": vo not in ("VO-05", "VO-17")})
                 cues[f"{vo}#{i + 1}"] = round(min(per_voice[v][i][0] for v in voices) + 0.12, 3)
-            # 这句在两版中较晚说完的时刻（例如印章要等“作废”说完再落）
+            # 这句说完的时刻
             cues[f"{vo}#end"] = round(max(p["start"] + clips[v][vo]["speech_end"] for v in voices
                                          for p in placements[v] if p["vo"] == vo), 3)
         t += dur
-    # 片头字幕（镜 1，无旁白）也写入 SRT
-    srt_items = [{"start": 1.6, "end": shots[0]["end"] + 0.1, "text": "同一张红纸。"}] + subtitles
+    S = {s["n"]: s for s in shots}
+    # 片头字幕（镜 1，无旁白）也写入 SRT；镜 6 的访谈原话为画面文字，同样写入 SRT
+    quote = "如果能给我一份正确的讲解词，并给观看的游客人手一本手册，对我们很有帮助。——某非遗土陶手艺人"
+    srt_items = ([{"start": 1.6, "end": shots[0]["end"] + 0.1, "text": "同一张红纸。"}]
+                 + [{"start": S[6]["start"] + 0.6, "end": S[6]["end"], "text": quote}] + subtitles)
+    srt_items.sort(key=lambda x: x["start"])
     duration = round(t, 4)
-    # 等待已剪短：镜 9 全程；镜 15 只在压缩段前后（与 stage-scenes.js 中的分段一致）
-    notes = [{"start": shots[8]["start"] + 0.3, "end": shots[8]["end"] - 0.2, "text": "等待已剪短"},
-             {"start": shots[14]["start"] + 2.3, "end": shots[14]["start"] + 4.2, "text": "等待已剪短"}]
+    # 镜 18：人工确认的点击落在“拍板的，始终是人”上（stage-scenes.js 与 score.py 共用）
+    s18 = S[18]
+    confirm_at = round(max(s18["start"] + 5.7, cues["VO-15#3"] + 0.15), 3)
+    events = {"18-confirm": confirm_at, "18-wait-end": round(confirm_at - 3.3, 3),
+              "18-preview": round(min(confirm_at + 1.8, s18["end"] - 2.4), 3)}
+    # 等待已剪短：镜 9 全程；镜 15、18 只在压缩段前后（与 stage-scenes.js 中的分段一致）
+    notes = [{"start": S[9]["start"] + 0.3, "end": S[9]["end"] - 0.2, "text": "等待已剪短"},
+             {"start": S[15]["start"] + 2.3, "end": S[15]["start"] + 4.2, "text": "等待已剪短"},
+             {"start": s18["start"] + 1.2, "end": events["18-wait-end"] + 0.7, "text": "等待已剪短"}]
     timeline = {"fps": 24, "duration": duration, "shots": shots, "subtitles": subtitles, "cues": cues,
-                "notes": notes, "vo": placements,
-                "beats": [shots[1]["start"], shots[6]["start"], shots[12]["start"], shots[16]["start"], shots[19]["start"]]}
+                "notes": notes, "events": events, "vo": placements,
+                "beats": [S[n]["start"] for n in (2, 7, 12, 16, 20)]}
     (OUT / "timeline.json").write_text(json.dumps(timeline, ensure_ascii=False, indent=1), encoding="utf-8")
     srt = []
     for i, s in enumerate(srt_items, 1):
         srt.append(f"{i}\n{fmt(s['start'])} --> {fmt(s['end'])}\n{s['text']}\n")
-    (OUT / "xiangyi-youju-film.srt").write_text("\n".join(srt), encoding="utf-8")
+    (OUT / "xiangyi-youju-film-v2.srt").write_text("\n".join(srt), encoding="utf-8")
     for s in shots:
-        print(f"镜 {s['n']:2d} {s['start']:7.2f}-{s['end']:7.2f} ({s['end'] - s['start']:5.2f}) {s['vo'] or ''}")
+        print(f"镜 {str(s['n']):>3} {s['start']:7.2f}-{s['end']:7.2f} ({s['end'] - s['start']:5.2f}) {s['vo'] or ''}")
     print("总长", duration, "秒")
 
 

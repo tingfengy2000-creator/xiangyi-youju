@@ -191,6 +191,15 @@ function sceneCards() {
   cards.sort((a, b) => a.d - b.d);
   const dark = h('div', { class: 'layer' }, root);
   dark.style.background = '#0b120f';
+  // 镜 6：访谈原话卡（受访者亲口同意匿名引用，原话一字未改）
+  const quote = h('div', { class: 'abs' }, root);
+  quote.style.cssText = `left:300px;top:300px;width:1320px;height:470px;background:url(${TEX.rice}) center/cover;border-radius:6px;
+    box-shadow:0 30px 90px rgba(0,0,0,.5);`;
+  const qcss = top => `left:0;right:0;top:${top}px;text-align:center;font-size:54px;letter-spacing:5px;color:#223932;white-space:nowrap;`;
+  const qLines = [typeLine(quote, '“如果能给我一份正确的讲解词，', qcss(70)),
+    typeLine(quote, '并给观看的游客人手一本手册，', qcss(160)), typeLine(quote, '对我们很有帮助。”', qcss(250))];
+  const who = h('div', { class: 'abs sans' }, quote, '——某非遗土陶手艺人');
+  who.style.cssText = 'right:110px;top:360px;font-size:30px;letter-spacing:4px;color:#476852;';
 
   function update(t) {
     const s5 = shot(5), s6 = shot(6), l = t - s5.start;
@@ -206,14 +215,18 @@ function sceneCards() {
       cd.c.style.transform = `translate(${((960 - cd.x - 150) * (1 - p) * 0.35).toFixed(1)}px,${((540 - cd.y - 120) * (1 - p) * 0.35).toFixed(1)}px) rotate(${(cd.rot * p).toFixed(2)}deg) scale(${(0.82 + 0.18 * p).toFixed(3)})`;
     });
     // 摄影机：从草稿后拉，看见铺满的卡片
-    const cam = kf(l, [[0, [960, 540, 1.45]], [2.6, [960, 540, 1.34]], [8.5, [960, 540, 0.86]], [s6.end - s5.start, [960, 540, 0.8]]], E.inOut);
+    const cam = kf(l, [[0, [960, 540, 1.45]], [2.6, [960, 540, 1.34]], [8.5, [960, 540, 0.86]], [s6.start - s5.start, [960, 540, 0.8]]], E.inOut);   // 镜 6 定格
     world.style.transform = `translate(960px,540px) scale(${cam[2].toFixed(4)}) translate(-960px,-540px)`;
     // “如果这一刀讲反了”：所有“阳”字一起泛红，其余退淡
     const hot = prog(t, cue('VO-04#3', s5.start + 6.5) - 0.2, cue('VO-04#3', s5.start + 6.5) + 0.8, E.sine);
     root.querySelectorAll('.yang').forEach(sp => { sp.style.textShadow = hot > 0 ? `0 0 ${(14 * hot).toFixed(1)}px rgba(185,70,51,${(0.55 * hot).toFixed(2)})` : 'none'; });
     world.style.filter = `saturate(${(1 - 0.35 * hot).toFixed(3)})`;
-    // 镜 6：画面渐暗，音乐停一拍
-    setOpacity(dark, 0.58 * prog(t, s6.start, s6.end - 0.2, E.sine));
+    // 镜 6：卡片墙定格、压暗，音乐停一拍；中央原话逐字出现，停留到能读完
+    setOpacity(dark, 0.66 * prog(t, s6.start, s6.start + 0.8, E.sine));
+    setOpacity(quote, prog(t, s6.start + 0.2, s6.start + 0.8, E.sine));
+    let q0 = s6.start + 0.7;
+    qLines.forEach(q => { q.set(q0, 0.075, t); q0 += q.spans.length * 0.075 + 0.15; });
+    setOpacity(who, prog(t, q0 + 0.2, q0 + 0.8, E.sine));
   }
   return { id: 'cards', root, from: 5, to: 6, update };
 }
@@ -268,14 +281,14 @@ function sceneDraft() {
   const frame = h('img', { class: 'abs' }, vp.wrap);
   frame.style.cssText = 'left:0;top:0;width:1920px;height:1080px;';
   clipFrame(frame, 10.0);
-  // s05 是录屏 10 秒处文案框的 2 倍图，与录屏帧位置对齐（模板匹配：x=319, y=288）
-  const still = stillImg(vp.wrap, 's05-studio-before.png', 450, 156, 319, 288, false);
-  const o = overlay(vp.wrap, 450, 156, 319, 288);
+  // s05 是录屏 10 秒处文案框的 2 倍图，与录屏帧位置对齐（模板匹配：x=319, y=924）
+  const still = stillImg(vp.wrap, 's05-studio-before.png', 450, 156, 319, 924, false);
+  const o = overlay(vp.wrap, 450, 156, 319, 924);
   const box = frameBox(o, 92, 21, 69, 30, C.red, 1.6);
   const focus = focusLayer(root);
   function update(t) {
     const s8 = shot(8), l = t - s8.start, d = s8.end - s8.start;
-    const cam = kf(l, [[0, [960, 520, 1.0]], [d * 0.55, [500, 340, 2.6]], [d, [446, 323, 3.5]]], E.inOut);
+    const cam = kf(l, [[0, [960, 540, 1.0]], [d * 0.55, [500, 870, 2.6]], [d, [446, 925, 3.5]]], E.inOut);
     vp.set(cam);
     const sharp = prog(l, 0.6, 2.2, E.sine);
     frame.style.filter = `blur(${(2.4 * sharp).toFixed(2)}px)`;
@@ -297,7 +310,7 @@ function sceneVerifyClip() {
   const img = h('img', { class: 'abs' }, vp.wrap);
   img.style.cssText = 'left:0;top:0;width:1920px;height:1080px;';
   const pulse = h('div', { class: 'abs' }, vp.wrap);
-  pulse.style.cssText = 'left:408px;top:768px;width:0;height:0;border-radius:50%;border:3px solid rgba(185,70,51,.8);';
+  pulse.style.cssText = 'left:400px;top:768px;width:0;height:0;border-radius:50%;border:3px solid rgba(185,70,51,.8);';
   function update(t) {
     const s9 = shot(9), l = t - s9.start, d = s9.end - s9.start;
     const m = P.manifest.marks.reduce((a, x) => (a[x.name] = x.sec, a), {});
@@ -309,7 +322,7 @@ function sceneVerifyClip() {
     const pp = prog(l, 0.9 - 0.02, 1.5, E.out);
     const rr = 60 * pp;
     pulse.style.width = pulse.style.height = `${rr * 2}px`;
-    pulse.style.left = `${408 - rr}px`; pulse.style.top = `${768 - rr}px`;
+    pulse.style.left = `${400 - rr}px`; pulse.style.top = `${768 - rr}px`;
     pulse.style.opacity = (pp > 0 && pp < 1 ? 1 - pp : 0).toFixed(3);
   }
   return { id: 'verify', root, from: 9, to: 9, update };
@@ -365,112 +378,169 @@ function sceneAudit() {
 }
 
 /* =====================================================================
- * 镜 11：横移扫过三句结论，停在“信息不足”
+ * 镜 11：s06 一屏扫过矛盾、支持、信息不足，停在“工坊每天开放并且无需预约 · 信息不足”
  * ===================================================================== */
 function sceneSweep() {
   const root = h('div', { class: 'scene' }, document.getElementById('scenes'));
   paperBg(root);
-  const a = h('div', { class: 'layer' }, root);
-  const va = viewport(a);
+  const va = viewport(root);
+  // s06 为 2 倍全屏图（3840×2160），以源像素为坐标；三句结论都在这一屏的右栏
   stillImg(va.wrap, 's06-studio-viewport.png', 3840, 2160, 0, 0, false);
   const oa = overlay(va.wrap, 3840, 2160);
-  const b1 = frameBox(oa, 3022, 236, 176, 66, C.red, 5);
-  const b2 = frameBox(oa, 3046, 1482, 152, 66, C.green, 5);
-  const b = h('div', { class: 'layer' }, root);
-  paperBg(b);
-  const vb = viewport(b);
-  stillImg(vb.wrap, 's07-audit-result.png', 1614, 2898);
-  const ob = overlay(vb.wrap, 1614, 2898);
-  const b3 = frameBox(ob, 1420, 2164, 146, 66, C.ink, 4);
-  const line3 = frameBox(ob, 70, 2330, 640, 120, C.ink, 3);
+  const b1 = frameBox(oa, 1940, 62, 300, 72, C.red, 5);        // 首句被划掉的“阳刻为主，阴”
+  const b2 = frameBox(oa, 3050, 1110, 146, 70, C.green, 5);    // 第二句“来源支持”
+  const b3 = frameBox(oa, 3046, 1786, 150, 70, C.ink, 5);      // 第三句“信息不足”
+  const line3 = frameBox(oa, 1700, 1975, 720, 90, C.ink, 4);   // “工坊每天开放并且无需预约。”
   const focus = focusLayer(root);
   function update(t) {
     const s11 = shot(11), l = t - s11.start, d = s11.end - s11.start;
-    va.set(kf(l, [[0, [1450, 720, 0.76]], [3.2, [2620, 640, 0.76]], [5.0, [2620, 1250, 0.78]]], E.inOut));
-    b1.set(prog(l, 1.6, 2.6, E.inOut), 0.9);
-    b2.set(prog(l, 3.9, 4.8, E.inOut), 0.9);
-    const x = prog(l, 4.8, 5.6, E.sine);
-    setOpacity(b, x);
-    vb.set(kf(l, [[4.8, [820, 1800, 0.95]], [7.5, [820, 2330, 1.05]], [d, [800, 2360, 1.12]]], E.inOut));
-    b3.set(prog(l, 6.6, 7.6, E.inOut), 0.95);
-    line3.set(prog(t, cue('VO-08#3', s11.start + 7.5), cue('VO-08#3', s11.start + 7.5) + 1.0, E.inOut), 0.8);
-    focus.set(960, 520, 1000, 560, 0.8);
+    va.set(kf(l, [[0, [2410, 600, 0.95]], [1.6, [2410, 1000, 1.0]], [3.6, [2410, 1760, 1.05]], [d, [2410, 1790, 1.12]]], E.inOut));
+    b1.set(prog(l, 0.3, 1.1, E.inOut), 0.9);
+    b2.set(prog(l, 1.6, 2.4, E.inOut), 0.9);
+    b3.set(prog(l, 3.4, 4.2, E.inOut), 0.95);
+    const c3 = cue('VO-08#3', s11.start + 6);
+    line3.set(prog(t, Math.min(c3, s11.start + 4.4), Math.min(c3, s11.start + 4.4) + 1.0, E.inOut), 0.8);
+    focus.set(960, 540, 1000, 560, 0.8);
   }
   return { id: 'sweep', root, from: 11, to: 11, update };
 }
 
 /* =====================================================================
- * 镜 12：真实打字，原速
+ * 镜 11b：按要求生成讲解词（讲给青少年学生、约 5 分钟）→ 草稿填入 → 草稿逐句核验
  * ===================================================================== */
-function sceneTyping() {
+function sceneDraftGen() {
+  const root = h('div', { class: 'scene' }, document.getElementById('scenes'));
+  paperBg(root);
+  const a = h('div', { class: 'layer' }, root);
+  const va = viewport(a);
+  const img = h('img', { class: 'abs' }, va.wrap);
+  img.style.cssText = 'left:0;top:0;width:1920px;height:1080px;';
+  // 录屏 97.1 秒处生成框在 (319, 817)，“按要求生成讲解词”链接约在 (390, 974)
+  const pulse = h('div', { class: 'abs' }, va.wrap);
+  pulse.style.cssText = 'border-radius:50%;border:3px solid rgba(185,70,51,.8);';
+  const og = overlay(va.wrap, 1920, 1080);
+  const genBox = frameBox(og, 322, 990, 446, 64, C.green, 2.5);   // 来源说明“本地模型依据 6 条资料……”
+  const focus = focusLayer(root);
+  // 草稿填入后的文案框（s25，录屏中在首屏以下），像纸片一样从下方滑入
+  const card = h('div', { class: 'abs' }, root);
+  card.style.cssText = 'left:510px;top:610px;width:900px;height:312px;';
+  const ci = h('img', { class: 'abs' }, card);
+  ci.style.cssText = 'left:0;top:0;width:900px;height:312px;box-shadow:0 26px 70px rgba(20,30,25,.35),0 3px 8px rgba(20,30,25,.2);';
+  setSrc(ci, P.footage + 's25-draft-text.png');
+  // 草稿逐句核验（s26，1614×6050）：慢慢下移，停在第 8 条“信息不足”
+  const b = h('div', { class: 'layer' }, root);
+  paperBg(b);
+  const vb = viewport(b);
+  stillImg(vb.wrap, 's26-draft-audit.png', 1614, 6050);
+  const ob = overlay(vb.wrap, 1614, 6050);
+  const badge = frameBox(ob, 1420, 5246, 150, 66, C.ink, 4);
+  const claim = frameBox(ob, 70, 5430, 640, 100, C.ink, 3);
+  function update(t) {
+    const sh = shot('11b'), l = t - sh.start, d = sh.end - sh.start;
+    const m = P.manifest.marks.reduce((acc, x) => (acc[x.name] = x.sec, acc), {});
+    const click = m['draft-click'], result = m['draft-result'];
+    // 点击落在“它只照着资料先写一版”上；之前停在点击前 1 秒的画面，之后原速
+    const lClick = Math.max(1.0, cue('VO-08b#3', sh.start + 4.5) - sh.start - 1.0);
+    clipFrame(img, Math.min(result + 1.8, Math.max(click - 1.0, click - (lClick - l))));
+    va.set(kf(l, [[0, [580, 760, 1.6]], [lClick, [570, 762, 1.7]], [lClick + 3, [575, 762, 1.75]]], E.inOut));
+    const pp = prog(l, lClick, lClick + 0.6, E.out), rr = 46 * pp;
+    pulse.style.width = pulse.style.height = `${rr * 2}px`;
+    pulse.style.left = `${390 - rr}px`; pulse.style.top = `${974 - rr}px`;
+    pulse.style.opacity = (pp > 0 && pp < 1 ? 1 - pp : 0).toFixed(3);
+    const lRes = lClick + (result - click);
+    genBox.set(prog(l, lRes + 0.2, lRes + 1.0, E.inOut), 0.9);
+    focus.set(960, 540, 980, 520, 0.6);
+    const slide = prog(l, lRes + 0.6, lRes + 1.4, E.out);
+    const lAudit = Math.max(lRes + 2.0, cue('VO-08b#4', sh.start + 9) - sh.start - 0.6);
+    card.style.opacity = (slide * (1 - prog(l, lAudit, lAudit + 0.5, E.sine))).toFixed(3);
+    card.style.transform = `translateY(${(380 * (1 - slide)).toFixed(1)}px) rotate(${(2.5 * (1 - slide)).toFixed(2)}deg)`;
+    setOpacity(b, prog(l, lAudit, lAudit + 0.6, E.sine));
+    vb.set(kf(l, [[lAudit, [807, 3200, 1.1]], [d - 1.2, [807, 5420, 1.1]], [d, [807, 5440, 1.14]]], E.inOut));
+    badge.set(prog(l, d - 1.5, d - 0.8, E.inOut), 0.95);
+    claim.set(prog(l, d - 1.1, d - 0.4, E.inOut), 0.8);
+  }
+  return { id: 'draft-gen', root, from: '11b', to: '11b', update };
+}
+
+/* =====================================================================
+ * 镜 12：体验对象从“普通游客”换成“青少年学生”，录屏原速 + 推近
+ * ===================================================================== */
+function sceneAudience() {
   const root = h('div', { class: 'scene' }, document.getElementById('scenes'));
   paperBg(root);
   const vp = viewport(root);
   const img = h('img', { class: 'abs' }, vp.wrap);
   img.style.cssText = 'left:0;top:0;width:1920px;height:1080px;';
+  // s10 是下拉框的 2 倍图，录屏中在 (317, 612)；叠在同一位置让推近后的字更清楚
+  const before = stillImg(vp.wrap, 's10-audience-before.png', 123, 39, 317, 612, false);
+  const after = stillImg(vp.wrap, 's10-audience-after.png', 123, 39, 317, 612, false);
+  const o = overlay(vp.wrap, 123, 39, 317, 612);
+  const box = frameBox(o, -5, -5, 133, 49, C.red, 1.4);
   const focus = focusLayer(root);
   function update(t) {
     const s12 = shot(12), l = t - s12.start, d = s12.end - s12.start;
     const m = P.manifest.marks.reduce((a, x) => (a[x.name] = x.sec, a), {});
-    // 原速：从开始打字前 0.8 秒播到收尾，打字段 33.5–39.0 秒不变速
-    clipFrame(img, m['act2-typing'] - 0.5 + l);
-    vp.set(kf(l, [[0, [560, 470, 1.85]], [d, [545, 505, 2.05]]], E.inOut));
-    focus.set(960, 600, 860, 360, 0.9);
+    // 原速：从换选项前约 1.6 秒播起，页面跳去重新编排之前停住
+    const src = Math.min(m['act2-audience'] - 1.6 + l, m['act2-click'] - 1.3);
+    clipFrame(img, src);
+    const changed = src >= m['act2-audience'] - 0.25;
+    before.style.opacity = changed ? '0' : '1';
+    after.style.opacity = changed ? '1' : '0';
+    vp.set(kf(l, [[0, [760, 560, 1.15]], [1.3, [378, 628, 2.6]], [d, [382, 630, 3.0]]], E.inOut));
+    box.set(prog(l, 2.0, 2.8, E.inOut), 0.9);
+    focus.set(960, 560, 820, 360, 0.9 * prog(l, 0.6, 1.6, E.sine));
   }
-  return { id: 'typing', root, from: 12, to: 12, update };
+  return { id: 'audience', root, from: 12, to: 12, update };
 }
 
 /* =====================================================================
- * 镜 13：纸条重排（长度严格按真实分钟数，数据来自运行 66f40b93）
+ * 镜 13：纸条按真实分钟数排在时间轴上（数据来自运行 8ef7b118）：新增点染色彩观察，手作 50 → 80 分钟
  * ===================================================================== */
 function sceneStrips() {
   const root = h('div', { class: 'scene' }, document.getElementById('scenes'));
   paperBg(root);
   const D = P.plan;
-  const X0 = 300, PX = 13.2;            // 1 分钟 = 13.2 像素
+  const X0 = 300, PX = 11;            // 1 分钟 = 11 像素
+  const MAX = 120;
   const Y = 560;
-  const colors = { story: C.green, craft: C.red, ext: '#9c3a2a', tea: C.cream };
-  const kindOf = id => (id.includes('story') ? 'story' : id === 'craft-extension' ? 'ext' : id === 'tea' ? 'tea' : 'craft');
+  const colors = { story: C.green, craft: C.red, ext: '#9c3a2a', obs: '#b8863b' };
+  const kindOf = id => (id.includes('story') ? 'story' : id === 'craft-extension' ? 'ext' : id.includes('observation') ? 'obs' : 'craft');
   const axis = h('div', { class: 'abs' }, root);
-  axis.style.cssText = `left:${X0}px;top:${Y + 118}px;width:${PX * 100}px;height:2px;background:rgba(34,57,50,.35);`;
-  const ticks = [];
-  for (let m = 0; m <= 100; m += 10) {
-    const tk = h('div', { class: 'abs sans' }, root, String(m));
-    tk.style.cssText = `left:${X0 + m * PX - 30}px;width:60px;top:${Y + 130}px;text-align:center;font-size:20px;color:rgba(34,57,50,.55);`;
+  axis.style.cssText = `left:${X0}px;top:${Y + 118}px;width:${PX * MAX}px;height:2px;background:rgba(34,57,50,.35);`;
+  for (let mm = 0; mm <= MAX; mm += 10) {
+    const tk = h('div', { class: 'abs sans' }, root, String(mm));
+    tk.style.cssText = `left:${X0 + mm * PX - 30}px;width:60px;top:${Y + 130}px;text-align:center;font-size:20px;color:rgba(34,57,50,.55);`;
     const ln = h('div', { class: 'abs' }, root);
-    ln.style.cssText = `left:${X0 + m * PX}px;top:${Y + 110}px;width:2px;height:10px;background:rgba(34,57,50,.35);`;
-    ticks.push(tk, ln);
+    ln.style.cssText = `left:${X0 + mm * PX}px;top:${Y + 110}px;width:2px;height:10px;background:rgba(34,57,50,.35);`;
   }
   const unit = h('div', { class: 'abs sans' }, root, '分钟');
-  unit.style.cssText = `left:${X0 + 100 * PX + 30}px;top:${Y + 128}px;font-size:20px;color:rgba(34,57,50,.55);letter-spacing:2px;`;
+  unit.style.cssText = `left:${X0 + MAX * PX + 30}px;top:${Y + 128}px;font-size:20px;color:rgba(34,57,50,.55);letter-spacing:2px;`;
   const strip = (title, minutes, kind) => {
     const d = h('div', { class: 'abs' }, root);
-    const col = colors[kind];
     d.style.cssText = `top:${Y}px;height:96px;border-radius:3px;overflow:hidden;
       box-shadow:0 10px 24px rgba(30,30,20,.22), 0 2px 3px rgba(30,30,20,.2);`;
     const fill = h('div', { class: 'layer' }, d);
-    fill.style.cssText = `background:${col};`;
+    fill.style.cssText = `background:${colors[kind]};`;
     const tex = h('div', { class: 'layer' }, d);
-    tex.style.cssText = `background:url(${kind === 'tea' ? TEX.cream : TEX.red}) center/cover;mix-blend-mode:${kind === 'tea' ? 'normal' : 'multiply'};opacity:${kind === 'tea' ? 1 : .35};`;
+    tex.style.cssText = `background:url(${TEX.red}) center/cover;mix-blend-mode:multiply;opacity:.35;`;
     if (kind === 'ext') {
       const hatch = h('div', { class: 'layer' }, d);
       hatch.style.cssText = 'background:repeating-linear-gradient(135deg, rgba(255,240,225,.13) 0 6px, transparent 6px 16px);';
     }
+    const fs = Math.min(26, Math.floor((minutes * PX - 28) / title.length));
     const txt = h('div', { class: 'abs sans' }, d);
-    txt.style.cssText = `left:18px;top:16px;right:10px;font-size:26px;letter-spacing:2px;white-space:nowrap;color:${kind === 'tea' ? C.ink : '#fbf3e6'};`;
-    const tt = h('div', {}, txt, title);
+    txt.style.cssText = `left:14px;top:16px;right:8px;font-size:${fs}px;letter-spacing:${fs > 22 ? 2 : 0}px;white-space:nowrap;color:#fbf3e6;`;
+    h('div', {}, txt, title);
     const mm = h('div', {}, txt, `${minutes} 分钟`);
     mm.style.cssText = 'font-size:22px;opacity:.85;margin-top:4px;';
-    if (kind === 'tea') d.style.border = '2px dashed rgba(34,57,50,.45)';
-    return { d, tt, mm, minutes };
+    return { d, minutes };
   };
   const before = D.before.schedule.map(x => strip(x.title, x.minutes, kindOf(x.id)));
-  const after = D.after.schedule.map(x => strip(x.title, x.minutes, kindOf(x.id)));
-  const tea = strip(D.tea.title, D.tea.minutes, 'tea');
-  const teaNote = h('div', { class: 'abs sans' }, root, '可选模块');
-  teaNote.style.cssText = 'font-size:20px;letter-spacing:3px;color:rgba(34,57,50,.6);';
+  const after = D.after.schedule.map(x => ({ ...strip(x.title, x.minutes, kindOf(x.id)), kind: kindOf(x.id) }));
   const head = h('div', { class: 'abs sans' }, root);
   head.style.cssText = `left:${X0}px;top:${Y - 66}px;font-size:24px;letter-spacing:4px;color:rgba(34,57,50,.75);`;
+  const who = h('div', { class: 'abs sans' }, root, `面向：${D.audience}`);
+  who.style.cssText = `left:${X0}px;top:${Y - 128}px;font-size:28px;letter-spacing:4px;color:${C.red};`;
   // 中央大字：手作 50 → 80 分钟，数字翻牌
   const big = h('div', { class: 'abs' }, root);
   big.style.cssText = 'left:0;right:0;top:150px;text-align:center;color:#223932;white-space:nowrap;';
@@ -487,49 +557,38 @@ function sceneStrips() {
   [digitA, digitB].forEach(dg => { dg.style.cssText += 'left:0;top:-38px;width:200px;text-align:center;font-size:150px;font-weight:500;color:#b94633;backface-visibility:hidden;transform-origin:50% 60%;'; });
   const unitBig = h('span', { class: 'sans' }, big, ' 分钟');
   unitBig.style.cssText = 'font-size:44px;letter-spacing:6px;vertical-align:28px;color:#476852;';
-  const reqNote = h('div', { class: 'abs serif' }, root, `“${D.note}”`);
-  reqNote.style.cssText = 'left:0;right:0;top:400px;text-align:center;font-size:34px;letter-spacing:6px;color:rgba(34,57,50,.8);';
-  function place(list, x0, op = 1, y = Y) {
-    let x = x0;
-    list.forEach(st => {
-      st.d.style.left = `${x}px`; st.d.style.width = `${st.minutes * PX}px`; st.d.style.top = `${y}px`;
-      st.d.style.opacity = op.toFixed(3); x += st.minutes * PX;
-    });
-  }
   function update(t) {
     const s13 = shot(13), l = t - s13.start, d = s13.end - s13.start;
-    const cTea = cue('VO-10#2', s13.start + 3.6), cCraft = cue('VO-10#3', s13.start + 5.5);
+    const cObs = cue('VO-10#2', s13.start + 2.4), cCraft = cue('VO-10#3', s13.start + 4.6);
     const morph = prog(t, cCraft, cCraft + 1.6, E.inOut);
     setOpacity(big, prog(l, 0.2, 1.0, E.sine));
-    setOpacity(reqNote, prog(l, 0.5, 1.3, E.sine) * (1 - prog(t, cCraft - 0.5, cCraft, E.sine)));
-    // 修改前：讲解 20 + 基础手作 50
-    place(before, X0, 1 - prog(t, cCraft + 0.6, cCraft + 1.2, E.sine));
-    before.forEach((st, i) => { if (i === 1) st.d.style.width = `${lerp(st.minutes, st.minutes, 0) * PX}px`; });
-    // 修改后：讲解 20 + 深度手作 60 + 延伸 20；手作纸条从 50 延长到 60，延伸练习从右侧滑入
-    let x = X0;
-    after.forEach((st, i) => {
-      const grow = i === 1 ? prog(t, cCraft, cCraft + 1.2, E.inOut) : 1;
-      const w = i === 1 ? lerp(D.before.schedule[1].minutes, st.minutes, grow) : st.minutes;
-      st.d.style.left = `${x}px`; st.d.style.width = `${w * PX}px`; st.d.style.top = `${Y}px`;
-      let op = prog(t, cCraft + 0.4, cCraft + 1.0, E.sine);
-      if (i === 2) {
-        const sl = prog(t, cCraft + 0.9, cCraft + 1.9, E.out);
-        st.d.style.left = `${x + 240 * (1 - sl)}px`; op = sl;
-      }
-      st.d.style.opacity = op.toFixed(3);
-      x += w * PX;
-    });
-    // 茶歇：作为可选模块停在时间轴右上方，需求“不要茶歇”后被提起移走
-    const lift = prog(t, cTea - 0.2, cTea + 1.3, E.inOut);
-    const tx = X0 + 100 * PX - D.tea.minutes * PX, ty = Y - 190;
-    tea.d.style.left = `${tx + 420 * lift}px`; tea.d.style.top = `${ty - 140 * lift}px`; tea.d.style.width = `${D.tea.minutes * PX}px`;
-    tea.d.style.transform = `rotate(${(8 * lift).toFixed(2)}deg)`;
-    tea.d.style.opacity = (prog(l, 0.8, 1.5, E.sine) * (1 - prog(t, cTea + 0.6, cTea + 1.3, E.sine))).toFixed(3);
-    teaNote.style.left = `${tx}px`; teaNote.style.top = `${ty - 36}px`;
-    teaNote.style.opacity = (prog(l, 0.8, 1.5, E.sine) * (1 - lift)).toFixed(3);
-    head.textContent = morph < 0.5 ? `上一次方案 · 全程 ${D.before.total} 分钟` : `本次程序推荐 · 全程 ${D.after.total} 分钟`;
+    setOpacity(who, prog(l, 0.4, 1.1, E.sine));
+    // “多了一个观察环节”：点染色彩观察从上方落入讲解与手作之间，手作右移让位
+    const drop = prog(t, cObs - 0.1, cObs + 1.0, E.out);
+    const shift = prog(t, cObs - 0.1, cObs + 0.8, E.inOut);
+    const obs = after.find(x => x.kind === 'obs');
+    const [story, basic] = before;
+    story.d.style.left = `${X0}px`; story.d.style.width = `${story.minutes * PX}px`;
+    obs.d.style.left = `${X0 + story.minutes * PX}px`; obs.d.style.width = `${obs.minutes * PX}px`;
+    obs.d.style.top = `${Y - 260 * (1 - drop)}px`;
+    obs.d.style.transform = `rotate(${(-5 * (1 - drop)).toFixed(2)}deg)`;
+    setOpacity(obs.d, prog(t, cObs - 0.1, cObs + 0.4, E.sine));
+    const craftX = X0 + (story.minutes + obs.minutes * shift) * PX;
+    // “手作从五十分钟变成八十分钟”：基础手作 50 换成深度手作 60，手作延伸练习 20 从右侧接上
+    basic.d.style.left = `${craftX}px`; basic.d.style.width = `${basic.minutes * PX}px`;
+    setOpacity(basic.d, 1 - prog(t, cCraft + 0.3, cCraft + 0.9, E.sine));
+    const deep = after.find(x => x.kind === 'craft'), ext = after.find(x => x.kind === 'ext');
+    const grow = prog(t, cCraft, cCraft + 1.2, E.inOut);
+    const dw = lerp(basic.minutes, deep.minutes, grow);
+    deep.d.style.left = `${craftX}px`; deep.d.style.width = `${dw * PX}px`;
+    setOpacity(deep.d, prog(t, cCraft + 0.2, cCraft + 0.8, E.sine));
+    const sl = prog(t, cCraft + 0.9, cCraft + 1.9, E.out);
+    ext.d.style.left = `${craftX + dw * PX + 240 * (1 - sl)}px`; ext.d.style.width = `${ext.minutes * PX}px`;
+    setOpacity(ext.d, sl);
+    story.d.style.opacity = '1';
+    after.find(x => x.kind === 'story').d.style.display = 'none';
+    head.textContent = morph < 0.5 ? `修改前 · 全程 ${D.before.total} 分钟` : `修改后 · 全程 ${D.after.total} 分钟`;
     head.style.opacity = (morph < 0.5 ? 1 - morph * 2 : morph * 2 - 1).toFixed(3);
-    // 翻牌
     const fl = prog(t, cCraft + 0.3, cCraft + 1.0, E.inOut);
     // 翻牌前只显示“手作 50 分钟”；翻牌时左侧“50 →”淡入，定格为“50 → 80”
     const showFrom = prog(t, cCraft + 0.3, cCraft + 1.0, E.sine);
@@ -545,46 +604,45 @@ function sceneStrips() {
 }
 
 /* =====================================================================
- * 镜 14：方案对比推近“50 → 80”，账目三类依次亮起（金额为演示测算）
+ * 镜 14：面向学生的讲解慢推；账目按三类依次高亮，叠加合计标签（金额为演示测算）
  * ===================================================================== */
 function sceneLedger() {
   const root = h('div', { class: 'scene' }, document.getElementById('scenes'));
   paperBg(root);
   const a = h('div', { class: 'layer' }, root);
   const va = viewport(a);
-  stillImg(va.wrap, 's12-comparison.png', 2008, 1004);
-  const oa = overlay(va.wrap, 2008, 1004);
-  const nb = frameBox(oa, 190, 178, 375, 110, C.red, 3);
+  stillImg(va.wrap, 's09-teaching.png', 2008, 1164);
   const b = h('div', { class: 'layer' }, root);
   b.style.background = C.ink;
   const vb = viewport(b);
-  stillImg(vb.wrap, 's13-ledger.png', 1916, 852, 0, 0, false);
-  const ob = overlay(vb.wrap, 1916, 852);
-  const rowY = [226, 300, 374, 448, 520, 594, 668, 742, 816];
-  const groups = [[0, 2, 6], [3, 4, 7], [1, 5, 8]];
-  const shades = rowY.map(y => s('rect', { x: -10, y: y - 37, width: 1936, height: 74, fill: '#0f1a16', opacity: 0 }, ob));
-  const bars = rowY.map(y => s('rect', { x: -14, y: y - 30, width: 6, height: 60, fill: C.red, opacity: 0 }, ob));
-  // 三类合计来自运行记录的整数分（manifest.json 中 plan 字段），换算成元显示
+  // s13 为逐行明细（2 倍图，1916×1072，12 行，没有分类合计）
+  stillImg(vb.wrap, 's13-ledger.png', 1916, 1072, 0, 0, false);
+  const ob = overlay(vb.wrap, 1916, 1072);
+  const rowY = Array.from({ length: 12 }, (_, i) => 224 + 73.6 * i);
+  // 按运行 8ef7b118 的账目行顺序：在地活动服务者 / 材料工具准备 / 活动组织
+  const groups = [[0, 2, 5, 9], [3, 6, 7, 10], [1, 4, 8, 11]];
+  const shades = rowY.map(y => s('rect', { x: -10, y: y - 36, width: 1936, height: 72, fill: '#0f1a16', opacity: 0 }, ob));
+  const bars = rowY.map(y => s('rect', { x: -14, y: y - 28, width: 6, height: 56, fill: C.red, opacity: 0 }, ob));
+  // 三类合计来自运行记录的整数分（manifest.json 中 plan 字段），换算成元显示；行高亮与标签都是叠加层
   const pl = P.plan.plan;
   const chipsWrap = h('div', { class: 'abs' }, b);
-  chipsWrap.style.cssText = 'left:0;right:0;top:100px;display:flex;justify-content:center;gap:26px;';
+  chipsWrap.style.cssText = 'left:0;right:0;top:70px;display:flex;justify-content:center;gap:22px;';
   const chip = (label, cents) => {
     const c = h('div', { class: 'sans' }, chipsWrap);
-    c.style.cssText = `padding:12px 26px;border-radius:3px;background:rgba(246,243,235,.08);border:1.5px solid rgba(246,243,235,.25);color:#f6f3eb;font-size:28px;letter-spacing:3px;`;
+    c.style.cssText = `padding:12px 24px;border-radius:3px;background:rgba(246,243,235,.08);border:1.5px solid rgba(246,243,235,.25);color:#f6f3eb;font-size:28px;letter-spacing:3px;`;
     c.innerHTML = `${label} <b style="font-weight:500;color:#f3c9b9;margin-left:8px">${cents / 100} 元</b>`;
     return c;
   };
-  const chips = [chip('本地服务报酬', pl.local_service_cents), chip('材料工具', pl.material_cents), chip('活动组织', pl.operations_cents)];
+  const chips = [chip('在地活动服务者', pl.local_service_cents), chip('材料工具准备', pl.material_cents), chip('活动组织', pl.operations_cents)];
   const total = chip('合计', pl.total_cents);
   function update(t) {
     const s14 = shot(14), l = t - s14.start, d = s14.end - s14.start;
-    va.set(kf(l, [[0, [1004, 520, 0.92]], [3.6, [378, 236, 2.1]], [4.6, [378, 236, 2.15]]], E.inOut));
-    nb.set(prog(l, 2.6, 3.6, E.inOut), 0.9);
-    const x = prog(l, 4.2, 4.9, E.sine);
-    setOpacity(b, x);
-    vb.set(kf(l, [[4.2, [958, 418, 0.84]], [d, [958, 420, 0.86]]], E.inOut));
-    const c2 = cue('VO-11#2', s14.start + 4.8), c3 = cue('VO-11#3', s14.start + 7.5);
-    const on = [prog(t, c2, c2 + 0.5), prog(t, c2 + 1.1, c2 + 1.6), prog(t, c2 + 2.2, c2 + 2.7)];
+    const c2 = cue('VO-11#2', s14.start + 4.4), c3 = cue('VO-11#3', s14.start + 7.6);
+    const lSw = c2 - s14.start - 0.7;
+    va.set(kf(l, [[0, [1004, 582, 0.84]], [lSw + 0.6, [820, 450, 1.08]]], E.inOut));
+    setOpacity(b, prog(l, lSw, lSw + 0.6, E.sine));
+    vb.set(kf(l, [[lSw, [958, 514, 0.72]], [d, [958, 516, 0.73]]], E.inOut));
+    const on = [prog(t, c2 - 0.2, c2 + 0.3), prog(t, c2 + 0.6, c2 + 1.1), prog(t, c2 + 1.3, c2 + 1.8)];
     const back = prog(t, c3, c3 + 0.6);   // 说到“付给本地讲解和手作老师”时回到第一类
     const anyOn = Math.max(...on);
     rowY.forEach((_, r) => {
@@ -595,13 +653,13 @@ function sceneLedger() {
       bars[r].setAttribute('opacity', (lit * (g === 0 ? 1 : 0.7) * (back > 0 && g !== 0 ? 1 - back : 1)).toFixed(3));
     });
     chips.forEach((c, i) => setOpacity(c, on[i] * (back > 0 && i !== 0 ? lerp(1, 0.45, back) : 1)));
-    setOpacity(total, prog(t, c2 + 3.0, c2 + 3.6) * (1 - back * 0.55));
+    setOpacity(total, prog(t, c2 + 2.0, c2 + 2.5) * (1 - back * 0.55));
   }
   return { id: 'ledger', root, from: 14, to: 14, update };
 }
 
 /* =====================================================================
- * 镜 15：需要安排英语讲解 → 停下请人澄清
+ * 镜 15：需要安排英语讲解 → 停下请人澄清（警示条 s23）
  * ===================================================================== */
 function sceneStop() {
   const root = h('div', { class: 'scene' }, document.getElementById('scenes'));
@@ -609,31 +667,35 @@ function sceneStop() {
   const vp = viewport(root);
   const img = h('img', { class: 'abs' }, vp.wrap);
   img.style.cssText = 'left:0;top:0;width:1920px;height:1080px;';
-  // s23 是警示条的 2 倍图，录屏 102 秒处约在 (298, 432)
-  const warn = stillImg(vp.wrap, 's23-stop-warning.png', 1328, 48, 296, 422, false);
-  const o = overlay(vp.wrap, 1328, 48, 296, 422);
-  const box = frameBox(o, -8, -8, 1344, 64, C.red, 2);
   const focus = focusLayer(root);
+  // 警示条在页面顶部、录屏当时的首屏之外：单独放大成一条，压在虚化的录屏上
+  const b = h('div', { class: 'layer' }, root);
+  const vb = viewport(b);
+  const warn = stillImg(vb.wrap, 's23-stop-warning.png', 1328, 48, 0, 0, true);
+  const o = overlay(vb.wrap, 1328, 48);
+  const box = frameBox(o, -8, -8, 1344, 64, C.red, 2);
   function update(t) {
     const s15 = shot(15), l = t - s15.start, d = s15.end - s15.start;
     const m = P.manifest.marks.reduce((a, x) => (a[x.name] = x.sec, a), {});
     const click = m['stop-click'], result = m['stop-result'];
-    const segs = [[0, 2.6, click - 2.4, click + 0.2], [2.6, 3.6, click + 0.2, result - 0.1], [3.6, d, result - 0.1, result - 0.1 + Math.min(d - 3.6, 3.3)]];
+    const segs = [[0, 2.6, click - 2.4, click + 0.2], [2.6, 3.6, click + 0.2, result - 0.1], [3.6, d, result - 0.1, result - 0.1 + Math.min(d - 3.6, 2.4)]];
     clipFrame(img, remap(l, segs));
-    vp.set(kf(l, [[0, [640, 760, 1.5]], [2.6, [700, 740, 1.5]], [3.8, [960, 520, 1.25]], [6.0, [960, 446, 1.45]], [d, [800, 446, 2.0]]], E.inOut));
-    const st = prog(l, 5.4, 6.4, E.sine);
-    warn.style.opacity = st.toFixed(3);
-    box.set(prog(l, 6.4, 7.4, E.inOut), 0.9);
-    img.style.filter = `blur(${(2.2 * st).toFixed(2)}px) brightness(${(1 - 0.06 * st).toFixed(3)})`;
+    vp.set(kf(l, [[0, [560, 560, 1.6]], [2.6, [580, 640, 1.6]], [3.8, [760, 600, 1.3]], [d, [760, 600, 1.34]]], E.inOut));
+    const st = prog(l, 5.0, 5.9, E.sine);
+    setOpacity(b, st);
+    vb.set(kf(l, [[5.0, [664, 24, 1.3]], [d, [500, 24, 1.75]]], E.inOut));
+    warn.style.transform = `translateY(${(30 * (1 - st)).toFixed(1)}px)`;
+    box.set(prog(l, 6.2, 7.2, E.inOut), 0.9);
+    img.style.filter = `blur(${(3 * st).toFixed(2)}px) brightness(${(1 - 0.12 * st).toFixed(3)})`;
     focus.set(960, 540, 980, 420, 0.6 + 0.4 * st);
   }
   return { id: 'stop', root, from: 15, to: 15, update };
 }
 
 /* =====================================================================
- * 镜 16：作品卡从手册里抽走（示意动画）
+ * 镜 16：新作卡落下，旧卡退到“往期”（示意动画，不抽走、不打叉）
  * ===================================================================== */
-function sceneWithdrawCard() {
+function sceneNewWork() {
   const root = h('div', { class: 'scene' }, document.getElementById('scenes'));
   paperBg(root, TEX.cream);
   const book = h('div', { class: 'abs' }, root);
@@ -652,102 +714,146 @@ function sceneWithdrawCard() {
     const b = h('div', { class: 'abs' }, left);
     b.style.cssText = `left:70px;top:${170 + i * 56}px;height:12px;border-radius:6px;background:rgba(34,57,50,.13);width:${360 + ((i * 53) % 140)}px;`;
   }
-  // 右页：作品卡空位与作品卡
-  const slot = h('div', { class: 'abs' }, right);
-  slot.style.cssText = 'left:110px;top:90px;width:430px;height:480px;border:2px dashed rgba(34,57,50,.35);border-radius:4px;';
-  for (let i = 0; i < 3; i++) {
-    const b = h('div', { class: 'abs' }, right);
-    b.style.cssText = `left:110px;top:${615 + i * 40}px;height:12px;border-radius:6px;background:rgba(34,57,50,.13);width:${300 + i * 40}px;`;
-  }
-  const card = h('div', { class: 'abs' }, right);
-  card.style.cssText = `left:110px;top:90px;width:430px;height:480px;background:#fffdf8;box-shadow:0 14px 36px rgba(30,30,20,.25);overflow:hidden;`;
-  const art = h('div', { class: 'abs' }, card);
-  art.style.cssText = 'left:-205px;top:-150px;width:836px;height:836px;';
-  const yin = makeCut('yin', art);
-  const tagEl = h('div', { class: 'abs sans' }, card, '署名 · 使用范围');
-  tagEl.style.cssText = `right:0;bottom:0;background:${C.ink};color:#f6f3eb;font-size:22px;letter-spacing:3px;padding:10px 16px;`;
-  const hole = h('div', { class: 'abs sans' }, right, '');
+  const workCard = (label, recolor) => {
+    const card = h('div', { class: 'abs' }, right);
+    card.style.cssText = 'left:110px;top:90px;width:430px;height:480px;background:#fffdf8;box-shadow:0 14px 36px rgba(30,30,20,.25);overflow:hidden;transform-origin:0 0;';
+    const art = h('div', { class: 'abs' }, card);
+    art.style.cssText = `left:-205px;top:-150px;width:836px;height:836px;${recolor ? 'filter:hue-rotate(160deg) saturate(.85) brightness(.95);' : ''}`;
+    const cut = makeCut('yin', art);
+    const tagEl = h('div', { class: 'abs sans' }, card, label);
+    tagEl.style.cssText = `right:0;bottom:0;background:${C.ink};color:#f6f3eb;font-size:22px;letter-spacing:3px;padding:10px 16px;`;
+    return { card, cut };
+  };
+  const pastLabel = h('div', { class: 'abs sans' }, right, '往期');
+  pastLabel.style.cssText = 'left:404px;top:640px;font-size:22px;letter-spacing:4px;color:rgba(34,57,50,.6);';
+  const old = workCard('署名 · 第 1 版', false);
+  const neu = workCard('署名 · 第 2 版', true);
   function update(t) {
     const s16 = shot(16), l = t - s16.start, d = s16.end - s16.start;
-    const out = prog(t, cue('VO-13#1', s16.start + 1.3) + 0.6, cue('VO-13#1', s16.start + 1.3) + 2.6, E.inOut);
-    card.style.transform = `translate(${(160 * out).toFixed(1)}px,${(-760 * out).toFixed(1)}px) rotate(${(-6 * out).toFixed(2)}deg)`;
-    card.style.boxShadow = `0 ${(14 + 40 * out).toFixed(0)}px ${(36 + 50 * out).toFixed(0)}px rgba(30,30,20,${(0.25 - 0.1 * out).toFixed(2)})`;
+    const t1 = cue('VO-13#1', s16.start + 1.3) + 0.3;
+    // 新作卡从上方轻轻落下，盖在旧卡上方
+    const fall = prog(t, t1, t1 + 1.0, E.out);
+    neu.card.style.transform = `translate(${(30 * (1 - fall)).toFixed(1)}px,${(-760 * (1 - fall)).toFixed(1)}px) rotate(${(-4 * (1 - fall) - 1.2 * fall).toFixed(2)}deg)`;
+    neu.card.style.opacity = (fall > 0 ? 1 : 0).toFixed(3);
+    // 旧卡随后退到右下角的“往期”小叠里，仍然可见
+    const away = prog(t, t1 + 1.3, t1 + 2.4, E.inOut);
+    old.card.style.transform = `translate(${(360 * away).toFixed(1)}px,${(500 * away).toFixed(1)}px) scale(${lerp(1, 0.3, away).toFixed(3)}) rotate(${(3 * away).toFixed(2)}deg)`;
+    setOpacity(pastLabel, prog(t, t1 + 2.0, t1 + 2.6, E.sine));
     const k = 1.04 - 0.04 * prog(l, 0, d, E.lin);
     book.style.transform = `scale(${k.toFixed(4)})`;
   }
-  return { id: 'withdraw-card', root, from: 16, to: 16, update, init() { finishCut(yin); } };
+  return { id: 'new-work', root, from: 16, to: 16, update, init() { finishCut(old.cut); finishCut(neu.cut); } };
 }
 
 /* =====================================================================
- * 镜 17：点击“撤回使用”，旧确认失效；朱印“已失效”为示意叠加
+ * 镜 17：点“发布新版本”（原速），旧方案待更新；接 s17 上部定位受影响内容（只用细框，不加印章）
  * ===================================================================== */
-function sceneInvalidate() {
+function scenePublish() {
   const root = h('div', { class: 'scene' }, document.getElementById('scenes'));
   paperBg(root);
-  const vp = viewport(root);
+  const a = h('div', { class: 'layer' }, root);
+  const vp = viewport(a);
   const img = h('img', { class: 'abs' }, vp.wrap);
   img.style.cssText = 'left:0;top:0;width:1920px;height:1080px;';
-  const stamp = h('div', { class: 'abs serif' }, vp.wrap, '已失效');
-  stamp.style.cssText = `left:560px;top:360px;width:330px;height:130px;border:7px solid ${C.red};color:${C.red};border-radius:10px;
-    font-size:74px;letter-spacing:14px;padding-left:14px;display:grid;place-items:center;font-weight:700;background:rgba(246,243,235,.12);
-    mix-blend-mode:multiply;`;
-  const stampTex = h('div', { class: 'layer' }, stamp);
-  stampTex.style.cssText = `background:url(${TEX.rice}) center/cover;mix-blend-mode:screen;opacity:.45;`;
+  // s15 是作品列表（第 1 版）的 2 倍图，录屏中在 (642, 703)
+  const still = stillImg(vp.wrap, 's15-works-before.png', 960, 158, 642, 703, false);
+  const ow = overlay(vp.wrap, 960, 158, 642, 703);
+  const rowBox = frameBox(ow, -4, 58, 968, 46, C.red, 2);
   const pulse = h('div', { class: 'abs' }, vp.wrap);
   pulse.style.cssText = 'border-radius:50%;border:3px solid rgba(185,70,51,.8);';
+  const focus = focusLayer(a);
+  // s17 只取上部 240 像素（下沿有一条提示浮层压字）
+  const b = h('div', { class: 'layer' }, root);
+  paperBg(b);
+  const vb = viewport(b);
+  const clipBox = h('div', { class: 'abs' }, vb.wrap);
+  clipBox.style.cssText = 'left:0;top:0;width:1920px;height:240px;overflow:hidden;box-shadow:0 18px 50px rgba(20,30,25,.25);';
+  const si = h('img', { class: 'abs' }, clipBox);
+  si.style.cssText = 'left:0;top:0;width:1920px;height:284px;';
+  setSrc(si, P.footage + 's17-impact.png');
+  const ob = overlay(vb.wrap, 1920, 240);
+  const fb = frameBox(ob, -6, 98, 420, 40, C.red, 3);
+  const fb2 = frameBox(ob, -6, 192, 1210, 44, C.red, 3);
   function update(t) {
     const s17 = shot(17), l = t - s17.start, d = s17.end - s17.start;
-    const m = P.manifest.marks.reduce((a, x) => (a[x.name] = x.sec, a), {});
-    const w = m['act3-withdraw'], inv = m['act3-invalidated'];
-    // 真实速度：撤回点击前 0.6 秒起，播到旧确认失效后停住
-    const src = Math.min(w - 0.6 + l, inv + 0.4);
-    clipFrame(img, src);
-    vp.set(kf(l, [[0, [1180, 760, 1.28]], [2.2, [1180, 760, 1.32]], [3.6, [940, 560, 1.3]], [d, [920, 540, 1.36]]], E.inOut));
-    const pp = prog(l, 0.6, 1.3, E.out);
-    const rr = 50 * pp;
+    const m = P.manifest.marks.reduce((acc, x) => (acc[x.name] = x.sec, acc), {});
+    const pub = m['act3-publish'], out = m['act3-outdated'];
+    // 原速：点击前 0.5 秒起，播到“待更新”出现后停住
+    clipFrame(img, Math.min(pub - 0.5 + l, out + 0.8));
+    setOpacity(still, 1 - prog(l, 0.35, 0.5, E.sine));
+    rowBox.set(prog(l, 0.0, 0.4, E.inOut), 0.9 * (1 - prog(l, 1.0, 1.4, E.sine)));
+    vp.set(kf(l, [[0, [1180, 760, 1.32]], [1.2, [1190, 760, 1.34]], [2.6, [960, 520, 1.0]], [d, [960, 520, 1.02]]], E.inOut));
+    const pp = prog(l, 0.5, 1.1, E.out), rr = 46 * pp;
     pulse.style.width = pulse.style.height = `${rr * 2}px`;
-    pulse.style.left = `${1566 - rr}px`; pulse.style.top = `${838 - rr}px`;
+    pulse.style.left = `${1561 - rr}px`; pulse.style.top = `${782 - rr}px`;
     pulse.style.opacity = (pp > 0 && pp < 1 ? 1 - pp : 0).toFixed(3);
-    // 印章在“旧手册立刻作废”说完后落下，不压住旁白
-    const sAt = cue('VO-14#end', s17.start + 4.0) + 0.05;
-    const drop = prog(t, sAt, sAt + 0.32, E.in2);
-    stamp.style.opacity = (drop > 0 ? 0.9 : 0).toFixed(3);
-    stamp.style.transform = `rotate(-8deg) scale(${lerp(1.8, 1.0, drop).toFixed(3)})`;
+    focus.set(960, 540, 1000, 560, 0.5);
+    const lB = Math.max(out - pub + 1.2, cue('VO-14#2', s17.start + 3) - s17.start + 0.2);
+    setOpacity(b, prog(l, lB, lB + 0.6, E.sine));
+    // 左缘对齐源图左缘（cx = 960 / k - 30），整行不裁
+    vb.set(kf(l, [[lB, [680, 130, 1.4]], [d, [600, 140, 1.52]]], E.inOut));
+    fb.set(prog(l, lB + 0.6, lB + 1.3, E.inOut), 0.9);
+    fb2.set(prog(l, lB + 1.3, lB + 2.2, E.inOut), 0.9);
   }
-  return { id: 'invalidate', root, from: 17, to: 17, update };
+  return { id: 'publish', root, from: 17, to: 17, update };
 }
 
 /* =====================================================================
- * 镜 18：定位受影响内容 → 新版游客手册
+ * 镜 18：重新核验（等待剪短）→ 人工确认 → 新版游客手册
  * ===================================================================== */
 function sceneRenew() {
   const root = h('div', { class: 'scene' }, document.getElementById('scenes'));
   paperBg(root);
   const a = h('div', { class: 'layer' }, root);
-  const va = viewport(a);
-  // s17 只取上部 250 像素（下沿有一条提示浮层）
-  const clipBox = h('div', { class: 'abs' }, va.wrap);
-  clipBox.style.cssText = 'left:0;top:0;width:1920px;height:250px;overflow:hidden;box-shadow:0 18px 50px rgba(20,30,25,.25);';
-  const si = h('img', { class: 'abs' }, clipBox);
-  si.style.cssText = 'left:0;top:0;width:1920px;height:284px;';
-  setSrc(si, P.footage + 's17-impact.png');
-  const oa = overlay(va.wrap, 1920, 250);
-  const fb = frameBox(oa, -6, 88, 330, 50, C.red, 3);
-  const fb2 = frameBox(oa, -6, 186, 980, 52, C.red, 3);
+  const vp = viewport(a);
+  const img = h('img', { class: 'abs' }, vp.wrap);
+  img.style.cssText = 'left:0;top:0;width:1920px;height:1080px;';
+  // 录屏 78.9 秒处“确认当前方案”按钮约在 (716, 594)
+  const pulse = h('div', { class: 'abs' }, vp.wrap);
+  pulse.style.cssText = 'border-radius:50%;border:3px solid rgba(185,70,51,.8);';
+  const focus = focusLayer(a);
   const b = h('div', { class: 'layer' }, root);
   const vb = viewport(b);
   stillImg(vb.wrap, 's20-preview-visitor.png', 3840, 2160, 0, 0, false);
   function update(t) {
     const s18 = shot(18), l = t - s18.start, d = s18.end - s18.start;
-    // 左缘对齐源图左缘（cx = 960 / k - 20），不裁掉行首文字
-    va.set(kf(l, [[0, [650, 140, 1.45]], [3.8, [573, 150, 1.62]]], E.inOut));
-    fb.set(prog(l, 0.8, 1.6, E.inOut), 0.9);
-    fb2.set(prog(l, 1.8, 2.8, E.inOut), 0.9);
-    const x = prog(l, 3.6, 4.4, E.sine);
-    setOpacity(b, x);
-    vb.set(kf(l, [[3.6, [1920, 1080, 0.5]], [d, [1920, 1000, 0.6]]], E.inOut));
+    const m = P.manifest.marks.reduce((acc, x) => (acc[x.name] = x.sec, acc), {});
+    const c = m['act3-click'], r = m['act3-result'], cf = m['confirm'];
+    // 时间点由 build_timeline.py 写入 timeline.json：确认的点击落在“拍板的，始终是人”上
+    const ev = T.events || {};
+    const lConfirm = ev['18-confirm'] - s18.start, lWait = ev['18-wait-end'] - s18.start, lPrev = ev['18-preview'] - s18.start;
+    const segs = [[0, 1.4, c - 0.8, c + 0.6], [1.4, lWait, c + 0.6, r - 0.2], [lWait, lConfirm + 1.6, r - 0.2, cf + 1.6]];
+    clipFrame(img, remap(l, segs));
+    vp.set(kf(l, [[0, [760, 520, 1.12]], [lWait, [760, 520, 1.14]], [lConfirm - 0.5, [740, 560, 1.3]], [lPrev + 0.8, [730, 570, 1.38]]], E.inOut));
+    const pp = prog(l, lConfirm, lConfirm + 0.6, E.out), rr = 46 * pp;
+    pulse.style.width = pulse.style.height = `${rr * 2}px`;
+    pulse.style.left = `${716 - rr}px`; pulse.style.top = `${594 - rr}px`;
+    pulse.style.opacity = (pp > 0 && pp < 1 ? 1 - pp : 0).toFixed(3);
+    focus.set(960, 540, 1000, 560, 0.5);
+    setOpacity(b, prog(l, lPrev, lPrev + 0.8, E.sine));
+    vb.set(kf(l, [[lPrev, [1920, 1080, 0.5]], [d, [1920, 1000, 0.6]]], E.inOut));
   }
   return { id: 'renew', root, from: 18, to: 18, update };
+}
+
+/* =====================================================================
+ * 镜 18b：游客版手册“手艺人作品”栏，慢推到新作与演示标价
+ * ===================================================================== */
+function sceneWorks() {
+  const root = h('div', { class: 'scene' }, document.getElementById('scenes'));
+  paperBg(root);
+  const vp = viewport(root);
+  stillImg(vp.wrap, 's20b-preview-works.png', 3840, 2160, 0, 0, false);
+  const o = overlay(vp.wrap, 3840, 2160);
+  const cardBox = frameBox(o, 966, 1286, 940, 432, C.red, 4);
+  const lineBox = frameBox(o, 990, 1632, 900, 50, C.green, 3);
+  function update(t) {
+    const sh = shot('18b'), l = t - sh.start, d = sh.end - sh.start;
+    vp.set(kf(l, [[0, [1920, 1080, 0.5]], [2.4, [1520, 1420, 0.9]], [d, [1440, 1500, 1.06]]], E.inOut));
+    cardBox.set(prog(l, 2.2, 3.2, E.inOut), 0.9);
+    lineBox.set(prog(l, 3.8, 4.8, E.inOut), 0.9);
+  }
+  return { id: 'works', root, from: '18b', to: '18b', update };
 }
 
 /* =====================================================================
@@ -838,7 +944,7 @@ function sceneEnd() {
   motto.style.cssText = 'left:0;right:0;top:500px;text-align:center;font-size:56px;letter-spacing:16px;color:#223932;';
   const fine = h('div', { class: 'abs sans' }, root);
   fine.style.cssText = 'left:0;right:0;top:930px;text-align:center;font-size:20px;line-height:1.7;letter-spacing:1px;color:rgba(34,57,50,.72);';
-  fine.innerHTML = '系统画面为本地真实运行，等待时间已剪短；动画为示意，纹样为项目原创；价格、报酬、人员与场地为演示配置。<br>资料：中国非物质文化遗产网';
+  fine.innerHTML = '系统画面为本地真实运行，等待时间已剪短；动画为示意，纹样为项目原创；价格、报酬、人员、场地、手艺人作品与标价为演示配置。<br>访谈原话已获受访者同意。资料：中国非物质文化遗产网。';
   function update(t) {
     const s21 = shot(21), l = t - s21.start, d = s21.end - s21.start;
     setOpacity(sl, prog(l, 0.1, 0.9, E.sine));
@@ -850,5 +956,5 @@ function sceneEnd() {
   return { id: 'end', root, from: 21, to: 21, update };
 }
 
-SCENE_BUILDERS.push(sceneCards, sceneTitle, sceneDraft, sceneVerifyClip, sceneAudit, sceneSweep, sceneTyping,
-  sceneStrips, sceneLedger, sceneStop, sceneWithdrawCard, sceneInvalidate, sceneRenew, sceneLaptop, sceneFinale, sceneEnd);
+SCENE_BUILDERS.push(sceneCards, sceneTitle, sceneDraft, sceneVerifyClip, sceneAudit, sceneSweep, sceneDraftGen, sceneAudience,
+  sceneStrips, sceneLedger, sceneStop, sceneNewWork, scenePublish, sceneRenew, sceneWorks, sceneLaptop, sceneFinale, sceneEnd);

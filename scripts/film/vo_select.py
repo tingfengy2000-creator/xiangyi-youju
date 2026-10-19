@@ -1,4 +1,9 @@
-"""旁白选遍：把识别出的逐字流与 17 句原文对齐，分出每一遍，按制作说明的规则选遍。
+"""旁白选遍：把识别出的逐字流与该录音那组句子按顺序对齐，分出每一遍，按制作说明的规则选遍。
+
+第二版（docs/demo/film/voiceover-v2.md，只有女声，19 句）分三份录音：
+retake 11 句（含读作 wèi 的 VO-03、VO-07，参与对齐但不优先选）、new 8 句、yu 2 句（VO-03、VO-07）。
+每份录音先单独选遍，再用 merge 合并：VO-03、VO-07 优先取 yu；其余取各自录音；
+重录某句全部不合格时，才到第一版女声（female，17 句）里找。
 
 规则（docs/demo/film/production-brief.md “旁白”一节）：
 1. 先排除：CER 超过 8%、漏字或加字、中途停顿重来、开头或结尾被截断、明显喷麦或噪音；
@@ -11,12 +16,13 @@ CER 按无声调拼音比较，忽略标点；识别把“阳刻”写成“杨�
 另外合并 in/ing、en/eng 前后鼻音（男声“阴”读近“ying”属口音，不是读错），
 “蔚”接受 yu/wei 两读（地名读音，非文字差异）。
 
-队员可在 docs/demo/film/vo-overrides.json 中指定改用哪一遍，例如
-{"male": {"VO-07": 2}}，重新运行本脚本及后续步骤即可。
+队员可在 docs/demo/film/vo-overrides.json 中指定改用哪一遍（遍号按该句主录音计），例如
+{"female": {"VO-07": 2}}，重新运行 merge 及后续步骤即可。
 
-用法：python scripts/film/vo_select.py male|female
-输入：artifacts/film/vo/<voice>-asr.json
-输出：artifacts/film/vo/<voice>-takes.json
+用法：python scripts/film/vo_select.py female-v2-retake|female-v2-new|female-v2-yu|female
+      python scripts/film/vo_select.py merge
+输入：artifacts/film/vo/<录音>-asr.json
+输出：artifacts/film/vo/<录音>-takes.json；merge 输出 artifacts/film/vo/female-v2-takes.json
 """
 
 import json
@@ -39,7 +45,24 @@ TAKE_GAP_PENALTY = 0.35   # 把明显的大停顿算进同一遍的代价
 TAKE_FIXED_COST = 0.15    # 每多分出一遍的代价，避免把一遍拆成两半
 
 
-def load_script():
+def load_script_v2():
+    """第二版 19 句：{编号: (来源, 原文)}，按表格顺序。"""
+    text = (ROOT / "docs" / "demo" / "film" / "voiceover-v2.md").read_text(encoding="utf-8")
+    lines = {}
+    for match in re.finditer(r"^\| (VO-\d\db?) \| (\w+) \| \w+ \| ([^|]+) \|", text, re.M):
+        lines[match.group(1)] = (match.group(2), match.group(3).strip())
+    assert len(lines) == 19, lines
+    return lines
+
+
+def load_script(voice):
+    """这份录音里按顺序读到的句子。"""
+    if voice.startswith("female-v2-"):
+        source = voice.removeprefix("female-v2-")
+        v2 = load_script_v2()
+        # retake 里也读了 VO-03、VO-07（读作 wèi），对齐时必须算进去
+        want = ("retake", "yu") if source == "retake" else (source,)
+        return {vo: t for vo, (src, t) in v2.items() if src in want}
     text = (ROOT / "docs" / "demo" / "film" / "voiceover.md").read_text(encoding="utf-8")
     lines = {}
     for match in re.finditer(r"^\| (VO-\d\d) \| \d+ \| ([^|]+) \|", text, re.M):
@@ -249,7 +272,9 @@ def noise_flags(audio, sr, start, end):
 
 def main():
     voice = sys.argv[1]
-    script = load_script()
+    if voice == "merge":
+        return merge()
+    script = load_script(voice)
     asr = json.loads((VO_DIR / f"{voice}-asr.json").read_text(encoding="utf-8"))
     audio, sr = sf.read(ROOT / asr["source"])
     env = envelope(audio, sr)
@@ -331,23 +356,14 @@ def main():
         if take["click"] > click_limit:
             take["excluded"].append("瞬态咔嗒声")
 
-    overrides_file = ROOT / "docs" / "demo" / "film" / "vo-overrides.json"
-    overrides = json.loads(overrides_file.read_text(encoding="utf-8")).get(voice, {}) if overrides_file.exists() else {}
+    # 第二版的指定在 merge 中处理
+    overrides = {} if voice.startswith("female-v2-") else load_overrides(voice)
     selection = {}
     for vo in script:
         group = [k for k, t in enumerate(takes) if t["vo"] == vo]
         for n, k in enumerate(group, 1):
             takes[k]["take_no"] = n
-        ok = [k for k in group if not takes[k]["excluded"]]
-        if ok:
-            choice, note = ok[-1], "最后一遍" if ok[-1] == group[-1] else "最后一遍被排除，往前取最近的合格遍"
-        else:
-            choice = min(group, key=lambda k: (takes[k]["cer"], -k))
-            note = "整组不合格，取 CER 最低的一遍，建议重录"
-        if vo in overrides:
-            choice, note = group[int(overrides[vo]) - 1], f"队员指定第 {overrides[vo]} 遍"
-        selection[vo] = {"take": choice, "take_no": takes[choice]["take_no"], "takes_in_group": len(group),
-                         "note": note, "rerecord": not ok and vo not in overrides}
+        selection[vo] = pick(takes, group, overrides.get(vo))
     out = {"voice": voice, "source": asr["source"], "asr": asr["asr"], "noise_floor_db": round(floor, 1),
            "lf_limit_db": round(lf_limit, 1), "click_limit": round(click_limit, 1),
            "script": script, "takes": takes, "selection": selection}
@@ -358,6 +374,61 @@ def main():
         for t in group:
             mark = "*" if t is takes[sel["take"]] else " "
             print(f"  {mark}{t['take_no']} {t['start']:7.2f}-{t['end']:7.2f} CER {t['cer']:.3f}/{t['cer2']:.3f} {t['text']} | {t['text2']}  {'; '.join(t['excluded'])}")
+
+
+def load_overrides(voice):
+    overrides_file = ROOT / "docs" / "demo" / "film" / "vo-overrides.json"
+    return json.loads(overrides_file.read_text(encoding="utf-8")).get(voice, {}) if overrides_file.exists() else {}
+
+
+def pick(takes, group, override=None):
+    ok = [k for k in group if not takes[k]["excluded"]]
+    if ok:
+        choice, note = ok[-1], "最后一遍" if ok[-1] == group[-1] else "最后一遍被排除，往前取最近的合格遍"
+    else:
+        choice = min(group, key=lambda k: (takes[k]["cer"], -k))
+        note = "整组不合格，取 CER 最低的一遍，建议重录"
+    if override:
+        choice, note = group[int(override) - 1], f"队员指定第 {override} 遍"
+    return {"take": choice, "take_no": takes[choice]["take_no"], "takes_in_group": len(group),
+            "note": note, "rerecord": not ok and not override}
+
+
+def merge():
+    """合并三份第二版录音（必要时加第一版女声后备）的选遍结果。"""
+    v2 = load_script_v2()
+    data = {k: json.loads((VO_DIR / f"female-v2-{k}-takes.json").read_text(encoding="utf-8"))
+            for k in ("retake", "new", "yu")}
+    v1_file = VO_DIR / "female-takes.json"
+    v1 = json.loads(v1_file.read_text(encoding="utf-8")) if v1_file.exists() else None
+    overrides = load_overrides("female")
+    selection, notes = {}, []
+    for vo, (src, _) in v2.items():
+        d = data[src]
+        sel = d["selection"][vo]
+        group = [k for k, t in enumerate(d["takes"]) if t["vo"] == vo]
+        if vo in overrides:
+            sel = pick(d["takes"], group, overrides[vo])
+        used, origin = d, src
+        if sel["rerecord"] and src == "yu":
+            alt = data["retake"]["selection"][vo]
+            if not alt["rerecord"]:
+                used, sel, origin = data["retake"], alt, "retake"
+                sel = dict(sel, note=sel["note"] + "；yu 补录 3 遍全部不合格，改用 retake（读作 wèi）")
+        elif sel["rerecord"] and src == "retake":
+            if v1 is None:
+                notes.append(f"{vo} 重录全部不合格，第一版女声后备尚未选遍（先运行 vo_select.py female）")
+            elif not v1["selection"][vo]["rerecord"]:
+                used, sel, origin = v1, v1["selection"][vo], "v1"
+                sel = dict(sel, note=sel["note"] + "；重录全部不合格，改用第一版女声后备")
+        take = used["takes"][sel["take"]]
+        selection[vo] = dict(sel, take=take, source=used["source"], origin=origin)
+    out = {"voice": "female", "selection": selection, "notes": notes}
+    (VO_DIR / "female-v2-takes.json").write_text(json.dumps(out, ensure_ascii=False, indent=1), encoding="utf-8")
+    for vo, sel in selection.items():
+        print(vo, sel["origin"], f"第 {sel['take_no']}/{sel['takes_in_group']} 遍", sel["note"], "| " + sel["take"]["text"])
+    for n in notes:
+        print("!", n)
 
 
 if __name__ == "__main__":

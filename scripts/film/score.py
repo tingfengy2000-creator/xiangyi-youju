@@ -4,13 +4,13 @@
 - 低频铺底：A1、E2、A2 三个持续音，各自缓慢起伏；
 - 拨弦：Karplus-Strong 模拟古琴质感的单音与主题；
 - 结尾弦乐：多声部锯齿波经低通与颤音，缓慢铺开。
-节奏点对齐镜头：镜 2、7、13、17、20 的起点（timeline.json 的 beats）。
+节奏点对齐镜头：镜 2、7、12、16、20 的起点（timeline.json 的 beats）。
 
 音效：纸张轻响、刀划纸、翻纸、印章、键盘、纸条滑动、机械节拍。
-真实打字镜头（镜 12）的键盘声按录屏中输入框逐帧变化的时刻放置，与画面上出现的字对齐。
+第二版镜 12 换成下拉框选择，不再有打字声；镜 17、18 的点击声按录屏点击时刻放置。
 
 用法：python scripts/film/score.py
-输出：docs/assets/film/mix/music.flac、docs/assets/film/mix/sfx.flac（48 kHz 立体声）
+输出：docs/assets/film/mix-v2/music.flac、docs/assets/film/mix-v2/sfx.flac（48 kHz 立体声）
 """
 
 import json
@@ -23,7 +23,7 @@ from scipy.signal import butter, sosfilt, fftconvolve
 
 ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / "artifacts" / "film"
-MIX = ROOT / "docs" / "assets" / "film" / "mix"
+MIX = ROOT / "docs" / "assets" / "film" / "mix-v2"
 SR = 48000
 RNG = np.random.default_rng(20261005)
 
@@ -253,7 +253,6 @@ def shot(timeline, n):
 
 def main():
     timeline = json.loads((OUT / "timeline.json").read_text(encoding="utf-8"))
-    manifest = json.loads((ROOT / "docs" / "assets" / "film" / "footage" / "manifest.json").read_text(encoding="utf-8"))
     cues = timeline["cues"]
     dur = timeline["duration"]
     S = {s["n"]: s for s in timeline["shots"]}
@@ -335,7 +334,7 @@ def main():
         sfx.add(S[5]["start"] + 0.35 + i * 0.24, key(), 0.35, 0.1)
     for i in range(16):                                                  # 卡片一张张铺开
         sfx.add(S[5]["start"] + 2.7 + 4.6 * i / 16, rustle(0.25, 0.01), 0.16, RNG.uniform(-0.6, 0.6))
-    for n in (7, 8, 12, 16, 19):                                         # 刀切转场
+    for n in (7, 12, 16, 19):                                            # 刀切转场
         tb = S[n]["start"]
         sfx.add(tb - 0.55, swish(0.5, 1500, 6000), 0.4, -0.3)
         sfx.add(tb - 0.1, knife(0.5), 0.35, 0.3)
@@ -345,9 +344,8 @@ def main():
         sfx.add(S[9]["start"] + 1.5 + i * 0.17, tick(), 0.12)
     sfx.add(S[10]["start"] + 2.6, knife(0.55), 0.5)                      # 镜 10：刀线
     sfx.add(S[10]["start"] + 6.6, swish(0.9, 400, 2500) + rustle(0.9, 0.004), 0.4)  # 出处卡滑入
-    for t in keystrokes(timeline, manifest):                             # 镜 12：真实打字
-        sfx.add(t, key(), 0.32, -0.1)
-    sfx.add(cues["VO-10#2"] - 0.2, swish(1.2, 300, 1800) + rustle(1.2, 0.004), 0.42, 0.3)   # 镜 13：茶歇纸条移走
+    sfx.add(S[12]["start"] + 1.35, tick(), 0.3)                          # 镜 12：选中“青少年学生”
+    sfx.add(cues["VO-10#2"] - 0.1, swish(1.0, 300, 1800) + rustle(1.0, 0.004), 0.42, 0.3)   # 镜 13：观察环节纸条落入
     sfx.add(cues["VO-10#3"], swish(1.0, 250, 1500), 0.35, -0.1)          # 手作纸条延长
     sfx.add(cues["VO-10#3"] + 0.9, swish(0.9, 300, 1800), 0.3, 0.3)       # 延伸练习接上
     sfx.add(cues["VO-10#3"] + 0.62, flap(), 0.5)                         # 翻牌
@@ -356,10 +354,15 @@ def main():
         sfx.add(S[15]["start"] + 2.6 + i * 0.17, tick(), 0.12)
     music_stop = S[15]["start"] + 3.6
     sfx.add(music_stop, soft_tone(147, 1.8), 0.22)                       # 一声轻停顿
-    sfx.add(cues["VO-13#1"] + 0.6, swish(1.6, 250, 1500) + rustle(1.6, 0.003), 0.45)  # 镜 16：纸张抽离
-    sfx.add(S[17]["start"] + 0.6, tick(), 0.35)                          # 镜 17：点击撤回
-    sfx.add(cues["VO-14#end"] + 0.05 + 0.3, stamp(), 0.8)                # 已失效印章（“作废”说完后落下）
-    sfx.add(S[18]["start"] + 3.6, rustle(0.8, 0.003), 0.3)               # 换页
+    sfx.add(cues["VO-13#1"] + 0.3, swish(1.2, 250, 1500) + rustle(1.2, 0.003), 0.4)   # 镜 16：新作卡落下
+    sfx.add(cues["VO-13#1"] + 1.6, rustle(1.0, 0.003), 0.3, 0.3)          # 旧卡退到“往期”
+    sfx.add(S[17]["start"] + 0.5, tick(), 0.35)                          # 镜 17：点击“发布新版本”
+    ev = timeline["events"]
+    sfx.add(S[18]["start"] + 0.8, tick(), 0.35)                          # 镜 18：点击重新核验 + 机械节拍
+    for i in range(5):
+        sfx.add(S[18]["start"] + 1.5 + i * 0.17, tick(), 0.12)
+    sfx.add(ev["18-confirm"], tick(), 0.4)                               # 人工确认
+    sfx.add(ev["18-preview"], rustle(0.8, 0.003), 0.3)                   # 换页
 
     MIX.mkdir(parents=True, exist_ok=True)
     n = int((dur + 0.5) * SR)

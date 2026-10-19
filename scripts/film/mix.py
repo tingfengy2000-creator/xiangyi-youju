@@ -3,7 +3,7 @@
 
 用法：python scripts/film/mix.py
 输入：artifacts/film/timeline.json、docs/assets/film/mix/music.flac、sfx.flac、artifacts/film/vo/<voice>/VO-xx.wav
-输出：docs/assets/film/mix/vo-male.flac、vo-female.flac、vo-cues.json；artifacts/film/mix-<voice>.wav
+输出：docs/assets/film/mix-v2/vo-female.flac、vo-cues.json；artifacts/film/mix-<voice>.wav（第二版只有女声）
 """
 
 import json
@@ -16,7 +16,7 @@ import soundfile as sf
 
 ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / "artifacts" / "film"
-MIX = ROOT / "docs" / "assets" / "film" / "mix"
+MIX = ROOT / "docs" / "assets" / "film" / "mix-v2"
 SR = 48000
 
 
@@ -110,7 +110,7 @@ def main():
         cues_out["voices"][voice] = [{
             "vo": p["vo"], "shot": p["shot"], "film_start": p["start"], "film_end": round(p["start"] + p["duration"], 3),
             "clip": p["file"], "take": p["take_no"],
-            "source": f"docs/assets/film/voice/vo-raw-{voice}.flac", "source_start": p["source_start"], "source_end": p["source_end"],
+            "source": p["source"], "source_start": p["source_start"], "source_end": p["source_end"],
         } for p in placements]
         print(voice, report[voice])
     cues_out["subtitles"] = [{k: s[k] for k in ("vo", "line", "start", "end", "text")} for s in timeline["subtitles"]]

@@ -6,9 +6,11 @@ loudnorm 每句两遍（先测量再处理）。说话声峰值与响度之比�
 ffmpeg 会自动改用 loudnorm 的动态模式（缓慢增益 + 真峰值限幅），实际模式记入 clips.json；只改电平，不改音色与音高。
 （女声 VO-01 选中遍比其他句轻约 5 dB，逐句统一后在刀声下仍然清楚。）
 
+第二版只处理女声；选遍来自 vo_select.py merge，每句各自记着来自哪份录音。
+
 用法：python scripts/film/vo_process.py
-输入：artifacts/film/vo/<voice>-takes.json
-输出：artifacts/film/vo/<voice>/VO-xx.wav（48 kHz 单声道）与 artifacts/film/vo/clips.json
+输入：artifacts/film/vo/female-v2-takes.json
+输出：artifacts/film/vo/female/VO-xx.wav（48 kHz 单声道）与 artifacts/film/vo/clips.json
 """
 
 import json
@@ -29,14 +31,13 @@ CHAIN = ("highpass=f=80,afftdn=nr=10:nf=-50,deesser=i=0.4,"
 
 def main():
     clips = {}
-    for voice in ("male", "female"):
-        data = json.loads((VO_DIR / f"{voice}-takes.json").read_text(encoding="utf-8"))
-        src = ROOT / data["source"]
+    for voice in ("female",):
+        data = json.loads((VO_DIR / f"{voice}-v2-takes.json").read_text(encoding="utf-8"))
         out_dir = VO_DIR / voice
         out_dir.mkdir(parents=True, exist_ok=True)
         clips[voice] = {}
         for vo, sel in data["selection"].items():
-            take = data["takes"][sel["take"]]
+            take, src = sel["take"], ROOT / sel["source"]
             start = max(0.0, take["start"] - PAD)
             dur = take["end"] + PAD - start
             out = out_dir / f"{vo}.wav"
@@ -52,7 +53,7 @@ def main():
             chars = [[ch, round(t - start, 3)] for ch, t in take["chars"]]
             clips[voice][vo] = {"file": str(out.relative_to(ROOT)).replace("\\", "/"), "duration": round(info.duration, 3),
                                 "source_start": round(start, 3), "source_end": round(start + dur, 3),
-                                "take_no": sel["take_no"], "chars": chars, "loudnorm": result.get("normalization_type"),
+                                "take_no": sel["take_no"], "origin": sel["origin"], "source": sel["source"], "chars": chars, "loudnorm": result.get("normalization_type"),
                                 "speech_start": round(take["start"] - start, 3), "speech_end": round(take["end"] - start, 3)}
             print(voice, vo, f"{info.duration:.2f}s")
     (VO_DIR / "clips.json").write_text(json.dumps(clips, ensure_ascii=False, indent=1), encoding="utf-8")

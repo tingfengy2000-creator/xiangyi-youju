@@ -1,9 +1,11 @@
 """成片自查：规格、响度、旁白是否齐全且与字幕一致。
 
-1. ffprobe：时长 180 ± 5 秒、1920×1080、24 fps、音频 48 kHz 立体声；文件不超过 50 MB；
+第二版（只有女声，19 句）：
+1. ffprobe：时长 190–210 秒（3:10–3:30）、1920×1080、24 fps、音频 48 kHz 立体声；文件不超过 50 MB；
 2. ebur128：整体响度约 -16 LUFS；旁白段中旁白比配乐高多少；
-3. 对成片音轨逐句重新识别（Paraformer），核对 17 句都在、顺序正确、开头结尾没有被截断，
-   并与该句字幕的文字一致（按拼音比较，数字写法换成汉字后比较）。
+3. 对成片音轨逐句重新识别（Paraformer），核对 19 句都在、顺序正确、开头结尾没有被截断，
+   并与该句字幕的文字一致（按拼音比较，数字写法换成汉字后比较）；
+   VO-03、VO-07 中“蔚”的识别拼音应为 yu。
 
 用法：python scripts/film/verify_film.py
 输出：artifacts/film/verify.json
@@ -22,12 +24,30 @@ from scipy.signal import resample_poly
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(Path(__file__).parent))
-from vo_select import edit_ops, load_script, syllables  # noqa: E402
+from difflib import SequenceMatcher  # noqa: E402
+
+from pypinyin import lazy_pinyin  # noqa: E402
+from vo_select import clean, edit_ops, load_script_v2, norm_py, syllables  # noqa: E402
 
 OUT = ROOT / "artifacts" / "film"
 VIDEO = ROOT / "docs" / "assets" / "video"
 MODELS = OUT / "models"
-DIGITS = {"796": "七百九十六", "524": "五百二十四", "50": "五十", "80": "八十"}
+DIGITS = {"874": "八百七十四", "584": "五百八十四", "50": "五十", "80": "八十"}
+
+
+def yu_readings(text, ref_text):
+    """识别结果中与原文“蔚”对齐的字及其拼音（识别字按原读音，不做“蔚”的两读合并）。"""
+    ref = [ch for ch in clean(ref_text)]
+    hyp = [ch for ch in clean(text)]
+    rp = [norm_py(ch) for ch in ref]
+    hp = [lazy_pinyin(ch)[0] for ch in hyp]
+    out = []
+    for tag, i1, i2, j1, j2 in SequenceMatcher(None, rp, hp, autojunk=False).get_opcodes():
+        for k in range(i1, i2):
+            if ref[k] == "蔚":
+                j = j1 + (k - i1) if j1 + (k - i1) < j2 else None
+                out.append((hyp[j], hp[j]) if j is not None else ("", ""))
+    return out
 
 
 def probe(path):
@@ -45,27 +65,27 @@ def loudness(path):
 
 def main():
     timeline = json.loads((OUT / "timeline.json").read_text(encoding="utf-8"))
-    script = load_script()
+    script = {vo: text for vo, (_, text) in load_script_v2().items()}
     rec = sherpa_onnx.OfflineRecognizer.from_paraformer(
         paraformer=str(MODELS / "sherpa-onnx-paraformer-zh-2023-09-14" / "model.int8.onnx"),
         tokens=str(MODELS / "sherpa-onnx-paraformer-zh-2023-09-14" / "tokens.txt"), num_threads=4)
     report = {}
     ok_all = True
-    for voice in ("male", "female"):
-        mp4 = VIDEO / f"xiangyi-youju-film-{voice}.mp4"
+    for voice in ("female",):
+        mp4 = VIDEO / "xiangyi-youju-film-v2.mp4"
         info = probe(mp4)
         v = next(s for s in info["streams"] if s["codec_type"] == "video")
         a = next(s for s in info["streams"] if s["codec_type"] == "audio")
         dur = float(info["format"]["duration"])
         size_mb = int(info["format"]["size"]) / 1024 / 1024
-        spec_ok = (175 <= dur <= 185 and v["width"] == 1920 and v["height"] == 1080 and v["r_frame_rate"] == "24/1"
+        spec_ok = (190 <= dur <= 210 and v["width"] == 1920 and v["height"] == 1080 and v["r_frame_rate"] == "24/1"
                    and a["sample_rate"] == "48000" and a["channels"] == 2 and size_mb <= 50)
         lufs, tp = loudness(mp4)
         wav = OUT / f"verify-{voice}.wav"
         subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(mp4), "-ac", "1", "-ar", "48000", str(wav)], check=True)
         audio, sr = sf.read(wav)
         # 旁白比背景（压低后的配乐 + 音效）高多少：在有旁白的半秒窗里比较电平
-        vo_stem, _ = sf.read(ROOT / "docs" / "assets" / "film" / "mix" / f"vo-{voice}.flac")
+        vo_stem, _ = sf.read(ROOT / "docs" / "assets" / "film" / "mix-v2" / f"vo-{voice}.flac")
         bg, _ = sf.read(OUT / f"music-ducked-{voice}.wav")
         fx, _ = sf.read(OUT / f"sfx-ducked-{voice}.wav")
         n = min(len(vo_stem), len(bg), len(fx))
@@ -94,12 +114,14 @@ def main():
             sdist = edit_ops([x for x, _ in syllables(subs_text)], [x for x, _ in ref])[0]
             head_ok = 0 not in dele
             tail_ok = (len(ref) - 1) not in dele
-            line_ok = dist / len(ref) <= 0.08 and head_ok and tail_ok and sdist == 0 and a0 > prev_end
+            yu = yu_readings(text, script[p["vo"]]) if "蔚" in script[p["vo"]] else []
+            yu_ok = all(py == "yu" for _, py in yu)
+            line_ok = dist / len(ref) <= 0.08 and head_ok and tail_ok and sdist == 0 and a0 > prev_end and yu_ok
             prev_end = a1
             ok_all &= line_ok
             lines.append({"vo": p["vo"], "start": round(a0, 2), "end": round(a1, 2), "asr": text, "cer": round(dist / len(ref), 3),
                           "missing": "".join(ref[k][1] for k in dele), "head_ok": head_ok, "tail_ok": tail_ok,
-                          "subtitle_matches_script": sdist == 0, "ok": line_ok})
+                          "subtitle_matches_script": sdist == 0, "yu": ["".join(x) for x in yu], "ok": line_ok})
         report[voice] = {"file": str(mp4.relative_to(ROOT)), "duration": round(dur, 3), "size_mb": round(size_mb, 1),
                          "video": f"{v['codec_name']} {v['width']}x{v['height']} {v['r_frame_rate']}",
                          "audio": f"{a['codec_name']} {a['sample_rate']} Hz {a['channels']} ch", "spec_ok": spec_ok,
@@ -109,11 +131,11 @@ def main():
                          "lines_ok": sum(x["ok"] for x in lines)}
         ok_all &= spec_ok and abs(lufs + 16) <= 1
         print(f"{voice}: {dur:.2f}s {size_mb:.1f}MB {report[voice]['video']} / {report[voice]['audio']} 规格{'通过' if spec_ok else '不通过'}；"
-              f"{lufs} LUFS，真峰值 {tp} dBFS；旁白 {report[voice]['lines_ok']}/17 句通过；"
+              f"{lufs} LUFS，真峰值 {tp} dBFS；旁白 {report[voice]['lines_ok']}/{len(lines)} 句通过；"
               f"旁白高出背景中位 {report[voice]['vo_over_background_db_median']} dB（10% 分位 {report[voice]['vo_over_background_db_p10']} dB）")
         for x in lines:
-            if not x["ok"] or x["cer"] > 0:
-                print("  ", x["vo"], x["cer"], x["asr"], "缺字:" + x["missing"] if x["missing"] else "", "" if x["subtitle_matches_script"] else "字幕不一致")
+            if not x["ok"] or x["cer"] > 0 or x["yu"]:
+                print("  ", x["vo"], x["cer"], x["asr"], "蔚:" + "、".join(x["yu"]) if x["yu"] else "", "缺字:" + x["missing"] if x["missing"] else "", "" if x["subtitle_matches_script"] else "字幕不一致")
     report["passed"] = bool(ok_all)
     (OUT / "verify.json").write_text(json.dumps(report, ensure_ascii=False, indent=1), encoding="utf-8")
     print("自查", "通过" if ok_all else "未通过")
