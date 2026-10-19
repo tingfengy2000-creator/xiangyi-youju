@@ -38,15 +38,16 @@
 - 录音与对应句子见 [第二版旁白稿](voiceover-v2.md)“录音文件”：
   - `vo-raw-female-v2-retake.flac`：VO-01～08、VO-12、VO-16、VO-17（11 句，按此顺序）；
   - `vo-raw-female-v2-new.flac`：VO-08b、09、10、11、13、14、15、15b（8 句，按此顺序）；
+  - `vo-raw-female-v2-yu.flac`：VO-03、VO-07（2 句，按此顺序，“蔚县”读 yù）。**这两句只从这里选**；retake 里同两句读作 wèi，仅在这里 3 遍全部不合格时才用，并写明；
   - `vo-raw-female.flac`（第一版）：只作后备。重录的 11 句里某句**所有遍都不合格**时，才按第一版规则从这里选，并在选片记录里写明。
-- `vo_transcribe.py` 已可直接用：`python scripts/film/vo_transcribe.py female-v2-retake` 和 `female-v2-new`（参数就是 `vo-raw-` 后面的部分）。
+- `vo_transcribe.py` 已可直接用：`python scripts/film/vo_transcribe.py female-v2-retake`、`female-v2-new`、`female-v2-yu`（参数就是 `vo-raw-` 后面的部分）。
 - `vo_select.py` 需要改：
   - 从 `voiceover-v2.md` 读句子；表格比第一版多一列“来源”，编号含 `VO-08b`、`VO-15b`，正则要能匹配；
-  - 每份录音只和它自己那组句子按顺序对齐（retake 11 句、new 8 句），不再假设 17 句；
+  - 每份录音只和它自己那组句子按顺序对齐（retake 11 句、new 8 句、yu 2 句），不再假设 17 句；VO-03、VO-07 在 retake 里也要参与对齐（否则对不齐后面的句子），但选遍时优先 yu；
   - 选遍规则、CER 计算、SenseVoice 复核、“蔚”接受 yu/wei 两读，全部沿用第一版；
   - `vo-overrides.json` 的键用 `female`。
 - 选片记录写到新文件 `docs/demo/film/vo-selection-v2.md`（格式照第一版，只有女声）。
-- 处理链、响度、不变速、不改音高，全部照第一版。
+- 处理链、响度、不变速、不改音高，全部照第一版。yu 文件是 AAC 有损录音，同样处理，不单独调音色。
 
 ### 3. 时间线与字幕（`build_timeline.py`）
 
@@ -80,7 +81,7 @@
 
 1. **联系表**：每 2 秒抽一帧，拼成联系表放 `docs/assets/film/contact-sheets-v2/`，逐张看：错字、溢出或裁切、角标、色彩、空洞或闪烁。
 2. **规格**：`ffprobe` 确认 1920×1080、24 fps、H.264、AAC 48 kHz 立体声、时长 3:10–3:30、文件不超过 50 MB（照第一版加码率上限）。`ebur128` 整体约 −16 LUFS。
-3. **旁白**：对成片音轨重新识别一次，19 句都在、顺序正确、首尾没被截断、和字幕一致（按拼音比较）。
+3. **旁白**：对成片音轨重新识别一次，19 句都在、顺序正确、首尾没被截断、和字幕一致（按拼音比较）；VO-03、VO-07 中“蔚”的识别拼音应为 yu。
 4. **事实**：对照剧本第三节，逐条核对片中每个数字和事实；不一致以素材为准改字幕。
 5. **禁止内容**：成片画面和字幕里不能出现“撤回”“作废”“已失效”“不要茶歇”“796”“524”，以及剧本第五节所列内容。在场景源码和 SRT 里 `grep` 一遍；真实界面静帧里本来就有的字不算。
 6. `python scripts/check_repository.py` 通过。
