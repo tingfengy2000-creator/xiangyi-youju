@@ -279,9 +279,18 @@ def main():
                         help="只生成项目简表：直接给出附件1原件路径（哈希仍须一致），其余两份不动")
     parser.add_argument("--only-description", type=Path, metavar="TEMPLATE",
                         help="只生成项目说明书：直接给出附件2原件路径（哈希仍须一致）")
+    parser.add_argument("--only-business", type=Path, metavar="TEMPLATE",
+                        help="只生成商业计划书：直接给出附件3原件路径（哈希仍须一致）")
     args = parser.parse_args()
     content = json.loads((OUTPUT / "draft-content.json").read_text(encoding="utf-8"))
     metrics = json.loads(args.metrics.read_text(encoding="utf-8")) if args.metrics else None
+    if args.only_business:
+        if digest(args.only_business) != EXPECTED_HASHES[3]:
+            raise ValueError("Official template hash changed: attachment 3")
+        counts = [c for c in check_lengths(content) if c["document"] == "business"]
+        output = make_business(args.only_business, content)
+        print(json.dumps({"outputs": [output], "counts": counts}, ensure_ascii=False, indent=2))
+        return
     if args.only_description:
         if digest(args.only_description) != EXPECTED_HASHES[2]:
             raise ValueError("Official template hash changed: attachment 2")
