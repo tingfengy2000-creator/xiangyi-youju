@@ -81,7 +81,7 @@ def clone_body(template, text: str):
     for bookmark in list(para.findall(qn("w:bookmarkStart"))) + list(para.findall(qn("w:bookmarkEnd"))):
         para.remove(bookmark)
     set_paragraph(para, text)
-    if text.startswith("资料依据"):
+    if text.startswith(("资料依据", "参考资料")):
         ppr = para.get_or_add_pPr()
         for element in list(ppr.findall(qn("w:jc"))):
             ppr.remove(element)
@@ -103,6 +103,9 @@ def fill_cell(cell, text: str) -> None:
 def after(anchor, body_template, lines: list[str]) -> None:
     for text in lines:
         paragraph = clone_body(body_template, text)
+        # 小标题（如“（一）技术路线”）与下一段同页，避免孤置页末
+        if text.startswith("（") and len(text) <= 16:
+            keep_with_next(paragraph)
         anchor.addnext(paragraph)
         anchor = paragraph
 
@@ -198,7 +201,8 @@ def make_form(source: Path, content: dict, metrics: dict | None):
 def make_description(source: Path, content: dict):
     doc = Document(source)
     paragraphs = list(doc.paragraphs)
-    set_paragraph(paragraphs[3]._p, content["project_name"])
+    # “(模板)”位置写作品名称
+    set_paragraph(paragraphs[3]._p, content["description"].get("title", content["project_name"]))
     body = copy.deepcopy(paragraphs[6]._p)
     for index in (5, 7, 8, 9, 10, 11, 13):
         keep_with_next(paragraphs[index]._p)
@@ -212,6 +216,8 @@ def make_description(source: Path, content: dict):
         lines = content["description"][key]
         if replace:
             set_paragraph(anchor, lines[0])
+            if lines[0].startswith("（") and len(lines[0]) <= 16:
+                keep_with_next(anchor)
             after(anchor, body, lines[1:])
         else:
             after(anchor, body, lines)
@@ -271,9 +277,18 @@ def main():
     parser.add_argument("--metrics", type=Path, help="Explicit reviewed measurements; never inferred by builder")
     parser.add_argument("--only-form", type=Path, metavar="TEMPLATE",
                         help="只生成项目简表：直接给出附件1原件路径（哈希仍须一致），其余两份不动")
+    parser.add_argument("--only-description", type=Path, metavar="TEMPLATE",
+                        help="只生成项目说明书：直接给出附件2原件路径（哈希仍须一致）")
     args = parser.parse_args()
     content = json.loads((OUTPUT / "draft-content.json").read_text(encoding="utf-8"))
     metrics = json.loads(args.metrics.read_text(encoding="utf-8")) if args.metrics else None
+    if args.only_description:
+        if digest(args.only_description) != EXPECTED_HASHES[2]:
+            raise ValueError("Official template hash changed: attachment 2")
+        counts = [c for c in check_lengths(content) if c["document"] == "description"]
+        output = make_description(args.only_description, content)
+        print(json.dumps({"outputs": [output], "counts": counts}, ensure_ascii=False, indent=2))
+        return
     if args.only_form:
         if digest(args.only_form) != EXPECTED_HASHES[1]:
             raise ValueError("Official template hash changed: attachment 1")
