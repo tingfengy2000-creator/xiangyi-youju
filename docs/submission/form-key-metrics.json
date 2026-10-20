@@ -1,0 +1,46 @@
+{
+ "classification": "internal_acceptance_and_real_runs_not_third_party",
+ "form_rows": [
+  [
+   "完整交付正确率",
+   "12/12",
+   "10/12",
+   "20.0",
+   "同模型固定流程（内部24任务）"
+  ],
+  [
+   "需确认条件识别率",
+   "6/6",
+   "5/6",
+   "20.0",
+   "同模型固定流程（内部24任务）"
+  ],
+  [
+   "越界请求具体拒绝率",
+   "5/6",
+   "3/6",
+   "66.7",
+   "同模型固定流程（内部24任务）"
+  ],
+  [
+   "讲解陈述出处可追溯率",
+   "100%",
+   "无逐句核对",
+   "新增能力",
+   "受访从业者现行做法"
+  ],
+  [
+   "单场模型调用费",
+   "0元",
+   "按调用计费",
+   "100（降低）",
+   "云端大模型API"
+  ]
+ ],
+ "evidence": {
+  "rows_1_3": "docs/validation/semantic-cases/first-run/summary.json（24任务首跑，智能体与同模型、同资料、同工具的固定流程各跑一遍；提升度=（智能体-固定流程）/固定流程）",
+  "row_4": "每条陈述均输出支持/矛盾/资料分歧/信息不足之一，支持与矛盾判定必须附检索到的原文定位（backend/workflow.py validated_judgments 门禁）；真实运行记录见 docs/validation/two-machine/handoff-rehearsal-5090-film-capture-16321d7.json 与 docs/assets/film/footage-v2/run-*.json。参照为访谈结论 docs/research/practitioner-interviews-2026-10.md",
+  "row_5": "Ollama 本地运行 Qwen3-14B（开源免费），不调用付费API；设备、电费、人工另计"
+ },
+ "notes": "内部验收与真实运行记录，不是第三方检测；简表中如实称内部对照。"
+}

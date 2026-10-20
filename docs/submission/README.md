@@ -17,6 +17,13 @@
 
 正文把指标绑定到实际版本记录：历史24例继续保留3833ce1冻结版首跑，候选版本作用域修复后的回归单列在[候选版本回归](../validation/release-candidate/release-report.md)，本轮金山区公开活动资料重建另见[运行记录](../validation/external-case/run-record.json)，不混用、不挑最佳一次。正文主镜头采用蔚县剪纸的地域纠错、偏好重排和素材撤回；金山区30+90分钟与702元只作为外部资料复用的补充证据。702元是组织支出演示测算，不是历史免费活动的收费、收入或净增收。
 
+## 2026-10-20 项目简表改写（第一份正式稿候选）
+
+- 按从业者访谈结论重写简表四栏（265 / 255 / 559 / 264 字，均在上限内），主线改为“讲对、因人而讲、作品常新”，商业模式改为按场次收费、付费方为活动举办方与手艺人。
+- 自评价：软硬件开发类；国内先进；交付物为软件、方法、服务；技术成熟度第 5 级（相关环境验证：真实官方资料、本地真实模型、目标硬件端到端运行）。均为团队自评。
+- 关键指标见 [form-key-metrics.json](form-key-metrics.json)：前三项为内部 24 任务智能体与同模型固定流程对照，后两项为出处可追溯与模型调用费；均不是第三方检测。
+- 只生成简表：`python scripts/build_submission_drafts.py --only-form <附件1原件> --metrics docs/submission/form-key-metrics.json`。团队名称、队长、成员仍为【待填】。
+
 ## 本轮新增外部案例
 
 [金山区公开活动案例记录](../validation/external-case/public-case-selection.md)保存唯一选定原始页面、4条来源摘录、边界、主运行与两次变化；[游客版](../validation/external-case/jinshan-visitor-bb6c113f.html)和[组织者版](../validation/external-case/jinshan-organizer-bb6c113f.html)来自同一已确认快照。申报正文统一称“基于公开活动资料的案例重建与系统验证”，没有写成真实合作或收益。

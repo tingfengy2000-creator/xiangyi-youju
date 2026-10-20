@@ -136,7 +136,9 @@ def write_package(source: Path, document, target: Path) -> dict:
 
 def make_form(source: Path, content: dict, metrics: dict | None):
     doc = Document(source)
-    set_paragraph(doc.paragraphs[3]._p, "（申报正文草案）")
+    form = content["form"]
+    # 模板的“(模板)”字样在正式稿中去掉；草案阶段可在 form.title_note 里写说明
+    set_paragraph(doc.paragraphs[3]._p, form.get("title_note", ""))
     table = doc.tables[0]
     replacements = {
         (0, 1): content["project_name"], (1, 1): "待补（匿名团队名称）",
@@ -150,6 +152,14 @@ def make_form(source: Path, content: dict, metrics: dict | None):
         (17, 2): "同模型、同资料、同工具的固定流程（内部对照，非第三方产品）；结果见2026年10月3日小规模内部验收。其他国内外产品或技术的规范比较待补。",
         (19, 2): "新功能实现：可追溯核验、活动组合与双版包更新。\n质量、成本、效率及交付周期的提升值待实测，不填推断百分比。",
     }
+    identity = form.get("identity", {})
+    for key, cell in {"team": (1, 1), "leader": (3, 1), "phone": (3, 4), "members": (4, 1)}.items():
+        if key in identity:
+            replacements[cell] = identity[key]
+    for key, cell in {"stage": (13, 2), "advancement": (14, 2), "deliverables": (15, 2), "maturity": (16, 2),
+                      "references": (17, 2), "dimensions": (19, 2)}.items():
+        if key in form.get("self_eval", {}):
+            replacements[cell] = form["self_eval"][key]
     for (row, column), text in replacements.items():
         fill_cell(table.cell(row, column), text)
     for row in (5, 7, 9, 11):
@@ -166,7 +176,7 @@ def make_form(source: Path, content: dict, metrics: dict | None):
         element.getparent().remove(element)
     for paragraph in track.paragraphs:
         if "智慧文旅与乡村振兴" in paragraph.text:
-            set_paragraph(paragraph._p, paragraph.text.replace("5.定向赛道-智慧文旅与乡村振兴 □", "5.定向赛道-智慧文旅与乡村振兴 ☑"))
+            set_paragraph(paragraph._p, paragraph.text.replace("5.定向赛道-智慧文旅与乡村振兴 □", "5.定向赛道-智慧文旅与乡村振兴 ■"))
     nested = table.cell(18, 2).tables[0]
     rows = [
         ["完整交付", "待实测", "待实测", "不作推断", "同模型固定流程"],
@@ -259,9 +269,18 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--templates-dir", type=Path, default=Path.home() / "Downloads")
     parser.add_argument("--metrics", type=Path, help="Explicit reviewed measurements; never inferred by builder")
+    parser.add_argument("--only-form", type=Path, metavar="TEMPLATE",
+                        help="只生成项目简表：直接给出附件1原件路径（哈希仍须一致），其余两份不动")
     args = parser.parse_args()
     content = json.loads((OUTPUT / "draft-content.json").read_text(encoding="utf-8"))
     metrics = json.loads(args.metrics.read_text(encoding="utf-8")) if args.metrics else None
+    if args.only_form:
+        if digest(args.only_form) != EXPECTED_HASHES[1]:
+            raise ValueError("Official template hash changed: attachment 1")
+        counts = [c for c in check_lengths(content) if c["document"] == "form"]
+        output = make_form(args.only_form, content, metrics)
+        print(json.dumps({"outputs": [output], "counts": counts}, ensure_ascii=False, indent=2))
+        return
     sources = {}
     for index in range(4):
         pattern = "附件：*智慧城市*指南.pdf" if index == 0 else f"附件{index}*智慧城市*.docx"
