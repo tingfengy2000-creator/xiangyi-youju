@@ -3,7 +3,7 @@
 第二版（默认）：女声三份录音合并结果 → docs/demo/film/vo-selection-v2.md
 第一版：男女两版 → docs/demo/film/vo-selection.md
 
-用法：python scripts/film/vo_doc.py [--v1]
+用法：python scripts/film/vo_doc.py [--v1|--v3]
 """
 
 import json
@@ -73,6 +73,8 @@ def main_v2():
 
 
 def main():
+    if "--v3" in sys.argv:
+        return main_v3()
     if "--v1" not in sys.argv:
         return main_v2()
     lines = [
@@ -132,6 +134,47 @@ def main():
               ""]
     (ROOT / "docs" / "demo" / "film" / "vo-selection.md").write_text("\n".join(lines), encoding="utf-8")
 
+
+
+def main_v3():
+    """第三版：女声一次录完 19 句 → docs/demo/film/vo-selection-v3.md"""
+    merged = json.loads((VO_DIR / "female-v2-takes.json").read_text(encoding="utf-8"))
+    voice = merged["single_source"]
+    data = json.loads((VO_DIR / f"{voice}-takes.json").read_text(encoding="utf-8"))
+    sel = merged["selection"]
+    rerecord = [vo for vo, x in sel.items() if x["rerecord"]]
+    not_last = [vo for vo, x in sel.items() if x["take_no"] != x["takes_in_group"]]
+    lines = [
+        "# 宣传片旁白选片记录 · 第三版（女声，一次录完）",
+        "",
+        "本记录由 `scripts/film/vo_select.py " + voice + "` 生成，`scripts/film/vo_doc.py --v3` 写出。句子见 [第二版旁白稿](voiceover-v2.md)，"
+        "文字不变；录音改为同一次录完全部 19 句，避免几句之间音色不同。识别、CER、排除与选择规则同第二版。",
+        "",
+        "## 摘要",
+        "",
+        f"- 录音：`{data['source']}`；19 句，共 {len(data['takes'])} 遍。",
+        f"- {len(rerecord)} 句标“建议重录”{('（' + '、'.join(rerecord) + '）') if rerecord else ''}；"
+        f"{len(not_last)} 句未用最后一遍（{'、'.join(not_last) or '无'}）。",
+        "- 指定某一遍：在 `docs/demo/film/vo-overrides.json` 写入 `{\"female\": {\"VO-07\": 2}}`，重跑 `vo_select.py " + voice + "` 及后续步骤。",
+        "",
+        "## 选中结果",
+        "",
+        "| 编号 | 遍数 | 选中 | 原始文件起止（秒） | 转写（Paraformer） | CER | 被排除的遍及原因 | 说明 |",
+        "| --- | --- | --- | --- | --- | --- | --- | --- |",
+    ]
+    for vo, x in sel.items():
+        t = x["take"]
+        group = [k for k in data["takes"] if k["vo"] == vo]
+        excl = "；".join(f"第 {k['take_no']} 遍：{'、'.join(k['excluded'])}" for k in group if k["excluded"]) or "无"
+        note = x["note"] + ("，**建议重录**" if x["rerecord"] else "")
+        lines.append(f"| {vo} | {x['takes_in_group']} | 第 {x['take_no']} 遍 | {t['start']:.2f}–{t['end']:.2f} | {t['text']} | "
+                     f"{t['cer']:.1%} | {excl} | {note} |")
+    lines += ["", "## 全部遍", "", "| 编号 | 遍 | 起止（秒） | Paraformer | SenseVoice | CER |", "| --- | --- | --- | --- | --- | --- |"]
+    for k in data["takes"]:
+        lines.append(f"| {k['vo']} | {k['take_no']} | {k['start']:.2f}–{k['end']:.2f} | {k['text']} | {k['text2']} | {k['cer']:.1%} / {k['cer2']:.1%} |")
+    lines += ["", "转写里的同音字（如“杨克”“首座”“玉县”）是识别模型的写法，按拼音比对不算读错。", ""]
+    (ROOT / "docs" / "demo" / "film" / "vo-selection-v3.md").write_text("\n".join(lines), encoding="utf-8")
+    print("vo-selection-v3.md", len(rerecord), "建议重录")
 
 if __name__ == "__main__":
     main()

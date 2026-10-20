@@ -320,13 +320,22 @@ function scenePaper() {
     sm.style.cssText = 'margin-top:14px;font-size:28px;letter-spacing:8px;color:#476852;padding-left:8px;';
     return box;
   };
+  // 竖排小标：逐字排成一列，不用 writing-mode。第二版云端渲染环境里 vertical-rl 的字距失效，
+  // “阳刻 / 刀留下线条”挤成一团；逐字定高后，任何字体环境下字距都一致。
   const vLabel = (txt, small) => {
     const box = h('div', { class: 'abs' }, root);
-    box.style.cssText = 'left:1452px;top:330px;height:420px;display:flex;gap:26px;flex-direction:row-reverse;align-items:flex-start;';
-    const big = h('div', { class: 'serif' }, box, txt);
-    big.style.cssText = 'writing-mode:vertical-rl;font-size:68px;letter-spacing:26px;color:#223932;font-weight:600;';
-    const sm = h('div', { class: 'sans' }, box, small);
-    sm.style.cssText = 'writing-mode:vertical-rl;font-size:28px;letter-spacing:10px;color:#476852;margin-top:12px;';
+    box.style.cssText = 'left:1452px;top:330px;display:flex;gap:30px;flex-direction:row-reverse;align-items:flex-start;';
+    const column = (text, cls, size, step, color, weight, top) => {
+      const col = h('div', { class: cls }, box);
+      col.style.cssText = `display:flex;flex-direction:column;align-items:center;width:${size}px;margin-top:${top}px;`;
+      for (const ch of text) {
+        const cell = h('div', {}, col, ch);
+        cell.style.cssText = `font-size:${size}px;line-height:${size}px;height:${step}px;color:${color};font-weight:${weight};`;
+      }
+      return col;
+    };
+    column(txt, 'serif', 68, 94, '#223932', 600, 0);
+    column(small, 'sans', 28, 38, '#476852', 400, 14);
     const seal = h('div', {}, box);
     seal.style.cssText = 'width:14px;height:14px;background:#b94633;margin-top:4px;';
     return box;

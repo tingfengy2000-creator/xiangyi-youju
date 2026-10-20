@@ -21,6 +21,7 @@ CER 按无声调拼音比较，忽略标点；识别把“阳刻”写成“杨�
 
 用法：python scripts/film/vo_select.py female-v2-retake|female-v2-new|female-v2-yu|female
       python scripts/film/vo_select.py merge
+      python scripts/film/vo_select.py female-v3      第三版：一份录音含全部 19 句，选完直接写合并结果
 输入：artifacts/film/vo/<录音>-asr.json
 输出：artifacts/film/vo/<录音>-takes.json；merge 输出 artifacts/film/vo/female-v2-takes.json
 """
@@ -57,6 +58,9 @@ def load_script_v2():
 
 def load_script(voice):
     """这份录音里按顺序读到的句子。"""
+    if voice.startswith("female-v3"):
+        # 第三版：女声一次录完全部 19 句，顺序同第二版旁白稿表格
+        return {vo: t for vo, (_, t) in load_script_v2().items()}
     if voice.startswith("female-v2-"):
         source = voice.removeprefix("female-v2-")
         v2 = load_script_v2()
@@ -357,7 +361,7 @@ def main():
             take["excluded"].append("瞬态咔嗒声")
 
     # 第二版的指定在 merge 中处理
-    overrides = {} if voice.startswith("female-v2-") else load_overrides(voice)
+    overrides = {} if voice.startswith("female-v2-") else load_overrides("female" if voice.startswith("female-v3") else voice)
     selection = {}
     for vo in script:
         group = [k for k, t in enumerate(takes) if t["vo"] == vo]
@@ -368,6 +372,11 @@ def main():
            "lf_limit_db": round(lf_limit, 1), "click_limit": round(click_limit, 1),
            "script": script, "takes": takes, "selection": selection}
     (VO_DIR / f"{voice}-takes.json").write_text(json.dumps(out, ensure_ascii=False, indent=1), encoding="utf-8")
+    if voice.startswith("female-v3"):
+        # 第三版只有一份录音：直接写成后续步骤读取的合并结果（文件名沿用 female-v2-takes.json）
+        final = {vo: dict(sel, take=takes[sel["take"]], source=asr["source"], origin="v3") for vo, sel in selection.items()}
+        (VO_DIR / "female-v2-takes.json").write_text(json.dumps(
+            {"voice": "female", "selection": final, "notes": [], "single_source": voice}, ensure_ascii=False, indent=1), encoding="utf-8")
     for vo, sel in selection.items():
         group = [t for t in takes if t["vo"] == vo]
         print(vo, f"{len(group)} 遍 → 第 {sel['take_no']} 遍", sel["note"])
