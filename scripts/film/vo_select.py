@@ -18,6 +18,7 @@ CER 按无声调拼音比较，忽略标点；识别把“阳刻”写成“杨�
 
 队员可在 docs/demo/film/vo-overrides.json 中指定改用哪一遍（遍号按该句主录音计），例如
 {"female": {"VO-07": 2}}，重新运行 merge 及后续步骤即可。
+第三版的键为 female-v3，值也可写成 {"take": 1, "reason": "原因"}，原因会写进选片记录。
 
 用法：python scripts/film/vo_select.py female-v2-retake|female-v2-new|female-v2-yu|female
       python scripts/film/vo_select.py merge
@@ -361,7 +362,7 @@ def main():
             take["excluded"].append("瞬态咔嗒声")
 
     # 第二版的指定在 merge 中处理
-    overrides = {} if voice.startswith("female-v2-") else load_overrides("female" if voice.startswith("female-v3") else voice)
+    overrides = {} if voice.startswith("female-v2-") else load_overrides(voice)
     selection = {}
     for vo in script:
         group = [k for k, t in enumerate(takes) if t["vo"] == vo]
@@ -398,7 +399,10 @@ def pick(takes, group, override=None):
         choice = min(group, key=lambda k: (takes[k]["cer"], -k))
         note = "整组不合格，取 CER 最低的一遍，建议重录"
     if override:
-        choice, note = group[int(override) - 1], f"队员指定第 {override} 遍"
+        # 值可以是遍号，或 {"take": 遍号, "reason": "原因"}
+        take_no, reason = (override["take"], override.get("reason")) if isinstance(override, dict) else (override, None)
+        choice = group[int(take_no) - 1]
+        note = f"指定第 {take_no} 遍：{reason}" if reason else f"队员指定第 {take_no} 遍"
     return {"take": choice, "take_no": takes[choice]["take_no"], "takes_in_group": len(group),
             "note": note, "rerecord": not ok and not override}
 

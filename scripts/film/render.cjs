@@ -174,7 +174,7 @@ function mux() {
   fs.mkdirSync(video, { recursive: true });
   for (const voice of VOICES) {
     const mixed = path.join(OUT, `mix-${voice}.wav`);
-    const mp4 = path.join(video, 'xiangyi-youju-film-v2.mp4');
+    const mp4 = path.join(video, 'xiangyi-youju-film-v3.mp4');
     run('ffmpeg', ['-v', 'error', '-y', '-i', path.join(OUT, 'picture.mp4'), '-i', mixed,
       // CRF 18，另设码率上限，保证每版不超过 50 MB（颗粒与纸纹很吃码率）
       '-map', '0:v', '-map', '1:a', '-c:v', 'libx264', '-preset', 'slow', '-crf', '18', '-maxrate', '1800k', '-bufsize', '3600k',
@@ -182,15 +182,15 @@ function mux() {
       '-r', String(FPS), '-c:a', 'aac', '-b:a', '192k', '-ar', '48000', '-ac', '2', '-movflags', '+faststart', '-shortest', mp4]);
     console.log('成片', mp4);
   }
-  fs.copyFileSync(path.join(OUT, 'xiangyi-youju-film-v2.srt'), path.join(video, 'xiangyi-youju-film-v2.srt'));
+  fs.copyFileSync(path.join(OUT, 'xiangyi-youju-film-v3.srt'), path.join(video, 'xiangyi-youju-film-v3.srt'));
 }
 
 /* 另导出 WebM（VP9 + Opus），放在 artifacts/film/，不入库 */
 function webm() {
   const video = path.join(ROOT, 'docs', 'assets', 'video');
   for (const voice of VOICES) {
-    const out = path.join(OUT, 'xiangyi-youju-film-v2.webm');
-    run('ffmpeg', ['-v', 'error', '-y', '-i', path.join(video, 'xiangyi-youju-film-v2.mp4'), '-c:v', 'libvpx-vp9', '-b:v', '1800k',
+    const out = path.join(OUT, 'xiangyi-youju-film-v3.webm');
+    run('ffmpeg', ['-v', 'error', '-y', '-i', path.join(video, 'xiangyi-youju-film-v3.mp4'), '-c:v', 'libvpx-vp9', '-b:v', '1800k',
       '-row-mt', '1', '-threads', '4', '-deadline', 'good', '-cpu-used', '5', '-c:a', 'libopus', '-b:a', '128k', out]);
     console.log('WebM', out);
   }

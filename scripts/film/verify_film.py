@@ -72,7 +72,7 @@ def main():
     report = {}
     ok_all = True
     for voice in ("female",):
-        mp4 = VIDEO / "xiangyi-youju-film-v2.mp4"
+        mp4 = VIDEO / "xiangyi-youju-film-v3.mp4"
         info = probe(mp4)
         v = next(s for s in info["streams"] if s["codec_type"] == "video")
         a = next(s for s in info["streams"] if s["codec_type"] == "audio")
@@ -85,7 +85,7 @@ def main():
         subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(mp4), "-ac", "1", "-ar", "48000", str(wav)], check=True)
         audio, sr = sf.read(wav)
         # 旁白比背景（压低后的配乐 + 音效）高多少：在有旁白的半秒窗里比较电平
-        vo_stem, _ = sf.read(ROOT / "docs" / "assets" / "film" / "mix-v2" / f"vo-{voice}.flac")
+        vo_stem, _ = sf.read(ROOT / "docs" / "assets" / "film" / "mix-v3" / f"vo-{voice}.flac")
         bg, _ = sf.read(OUT / f"music-ducked-{voice}.wav")
         fx, _ = sf.read(OUT / f"sfx-ducked-{voice}.wav")
         n = min(len(vo_stem), len(bg), len(fx))

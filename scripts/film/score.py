@@ -10,7 +10,7 @@
 第二版镜 12 换成下拉框选择，不再有打字声；镜 17、18 的点击声按录屏点击时刻放置。
 
 用法：python scripts/film/score.py
-输出：docs/assets/film/mix-v2/music.flac、docs/assets/film/mix-v2/sfx.flac（48 kHz 立体声）
+输出：docs/assets/film/mix-v3/music.flac、docs/assets/film/mix-v3/sfx.flac（48 kHz 立体声）
 """
 
 import json
@@ -23,7 +23,7 @@ from scipy.signal import butter, sosfilt, fftconvolve
 
 ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / "artifacts" / "film"
-MIX = ROOT / "docs" / "assets" / "film" / "mix-v2"
+MIX = ROOT / "docs" / "assets" / "film" / "mix-v3"
 SR = 48000
 RNG = np.random.default_rng(20261005)
 

@@ -155,7 +155,7 @@ def main_v3():
         f"- 录音：`{data['source']}`；19 句，共 {len(data['takes'])} 遍。",
         f"- {len(rerecord)} 句标“建议重录”{('（' + '、'.join(rerecord) + '）') if rerecord else ''}；"
         f"{len(not_last)} 句未用最后一遍（{'、'.join(not_last) or '无'}）。",
-        "- 指定某一遍：在 `docs/demo/film/vo-overrides.json` 写入 `{\"female\": {\"VO-07\": 2}}`，重跑 `vo_select.py " + voice + "` 及后续步骤。",
+        "- 指定某一遍：在 `docs/demo/film/vo-overrides.json` 的 `" + voice + "` 下写入 `\"VO-07\": 2` 或 `\"VO-07\": {\"take\": 2, \"reason\": \"原因\"}`，重跑 `vo_select.py " + voice + "` 及后续步骤。",
         "",
         "## 选中结果",
         "",

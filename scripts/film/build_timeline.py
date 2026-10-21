@@ -5,7 +5,7 @@
 
 用法：python scripts/film/build_timeline.py
 输入：artifacts/film/vo/clips.json
-输出：artifacts/film/timeline.json、artifacts/film/xiangyi-youju-film-v2.srt
+输出：artifacts/film/timeline.json、artifacts/film/xiangyi-youju-film-v3.srt
 """
 
 import json
@@ -160,7 +160,7 @@ def main():
     srt = []
     for i, s in enumerate(srt_items, 1):
         srt.append(f"{i}\n{fmt(s['start'])} --> {fmt(s['end'])}\n{s['text']}\n")
-    (OUT / "xiangyi-youju-film-v2.srt").write_text("\n".join(srt), encoding="utf-8")
+    (OUT / "xiangyi-youju-film-v3.srt").write_text("\n".join(srt), encoding="utf-8")
     for s in shots:
         print(f"镜 {str(s['n']):>3} {s['start']:7.2f}-{s['end']:7.2f} ({s['end'] - s['start']:5.2f}) {s['vo'] or ''}")
     print("总长", duration, "秒")
