@@ -8,3 +8,4 @@
 - 运行说明：`node scripts/submission/build-source-guide.cjs 源码运行说明.docx`，再用 LibreOffice 转 PDF（12 页）。
 - 检查：包内 `pytest tests/backend` 271 passed；界面原型 e2e 通过；`--api-only` 健康检查通过；敏感字符串扫描无命中。
 - 免模型启动（10/21 增补）：`免模型启动.bat` 只装 Python 依赖并运行 `start_local.py --api-only`。云端实测：资料与作品浏览、发布新版本正常；生成讲解词退回部署预置草稿（draft_unverified）；核验运行为 model_error，不以预设结果代替。
+- 评委操作手册（10/21 增补）：`node scripts/submission/build-judge-manual.cjs 评委操作手册.docx`，再用 LibreOffice 转 PDF（14 页，宋体/黑体分别映射 Noto Serif/Sans CJK SC）。交付在 `E:\竞赛\交接\提交材料\` 根目录，未放入源码包 zip（zip 与 SHA-256 不变）。截图取自 `dev/5090-film-footage-v2` 真实运行素材（与 main `47277c1` 前后端代码一致），裁剪后存于 `docs/submission/judge-manual/`；流程图源文件为同目录 `flow-diagram.html`。

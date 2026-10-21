@@ -1,0 +1,70 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+  body{margin:0;background:#fff}
+  svg{display:block}
+  text{font-family:"Noto Sans CJK SC",sans-serif;fill:#000}
+  .lane{fill:#fff;stroke:#000;stroke-width:1.2}
+  .lanehead{fill:#000}
+  .lanelabel{fill:#fff;font-size:15px;font-weight:700}
+  .box{fill:#fff;stroke:#000;stroke-width:1.6}
+  .boxgrey{fill:#f2f2f2;stroke:#000;stroke-width:1.6;stroke-dasharray:5 3}
+  .num{font-size:12px;font-weight:700}
+  .t1{font-size:15px;font-weight:700}
+  .t2{font-size:12px;fill:#333}
+  .arrow{fill:none;stroke:#000;stroke-width:1.6;marker-end:url(#a)}
+  .back{fill:none;stroke:#000;stroke-width:1.4;stroke-dasharray:6 4;marker-end:url(#a)}
+</style></head><body>
+<svg id="flow" width="1200" height="420" viewBox="0 0 1200 420" xmlns="http://www.w3.org/2000/svg">
+  <defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#000"/></marker></defs>
+  <!-- 泳道 -->
+  <rect class="lane" x="0.6" y="0.6" width="1198.8" height="139.4"/>
+  <rect class="lane" x="0.6" y="140" width="1198.8" height="139.4"/>
+  <rect class="lane" x="0.6" y="279.4" width="1198.8" height="140"/>
+  <rect class="lanehead" x="0.6" y="0.6" width="44" height="418.8"/>
+  <line x1="0.6" y1="140" x2="44.6" y2="140" stroke="#fff" stroke-width="1.2"/>
+  <line x1="0.6" y1="279.4" x2="44.6" y2="279.4" stroke="#fff" stroke-width="1.2"/>
+  <text class="lanelabel" x="22.6" y="70" text-anchor="middle" writing-mode="tb" letter-spacing="2">本地大模型</text>
+  <text class="lanelabel" x="22.6" y="210" text-anchor="middle" writing-mode="tb" letter-spacing="2">业务程序</text>
+  <text class="lanelabel" x="22.6" y="349" text-anchor="middle" writing-mode="tb" letter-spacing="2">人工</text>
+  <g id="boxes"></g>
+  <g id="lines"></g>
+</svg>
+<script>
+const NS='http://www.w3.org/2000/svg';
+const lanes=[70,210,349];
+const W=138,H=74;
+const cx=i=>44.6+80+(i-1)*157;
+const steps=[
+  [1,0,'理解与拆分','拆分陈述，提取需求'],
+  [2,1,'资料检索','检索官方资料摘录'],
+  [3,0,'逐句核验','判定来源支持或矛盾'],
+  [4,1,'约束编排','组合活动，复算金额'],
+  [5,0,'分众教学','生成讲解，逐项扫描'],
+  [6,2,'预览与确认','核对方案，人工确认'],
+  [7,1,'导出手册','复算后导出两版手册'],
+];
+const g=document.getElementById('boxes'),l=document.getElementById('lines');
+const el=(tag,attrs,text)=>{const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(text)e.textContent=text;return e;};
+const pos={};
+for(const [n,lane,t1,t2] of steps){
+  const x=cx(n),y=lanes[lane];pos[n]={x,y};
+  g.append(el('rect',{class:'box',x:x-W/2,y:y-H/2,width:W,height:H}));
+  g.append(el('text',{class:'num',x:x-W/2+8,y:y-H/2+16},'0'+n));
+  g.append(el('text',{class:'t1',x:x,y:y-1,'text-anchor':'middle'},t1));
+  g.append(el('text',{class:'t2',x:x,y:y+21,'text-anchor':'middle'},t2));
+}
+for(let n=1;n<7;n++){
+  const a=pos[n],b=pos[n+1],mx=(a.x+b.x)/2;
+  if(a.y===b.y){l.append(el('path',{class:'arrow',d:`M${a.x+W/2},${a.y} H${b.x-W/2-2}`}));continue;}
+  const sy=b.y>a.y?a.y+H/2:a.y-H/2;
+  l.append(el('path',{class:'arrow',d:`M${a.x},${sy} V${b.y} H${b.x-W/2-2}`}));
+}
+// 作品或资料更新后的回路
+const fx=cx(2)+40,fy=lanes[2],FW=230;
+g.append(el('rect',{class:'boxgrey',x:fx-FW/2,y:fy-H/2,width:FW,height:H}));
+g.append(el('text',{class:'t1',x:fx,y:fy-1,'text-anchor':'middle'},'作品或资料更新'));
+g.append(el('text',{class:'t2',x:fx,y:fy+21,'text-anchor':'middle'},'旧确认作废，依据最新资料重新核验'));
+l.append(el('path',{class:'back',d:`M${fx-FW/2},${fy} H${cx(1)-35} V${lanes[0]+H/2+2}`}));
+</script>
+</body></html>
