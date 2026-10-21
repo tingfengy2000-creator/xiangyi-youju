@@ -29,7 +29,7 @@
 | M7 | 首页故事化 | 5090已验证，合入main `b0a4f0c` | 首页三幕故事条、为谁而做、意义带；见[任务说明](../validation/two-machine/task-5060-home-story.md) |
 | M8 | 三幕演示引导 | 5090已验证，随M9合入main `b9ff4e5` | 真实API模式下“三幕演示”引导条：填入主线案例、填入“不要茶歇，多留手作时间”、定位素材撤回；只填入与定位，三个✓只按真实运行状态出现；见[任务说明](../validation/two-machine/task-5060-demo-guide.md)与[访谈操作卡](../demo/interview-demo-runbook.md) |
 | M9 | 验收脚本与中文字号兜底 | 5090已验证并合入main `b9ff4e5`（[验证记录](../validation/two-machine/handoff-rehearsal-5090-acceptance-guard-8e6c439.json)） | 修复首页“河北 · 蔚县剪纸专题”10px等2处中文小字；统一中文字号检查进入`npm test`与无模型live路径；新增`npm run test:demo-guide`一次跑完三幕、阻断检查、24组可读性矩阵与首页截图；见[任务说明](../validation/two-machine/task-5060-acceptance-guard.md) |
-| M10 | 宣传片《一刀之差》 | 第二版女声成片在候选分支`dev/5060-film-v2`，待5090复核；第一版男女两版（`dev/5060-film`）保留为记录 | 202.5秒，1920×1080、24 fps、42.8 MB、-16.0 LUFS；第二、三幕按访谈结论改为“因人而讲”“作品常新”，镜6放访谈原话；真实运行画面来自5090第二次采集（`footage-v2`），示意动画单独标注；19句旁白无“建议重录”、未用后备，“蔚”读yù；未经人耳试听；见[第二版制作进度](../demo/film/progress-v2.md)与[第二版选片记录](../demo/film/vo-selection-v2.md) |
+| M10 | 宣传片《一刀之差》 | 第三版女声成片在候选分支`dev/5060-film-v3`，待5090复核；第二版（`dev/5060-film-v2`）与第一版男女两版保留为记录 | 211.6秒（比内部上限多1.6秒，按说明接受），1920×1080、24 fps、44.7 MB、-16.0 LUFS；只换为一次录完的女声旁白，画面与第二版相同，镜2–3竖排小标逐字成列；19句无“建议重录”，“蔚”读yù；未经人耳试听；见[第三版制作进度](../demo/film/progress-v3.md)与[第三版选片记录](../demo/film/vo-selection-v3.md) |
 | M11 | 按访谈小改产品 | 5090已验证并合入main `47277c1` | 按要求生成讲解词、五类体验对象（因人而讲）、作品发布新版本与手册作品栏；见[访谈结论](../research/practitioner-interviews-2026-10.md)与[任务说明](../validation/two-machine/task-5060-interview-revision.md) |
 
 “已完成”仅适用于该行所列范围，不表示产品全面实现。

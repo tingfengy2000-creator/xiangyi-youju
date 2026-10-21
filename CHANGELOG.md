@@ -1,5 +1,11 @@
 # 更新记录
 
+## 2026-10-21 · 宣传片第三版成片（一次录完的女声，5060候选分支 `dev/5060-film-v3`）
+
+- 新增成片 `docs/assets/video/xiangyi-youju-film-v3.mp4`（3:31.6，44.7 MB）与字幕、分轨（`docs/assets/film/mix-v3/`）、联系表（`contact-sheets-v3/`）；第二版成片与分轨保留不动。
+- 只换旁白：19 句全部取自一次录完的女声录音（61 遍），选片与预检一致、无“建议重录”；画面、字幕文字、配乐设计未改，镜 2–3 竖排小标为 `c143ce4` 的逐字成列版本。
+- 自查：规格、-16.0 LUFS、19/19 句识别通过，“蔚”为 yu；时长比内部上限多 1.6 秒，按说明接受，`film:verify` 因此总结论为未通过；未经人耳试听。见[第三版制作进度](docs/demo/film/progress-v3.md)。
+
 ## 2026-10-19 · 宣传片第二版成片（女声，5060候选分支 `dev/5060-film-v2`）
 
 - 新增成片 `docs/assets/video/xiangyi-youju-film-v2.mp4`（3:22，42.8 MB）与字幕、分轨（`docs/assets/film/mix-v2/`）、联系表（`contact-sheets-v2/`）；第一版男女两版成片保留不动。

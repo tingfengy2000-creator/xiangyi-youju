@@ -1,0 +1,581 @@
+{
+ "duration": 211.625,
+ "sample_rate": 48000,
+ "voices": {
+  "female": [
+   {
+    "vo": "VO-01",
+    "shot": 2,
+    "film_start": 6.1033,
+    "film_end": 10.703,
+    "clip": "artifacts/film/vo/female/VO-01.wav",
+    "take": 3,
+    "source": "docs/assets/film/voice/vo-raw-female-v3.flac",
+    "source_start": 13.51,
+    "source_end": 18.11
+   },
+   {
+    "vo": "VO-02",
+    "shot": 3,
+    "film_start": 14.7033,
+    "film_end": 17.771,
+    "clip": "artifacts/film/vo/female/VO-02.wav",
+    "take": 3,
+    "source": "docs/assets/film/voice/vo-raw-female-v3.flac",
+    "source_start": 27.812,
+    "source_end": 30.88
+   },
+   {
+    "vo": "VO-03",
+    "shot": 4,
+    "film_start": 19.0033,
+    "film_end": 30.621,
+    "clip": "artifacts/film/vo/female/VO-03.wav",
+    "take": 1,
+    "source": "docs/assets/film/voice/vo-raw-female-v3.flac",
+    "source_start": 32.492,
+    "source_end": 44.11
+   },
+   {
+    "vo": "VO-04",
+    "shot": 5,
+    "film_start": 31.62,
+    "film_end": 43.556,
+    "clip": "artifacts/film/vo/female/VO-04.wav",
+    "take": 3,
+    "source": "docs/assets/film/voice/vo-raw-female-v3.flac",
+    "source_start": 98.104,
+    "source_end": 110.04
+   },
+   {
+    "vo": "VO-05",
+    "shot": 7,
+    "film_start": 52.3867,
+    "film_end": 59.177,
+    "clip": "artifacts/film/vo/female/VO-05.wav",
+    "take": 3,
+    "source": "docs/assets/film/voice/vo-raw-female-v3.flac",
+    "source_start": 129.08,
+    "source_end": 135.87
+   },
+   {
+    "vo": "VO-06",
+    "shot": 8,
+    "film_start": 60.6867,
+    "film_end": 68.507,
+    "clip": "artifacts/film/vo/female/VO-06.wav",
+    "take": 3,
+    "source": "docs/assets/film/voice/vo-raw-female-v3.flac",
+    "source_start": 155.24,
+    "source_end": 163.06
+   },
+   {
+    "vo": "VO-07",
+    "shot": 10,
+    "film_start": 73.8783,
+    "film_end": 86.548,
+    "clip": "artifacts/film/vo/female/VO-07.wav",
+    "take": 3,
+    "source": "docs/assets/film/voice/vo-raw-female-v3.flac",
+    "source_start": 194.17,
+    "source_end": 206.84
+   },
+   {
+    "vo": "VO-08",
+    "shot": 11,
+    "film_start": 87.3367,
+    "film_end": 97.607,
+    "clip": "artifacts/film/vo/female/VO-08.wav",
+    "take": 3,
+    "source": "docs/assets/film/voice/vo-raw-female-v3.flac",
+    "source_start": 260.83,
+    "source_end": 271.1
+   },
+   {
+    "vo": "VO-08b",
+    "shot": "11b",
+    "film_start": 98.5617,
+    "film_end": 109.992,
+    "clip": "artifacts/film/vo/female/VO-08b.wav",
+    "take": 3,
+    "source": "docs/assets/film/voice/vo-raw-female-v3.flac",
+    "source_start": 296.92,
+    "source_end": 308.35
+   },
+   {
+    "vo": "VO-09",
+    "shot": 12,
+    "film_start": 112.8617,
+    "film_end": 118.488,
+    "clip": "artifacts/film/vo/female/VO-09.wav",
+    "take": 3,
+    "source": "docs/assets/film/voice/vo-raw-female-v3.flac",
+    "source_start": 325.104,
+    "source_end": 330.73
+   },
+   {
+    "vo": "VO-10",
+    "shot": 13,
+    "film_start": 119.4617,
+    "film_end": 127.202,
+    "clip": "artifacts/film/vo/female/VO-10.wav",
+    "take": 3,
+    "source": "docs/assets/film/voice/vo-raw-female-v3.flac",
+    "source_start": 354.65,
+    "source_end": 362.39
+   },
+   {
+    "vo": "VO-11",
+    "shot": 14,
+    "film_start": 129.4617,
+    "film_end": 140.932,
+    "clip": "artifacts/film/vo/female/VO-11.wav",
+    "take": 3,
+    "source": "docs/assets/film/voice/vo-raw-female-v3.flac",
+    "source_start": 389.46,
+    "source_end": 400.93
+   },
+   {
+    "vo": "VO-12",
+    "shot": 15,
+    "film_start": 142.8533,
+    "film_end": 150.883,
+    "clip": "artifacts/film/vo/female/VO-12.wav",
+    "take": 3,
+    "source": "docs/assets/film/voice/vo-raw-female-v3.flac",
+    "source_start": 420.82,
+    "source_end": 428.85
+   },
+   {
+    "vo": "VO-13",
+    "shot": 16,
+    "film_start": 152.5117,
+    "film_end": 156.592,
+    "clip": "artifacts/film/vo/female/VO-13.wav",
+    "take": 5,
+    "source": "docs/assets/film/voice/vo-raw-female-v3.flac",
+    "source_start": 458.09,
+    "source_end": 462.17
+   },
+   {
+    "vo": "VO-14",
+    "shot": 17,
+    "film_start": 158.1117,
+    "film_end": 163.312,
+    "clip": "artifacts/film/vo/female/VO-14.wav",
+    "take": 3,
+    "source": "docs/assets/film/voice/vo-raw-female-v3.flac",
+    "source_start": 477.46,
+    "source_end": 482.66
+   },
+   {
+    "vo": "VO-15",
+    "shot": 18,
+    "film_start": 165.8117,
+    "film_end": 173.792,
+    "clip": "artifacts/film/vo/female/VO-15.wav",
+    "take": 3,
+    "source": "docs/assets/film/voice/vo-raw-female-v3.flac",
+    "source_start": 503.18,
+    "source_end": 511.16
+   },
+   {
+    "vo": "VO-15b",
+    "shot": "18b",
+    "film_start": 176.5117,
+    "film_end": 182.382,
+    "clip": "artifacts/film/vo/female/VO-15b.wav",
+    "take": 3,
+    "source": "docs/assets/film/voice/vo-raw-female-v3.flac",
+    "source_start": 525.76,
+    "source_end": 531.63
+   },
+   {
+    "vo": "VO-16",
+    "shot": 19,
+    "film_start": 183.7117,
+    "film_end": 191.852,
+    "clip": "artifacts/film/vo/female/VO-16.wav",
+    "take": 3,
+    "source": "docs/assets/film/voice/vo-raw-female-v3.flac",
+    "source_start": 548.94,
+    "source_end": 557.08
+   },
+   {
+    "vo": "VO-17",
+    "shot": 20,
+    "film_start": 193.2117,
+    "film_end": 206.014,
+    "clip": "artifacts/film/vo/female/VO-17.wav",
+    "take": 2,
+    "source": "docs/assets/film/voice/vo-raw-female-v3.flac",
+    "source_start": 575.628,
+    "source_end": 588.43
+   }
+  ]
+ },
+ "subtitles": [
+  {
+   "vo": "VO-01",
+   "line": 1,
+   "start": 6.121,
+   "end": 10.973,
+   "text": "剪纸的时候 刀留下线条 叫阳刻"
+  },
+  {
+   "vo": "VO-02",
+   "line": 1,
+   "start": 14.683,
+   "end": 18.041,
+   "text": "刀刻去线条 叫阴刻"
+  },
+  {
+   "vo": "VO-03",
+   "line": 1,
+   "start": 18.983,
+   "end": 22.627,
+   "text": "丰宁的剪纸 以阳刻为主"
+  },
+  {
+   "vo": "VO-03",
+   "line": 2,
+   "start": 22.627,
+   "end": 26.691,
+   "text": "蔚县的剪纸 以阴刻为主"
+  },
+  {
+   "vo": "VO-03",
+   "line": 3,
+   "start": 26.691,
+   "end": 30.891,
+   "text": "一刀之差 是两个地方的手艺"
+  },
+  {
+   "vo": "VO-04",
+   "line": 1,
+   "start": 31.6,
+   "end": 34.982,
+   "text": "如今 人们常常先从网上"
+  },
+  {
+   "vo": "VO-04",
+   "line": 2,
+   "start": 34.982,
+   "end": 38.148,
+   "text": "从 AI 那里认识一个地方"
+  },
+  {
+   "vo": "VO-04",
+   "line": 3,
+   "start": 38.148,
+   "end": 40.912,
+   "text": "如果这一刀讲反了"
+  },
+  {
+   "vo": "VO-04",
+   "line": 4,
+   "start": 40.912,
+   "end": 43.826,
+   "text": "错的就不只是一个字"
+  },
+  {
+   "vo": "VO-05",
+   "line": 1,
+   "start": 52.435,
+   "end": 54.053,
+   "text": "乡艺有据"
+  },
+  {
+   "vo": "VO-05",
+   "line": 2,
+   "start": 54.053,
+   "end": 59.447,
+   "text": "每一句讲解有出处 每一分钱有去处"
+  },
+  {
+   "vo": "VO-06",
+   "line": 1,
+   "start": 60.683,
+   "end": 64.131,
+   "text": "这是一段准备给游客的讲解词"
+  },
+  {
+   "vo": "VO-06",
+   "line": 2,
+   "start": 64.131,
+   "end": 68.777,
+   "text": "我们先把每一句 送回出处去对一对"
+  },
+  {
+   "vo": "VO-07",
+   "line": 1,
+   "start": 73.876,
+   "end": 75.734,
+   "text": "资料说得清楚"
+  },
+  {
+   "vo": "VO-07",
+   "line": 2,
+   "start": 75.734,
+   "end": 79.184,
+   "text": "阳刻为主 讲的是丰宁"
+  },
+  {
+   "vo": "VO-07",
+   "line": 3,
+   "start": 79.184,
+   "end": 82.404,
+   "text": "蔚县 以阴刻为主"
+  },
+  {
+   "vo": "VO-07",
+   "line": 4,
+   "start": 82.404,
+   "end": 86.818,
+   "text": "原文 出处 位置 都摆在这里"
+  },
+  {
+   "vo": "VO-08",
+   "line": 1,
+   "start": 87.331,
+   "end": 91.823,
+   "text": "至于“每天开放 无需预约”这样的承诺"
+  },
+  {
+   "vo": "VO-08",
+   "line": 2,
+   "start": 91.823,
+   "end": 93.799,
+   "text": "资料证明不了"
+  },
+  {
+   "vo": "VO-08",
+   "line": 3,
+   "start": 93.799,
+   "end": 97.877,
+   "text": "它不替人答应 留给接待方确认"
+  },
+  {
+   "vo": "VO-08b",
+   "line": 1,
+   "start": 98.542,
+   "end": 102.126,
+   "text": "没有现成的讲解词也不要紧"
+  },
+  {
+   "vo": "VO-08b",
+   "line": 2,
+   "start": 102.126,
+   "end": 105.724,
+   "text": "说清讲给谁 讲多久"
+  },
+  {
+   "vo": "VO-08b",
+   "line": 3,
+   "start": 105.724,
+   "end": 108.596,
+   "text": "它只照着资料先写一版"
+  },
+  {
+   "vo": "VO-08b",
+   "line": 4,
+   "start": 108.596,
+   "end": 110.262,
+   "text": "再逐句核对"
+  },
+  {
+   "vo": "VO-09",
+   "line": 1,
+   "start": 112.842,
+   "end": 114.384,
+   "text": "同一项剪纸"
+  },
+  {
+   "vo": "VO-09",
+   "line": 2,
+   "start": 114.384,
+   "end": 118.758,
+   "text": "来的人不一样 讲法也该不一样"
+  },
+  {
+   "vo": "VO-10",
+   "line": 1,
+   "start": 119.492,
+   "end": 121.302,
+   "text": "换成一群中学生"
+  },
+  {
+   "vo": "VO-10",
+   "line": 2,
+   "start": 121.302,
+   "end": 123.494,
+   "text": "多了一个观察环节"
+  },
+  {
+   "vo": "VO-10",
+   "line": 3,
+   "start": 123.494,
+   "end": 127.472,
+   "text": "手作从 50 分钟 变成 80 分钟"
+  },
+  {
+   "vo": "VO-11",
+   "line": 1,
+   "start": 129.474,
+   "end": 133.29,
+   "text": "讲解也换成学生听得懂的话"
+  },
+  {
+   "vo": "VO-11",
+   "line": 2,
+   "start": 133.29,
+   "end": 137.588,
+   "text": "这 874 元里 584 元"
+  },
+  {
+   "vo": "VO-11",
+   "line": 3,
+   "start": 137.588,
+   "end": 141.202,
+   "text": "付给本地讲解和手作老师"
+  },
+  {
+   "vo": "VO-12",
+   "line": 1,
+   "start": 142.869,
+   "end": 144.373,
+   "text": "做不到的事"
+  },
+  {
+   "vo": "VO-12",
+   "line": 2,
+   "start": 144.373,
+   "end": 147.963,
+   "text": "比如临时加一场英语讲解"
+  },
+  {
+   "vo": "VO-12",
+   "line": 3,
+   "start": 147.963,
+   "end": 151.153,
+   "text": "它会停下来 先问人"
+  },
+  {
+   "vo": "VO-13",
+   "line": 1,
+   "start": 152.582,
+   "end": 156.862,
+   "text": "手艺人的作品 一直在推陈出新"
+  },
+  {
+   "vo": "VO-14",
+   "line": 1,
+   "start": 158.132,
+   "end": 159.512,
+   "text": "新作一发布"
+  },
+  {
+   "vo": "VO-14",
+   "line": 2,
+   "start": 159.512,
+   "end": 163.582,
+   "text": "手册里用到旧作的地方 都被找了出来"
+  },
+  {
+   "vo": "VO-15",
+   "line": 1,
+   "start": 165.796,
+   "end": 168.526,
+   "text": "重新核验 经人确认"
+  },
+  {
+   "vo": "VO-15",
+   "line": 2,
+   "start": 168.526,
+   "end": 171.136,
+   "text": "新手册换上了新作品"
+  },
+  {
+   "vo": "VO-15",
+   "line": 3,
+   "start": 171.136,
+   "end": 174.062,
+   "text": "拍板的 始终是人"
+  },
+  {
+   "vo": "VO-15b",
+   "line": 1,
+   "start": 176.492,
+   "end": 178.032,
+   "text": "游客看完体验"
+  },
+  {
+   "vo": "VO-15b",
+   "line": 2,
+   "start": 178.032,
+   "end": 182.652,
+   "text": "还能把喜欢的作品 从手艺人手里带回家"
+  },
+  {
+   "vo": "VO-16",
+   "line": 1,
+   "start": 183.692,
+   "end": 187.432,
+   "text": "这一切 装在一台普通电脑里"
+  },
+  {
+   "vo": "VO-16",
+   "line": 2,
+   "start": 187.432,
+   "end": 192.122,
+   "text": "离线运行 不花一分钱模型调用费"
+  },
+  {
+   "vo": "VO-17",
+   "line": 1,
+   "start": 193.192,
+   "end": 194.912,
+   "text": "AI 正在成为人们"
+  },
+  {
+   "vo": "VO-17",
+   "line": 2,
+   "start": 194.912,
+   "end": 198.834,
+   "text": "认识一个地方的第一扇窗"
+  },
+  {
+   "vo": "VO-17",
+   "line": 3,
+   "start": 198.834,
+   "end": 202.016,
+   "text": "我们让它只讲有出处的话"
+  },
+  {
+   "vo": "VO-17",
+   "line": 4,
+   "start": 202.016,
+   "end": 206.284,
+   "text": "把拍板权和收益 留在乡里"
+  }
+ ],
+ "mix_report": {
+  "female": {
+   "vo_stem_lufs": -16.0,
+   "mix_lufs": -16.0,
+   "mix_true_peak_dbfs": -3.3,
+   "music_duck_db_median": 13.5,
+   "music_duck_db_p10_p90": [
+    4.0,
+    17.0
+   ]
+  }
+ },
+ "processing": {
+  "cut": "选中遍前后各留 80 ms，10 ms 淡入淡出",
+  "chain": "highpass=f=80, afftdn=nr=10:nf=-50, deesser=i=0.4, acompressor=threshold=-21dB:ratio=2:attack=12:release=180:makeup=1.5",
+  "loudness": "每句两遍 loudnorm I=-16:TP=-1.5（峰值所限，ffmpeg 实际为动态模式：缓慢增益 + 真峰值限幅）；对齐后整条再校准一次",
+  "duck": "配乐 sidechaincompress threshold=0.025 ratio=7 attack=60 release=650；音效 threshold=0.05 ratio=3",
+  "tempo": "未变速"
+ }
+}
